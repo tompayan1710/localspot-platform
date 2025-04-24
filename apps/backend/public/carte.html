@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Hello Photorealistic 3D Maps in Maps JavaScript</title>
+
+    <style>
+      html,
+      body {
+        height: 80%;
+        width: 80%;
+        margin: 0;
+        padding: 0;
+      }
+    </style>
+  </head>
+  <body>
+    <gmp-map-3d
+      mode="hybrid"
+      center="43.7002, 7.2620"
+      range="2500"
+      tilt="70"
+      heading="0"
+    >
+      <!--style="
+        filter: brightness(1.05)
+          /* légère clarté pour simuler la lumière du Sud */ contrast(1.15)
+          /* contraste pro pour lisibilité */ saturate(1.1)
+          /* un peu plus de vie dans les couleurs */ hue-rotate(-10deg)
+          /* vers les tons chauds, ocres */ sepia(0.05);"-->
+      <gmp-marker-3d-interactive
+        position="43.722468, 7.114235"
+        label="Clique-moi !"
+      >
+      </gmp-marker-3d-interactive>
+    </gmp-map-3d>
+
+    <script
+      async
+      src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAe-fjksdOMXtdDWnGmJKEhOMiFFY4WRS0&v=alpha&libraries=maps3d"
+    ></script>
+    <script type="module" src="./script.js"></script>
+  </body>
+</html>
