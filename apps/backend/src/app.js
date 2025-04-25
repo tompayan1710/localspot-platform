@@ -7,6 +7,9 @@ const compression = require("compression");
 const qrPlacementsRoutes = require("./routes/placementgenerator");
 const apiRoutes = require("./routes/api/index");
 
+const cors = require("cors");
+
+app.use(cors());
 
 app.use(compression());
 app.use("/qrcodes", express.static(path.join(__dirname, "data/qrcodes")));

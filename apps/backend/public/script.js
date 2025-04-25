@@ -1,6 +1,18 @@
 window.addEventListener("DOMContentLoaded", async () => {
     const mapEl = document.querySelector("gmp-map-3d"); // conteneur de la carte
-  
+
+    console.log("Jesuis otm");
+    const baseUrl = window.location.origin;
+
+    console.log("Appel de l’API vers :", `${window.location.origin}/api/qr-placements`);
+
+    const response = await fetch(`${baseUrl}/api/qr-placements`);
+
+    const qrCodes = await response.json();
+
+    console.log("youpi");
+    console.log(qrCodes);
+    /*
     const qrCodes = [
       {
         label: "QR Code 1",
@@ -12,56 +24,41 @@ window.addEventListener("DOMContentLoaded", async () => {
         sizePreserved: true,
         zIndex: 10
       },
-      {
-        label: "QR Code 2",
-        position: { lat: 43.6865, lng: 7.2695 },
-        altitudeMode: "relative-to-mesh",
-        collisionBehavior: "required",
-        drawsWhenOccluded: true,
-        extruded: true,
-        sizePreserved: true,
-        zIndex: 5
-      },
-      {
-        label: "QR Code 3",
-        position: { lat: 43.6945, lng: 7.2730 },
-        altitudeMode: "relative-to-mesh",
-        collisionBehavior: "required",
-        drawsWhenOccluded: true,
-        extruded: true,
-        sizePreserved: true,
-        zIndex: 7
-      },
     ];
-  
-    qrCodes.forEach((qr) => {
-      const marker = document.createElement("gmp-marker-3d-interactive");
-  
-      marker.setAttribute("position", `${qr.position.lat},${qr.position.lng}`);
-      marker.setAttribute("label", qr.label);
-  
-      marker.setAttribute("altitude-mode", qr.altitudeMode);
-      marker.setAttribute("collision-behavior", qr.collisionBehavior);
-  
-      if (qr.drawsWhenOccluded) {
-        marker.setAttribute("draws-when-occluded", "");
-      }
+    */
+
+    qrCodes.forEach((qr, index) => {
+      if(qr.latitude & qr.longitude){
+
+        const marker = document.createElement("gmp-marker-3d-interactive");
+    
+        
+        marker.setAttribute("position", `${qr.latitude},${qr.longitude}`);
+        marker.setAttribute("label", qr.position_description);
+    
+        marker.setAttribute("altitude-mode", "relative-to-mesh");
+        marker.setAttribute("collision-behavior", "required");
+    
       
-      if (qr.extruded) {
+        marker.setAttribute("draws-when-occluded", "");
+        
+        
+      
         marker.setAttribute("extruded", "");
-      }
-      if (qr.sizePreserved) {
+        
+      
         marker.setAttribute("size-preserved", "");
+        
+              
+        marker.setAttribute("z-index", index.toString());
+    
+        // Interaction utilisateur : clic
+        marker.addEventListener("gmp-click", () => {
+          alert(`📍 Vous avez cliqué sur : ${qr.position_description}`);
+        });
+    
+        mapEl.appendChild(marker);
       }
-            
-      marker.setAttribute("z-index", qr.zIndex.toString());
-  
-      // Interaction utilisateur : clic
-      marker.addEventListener("gmp-click", () => {
-        alert(`📍 Vous avez cliqué sur : ${qr.label}`);
-      });
-  
-      mapEl.appendChild(marker);
     });
   });
   
