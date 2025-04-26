@@ -52,7 +52,7 @@ router.post("/generate", async (req, res) => {
 
   
 
-  const qrUrl = `http://localhost:3000/q/${finalSlug}`;
+  const qrUrl = `https://localspot-platform.onrender.com//q/${finalSlug}`;
 
   try {
     const fileName = `${finalSlug}.png`;
