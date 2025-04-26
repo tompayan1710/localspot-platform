@@ -5,8 +5,8 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "node server.js",
-    "build": "cd ../frontend && npm install && npm run build && cd ../backend && xcopy ..\\frontend\\build\\* build\\ /s /e /h /y"
-  
+    "build:dev": "cd ../frontend && npm install && npm run build && cd ../backend && xcopy ..\\frontend\\build\\* build\\ /s /e /h /y",
+    "build": "cd ../frontend && npm install && npm run build && cd ../backend && rm -rf build && mkdir build && cp -r ../frontend/build/* build/"
   },
   "keywords": [],
   "author": "",
