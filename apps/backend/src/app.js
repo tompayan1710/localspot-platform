@@ -14,6 +14,10 @@ app.use(cors());
 app.use(compression());
 app.use("/qrcodes", express.static(path.join(__dirname, "data/qrcodes")));
 app.use("/",express.static(path.join(__dirname, '../public')));
+app.use(express.static(path.join(__dirname, "../build")));
+
+
+  
 
 app.set("trust proxy", true);
 
@@ -26,7 +30,9 @@ app.use("/", qrRoute);
 app.use("/", adminRoutes);
 app.use("/", qrPlacementsRoutes);
 app.use("/api", apiRoutes);
-
+app.get("*", (req, res) => {
+    res.sendFile(path.join(__dirname, "../build", "index.html"));
+  });
 
 
 module.exports = app;
