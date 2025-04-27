@@ -1,59 +1,83 @@
-import { useEffect, useState } from "react";
-import Map3D from "../components/Map3D";
+// src/pages/Dashboard.jsx
+import { useState } from "react";
+import { useQrCodes } from "../hooks/useQrCodes";
+import Map3D from "../components/Map3D/Map3D";
+import BottomSheet from "../components/BottomSheet/BottomSheet";
 
 export default function Dashboard() {
-  const [qrCodes, setQrCodes] = useState([]);
-  const [loading, setLoading] = useState(true);
-
-  useEffect(() => {
-    // Si back et front sont sur le même domaine
-    console.log("API URL =", process.env.REACT_APP_API_URL);
-
-    fetch(`http://localhost:3000/api/qr-placements`)
-    .then((res) => res.json())
-      .then((data) => {
-        setQrCodes(data);
-        setLoading(false);
-      })
-      .catch((error) => {
-        console.error("Erreur lors du fetch :", error);
-        setLoading(false);
-      });
-  }, []);
+  const { markers, loading, error } = useQrCodes();
+  const [selected, setSelected]     = useState(null);
 
   return (
-    <div className="p-4">
-      <h1>📍 QR Codes disponibles</h1>
+    <div
+      style={{
+        display: "flex",
+        flexDirection: "column",
+        height: "100vh",
+        backgroundColor: "#f9f9f9",
+      }}
+    >
+      {/* HEADER */}
+      <header
+        style={{
+          flex: "0 0 auto",
+          padding: "1rem",
+          backgroundColor: "#fff",
+          boxShadow: "0 1px 4px rgba(0,0,0,0.1)",
+        }}
+      >
+        <h1 style={{ margin: 0, fontSize: "1.25rem" }}>LocalSpot Dashboard</h1>
+      </header>
 
-      {loading ? (
-        <p>Chargement...</p>
-      ) : (
-        <table border="1" cellPadding="8" style={{ marginTop: "1rem" }}>
-          <thead>
-            <tr>
-              <th>ID</th>
-              <th>Description</th>
-              <th>Latitude</th>
-              <th>Longitude</th>
-              <th>Adresse</th>
-            </tr>
-          </thead>
-          <tbody>
-            {qrCodes.map((qr) => (
-              <tr key={qr.id}>
-                <td>{qr.id}</td>
-                <td>{qr.position_description}</td>
-                <td>{qr.latitude}</td>
-                <td>{qr.longitude}</td>
-                <td>{qr.adresse || "—"}</td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
+      {/* MAIN CONTENT */}
+      <main
+        style={{
+          flex: "1 1 auto",
+          overflowY: "auto",
+          padding: "0rem",
+        }}
+      >
+        {loading && <p>Chargement de la carte…</p>}
+        {error && <p style={{ color: "red" }}>Erreur : {error.message}</p>}
+
+        {!loading && !error && (
+          <Map3D
+            apiKey={process.env.REACT_APP_GOOGLE_MAPS_KEY}
+            markers={markers}
+            onMarkerClick={setSelected}
+          />
+        )}
+
         
-      )}
-       {/* Section 2 : Carte */}
-       <Map3D />
+        <BottomSheet open={!!selected} onClose={() => setSelected(null)}>
+          {selected && (
+            <div style={{ padding: "1rem" }}>
+              <h2 style={{ marginTop: 0 }}>{selected.label}</h2>
+              <p>{selected.position_description}</p>
+              <p>
+                📍 {selected.latitude}, {selected.longitude}
+              </p>
+            </div>
+          )}
+        </BottomSheet>
+        
+      </main>
+
+      {/* 
+      <footer
+        style={{
+          flex: "0 0 auto",
+          padding: "0.5rem 1rem",
+          textAlign: "center",
+          backgroundColor: "#fff",
+          borderTop: "1px solid #ddd",
+          fontSize: "0.875rem",
+        }}
+      >
+        
+        © {new Date().getFullYear()} LocalSpot
+      </footer>
+      */}
     </div>
   );
 }

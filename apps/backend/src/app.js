@@ -1,7 +1,7 @@
 const express = require("express");
 const app = express();
 const qrRoute = require("./routes/qrgenerator");
-const adminRoutes = require("./routes/admin");
+//const adminRoutes = require("./routes/admin");
 const path = require("path");
 const compression = require("compression");
 const qrPlacementsRoutes = require("./routes/placementgenerator");
@@ -27,12 +27,14 @@ const redirectRoute = require("./routes/redirect");
 // Utiliser la route
 app.use("/", redirectRoute);
 app.use("/", qrRoute);
-app.use("/", adminRoutes);
+//app.use("/", adminRoutes);
 app.use("/", qrPlacementsRoutes);
 app.use("/api", apiRoutes);
 
   
-
+app.get(/.*/, (req, res) => {
+    res.sendFile(path.join(__dirname, '../build', 'index.html'));
+});
 
 
 module.exports = app;
