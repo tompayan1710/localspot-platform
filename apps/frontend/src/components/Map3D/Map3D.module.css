@@ -1,0 +1,20 @@
+/* src/components/Map3D/Map3D.module.css */
+.wrapper {
+    width: 100%;
+  }
+  
+  .title {
+    font-size: 1.25rem;
+  }
+  
+  .mapContainer,
+  .mapContainer gmp-map-3d,
+  .mapContainer gmp-map-3d > * {
+    width: 100%;
+    height: 100vh; /* par défaut, ajustable via prop height si tu veux */
+  }
+  
+  .mapContainer {
+    position: relative;
+  }
+  
