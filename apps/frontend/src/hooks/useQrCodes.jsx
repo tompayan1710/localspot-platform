@@ -14,12 +14,12 @@ export function useQrCodes() {
 
   useEffect(() => {
     let cancelled = false;
-    cconsole.log("🔍 useQrCodes: fnts");
+    console.log("🔍 useQrCodes: fnts");
     console.log("🔍 useQrCodes: fetch URL =", process.env.REACT_APP_API_URL + "/api/qr-placements");
 
     getAllQrPlacements()
       .then(data => {
-        cconsole.log("🔍Marker");
+        console.log("🔍Marker");
         if (!cancelled) setMarkers(data);
       })
       .catch(err => {
