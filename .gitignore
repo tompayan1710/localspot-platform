@@ -2,3 +2,4 @@
 /apps/backend/.env
 /apps/frontend/node_modules
 /apps/frontend/.env
+**/.env
