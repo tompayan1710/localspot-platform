@@ -1,7 +1,7 @@
 // src/pages/Dashboard.jsx
 import { useState } from "react";
 import { useQrCodes } from "../hooks/useQrCodes";
-import Map3D from "../components/Map3D/Map3D";
+import Map2D from "../components/Map3D/Map2D";
 import BottomSheet from "../components/BottomSheet/BottomSheet";
 
 export default function Dashboard() {
@@ -41,7 +41,7 @@ export default function Dashboard() {
         {error && <p style={{ color: "red" }}>Erreur : {error.message}</p>}
 
         {!loading && !error && (
-          <Map3D
+          <Map2D
             apiKey={process.env.REACT_APP_GOOGLE_MAPS_KEY}
             markers={markers}
             onMarkerClick={setSelected}

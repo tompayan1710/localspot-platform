@@ -27,7 +27,7 @@ router.get("/new-placement", (req, res) => {
       <button type="submit">➕ Ajouter</button>
     </form>
 
-    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAe-fjksdOMXtdDWnGmJKEhOMiFFY4WRS0&libraries=places"></script>
+    <script src="https://maps.googleapis.com/maps/api/js?key=${process.env.GOOGLE_MAPS_KEY}&libraries=places"></script>
     <script>
       const input = document.getElementById("adresse");
       const latitude = document.getElementById("latitude");
