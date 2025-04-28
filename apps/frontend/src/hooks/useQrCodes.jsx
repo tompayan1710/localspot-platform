@@ -14,16 +14,21 @@ export function useQrCodes() {
 
   useEffect(() => {
     let cancelled = false;
+    cconsole.log("🔍 useQrCodes: fnts");
+    console.log("🔍 useQrCodes: fetch URL =", process.env.REACT_APP_API_URL + "/api/qr-placements");
 
     getAllQrPlacements()
       .then(data => {
+        cconsole.log("🔍Marker");
         if (!cancelled) setMarkers(data);
       })
       .catch(err => {
+        console.log("erreur pour get ALL");
         console.error("Erreur fetch QR codes :", err);
         if (!cancelled) setError(err);
       })
       .finally(() => {
+        console.log("SET LOADING");
         if (!cancelled) setLoading(false);
       });
 
