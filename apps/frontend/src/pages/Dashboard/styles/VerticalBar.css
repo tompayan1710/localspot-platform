@@ -1,0 +1,147 @@
+
+
+
+
+
+
+.verticalbar {
+    height: 100%; 
+    width: 300px; 
+    margin-top: 80px;
+    border-right: 1px solid #eee;
+    display: flex;
+    flex-direction: column;
+    justify-content: start;
+    position: fixed;
+    align-items: start;
+    top: 0; left: 0;
+    z-index: 1000;
+    transition: all 0.5s ease;
+    overflow: hidden;
+  }
+
+  .verticalbar.collapsed {
+    width: 80px; /* sidebar fermée */
+  }
+
+  .hamburgericon{
+    border: none;
+    background-color: transparent;
+    width: 100px;
+    height: 40px;
+    margin: 30px 0 10px 30px;
+    display: flex;
+    justify-content: start;
+    align-items: center;
+    padding: 30 30px 30px 0;
+    cursor: pointer;
+  }
+
+  .hamburgericon img{
+    width: 25px;
+    height: 25px;
+    transition: filter 0.3s ease;
+  }
+
+  .hamburgericon:hover img{
+    filter: invert(51%) sepia(64%) saturate(652%) hue-rotate(194deg) brightness(92%) contrast(105%);
+  }
+
+
+  .MenueElement{
+    width: calc(100% - 30px);
+    background-color: white;
+    margin: 10px 15px;
+    padding: 15px 15px;
+    border: none;
+    border-radius: 10px;
+    align-items: center;
+    cursor: pointer;
+    transition: background-color 0.5s ease;
+  }
+
+  .MenueElement p {
+    transition: opacity 0.5s ease;
+    opacity: 1;
+    margin-left: 10px;
+  }
+
+  .MenueElement img{
+    margin-right: 10px;
+    width: 25px;
+    transition: filter 0.3s ease;
+  }
+.MenueElement:hover{
+  background-color: var(--greylight);
+}
+
+.MenueElement.selected{
+  background-color: var(--bluelight);
+}
+
+.MenueElement.selected img{
+  filter: invert(51%) sepia(64%) saturate(652%) hue-rotate(194deg) brightness(92%) contrast(105%);
+}
+
+.MenueElement.selected p{
+  color: var(--bluenormal);
+}
+
+
+
+
+.verticalbar.collapsed .MenueElement p {
+  opacity: 0;
+}
+
+.verticalbar.collapsed .InformationContainer {
+  opacity: 0;
+}
+
+.collapsed .MenueElement{
+  border-top-right-radius: 0;
+  border-bottom-right-radius: 0;
+}
+
+
+
+
+
+
+/*Information Container*/
+.InformationContainer{
+  transition: opacity 0.5s ease;
+  width: 240px;
+  padding: 15px;
+  margin: 15px;
+  margin-top: 80px;
+  color: var(--bluenormal);
+  background-color: var(--bluelight);
+  border-radius: 10px;
+  opacity: 1;
+}
+
+.InformationContainer p:first-of-type{
+  font-weight: 900; 
+  padding-bottom: 10px;
+}
+
+.InformationContainer p:last-of-type{
+  padding-bottom: 15px;
+}
+
+.InformationContainer button{
+  
+  background-color: var(--bluenormal);
+  color: white;
+  padding: 14px 30px;
+  font-weight: 600;
+  border: none;
+  border-radius: 10px;
+
+}
+
+
+.displayNone{
+  display: none;
+}

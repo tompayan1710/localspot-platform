@@ -41,12 +41,19 @@ export default function Dashboard() {
         {error && <p style={{ color: "red" }}>Erreur : {error.message}</p>}
 
         {!loading && !error && (
-          <Map2D
-            apiKey={process.env.REACT_APP_GOOGLE_MAPS_KEY}
-            markers={markers}
-            onMarkerClick={setSelected}
-          />
-        )}
+  <Map2D
+    apiKey={process.env.REACT_APP_GOOGLE_MAPS_KEY}
+    center={{ lat: 43.7002, lng: 7.2620 }}
+    zoom={12}
+    containerStyle={{ width: "100%", height: "500px" }}
+    markers={markers}              // ceci vient de useQrCodes()
+    onMarkerClick={(m) => {
+      console.log("Marker Clicked:", m);
+      setSelected(m);
+    }}
+  />
+)}
+
 
         
         <BottomSheet open={!!selected} onClose={() => setSelected(null)}>
@@ -60,7 +67,7 @@ export default function Dashboard() {
             </div>
           )}
         </BottomSheet>
-        
+
       </main>
 
       {/* 

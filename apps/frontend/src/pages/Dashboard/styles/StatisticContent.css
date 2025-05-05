@@ -1,0 +1,60 @@
+    .ContainerStatistic{
+        max-width: calc(100vw - 40px); 
+        box-sizing: border-box;
+        background-color: transparent;
+        margin: 0%;
+        padding: var(--paddingX);
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+        gap: 25px;
+    }
+
+    .StatNumberContainer{
+        padding: 30px 20px;
+        background-color: white;
+        border-radius: 15px;
+        display: flex;
+        justify-content: space-between;
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
+        /* ombre par défaut (équivalent de shadow-sm + border-white/20) */
+        box-shadow: 0 2px 4px rgba(59, 130, 246, 0.05);
+    }
+
+    .StatNumberContainer:hover{
+        transform: translateY(-2px) scale(1.02);
+        box-shadow: 0 8px 16px rgba(59, 130, 246, 0.15);
+
+    }
+
+      
+
+    .StatNumberContainer .t5{
+        color: var(--greydark);
+        margin-bottom: 5px;
+    }
+
+    .StatNumberContainer .t3{
+        font-weight: 900;
+        color: var(--greydark);
+    }
+
+    .StatNumberContainer img{
+        padding: 10px;
+        width: 50px;
+        height: 50px;
+        border-radius: 8px;
+    }
+
+
+    #stat1{
+        background-color: var(--bluelight);
+    }
+    #stat2{
+        background-color: var(--greenlight);
+    }
+    #stat3{
+        background-color: var(--violetlight);
+    }
+    #stat4{
+        background-color: var(--redlight);
+    }
