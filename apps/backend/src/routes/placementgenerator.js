@@ -110,7 +110,7 @@ router.get("/qr-placements", async (req, res) => {
     res.send(minify(html));
   } catch (err) {
     console.error("❌ Erreur affichage placements :", err.message);
-    res.status(500).send("Erreur serveur.");
+    res.status(500).send("Erreur serveur."); 
   }
 });
 

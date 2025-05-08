@@ -77,8 +77,10 @@ export default function BottomSheet({onClose,selected,  ...motionProps}) {
         <img src={adresseicon}/>
         <p className="t4">{selected?.adresse}</p>
 
+          {/*
         <p className="t4">{selected?.latitude}</p>
         <p className="t4">{selected?.longitude}</p>
+          */}
       </div>
       
       <div>

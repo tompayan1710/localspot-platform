@@ -6,10 +6,18 @@ import BottomSheet from "../../components/BottomSheet/BottomSheet";
 
 
 
-export default function UsingMap2D() {
-  const { markers, loading, error } = useQrCodes();
+export default function UsingMap2D({markers, loading, error}) {
+  // const { markers, loading, error } = useQrCodes();
   const [selected, setSelected]     = useState(null);
 
+  const [center, setCenter] = useState({ lat: 43.7002, lng: 7.2620 });
+  const [zoom, setZoom] = useState(13);
+
+  const handleMarkerClick = (marker) => {
+    setSelected(marker);
+    setCenter({ lat: marker.latitude, lng: marker.longitude });
+    setZoom(15); // Zoom sur le marker cliqué
+  };
 
   return (
       <main
@@ -26,7 +34,9 @@ export default function UsingMap2D() {
         <Map2D
             apiKey={process.env.REACT_APP_GOOGLE_MAPS_KEY}
             markers={markers}              // ceci vient de useQrCodes()
-            onMarkerClick={(m) => setSelected(m)}
+            center={center}
+            zoom={zoom}
+            onMarkerClick={(m) => handleMarkerClick(m)}
         />
         )}
 

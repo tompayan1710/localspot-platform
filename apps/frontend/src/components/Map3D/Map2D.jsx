@@ -25,23 +25,19 @@ function Map2D({
 
 
   const mapRef = useRef(null);
-  const [position, setPosition] = useState({
-      lat: 43.7002, 
-      lng: 7.2620
-  });
 
-  function handleLoad(map) {
+
+  
+  useEffect(() => {
+    if (mapRef.current) {
+      mapRef.current.panTo(center);
+      mapRef.current.setZoom(zoom);
+    }
+  }, [center, zoom]);
+
+  const handleLoad = (map) => {
     mapRef.current = map;
-  }
-
-  function handleCenter() {
-    if (!mapRef.current) return;
-
-    const newPos = mapRef.current.getCenter().toJSON();
-    setPosition(newPos);
-  }
-
-
+  };
 
 
 
@@ -171,9 +167,7 @@ const mapOptions = {
 
 
   return (
-    <LoadScript googleMapsApiKey={apiKey}   
-    loadingElement={<div className="skeleton" style={{ width: "100%", height: "100%" }}></div>}
-    >
+
       <div style={{
         width: '100%',
         height: '100%',
@@ -182,32 +176,32 @@ const mapOptions = {
       }}>
       <GoogleMap
         mapContainerStyle={containerStyle}
-        center={position} // ton point de départ
+        center={center}
+        zoom={zoom}
+        onLoad={handleLoad}
         options={mapOptions} 
         // onLoad={(map) => (mapRef.current = map)}
 
 
-        zoom={13}
-      onLoad={handleLoad}
-      onDragEnd={handleCenter}
+      //onDragEnd={handleCenter}
       // center={position}
       id="map"
 
       >
         {markers.map((m) => {
           // ignore si pas de coords
-          if (m.latitude == null || m.longitude == null) return null;
+          if (!m.latitude || !m.longitude) return null;
           return (
             <Marker
               key={m.id}
               position={{ lat: m.latitude, lng: m.longitude }}
               title={m.position_description}
               onClick={() =>{
-                const position = { lat: m.latitude, lng: m.longitude };
-                setTimeout(() => {
-                  mapRef.current?.panTo(position);
-                  mapRef.current?.setZoom(15);
-                }, 100); // petit délai pour attendre le render du reste
+                // const position = { lat: m.latitude, lng: m.longitude };
+                // setTimeout(() => {
+                //   mapRef.current?.panTo(position);
+                //   mapRef.current?.setZoom(15);
+                // }, 100); // petit délai pour attendre le render du reste
                 onMarkerClick(m);
               }}
             />
@@ -215,9 +209,8 @@ const mapOptions = {
         })}
       </GoogleMap>
       </div>
-    </LoadScript>
   );
 
 }
 
-export default Map2D;
+export default memo(Map2D);

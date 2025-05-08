@@ -1,22 +1,34 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import './styles/ContentArea.css';
-import Map2D from '../../components/Map3D/Map2D'
 import UsingMap2D from './UsingMap2D'
 import StatisticContent from './StatisticContent'
 import ListScrollable from '../../components/ListScrollable/ListeScrollable'
 import TestSlide from './TestSlide'
+import ListEmplacementsActif from "../../components/ListEmplacementsActif/ListEmplacementsActif";
+import { useQrCodes } from "../../hooks/useQrCodes";
+import { useScans } from "../../hooks/useScans";
+
+import ContentAreaHome from "./ContentArea/ContentAreaHome"
+import ContentAreaStatistic from "./ContentArea/ContentAreaStatistic/ContentAreaStatistic"
 
 
-export default function ContentArea(props) {
+
+
+export default function ContentArea({menuVisible, activePage}) {
+  const { markers, loading, error } = useQrCodes();
+  const { scans } = useScans();
 
   return (
-    <div className={`ContentAreaContainer ${props.menuVisible ? "MenueInVisible" : "" }`}>
-      <div className='Map2DContainer'>
-        <UsingMap2D></UsingMap2D>
-      </div>
-      <StatisticContent></StatisticContent>
-      <ListScrollable></ListScrollable>
-      <TestSlide />
+    <div className={`ContentAreaContainer ${menuVisible ? "MenueInVisible" : "" }`}>
+      
+      {activePage === "home" && <ContentAreaHome markers={markers} loading={loading} error={error}></ContentAreaHome>}
+      {activePage === "emplacement" && <h1>emplacement Page</h1>}
+      {activePage === "myoffers" && <h1>Mes offres</h1>}
+      {activePage === "statistic" && <ContentAreaStatistic scans={scans} markers={markers}></ContentAreaStatistic>}
+      {activePage === "myteam" && <h1>Mon équipe</h1>}
+      {activePage === "settings" && <h1>Parametre</h1>}
     </div>
 );
 }
+
+

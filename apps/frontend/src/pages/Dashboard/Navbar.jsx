@@ -31,7 +31,7 @@ export default function Navbar() {
           <button className='AddMembers'>
             <div className='row'>
               <img src={plusicon}/>
-              <p className='t4'>Ajouter membres</p>
+              <p className='t5'>Ajouter membres</p>
             </div>
           </button>
         </div>

@@ -4,6 +4,9 @@ import Home from "./pages/Home";
 import Dashboard from "./pages/Dashboard";
 import Dashboard2 from "./pages/Dashboard2";
 import NotFound from "./pages/NotFound";
+import Signup from "./components/Auth/Signup";
+import Login from "./components/Auth/Login";
+import Profile from "./components/Auth/Profile";
 
 export default function App() {
   return (
@@ -20,6 +23,10 @@ export default function App() {
         {/* Redirection ou 404 */}
         <Route path="/home" element={<Navigate to="/" replace />} />
 
+        <Route path="/signup" element={<Signup />} />
+        <Route path="/login" element={<Login />} />
+        <Route path="/profile" element={<Profile />} />
+        
         {/* FIN : catch-all pour tout le reste → 404 client-side */}
         <Route path="*" element={<NotFound />} />
       </Routes>

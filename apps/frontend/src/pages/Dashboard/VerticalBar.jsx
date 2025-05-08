@@ -14,12 +14,12 @@ export default function Navbar(props) {
 
 
   const menuItems = [
-    { label: 'Tableau de bord', icon: mapicon },
-    { label: 'Emplacement', icon: mapicon },
-    { label: 'Mes offres', icon: qrcodeicon },
-    { label: 'Statistique', icon: staticon },
-    { label: 'Mon équipe', icon: equipeicon },
-    { label: 'Paramètre', icon: settingicon },
+    { label: 'Tableau de bord', icon: mapicon, labelnav: "home" },
+    { label: 'Emplacement', icon: mapicon, labelnav: "emplacement" },
+    { label: 'Mes offres', icon: qrcodeicon, labelnav: "myoffers" },
+    { label: 'Statistique', icon: staticon, labelnav: "statistic" },
+    { label: 'Mon équipe', icon: equipeicon, labelnav: "myteam" },
+    { label: 'Paramètre', icon: settingicon, labelnav: "settings" },
   ];
 
   // 🧠 Effet qui suit toujours le vrai état (déclaratif)
@@ -57,17 +57,21 @@ export default function Navbar(props) {
         {
           menuItems.map((item, index) => (
             <button key={index} className={`row MenueElement ${selectedIndex === index ? 'selected' : ''}`} 
-            onClick={() => setSelectedIndex(index)}>
+            onClick={() => {
+              props.setActivePage(item.labelnav)
+              setSelectedIndex(index)
+            }
+             }>
               <img src={item.icon}/>
-              <p className={hideText ? 'displayNone' : ''}>{item.label}</p>
+              <p className={`t5 ${hideText ? 'displayNone' : ''}`}>{item.label}</p>
             </button>
           )
         )
         }
         <div className={`InformationContainer ${hideText ? 'displayNone' : ''}`}>
-          <p className='t4'>Besoin d'aide?</p>
-          <p className='t4'>Consultez notre centre d'aide ou contactez notre support.</p>
-          <button className='t4'>
+          <p className='t5'>Besoin d'aide?</p>
+          <p className='t6'>Consultez notre centre d'aide ou contactez notre support.</p>
+          <button className='t5'>
             Contacter le support
           </button>
         </div>

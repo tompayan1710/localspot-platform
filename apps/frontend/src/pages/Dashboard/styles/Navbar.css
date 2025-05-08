@@ -11,11 +11,7 @@ p {
   font-family: 'Inter', sans-serif;
   font-size: 1rem;
 }
-.t1{ font-size: 3rem; }
-.t2{ font-size: 2rem; }
-.t3{ font-size: 1.5rem; }
-.t4{ font-size: 1rem; }
-.t5{ font-size: 0.875rem; }
+
 
 
 .row{
@@ -88,7 +84,7 @@ p {
   border: none;
   cursor: pointer;
   margin-left: 10px;
-  padding: 15px 15px;
+  padding: 13px 15px;
   border-radius: 40px;
   transition: background-color 0.5s ease;
 }
@@ -99,7 +95,7 @@ p {
 
 .AddMembers img{
   margin-right: 10px;
-  height: 20px;
+  height: 15px;
 }
 
 

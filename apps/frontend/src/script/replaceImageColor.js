@@ -2,11 +2,11 @@ const path = require('path');
 const replaceColor = require('replace-color');
 
 replaceColor({
-  image: path.resolve(__dirname, '../assets/images/modifiedAAA.png'),
+  image: path.resolve(__dirname, '../assets/images/eyeicon.png'),
   colors: {
     type: 'hex',
-    targetColor: '#20211E',
-    replaceColor: '#4E5562'
+    targetColor: '#5DA235',
+    replaceColor: '#5D82EE'
   }
 
   /*4E5562*/

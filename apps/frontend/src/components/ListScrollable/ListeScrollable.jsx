@@ -24,7 +24,7 @@ const ListScrollable = () => {
           {
             images.map((item, index) => {
               return(
-                <div index={index} className="item">
+                <div key={index} className="item">
                   <img src={images[index]}  alt={`Emplacement appartement n°${index}`} draggable={false}/>
                   <div className="itemInfoContainer">
                     <div className="occupationcontainer">
