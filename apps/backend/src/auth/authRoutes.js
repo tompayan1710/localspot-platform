@@ -19,10 +19,10 @@ router.get('/signup', (req, res) => {
 
 router.post('/signup', signup);
 router.post('/login', login);
-router.post('/logout', logout);
+// router.post('/logout', logout);
 
 // Route protégée par JWT (uniquement pour les utilisateurs connectés)
-router.get('/profile', require('./authMiddleware'), (req, res) => {
+router.get('/profile', authMiddleware, (req, res) => {
   res.json({ message: 'Bienvenue sur votre profild', user: req.user });
 });
 
