@@ -23,8 +23,9 @@ p {
 
 .navbar {
     height: 80px;
-    background: rgba(255, 255, 255, 0.3); 
-    backdrop-filter: blur(10px);   
+    /* background: rgba(255, 255, 255, 0.3);  */
+    /* backdrop-filter: blur(10px);    */
+    background-color: white;
     border-bottom: 1px solid #eee;
     display: flex;
     align-items: center;
@@ -101,6 +102,9 @@ p {
 
 
 /*navbar__menu*/
+.navbar__menu .row{
+  position: relative;
+}
   .navbar__menu a {
     margin-left: 1rem;
     text-decoration: none;
@@ -129,10 +133,28 @@ p {
   }
 
 
-
+#defaultprofil+div{
+  position: absolute;
+  background-color: white;
+border: 1px solid black;
+border-radius: 20px;
+}
 
   
-  
+#deconnexion:hover{
+  background-color: var(--redlight);
+  color: var(--rednormal);
+}  
+
+.firstMenu:hover{
+  border-top-left-radius: 7px;
+  border-top-right-radius: 7px;
+}
+
+.lastMenu:hover{
+  border-bottom-left-radius: 7px;
+  border-bottom-right-radius: 7px;
+}
 
 
 
@@ -161,3 +183,6 @@ p {
     font-size: 1rem;              /* 16px */
   }
   
+
+
+

@@ -1,58 +1,213 @@
 /* src/styles/Form.css */
+.AuthPage {
+  position: relative;
+  display: flex;
+  justify-content: center; /* Centre horizontalement */
+  align-items: center;    /* Centre verticalement */
+  height: 100vh;   
+}
+
+.authcomponentcontainer{
+  border-radius: 12px;
+  border: 1px solid var(--greysemidark);
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+  height: fit-content;
+  background-color: var(--greylight);
+}
+
+
+
+
+
+
+.authcomponentcontainer>.row{
+  align-items: center;
+  justify-content: center;
+  padding: 15px;
+  gap: 10px;
+}
+.authcomponentcontainer>.row>p{
+  color: var(--greymiddledark);
+}
+
+.authcomponentcontainer>.row>a{
+  color: var(--blacknormal);
+  text-decoration: none; 
+}
+
+.authcomponentcontainer>.row>a:hover{
+  text-decoration: underline; 
+  text-decoration-thickness: 1px; /* Épaisseur contrôlée */
+  text-underline-offset: 2px;
+  opacity: 0.85;
+}
+
+
+
+
+
+
+
 
 .form-container {
+  --borderradius: 6px;
+    position: relative;
     background-color: #ffffff;
-    padding: 20px 25px;
+    padding: 40px 2.5rem 25px 2.5rem;
     border-radius: 12px;
-    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
-    max-width: 400px;
-    width: 100%;
-    margin: 50px auto;
-  }
-  
-  .form-container h2 {
-    margin-bottom: 15px;
-    font-size: 24px;
-    color: #333;
-    text-align: center;
-  }
-  
-  .form-container form {
+    border-bottom: 1px solid var(--greysemidark);
+    height: fit-content;
+    max-width: 450px;
     display: flex;
     flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    transition: height 1s ease;
+  }
+
+  .form-container>img{
+
+    width: 45px;
   }
   
-  .form-container input {
-    padding: 12px;
-    margin-bottom: 15px;
-    border: 1px solid #ddd;
-    border-radius: 8px;
-    font-size: 16px;
-    outline: none;
-    transition: border 0.3s;
+  .form-container>.t32{
+    font-weight: bold;
+    padding-top: 20px;
   }
   
-  .form-container input:focus {
-    border: 1px solid #007bff;
-  }
-  
-  .form-container button {
-    padding: 12px;
-    font-size: 16px;
-    background-color: #007bff;
-    color: #ffffff;
-    border: none;
-    border-radius: 8px;
-    cursor: pointer;
-    transition: background-color 0.3s;
-  }
-  
-  .form-container button:hover {
-    background-color: #0056b3;
-  }
-  
-  .form-container p {
+  .form-container>.t6{
+    font-weight: lighter;
+    color: var(--greymiddledark);
+    padding-top: 5px;
+    padding-bottom: 40px;
     text-align: center;
-    color: #555;
+  }
+
+
+/* Bouton Google */
+.GoogleAuthButton {
+  display: flex;
+  background-color: white;
+  width: 100%;
+  border: 1px solid var(--greysemidark);
+  justify-content: center;
+  align-items: center;
+  border-radius: var(--borderradius);
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+  padding: 7px 15px;
+  cursor: pointer;
+  gap: 20px;
+  transition: background-color 0.3s;
+}
+
+.GoogleAuthButton:hover {
+  background-color: #f9f9f9;
+}
+
+.GoogleAuthButton img {
+  width: 20px;
+}
+
+.GoogleAuthButton p {
+  margin: 0;
+  font-weight: 500;
+  font-size: 14px;
+}
+
+
+  .orcontainer{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    gap: 15px;
+    margin: 30px 0;
+  }
+
+  .orcontainer .orhline {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 15px 0;
+    height: 1px;
+    background-color: var(--greysemidark);
+    width: 100%;
+  }
+
+  .orcontainer p {
+    margin-bottom: 3px;
+    color: var(--greymiddledark);
+  }
+
+  
+
+
+
+
+
+
+  .errorMessage {
+    color: var(--rednormal);
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.5s ease, opacity 0.3s ease;
+    opacity: 0;
+    margin-top: 5px;
+  }
+
+  /* Lorsqu'il est visible */
+.errorMessage.visible {
+  max-height: 100px; /* Grande valeur pour laisser l'erreur s'afficher */
+  opacity: 1;
+}
+
+
+
+  .emailPasswordForm {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    width: 100%;
+  }
+  
+  /* Style des champs de saisie */
+  .emailPasswordForm input {
+    padding: 8px 16px;
+    font-size: 14px;
+    border: 1px solid #ddd;
+    border-radius: var(--borderradius);
+    background-color: var(--greyverylight);
+    outline: none;
+    transition: border 0.3s, box-shadow 0.3s;
+  }
+  
+  .emailPasswordForm input::placeholder {
+    color: var(--greymiddledark);
+  }
+  
+  .emailPasswordForm input:focus {
+    border-color: var(--greymiddledark);
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+  }
+  
+  /* Style du bouton */
+  .emailPasswordForm button {
+    background: linear-gradient(180deg, #545454, #373737);
+    color: #ffffff;
+    padding: 7px 16px;
+    font-size: 1rem;
+    font-weight: lighter;
+    border: none;
+    border-radius: var(--borderradius);
+    cursor: pointer;
+    transition: background 1s, transform 0.2s;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+  }
+  
+  .emailPasswordForm button:hover {
+    background: linear-gradient(180deg, #373737, #545454);
   }
   

@@ -41,6 +41,62 @@ exports.login = async (req, res) => {
 
 
 
+// Connexion (Login)
+exports.getProfile = async (req, res) => {
+
+  const token = req.header('Authorization'); // Récupère le header Authorization
+  if (!token) return res.json({
+    "isAuth": false,
+    "message": "No token provided",
+  }
+  );
+
+  try {
+    const tokenValue = token.split(' ')[1]; // Récupère uniquement le JWT sans "Bearer"
+    const verified = jwt.verify(tokenValue, process.env.JWT_SECRET);
+    req.user = verified; // Ajoute les infos utilisateur à req.user
+    req.json({
+        "isAuth": true,
+        "message": "Authenticated successfully",
+        "userData": {
+          "id": 1,
+          "name": "John Doe",
+          "email": "john.doe@example.com"
+        }
+      })
+    }catch(err){
+      res.status(503);
+    }
+
+    return;
+  const { email, password } = req.body;
+  //Ici on teste si l'utilateur est connecté via le token jwt
+  try {
+    const user = await pool.query('SELECT * FROM users WHERE email = $1', [email]);
+    //On regarde s'il existe
+    if (user.rowCount  === 0) return res.json({ isAuth: false, message : "Utilisateur non trouvé" });
+
+    //On vérrifie si le password correspond
+    const validPassword = await bcrypt.compare(password, user.rows[0].password);
+    if (!validPassword) return res.status(400).json({ isAuth: false, message: "Mot de passe incorrect" });
+
+    const userData = user.rows[0];
+
+    // ✅ Envoie le JWT dans la réponse
+    res.status(200).json({ isAuth: true, message: 'Connexion réussie', token, user: userData });
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+};
+
+
+
+
+
+
+
+
+
   // exports.logout = async(req, res) => {
   //   req.session.destroy();
   //   res.clearCookie('connect.sid');

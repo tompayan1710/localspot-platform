@@ -3,6 +3,8 @@ import React, { useState } from "react";
 import { signup, login } from "../../services/auth";
 import { useNavigate } from "react-router-dom";
 import "./styles.css";
+import localspotlogo from "../../assets/images/localspotlogo.png";
+import googleicon from "../../assets/images/googleicon.png";
 
 export default function Signup() {
   const [email, setEmail] = useState(""); 
@@ -26,26 +28,52 @@ export default function Signup() {
   };
 
   return (
-    <div className="form-container">
-      <h2>Signup</h2>
-      <form onSubmit={handleSignup}>
-        <input 
-          type="email" 
-          placeholder="Email" 
-          value={email} 
-          onChange={(e) => setEmail(e.target.value)} 
-          required 
-        />
-        <input 
-          type="password" 
-          placeholder="Password" 
-          value={password} 
-          onChange={(e) => setPassword(e.target.value)} 
-          required 
-        />
-        <button type="submit">Signup</button>
-      </form>
-      {message && <p>{message}</p>}
+    <div className="AuthPage">
+      <div className="authcomponentcontainer">
+        <div className="form-container">
+          <img src={localspotlogo}/>
+          <p className="t32">Créer votre compte</p>
+          <p className="t6">Bienvenue ! Veuillez compléter les informations pour continuer.</p>
+          <button className="GoogleAuthButton" onClick={() => {
+            console.log("GoogleButon click");
+            setMessage(message === "erreur" ? "": "erreur");
+          }}>
+            <img src={googleicon} alt="google logo"/>
+            <p>Continuer avec Google</p>
+          </button>
+          <div className="orcontainer">
+            <div className="orhline"></div><p className="t6">ou</p><div className="orhline"></div>
+          </div>
+          
+          <form className="emailPasswordForm" onSubmit={handleSignup}>
+            <input 
+              type="email" 
+              placeholder="Adresse e-mail" 
+              value={email} 
+              onChange={(e) => setEmail(e.target.value)} 
+              required 
+            />
+            <input 
+              type="password" 
+              placeholder="Mot de passe" 
+              value={password} 
+              onChange={(e) => setPassword(e.target.value)} 
+              required 
+            />
+            {/* Message d'erreur avec transition fluide */}
+            {/* {message && <p className="erreurMessage t6">Ceci est le message d'erreur qui arrive {message}</p>} */}
+
+            <p className={`t6 errorMessage ${message ? "visible" : ""}`}>
+              {message}
+            </p>
+            <button type="submit">Créer mon compte</button>
+          </form>
+        </div>
+        <div className="row">
+          <p className="t5">Vous avez déjà un compte ?</p>
+          <a className="t4" href="/login">Se connecter</a>
+        </div>
+      </div>
     </div>
   );
 }

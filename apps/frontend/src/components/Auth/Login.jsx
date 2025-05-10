@@ -1,8 +1,11 @@
 // Login.jsx
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
 import { login } from "../../services/auth";
 import { useNavigate } from "react-router-dom";
 import "./styles.css";
+import { AuthContext } from '../Auth/authContext/authContext';
+import localspotlogo from "../../assets/images/localspotlogo.png";
+import googleicon from "../../assets/images/googleicon.png";
 
 export default function Login() {
   const [email, setEmail] = useState("");
@@ -10,6 +13,8 @@ export default function Login() {
   const [message, setMessage] = useState("");
   const [loading, setLoading] = useState(false);
   const [isSuccess, setIsSuccess] = useState(null); // null, true ou false
+
+  const { checkAuth } = useContext(AuthContext);
 
   const navigate = useNavigate();
 
@@ -27,7 +32,8 @@ export default function Login() {
         setMessage("Connexion réussie ✅");
         localStorage.setItem("jwtToken", response.token);
         setTimeout(() => {
-            navigate("/profile");
+            navigate("/dashboard2");
+            checkAuth();
           }, 1000);
     } else {
         setIsSuccess(false);
@@ -36,27 +42,58 @@ export default function Login() {
   };
 
   return (
-    <div className="form-container">
-      <h2>Login</h2>
-      <form onSubmit={handleLogin}>
-        <input 
-          type="email" 
-          placeholder="Email" 
-          value={email} 
-          onChange={(e) => setEmail(e.target.value)} 
-          required 
-        />
-        <input 
-          type="password" 
-          placeholder="Password" 
-          value={password} 
-          onChange={(e) => setPassword(e.target.value)} 
-          required 
-        />
-        <button type="submit" disabled={loading}>
-          {loading ? "Connexion en cours..." : "Login"}
-        </button>      </form>
-        {message && <p className={`message ${isSuccess ? "success" : "error"}`}>{message}</p>}
+    <div className="AuthPage">
+      <div className="authcomponentcontainer">
+        <div className="form-container">
+          <img src={localspotlogo}/>
+
+          {/* {myauthContext.isAuth ? "Connectééééé Contexte" : "Déconnecter Je suis une merde en code"}
+          <p>{myauthContext.message}</p> */}
+          <p className="t32">Connectez-vous</p>
+          <p className="t6">Bienvenue ! Veuillez compléter les informations pour continuer.</p>
+          <button className="GoogleAuthButton" onClick={() => {
+            console.log("GoogleButon click");
+            setMessage(message === "erreur" ? "": "erreur");
+          }}>
+            <img src={googleicon} alt="google logo"/>
+            <p>Continuer avec Google</p>
+          </button>
+          <div className="orcontainer">
+            <div className="orhline"></div><p className="t6">ou</p><div className="orhline"></div>
+          </div>
+          
+          {/* <form className="emailPasswordForm" onSubmit={handleSignup}> */}
+          <form className="emailPasswordForm"  onSubmit={handleLogin}>
+            <input 
+              type="email" 
+              placeholder="Adresse e-mail" 
+              value={email} 
+              onChange={(e) => setEmail(e.target.value)} 
+              required 
+            />
+            <input 
+              type="password" 
+              placeholder="Mot de passe" 
+              value={password} 
+              onChange={(e) => setPassword(e.target.value)} 
+              required 
+            />
+            {/* {message && <p className="erreurMessage t6">Ceci est le message d'erreur qui arrive {message}</p>} */}
+
+            <p className={`t6 errorMessage ${message ? "visible" : ""}`}>
+              {message}
+            </p>
+            
+            <button type="submit">
+              {loading ? "Connexion en cours..." : "Se connecter"}
+            </button>
+          </form>
         </div>
+        <div className="row">
+          <p className="t5">Vous n'avez pas de compte ?</p>
+          <a className="t4" href="/signup">S'inscrire</a>
+        </div>
+      </div>
+    </div>
   );
 }

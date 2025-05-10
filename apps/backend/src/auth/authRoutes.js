@@ -1,5 +1,5 @@
 const express = require('express');
-const { signup, login, testconnection, logout} = require('./authController');
+const { signup, login, getProfile,testconnection, logout} = require('./authController');
 // const { testconnection} = require('./authController');
 const router = express.Router();
 const path = require('path'); 
@@ -20,6 +20,10 @@ router.get('/signup', (req, res) => {
 router.post('/signup', signup);
 router.post('/login', login);
 // router.post('/logout', logout);
+
+
+router.post('/getprofile', getProfile);
+
 
 // Route protégée par JWT (uniquement pour les utilisateurs connectés)
 router.get('/profile', authMiddleware, (req, res) => {

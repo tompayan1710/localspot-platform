@@ -28,6 +28,7 @@ code {
 :root{
   --blacknormal: #3A4150;
   --greydark: #4E5562;
+  --greymiddledark: #acadb2;
   --greysemidark: #e1e1e2;
   --greylight: #F3F4F6;
   --greyverylight: #FBFBFB;
@@ -62,5 +63,10 @@ p {
   align-items: center;
 }
 
-
+.hline{
+  background-color: var(--greysemidark);
+  width: 100%;
+  height: 1px;
+  min-width: 100%;
+}
 

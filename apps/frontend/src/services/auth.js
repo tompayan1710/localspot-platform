@@ -47,17 +47,43 @@ export const login = async (email, password) => {
     
 };
 
+// src/services/auth.js
+
 // Accès au profil protégé
 export const getProfile = async () => {
-  const token = localStorage.getItem("jwtToken");
-  const response = await fetch(`${URL_BASE}/api/auth/profile`, {
-    method: "GET",
-    headers: {
-      "Authorization": `Bearer ${token}`
+    const token = localStorage.getItem("jwtToken");
+  
+    if (!token) {
+      console.log("No token provided");
+      return { isAuth: false, message: "No token providedfs" };
     }
-  });
-  return response.json();
-};
+  
+    try {
+      const response = await fetch(`${URL_BASE}/api/auth/profile`, {
+        method: "GET",
+        headers: {
+          "Authorization": `Bearer ${token}`
+        }
+      });
+  
+      // ✅ Vérifie si la réponse est réussie
+      if (!response.ok) {
+        console.error("Erreur API:", response.statusText);
+        return { isAuth: false, message: "Unauthorized" };
+      }
+  
+      const data = await response.json();
+      return {
+        isAuth: true,
+        user: data.user,
+        message: "Authenticated successfully"
+      };
+    } catch (error) {
+      console.error("Erreur de la requête:", error);
+      return { isAuth: false, message: "Erreur réseau. Serveur inaccessible." };
+    }
+  };
+  
 
 // Déconnexion
 export const logout = () => {
