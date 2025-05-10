@@ -1,113 +1,221 @@
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 const pool = require('../db/index');
+// const { use } = require('./authRoutes');
 require('dotenv').config();
 
-// Enregistrement (Signup)
-exports.signup = async (req, res) => {
-  const { email, password } = req.body;
+
+
+
+
+async function signup(userData) {
+  const { email, password = "", provider = "password-email", role="member" } = userData;
+  let hashedPassword = null;
+
   try {
-    const hashedPassword = await bcrypt.hash(password, 10);
+
+     // ✅ Vérifier si l'utilisateur existe déjà
+     const existingUser = await pool.query('SELECT * FROM users WHERE email = $1', [email]);
+     if (existingUser.rowCount > 0) {
+       return { success: false, status: 400, error: "Cet email est déjà utilisé." };
+     }
+
+    if(provider === "password-email"){
+      hashedPassword = await bcrypt.hash(password, 10);
+    } else if(provider === "password-email"){
+      hashedPassword= null;
+    }
+
     const newUser = await pool.query(
-      'INSERT INTO users (email, password, created_at) VALUES ($1, $2, NOW()) RETURNING id, email',
-      [email, hashedPassword]
-    );
-    res.status(201).json({ message: 'Utilisateur créé avec succès', user: newUser.rows[0] });
+      'INSERT INTO users (email, password, provider, role, created_at) VALUES ($1, $2, $3, $4, NOW()) RETURNING id, email',
+      [email, hashedPassword, provider, role]
+    );        
+
+    return  {success: true, status: 201, message: "Utilisateur créé avec succès"};
   } catch (error) {
-    res.status(500).json({ error: error.message });
+    return { success: false, status: 500, error: error.message};
   }
 };
 
-// Connexion (Login)
-exports.login = async (req, res) => {
-  const { email, password } = req.body;
+
+
+
+
+
+
+async function login(userData) {
+  const { email, password = "", provider = "password-email" } = userData;
   try {
     const user = await pool.query('SELECT * FROM users WHERE email = $1', [email]);
-    if (user.rowCount  === 0) return res.status(404).json({ error: "Utilisateur non trouvé" });
+    if (user.rowCount  === 0) return { success: false, status: 404, error: "Utilisateur non trouvé"};
+    
+    console.log('PASSWORD : ',password);
+    console.log('user.rows[0] : ',user.rows[0]);
+    if(provider ==="password-email"){
+      const validPassword = await bcrypt.compare(password, user.rows[0].password);
+      if (!validPassword) return { success: false, status: 400, error: "Mot de passe incorrect"};
+    }
 
-    const validPassword = await bcrypt.compare(password, user.rows[0].password);
-    if (!validPassword) return res.status(400).json({ error: "Mot de passe incorrect" });
+    //IF provider === "google" Pas besoin de tester le mot de pass car pas de mot de passe à fournir
 
     const userData = user.rows[0];
     const token = jwt.sign({ id: userData.id, email: userData.email }, process.env.JWT_SECRET, { expiresIn: '1h' });
 
     // ✅ Envoie le JWT dans la réponse
-    res.status(200).json({ message: 'Connexion réussie', token, user: userData });
+    return  {success: true, status: 200, message: "Connexion réussie", token, user: userData}
   } catch (error) {
-    res.status(500).json({ error: error.message });
+    return  {success: true, status: 500, error: error.message}
   }
 };
 
 
 
 
-// Connexion (Login)
-exports.getProfile = async (req, res) => {
 
-  const token = req.header('Authorization'); // Récupère le header Authorization
-  if (!token) return res.json({
-    "isAuth": false,
-    "message": "No token provided",
-  }
-  );
 
+
+async function getProfile(req) {
   try {
-    const tokenValue = token.split(' ')[1]; // Récupère uniquement le JWT sans "Bearer"
-    const verified = jwt.verify(tokenValue, process.env.JWT_SECRET);
-    req.user = verified; // Ajoute les infos utilisateur à req.user
-    req.json({
+    const reqUserInfo = req.user
+    console.log("Le authMiddleware est vérifié est à donné ce user :", reqUserInfo);
+
+     // ✅ Vérifie si l'utilisateur existe encore dans la base
+    const user = await pool.query('SELECT * FROM users WHERE email = $1', [reqUserInfo.email])
+    if (user.rowCount  === 0){
+      return { isAuth: false, error: "Utilisateur non trouvé"};
+    } else {
+      return ({
         "isAuth": true,
         "message": "Authenticated successfully",
-        "userData": {
-          "id": 1,
-          "name": "John Doe",
-          "email": "john.doe@example.com"
-        }
+        "user": user.rows[0]
+      });
+    };
+  } catch (err) {
+    console.error("Erreur de vérification JWT:", err);
+    return ({
+      "isAuth": false,
+      "message": "Invalid or expired token",
+    });
+  }
+}
+
+
+
+
+
+
+  //AUTHENTIFICATION GOOGLE 
+const CLIENT_ID = process.env.GOOGLE_CLIENT_ID;
+const CLIENT_SECRET = process.env.GOOGLE_CLIENT_SECRET;
+const REDIRECT_URI = process.env.GOOGLE_REDIRECT_URI;
+const JWT_SECRET = process.env.JWT_SECRET;
+const FRONTEND_URL = process.env.FRONTEND_URL
+
+
+// ✅ Démarrer l'authentification Google (Origine JavaScript)
+function googleOAuth2(req, res) {
+  const googleLoginUrl = `https://accounts.google.com/o/oauth2/v2/auth?client_id=${CLIENT_ID}&redirect_uri=${REDIRECT_URI}&response_type=code&scope=email profile`;
+  res.redirect(googleLoginUrl);
+};
+
+
+// ✅ Gérer la redirection de Google (callback)
+async function googleCallback(req, res) {
+  const { code } = req.query;
+  // console.log("Je suis dans la redirection ....");
+  // console.log("Voici le code : ", code);
+  try {
+    // ✅ Échange du code pour obtenir le token Google
+    //await axios.get(`https://oauth2.googleapis.com/tokeninfo?id_token=${id_token}`);
+
+    const response = await fetch("https://oauth2.googleapis.com/token", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/x-www-form-urlencoded"
+      },
+      body: new URLSearchParams({
+        code,
+        client_id: CLIENT_ID,
+        client_secret: CLIENT_SECRET,
+        redirect_uri: REDIRECT_URI,
+        grant_type: "authorization_code",
       })
-    }catch(err){
-      res.status(503);
+    });
+    if (!response.ok) {
+      console.error("Erreur lors de l'obtention du token Google:", data);
+      return res.status(400).json({ message: "Erreur lors de l'authentification Google" });
     }
 
-    return;
-  const { email, password } = req.body;
-  //Ici on teste si l'utilateur est connecté via le token jwt
-  try {
+    const data = await response.json();
+
+    const { id_token } = data;
+    console.log("Le id du token est : ", id_token);
+
+    // ✅ Vérifie le token Google et récupère les infos utilisateur
+    const userInfoResponse = await fetch(`https://oauth2.googleapis.com/tokeninfo?id_token=${id_token}`);
+    if (!userInfoResponse.ok) {
+      console.error("❌ Erreur lors de la vérification du token Google :", userInfoResponse.status);
+      return res.status(400).json({ message: "Erreur lors de la vérification du token Google" });
+    }
+
+    const userData = await userInfoResponse.json();
+    console.log("Données utilisateur récupérées :", userData);
+
+    const { email, name, picture } = userData;
+    console.log("email, name, picture  : ",  email, name, picture);
+
+
+    // ✅ ✅ ✅ Envoie le JWT dans la réponse JSON (PAS de cookie, PAS de redirection)
+    // return res.status(200).json({
+    //   message: "Connexion réussie avec Google ✅",
+    //   token: myJwt,       // ✅ Ton propre JWT
+    //   user: { email, name, picture } // ✅ Les infos utilisateur
+    // });
+
+    const provider = "google";
+
+
+
+
+
     const user = await pool.query('SELECT * FROM users WHERE email = $1', [email]);
-    //On regarde s'il existe
-    if (user.rowCount  === 0) return res.json({ isAuth: false, message : "Utilisateur non trouvé" });
 
-    //On vérrifie si le password correspond
-    const validPassword = await bcrypt.compare(password, user.rows[0].password);
-    if (!validPassword) return res.status(400).json({ isAuth: false, message: "Mot de passe incorrect" });
+    if (user.rowCount === 0) {
+      console.log("Utilisateur non trouvé, création en cours...");
+      // ✅ Crée automatiquement l'utilisateur s'il n'existe pas
+      await signup({email,password: "", name,provider: "google"});
+      if (loginResponse.status !== 201) {
+        return res.status(login.status).json({ message: "Erreur lors de la création de l'utilisateur Google", error: loginResponse.error });
+      }
+    } else {
+      console.log("Utilisateur Google déjà existant.");
+    }
 
-    const userData = user.rows[0];
+    loginResponse = await login({email, password: "", provider});
+    if (loginResponse.status !== 200) {
+      return res.status(loginResponse.status).json({ message: "Erreur lors de la connexion Google", error: loginResponse.error });
+    }
 
-    // ✅ Envoie le JWT dans la réponse
-    res.status(200).json({ isAuth: true, message: 'Connexion réussie', token, user: userData });
+    // ✅ Génère ton propre JWT sécurisé
+    const myJwt = jwt.sign({ email, name, picture }, JWT_SECRET, {
+      expiresIn: "1h",
+    });
+
+    console.log("Mon propre JWT généré :", myJwt);
+
+    return res.redirect(`${FRONTEND_URL}/login?token=${myJwt}`);
+
   } catch (error) {
-    res.status(500).json({ error: error.message });
+    console.error("Erreur lors de l'authentification Google :", error.message);
+    return res.status(400).json({ message: "Erreur lors de l'authentification Google" });
   }
 };
 
 
-
-
-
-
-
-
-
-  // exports.logout = async(req, res) => {
-  //   req.session.destroy();
-  //   res.clearCookie('connect.sid');
-  //   res.json({ message: 'Déconnecté avec succès' });
-  // };
-
-  // // Route de Vérification de Connexion (session active)
-  // exports.testconnection = async(req, res) => {
-  //   if (req.session.user) {
-  //     res.json({ user: req.session.user });
-  //   } else {
-  //     res.status(401).json({ error: "Vous n'êtes pas connecté" });
-  //   }
-  // };
+module.exports = {
+  signup,
+  login,
+  getProfile,
+  googleOAuth2,
+  googleCallback
+};

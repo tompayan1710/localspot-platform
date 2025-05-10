@@ -1,47 +1,49 @@
 // Profile.jsx
-import React, { useEffect, useState } from "react";
-import { getProfile, logout } from "../../services/auth";
+import React, { useEffect, useContext } from "react";
+import { logout } from "../../services/auth";
 import { useNavigate } from "react-router-dom";
 import "./styles.css";
+import { AuthContext } from "./authContext/authContext"
+
 
 export default function Profile() {
-  const [user, setUser] = useState(null);
-  const [isConnected, setIsConnected] = useState(false);
   const navigate = useNavigate();
 
-  useEffect(() => {
-    const fetchProfile = async () => {
-      const data = await getProfile();
-      if (data.user) {
-        setUser(data.user);
-        setIsConnected(true);
-      } else {
+
+    const { authState } = useContext(AuthContext);
+  
+    useEffect(() => {
+      console.log("IS CONNECTED", authState.isAuth);
+      // ✅ Attendre la fin du chargement avant de naviguer
+      if(!authState.loading && !authState.isAuth){
         navigate("/login");
       }
-    };
-    fetchProfile();
-  }, [navigate]);
+    }, [authState.loading, authState.isAuth, navigate]); // ✅ Ajout de loading dans les dépendances
+    
 
   const handleLogout = () => {
     logout();
-    setIsConnected(false);
     navigate("/login");
   };
 
   return (
-    <div className="form-container">
-      <h2>Profile</h2>
-      <div style={{ color: isConnected ? "green" : "red" }}>
-        {isConnected ? "🟢 Connecté" : "🔴 Déconnecté"}
-      </div>
-      {user ? (
-        <div>
-          <p>Email: {user.email}</p>
-          <button onClick={handleLogout}>Logout</button>
-        </div>
-      ) : (
-        <p>Chargement...</p>
-      )}
+    <div className="profile-container">
+    <div className="principalcolumn">   
+      <p className="t3">Profile</p>
+      <div className="informationscontainer">
+        <p>{authState.isAuth ? "Bravo tu est connecté" :"Nullos pas connecté"}</p>
+      <p className="t5"><strong>Id:</strong> {authState.user?.id}</p>
+      <p className="t5"><strong>Nom:</strong> {authState.user?.first_name} {authState.user?.last_name}</p>
+      <p className="t5"><strong>Email:</strong> {authState.user?.email}</p>
+      <p className="t5"><strong>Méthode:</strong> {authState.user?.provider}</p>
+      </div> 
+      <div className="informationscontainer">
+        <p className="t5"><strong>Rôle:</strong> {authState.user?.role}</p>
+        <p className="t5"><strong>Company ID:</strong> {authState.user?.company_id}</p>
+        <p className="t5"><strong>Date de création:</strong> {new Date(authState.user?.created_at).toLocaleDateString()}</p>
+      </div>  
+      <button className="logout-button" onClick={handleLogout}>Se déconnecter</button>
     </div>
+  </div>
   );
 }

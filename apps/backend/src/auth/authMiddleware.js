@@ -1,17 +1,31 @@
-// src/auth/authMiddleware.js
+// ✅ src/auth/authMiddleware.js
 const jwt = require('jsonwebtoken');
 require('dotenv').config();
 
-module.exports = (req, res, next) => {
-  const token = req.header('Authorization'); // Récupère le header Authorization
-  if (!token) return res.status(401).json({ error: 'Accès refusé. Token requis.Middleware' });
+// ✅ Middleware de vérification JWT
+const authMiddleware = (req, res, next) => {
+
+  const token = req.header('Authorization');
+
+  if (!token) {
+    return res.status(401).json({ 
+      isAuth: false, 
+      message: "No token provided" 
+    });
+  }
 
   try {
     const tokenValue = token.split(' ')[1]; // Récupère uniquement le JWT sans "Bearer"
     const verified = jwt.verify(tokenValue, process.env.JWT_SECRET);
-    req.user = verified; // Ajoute les infos utilisateur à req.user
-    next();
-  } catch (error) {
-    res.status(400).json({ error: 'Token invalide.' });
+    req.user = verified; // ✅ Ajoute les infos utilisateur au req.user
+    next(); // ✅ Continue vers la route demandée
+  } catch (err) {
+    console.error("Erreur de vérification JWT:", err);
+    return res.status(403).json({ 
+      isAuth: false, 
+      message: "Invalid or expired token" 
+    });
   }
 };
+
+module.exports = authMiddleware;

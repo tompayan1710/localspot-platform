@@ -14,7 +14,12 @@ const { pool } = require('./db/index'); // Utiliser la pool existante
 
 const cors = require("cors");
 
-app.use(cors());
+// app.use(cors());
+app.use(cors({ 
+  origin: ["http://localhost:3001", "https://localspot-platform.onrender.com"], 
+  credentials: true 
+}));
+
 app.use(express.json());
 app.use(compression());
 app.use("/qrcodes", express.static(path.join(__dirname, "data/qrcodes")));

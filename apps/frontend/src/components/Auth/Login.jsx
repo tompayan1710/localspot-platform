@@ -1,11 +1,12 @@
 // Login.jsx
-import React, { useState, useContext } from "react";
+import React, { useState, useContext, useEffect } from "react";
 import { login } from "../../services/auth";
 import { useNavigate } from "react-router-dom";
 import "./styles.css";
 import { AuthContext } from '../Auth/authContext/authContext';
 import localspotlogo from "../../assets/images/localspotlogo.png";
 import googleicon from "../../assets/images/googleicon.png";
+import { GoogleAuthButton } from "./GoogleAuthButton"
 
 export default function Login() {
   const [email, setEmail] = useState("");
@@ -41,6 +42,25 @@ export default function Login() {
     }
   };
 
+  useEffect(() => {
+    const queryParams = new URLSearchParams(window.location.search);
+    const token = queryParams.get("token");
+
+    if (token) {
+      // ✅ Stocke le JWT dans localStorage
+      localStorage.setItem("jwtToken", token);
+
+      // ✅ Met à jour le contexte d'authentification
+      checkAuth();
+
+      // ✅ Redirige l'utilisateur là où il était
+      navigate("/dashboard2");
+    }
+  }, []);
+
+
+
+
   return (
     <div className="AuthPage">
       <div className="authcomponentcontainer">
@@ -51,13 +71,7 @@ export default function Login() {
           <p>{myauthContext.message}</p> */}
           <p className="t32">Connectez-vous</p>
           <p className="t6">Bienvenue ! Veuillez compléter les informations pour continuer.</p>
-          <button className="GoogleAuthButton" onClick={() => {
-            console.log("GoogleButon click");
-            setMessage(message === "erreur" ? "": "erreur");
-          }}>
-            <img src={googleicon} alt="google logo"/>
-            <p>Continuer avec Google</p>
-          </button>
+          <GoogleAuthButton />
           <div className="orcontainer">
             <div className="orhline"></div><p className="t6">ou</p><div className="orhline"></div>
           </div>

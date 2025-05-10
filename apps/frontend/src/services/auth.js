@@ -52,35 +52,44 @@ export const login = async (email, password) => {
 // Accès au profil protégé
 export const getProfile = async () => {
     const token = localStorage.getItem("jwtToken");
-  
     if (!token) {
-      console.log("No token provided");
+      console.log("No token provided to get Profile");
       return { isAuth: false, message: "No token providedfs" };
     }
   
     try {
-      const response = await fetch(`${URL_BASE}/api/auth/profile`, {
+      const response = await fetch(`${URL_BASE}/api/auth/getprofile`, {
         method: "GET",
         headers: {
           "Authorization": `Bearer ${token}`
         }
       });
-  
+
       // ✅ Vérifie si la réponse est réussie
       if (!response.ok) {
         console.error("Erreur API:", response.statusText);
         return { isAuth: false, message: "Unauthorized" };
       }
-  
-      const data = await response.json();
-      return {
-        isAuth: true,
-        user: data.user,
-        message: "Authenticated successfully"
-      };
+
+
+      const data = await response.json(); // ✅ Utilise await ici
+
+      if(data.isAuth){
+        return {
+          isAuth: true,
+          user: data.user,
+          message: "Authenticated successfully"
+        };
+      }else{
+        return {
+          isAuth: false,
+          error: data.error
+        };
+      }
+      
     } catch (error) {
       console.error("Erreur de la requête:", error);
-      return { isAuth: false, message: "Erreur réseau. Serveur inaccessible." };
+      return { isAuth: false, message: error };
     }
   };
   

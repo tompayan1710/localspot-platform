@@ -1,16 +1,20 @@
 // Signup.jsx
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
 import { signup, login } from "../../services/auth";
 import { useNavigate } from "react-router-dom";
 import "./styles.css";
 import localspotlogo from "../../assets/images/localspotlogo.png";
 import googleicon from "../../assets/images/googleicon.png";
+import { AuthContext } from '../Auth/authContext/authContext';
+import { GoogleAuthButton } from "./GoogleAuthButton"
 
 export default function Signup() {
   const [email, setEmail] = useState(""); 
   const [password, setPassword] = useState("");
   const [message, setMessage] = useState("");
   const navigate = useNavigate();
+
+  const { checkAuth } = useContext(AuthContext);
 
   const handleSignup = async (e) => {
     e.preventDefault();
@@ -20,7 +24,10 @@ export default function Signup() {
     if (response.message) {
       const loginResponse = await login(email, password);
       if (loginResponse.token) {
-        navigate("/profile");
+
+        checkAuth();
+
+        navigate("/dashboard2");
       } else {
         setMessage("Erreur lors de la connexion automatique.");
       }
@@ -34,13 +41,7 @@ export default function Signup() {
           <img src={localspotlogo}/>
           <p className="t32">Créer votre compte</p>
           <p className="t6">Bienvenue ! Veuillez compléter les informations pour continuer.</p>
-          <button className="GoogleAuthButton" onClick={() => {
-            console.log("GoogleButon click");
-            setMessage(message === "erreur" ? "": "erreur");
-          }}>
-            <img src={googleicon} alt="google logo"/>
-            <p>Continuer avec Google</p>
-          </button>
+          <GoogleAuthButton />
           <div className="orcontainer">
             <div className="orhline"></div><p className="t6">ou</p><div className="orhline"></div>
           </div>
