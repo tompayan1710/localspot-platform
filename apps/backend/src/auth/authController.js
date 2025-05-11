@@ -17,7 +17,27 @@ async function signup(userData) {
      // ✅ Vérifier si l'utilisateur existe déjà
      const existingUser = await pool.query('SELECT * FROM users WHERE email = $1', [email]);
      if (existingUser.rowCount > 0) {
-       return { success: false, status: 400, error: "Cet email est déjà utilisé." };
+
+      // Vérifier le provider existant
+
+        //Information supplémentaire à donner Si le compte de l'utilisateur est déjà utilisé, 
+        // on lui dit comment il doit alors comment il doit se connecter (password e-mail, google...)
+        const existingProvider = existingUser.rows[0].provider;
+    
+        let errorMessage = "Cet email est déjà utilisé.";
+
+        if (existingProvider === "google") {
+            errorMessage = "Cet email est déjà utilisé avec une connexion Google. Veuillez vous connecter avec votre compte Google.";
+        } else if (existingProvider === "facebook") {
+            errorMessage = "Cet email est déjà utilisé avec une connexion Facebook. Veuillez vous connecter avec votre compte Facebook.";
+        } else if (existingProvider === "github") {
+            errorMessage = "Cet email est déjà utilisé avec une connexion GitHub :. Veuillez vous connecter avec votre compte GitHub.";
+        } else {
+            errorMessage = "Cet email est déjà utilisé ! Veuillez vous connecter avec votre email et votre mot de passe.";
+        }
+
+
+       return { success: false, status: 400, error: errorMessage };
      }
 
     if(provider === "password-email"){
@@ -52,6 +72,11 @@ async function login(userData) {
     console.log('PASSWORD : ',password);
     console.log('user.rows[0] : ',user.rows[0]);
     if(provider ==="password-email"){
+      //L'utilisateur essaye de se connecter avec password-email alors que son compte est un compte Google
+      if(user.rows[0].provider != "password-email"){
+        return { success: false, status: 400, error:  `Vous vous êtes connecté avec votre compte ${user.rows[0].provider}.`};
+      }
+
       const validPassword = await bcrypt.compare(password, user.rows[0].password);
       if (!validPassword) return { success: false, status: 400, error: "Mot de passe incorrect"};
     }
@@ -75,28 +100,11 @@ async function login(userData) {
 
 
 async function getProfile(req) {
-  try {
-    const reqUserInfo = req.user
-    console.log("Le authMiddleware est vérifié est à donné ce user :", reqUserInfo);
-
-     // ✅ Vérifie si l'utilisateur existe encore dans la base
-    const user = await pool.query('SELECT * FROM users WHERE email = $1', [reqUserInfo.email])
-    if (user.rowCount  === 0){
-      return { isAuth: false, error: "Utilisateur non trouvé"};
-    } else {
-      return ({
-        "isAuth": true,
-        "message": "Authenticated successfully",
-        "user": user.rows[0]
-      });
-    };
-  } catch (err) {
-    console.error("Erreur de vérification JWT:", err);
-    return ({
-      "isAuth": false,
-      "message": "Invalid or expired token",
-    });
-  }
+  return {
+    isAuth: true,
+    message: "Authenticated successfully",
+    user: req.user
+  };
 }
 
 
@@ -183,8 +191,8 @@ async function googleCallback(req, res) {
     if (user.rowCount === 0) {
       console.log("Utilisateur non trouvé, création en cours...");
       // ✅ Crée automatiquement l'utilisateur s'il n'existe pas
-      await signup({email,password: "", name,provider: "google"});
-      if (loginResponse.status !== 201) {
+      const signupResponse = await signup({email,password: "", name,provider: "google"});
+      if (signupResponse.status !== 201) {
         return res.status(login.status).json({ message: "Erreur lors de la création de l'utilisateur Google", error: loginResponse.error });
       }else{
         console.log("Utilisateur créé avec succés")
@@ -214,10 +222,43 @@ async function googleCallback(req, res) {
 };
 
 
+
+
+
+
+// src/auth/authController.js
+
+// ✅ Fonction pour supprimer un compte utilisateur
+async function deleteAccount(req, res) {
+  try {
+    const userId = req.user.id; // Utilise l'id de l'utilisateur authentifié
+
+    // ✅ Vérifie si l'utilisateur existe toujours
+    const user = await pool.query('SELECT * FROM users WHERE id = $1', [userId]);
+    if (user.rowCount === 0) {
+      return res.status(404).json({success: false, status: 404, error: "Utilisateur non trouvé" });
+    }
+
+    // ✅ Supprimer l'utilisateur
+    await pool.query('DELETE FROM users WHERE id = $1', [userId]);
+    
+    // ✅ Supprimer également la session de l'utilisateur si nécessaire
+    // await pool.query('DELETE FROM session WHERE user_id = $1', [userId]); 
+
+    res.status(200).json({success: true, status: 200, message: "Votre compte a été supprimé avec succès" });
+  } catch (error) {
+    console.error("Erreur lors de la suppression du compte :", error);
+    res.status(500).json({success: false, status: 500, error: `Erreur serveur. Veuillez réessayer plus tard : ${error}`});
+  }
+}
+
+
+
 module.exports = {
   signup,
   login,
   getProfile,
   googleOAuth2,
-  googleCallback
+  googleCallback,
+  deleteAccount
 };

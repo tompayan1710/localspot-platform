@@ -6,6 +6,7 @@ import "./styles.css";
 import { AuthContext } from '../Auth/authContext/authContext';
 import localspotlogo from "../../assets/images/localspotlogo.png";
 import { GoogleAuthButton } from "./GoogleAuthButton"
+import Spinner from "../Spinner/Spinner"
 
 export default function Login() {
   const [email, setEmail] = useState("");
@@ -22,6 +23,14 @@ export default function Login() {
     e.preventDefault();
     setLoading(true);
     setMessage("");
+
+    if (password.length < 6) {
+      setMessage("Veuillez rentrer un mot de passe de plus de 6 caractères");
+      setLoading(false);
+      setIsSuccess(false);
+      return;
+  }
+
 
     const response = await login(email, password);
 
@@ -93,12 +102,13 @@ export default function Login() {
             />
             {/* {message && <p className="erreurMessage t6">Ceci est le message d'erreur qui arrive {message}</p>} */}
 
-            <p className={`t6 errorMessage ${message ? "visible" : ""}`}>
+            <p className={`t6 errorMessage ${isSuccess ? "succesColor" : "errorColor"} ${message ? "visible" : ""}`}>
               {message}
             </p>
             
             <button type="submit">
               {loading ? "Connexion en cours..." : "Se connecter"}
+              {loading && <Spinner />}
             </button>
           </form>
         </div>

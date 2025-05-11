@@ -4,21 +4,37 @@ import { signup, login } from "../../services/auth";
 import { useNavigate } from "react-router-dom";
 import "./styles.css";
 import localspotlogo from "../../assets/images/localspotlogo.png";
-import googleicon from "../../assets/images/googleicon.png";
 import { AuthContext } from '../Auth/authContext/authContext';
 import { GoogleAuthButton } from "./GoogleAuthButton"
+import Spinner from "../Spinner/Spinner"
 
 export default function Signup() {
   const [email, setEmail] = useState(""); 
   const [password, setPassword] = useState("");
   const [message, setMessage] = useState("");
+  const [loading, setLoading] = useState(false);
+  const [isSuccess, setIsSuccess] = useState(false);
+
   const navigate = useNavigate();
 
   const { checkAuth } = useContext(AuthContext);
 
   const handleSignup = async (e) => {
     e.preventDefault();
+    setLoading(true);
+    setMessage("");
+
+    if (password.length < 6) {
+      setMessage("Veuillez rentrer un mot de passe de plus de 6 caractères");
+      setLoading(false);
+      setIsSuccess(false);
+      return;
+  }
+
+
     const response = await signup(email, password);
+
+    setIsSuccess(response.success)
     setMessage(response.message || response.error);
     
     if (response.message) {
@@ -38,7 +54,7 @@ export default function Signup() {
     <div className="AuthPage">
       <div className="authcomponentcontainer">
         <div className="form-container">
-          <img src={localspotlogo}/>
+          <img src={localspotlogo} alt="localspot logo"/>
           <p className="t32">Créer votre compte</p>
           <p className="t6">Bienvenue ! Veuillez compléter les informations pour continuer.</p>
           <GoogleAuthButton />
@@ -64,10 +80,13 @@ export default function Signup() {
             {/* Message d'erreur avec transition fluide */}
             {/* {message && <p className="erreurMessage t6">Ceci est le message d'erreur qui arrive {message}</p>} */}
 
-            <p className={`t6 errorMessage ${message ? "visible" : ""}`}>
+            <p className={`t6 errorMessage ${isSuccess ? "succesColor" : "errorColor"} ${message ? "visible" : ""}`}>    
               {message}
             </p>
-            <button type="submit">Créer mon compte</button>
+            <button type="submit">
+              {loading ? "Création en cours..." : "Créer mon compte"}
+              {loading && <Spinner />}
+              </button>
           </form>
         </div>
         <div className="row">

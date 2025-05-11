@@ -1,6 +1,6 @@
 // Profile.jsx
 import React, { useEffect, useContext } from "react";
-import { logout } from "../../services/auth";
+import { deleteAccount, logout } from "../../services/auth";
 import { useNavigate } from "react-router-dom";
 import "./styles.css";
 import { AuthContext } from "./authContext/authContext"
@@ -26,6 +26,11 @@ export default function Profile() {
     navigate("/login");
   };
 
+  const handleDelete = () => {
+    deleteAccount();
+    navigate("/login");
+  }
+
   return (
     <div className="profile-container">
     <div className="principalcolumn">   
@@ -43,6 +48,7 @@ export default function Profile() {
         <p className="t5"><strong>Date de création:</strong> {new Date(authState.user?.created_at).toLocaleDateString()}</p>
       </div>  
       <button className="logout-button" onClick={handleLogout}>Se déconnecter</button>
+      <button className="logout-button" onClick={handleDelete}>Supprimer le compte</button>
     </div>
   </div>
   );

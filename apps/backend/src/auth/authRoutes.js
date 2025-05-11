@@ -1,5 +1,5 @@
 const express = require('express');
-const { signup, login ,  getProfile,testconnection, logout, googleOAuth2, googleCallback} = require('./authController');
+const { signup, login ,  getProfile,testconnection, logout, googleOAuth2, googleCallback, deleteAccount} = require('./authController');
 // const { testconnection} = require('./authController');
 const router = express.Router();
 const path = require('path'); 
@@ -61,6 +61,9 @@ router.get('/getprofile',authMiddleware, async (req, res) => {
   res.status(response.status || 200).json(response);
 });
 
+
+
+router.delete('/deleteaccount', authMiddleware, deleteAccount);
 
 // Route protégée par JWT (uniquement pour les utilisateurs connectés)
 // router.get('/profile', authMiddleware, (req, res) => {

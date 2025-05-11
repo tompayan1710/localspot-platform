@@ -65,9 +65,15 @@ export const getProfile = async () => {
         }
       });
 
+      if (response.status === 403) {
+        console.warn("🚫 Accès interdit : Votre compte n'existe plus ou vous n'avez pas les droits.");
+        localStorage.removeItem("jwtToken"); // Supprime le token car l'utilisateur n'existe plus
+        return { isAuth: false, message: "Votre compte n'existe plus ou vous n'avez pas les droits." };
+      }
+      
       // ✅ Vérifie si la réponse est réussie
       if (!response.ok) {
-        console.error("Erreur API:", response.statusText);
+        console.log("Erreur API: Vous avez un token, mais vous n'avait pas les droit pour accéder à cette route");
         return { isAuth: false, message: "Unauthorized" };
       }
 
@@ -88,7 +94,7 @@ export const getProfile = async () => {
       }
       
     } catch (error) {
-      console.error("Erreur de la requête:", error);
+      console.log("Erreur de la requête: ", error);
       return { isAuth: false, message: error };
     }
   };
@@ -98,3 +104,40 @@ export const getProfile = async () => {
 export const logout = () => {
   localStorage.removeItem("jwtToken");
 };
+
+    
+export const deleteAccount = async () => {
+  const token = localStorage.getItem("jwtToken");
+
+  if (!token) {
+    console.log("No token provided to delete account");
+    return { isAuth: false, error: "No token provided to delete account" };
+  }
+
+  try{
+    const response = await fetch(`${URL_BASE}/api/auth/deleteaccount`, {
+      method: "DELETE",
+      headers: {
+        "Authorization": `Bearer ${token}`
+      }
+    }
+    )
+
+    if (!response.ok) {
+      console.error("Erreur API:", response.statusText);
+      return { success: false, status: response.status, error: "Erreur inconnue" };
+    }
+
+    const data = await response.json();
+    
+    // ✅ Si la suppression est réussie, on retire le token
+    if (data.success) {
+      localStorage.removeItem("jwtToken");
+    }
+
+    return data;
+  } catch (error) {
+    console.error("Erreur dans la suppression du compte: ", error);
+    return  { success: false, status: 500, error: "Erreur réseau ou serveur" };
+  }
+}

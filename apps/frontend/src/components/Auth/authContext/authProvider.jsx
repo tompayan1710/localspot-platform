@@ -20,7 +20,7 @@ const AuthProvider = ({ children }) => {
     const checkAuth = async () => {
         try{
             const response = await getProfile();
-            console.log("voici mon response :", response);
+            console.log("Auth Contexte response :", response);
             if(response.isAuth){
                 setAuthState({
                     user: response.user,
@@ -29,14 +29,14 @@ const AuthProvider = ({ children }) => {
                     loading: false
                 });
 
-            }else(
+            }else{                
                 setAuthState({
                     user: null,
                     isAuth: false,
                     message: response.message || "Vous n'êtes pas connecté",
                     loading: false
                 })
-            )
+            }
         }catch(error) {
             console.error("Erreur lors de la vérification de l'authentification:", error);
             setAuthState({
