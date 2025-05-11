@@ -20,7 +20,7 @@ const authMiddleware = (req, res, next) => {
     req.user = verified; // ✅ Ajoute les infos utilisateur au req.user
     next(); // ✅ Continue vers la route demandée
   } catch (err) {
-    console.error("Erreur de vérification JWT:", err);
+    console.log("Erreur de vérification JWT:", err);
     return res.status(403).json({ 
       isAuth: false, 
       message: "Invalid or expired token" 

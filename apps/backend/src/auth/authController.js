@@ -59,7 +59,7 @@ async function login(userData) {
     //IF provider === "google" Pas besoin de tester le mot de pass car pas de mot de passe à fournir
 
     const userData = user.rows[0];
-    const token = jwt.sign({ id: userData.id, email: userData.email }, process.env.JWT_SECRET, { expiresIn: '1h' });
+    const token = jwt.sign({ id: userData.id, email: userData.email }, process.env.JWT_SECRET, { expiresIn: '7d' });
 
     // ✅ Envoie le JWT dans la réponse
     return  {success: true, status: 200, message: "Connexion réussie", token, user: userData}
@@ -200,7 +200,7 @@ async function googleCallback(req, res) {
 
     // ✅ Génère ton propre JWT sécurisé
     const myJwt = jwt.sign({ email, name, picture }, JWT_SECRET, {
-      expiresIn: "1h",
+      expiresIn: "7d",
     });
 
     console.log("Mon propre JWT généré :", myJwt);

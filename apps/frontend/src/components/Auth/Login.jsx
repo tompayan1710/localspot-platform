@@ -12,6 +12,7 @@ export default function Login() {
   const [password, setPassword] = useState("");
   const [message, setMessage] = useState("");
   const [loading, setLoading] = useState(false);
+  const [isSuccess, setIsSuccess] = useState(false);
 
   const { checkAuth } = useContext(AuthContext);
 
@@ -35,7 +36,7 @@ export default function Login() {
             checkAuth();
           }, 1000);
     } else {
-        setIsSuccess(false);
+      setIsSuccess(false);
       setMessage(response.message || "Erreur de connexion.");
     }
   };
