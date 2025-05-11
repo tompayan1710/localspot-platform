@@ -3,10 +3,6 @@ import loupeicon from "../../assets/images/loupeicon.png";
 import arrowdownicon from "../../assets/images/arrowdownicon.png"
 import filtericon from "../../assets/images/filtericon.png"
 import downloadicon from "../../assets/images/downloadicon.png"
-import formaCSV from "../../assets/images/formaCSV.png"
-import formaExcel from "../../assets/images/formaExcel.png"
-import formaPDF from "../../assets/images/formaPDF.png"
-import formaPNG from "../../assets/images/formaPNG.png"
 import "./ListEmplacementsActif.css"; // si tu veux mettre le CSS à part
 import { motion, AnimatePresence } from "framer-motion";
 import ListeEmplacement from "./ListEmplacement"

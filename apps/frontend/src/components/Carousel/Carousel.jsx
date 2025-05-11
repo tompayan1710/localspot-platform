@@ -35,10 +35,10 @@ export default function Carousel() {
         </div>
 
         <button className="nav left" onClick={goToPrev}>
-          <img src={arrowlefticon}/>
+          <img src={arrowlefticon} alt="arrow left icon"/>
         </button>
         <button className="nav right" onClick={goToNext}>
-          <img src={arrowrighticon}/>
+          <img src={arrowrighticon} alt="arrow right icon"/>
         </button>
 
         <div className="dots">

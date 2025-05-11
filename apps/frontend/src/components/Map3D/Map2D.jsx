@@ -1,6 +1,6 @@
 // src/components/Map2D/Map2D.jsx
-import React, { memo, useEffect, useRef, useState } from "react";
-import { GoogleMap, LoadScript, Marker } from "@react-google-maps/api";
+import React, { memo, useEffect, useRef } from "react";
+import { GoogleMap, Marker } from "@react-google-maps/api";
 import './Map2D.css'
 
 function Map2D({

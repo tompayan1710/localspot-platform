@@ -65,7 +65,7 @@ p {
 
 
 
-#defaultprofil {
+.defaultprofil {
   display: block;          /* Évite les petits espaces sous l’image */
   height: 50px;            /* Ajuste à ta taille d’icône */
   width: 50px;
@@ -133,7 +133,7 @@ p {
   }
 
 
-#defaultprofil+div{
+.defaultprofil+div{
   position: absolute;
   background-color: white;
 border: 1px solid black;

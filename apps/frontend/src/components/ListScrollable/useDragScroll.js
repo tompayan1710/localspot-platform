@@ -87,7 +87,7 @@ export const useDragScroll = () => {
             node.removeEventListener("mousedown", handleMouseDown);
             node.removeEventListener("touchstart", handleTouchStart);
         };
-    }, [node]);
+    }, [node,  handleMouseDown, handleTouchStart]);
 
     return [ref];
 };

@@ -33,15 +33,15 @@ const ListScrollable = () => {
                     <p className="t5">places occupées</p>
                     <div className="contentitem row">
                       <div className="row">
-                        <img src={surfaceicon}/>
+                        <img src={surfaceicon} alt="surgace m2 icon"/>
                         <p>90 m²</p>
                       </div>
                       <div className="row">
-                        <img src={bedremplieicon}/>
+                        <img src={bedremplieicon} alt="bed icon"/>
                         <p>2</p>
                       </div>
                       <div className="row">
-                        <img src={towuserfilicon}/>
+                        <img src={towuserfilicon} alt="two user icon"/>
                         <p>3</p>
                       </div>
                     </div>

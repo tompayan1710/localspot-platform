@@ -186,12 +186,14 @@ async function googleCallback(req, res) {
       await signup({email,password: "", name,provider: "google"});
       if (loginResponse.status !== 201) {
         return res.status(login.status).json({ message: "Erreur lors de la création de l'utilisateur Google", error: loginResponse.error });
+      }else{
+        console.log("Utilisateur créé avec succés")
       }
     } else {
       console.log("Utilisateur Google déjà existant.");
     }
 
-    loginResponse = await login({email, password: "", provider});
+    const loginResponse = await login({email, password: "", provider});
     if (loginResponse.status !== 200) {
       return res.status(loginResponse.status).json({ message: "Erreur lors de la connexion Google", error: loginResponse.error });
     }

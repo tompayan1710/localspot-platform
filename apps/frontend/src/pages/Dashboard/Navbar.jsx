@@ -49,26 +49,26 @@ export default function Navbar() {
     <header className="navbar">
       <div className="navbar__brand">
         <button className='navbarbuttonicon localspot_logo'>
-          <img src={localspot_logo}/>
+          <img src={localspot_logo} alt='localspot logo'/>
         </button>
       </div>
       <div className="navbar__center">
         <div className='row'>
         <button className='navbarbuttonicon pictureprofil'>
-            <img id="defaultprofil" src={profilicon}/>
+            <img className="defaultprofil" src={profilicon} alt='list profile icon'/>
           </button>
           <button className='navbarbuttonicon pictureprofil'>
-            <img id="defaultprofil" src={profilicon}/>
+            <img className="defaultprofil" src={profilicon} alt='list profile icon'/>
           </button>
           <button className='navbarbuttonicon pictureprofil'>
-            <img id="defaultprofil" src={profilicon}/>
+            <img className="defaultprofil" src={profilicon} alt='list profile icon'/>
           </button>
           <button className='navbarbuttonicon pictureprofil MoreMembers'>
             +3
           </button>
           <button className='AddMembers'>
             <div className='row'>
-              <img src={plusicon}/>
+              <img src={plusicon} alt='plus icon'/>
               <p className='t5'>Ajouter membres</p>
             </div>
           </button>
@@ -89,7 +89,7 @@ export default function Navbar() {
 
             setmenuIsOpen(prev => !prev)}
           }>
-            <img id="defaultprofil" src={profilicon}/>
+            <img className="defaultprofil" src={profilicon} alt='list profile icon'/>
 
 
             <div className={`ExportContainer`}>

@@ -1,10 +1,5 @@
 import React from 'react';
 import './styles/ContentArea.css';
-import UsingMap2D from './UsingMap2D'
-import StatisticContent from './StatisticContent'
-import ListScrollable from '../../components/ListScrollable/ListeScrollable'
-import TestSlide from './TestSlide'
-import ListEmplacementsActif from "../../components/ListEmplacementsActif/ListEmplacementsActif";
 import { useQrCodes } from "../../hooks/useQrCodes";
 import { useScans } from "../../hooks/useScans";
 

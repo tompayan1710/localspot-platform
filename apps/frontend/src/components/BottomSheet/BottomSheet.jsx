@@ -1,5 +1,5 @@
 import React, {useEffect, useState, useRef} from "react";
-import styles from "./BottomSheet.css";
+import "./BottomSheet.css";
 import crossicon from "../../assets/images/crossicon.png"
 import Carousel from "../../components/Carousel/Carousel"
 import bedicon from "../../assets/images/bedicon.png"
@@ -9,7 +9,7 @@ import adresseicon from "../../assets/images/adresseicon.png"
 import LineChart from "../../components/Visualisation/LineChart"
 
 import ListScrollable from "../../components/ListScrollable/ListeScrollable";
-import { delay, motion, AnimatePresence } from "framer-motion";
+import { motion, AnimatePresence } from "framer-motion";
 
 
 
@@ -19,7 +19,6 @@ export default function BottomSheet({onClose,selected,  ...motionProps}) {
   const [openOptions, setOpenOptions] = useState(false);
   const [selectedFilter, setSelectedFilter] = useState("Ce mois-ci");
   const menuRef = useRef(null);
-  const scrollRef = useRef(null);
 
 
 
@@ -74,7 +73,7 @@ export default function BottomSheet({onClose,selected,  ...motionProps}) {
       
       <Carousel></Carousel>
       <div className="row adresseEmplacementContainer">
-        <img src={adresseicon}/>
+        <img src={adresseicon} alt="icon adresse"/>
         <p className="t4">{selected?.adresse}</p>
 
           {/*
@@ -88,7 +87,7 @@ export default function BottomSheet({onClose,selected,  ...motionProps}) {
           <div>
             <div className="row">
               <p className="t3">2</p>
-              <img src={bedicon}/>
+              <img src={bedicon} alt="bed icon"/>
             </div>
             <p className="t5">Chambre</p>
           </div>
@@ -101,7 +100,7 @@ export default function BottomSheet({onClose,selected,  ...motionProps}) {
           <div>
             <div className="row">
               <p className="t3">40</p>
-              <img src={twousericon}/>
+              <img src={twousericon} alt="two users icon"/>
             </div>
             <p className="t5">vaccanciers</p>
           </div>

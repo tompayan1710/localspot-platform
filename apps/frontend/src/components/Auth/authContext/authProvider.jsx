@@ -3,13 +3,8 @@ import React, { useEffect, useState } from "react";
 import { AuthContext } from "./authContext";
 import { getProfile } from "../../../services/auth"
 
-const base_url = process.env.REACT_APP_API_URL;
 // Fournisseur de contexte
 const AuthProvider = ({ children }) => {
-    const [userdata, setUser] = useState(null);
-    const [isAuth, setisAuth] = useState(null);
-    const [loading, setLoading] = useState(true);
-
     const [authState, setAuthState] = useState({
         user: null,
         isAuth: false,

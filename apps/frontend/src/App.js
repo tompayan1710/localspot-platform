@@ -14,7 +14,6 @@ import { LoadScript } from "@react-google-maps/api";
 
 
 export default function App() {
-  const authContext = createContext({isAuth: false,});
   return (
     <LoadScript googleMapsApiKey={process.env.REACT_APP_GOOGLE_MAPS_KEY}   
               loadingElement={<div className="skeleton" style={{ width: "100%", height: "100%" }}></div>}

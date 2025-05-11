@@ -1,9 +1,8 @@
-import React, { useEffect, useRef } from 'react';
+import React, { useEffect } from 'react';
 import '../styles/ContentArea.css';
 import UsingMap2D from '../UsingMap2D'
 import StatisticContent from '../StatisticContent'
 import ListEmplacementsActif from "../../../components/ListEmplacementsActif/ListEmplacementsActif";
-import { useScans } from "../../../hooks/useScans";
 
 
 

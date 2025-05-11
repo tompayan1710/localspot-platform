@@ -1,5 +1,4 @@
-import { useEffect, useState, useRef } from "react";
-import { useQrCodes } from "../../hooks/useQrCodes";
+import { useState } from "react"
 import Map2D from "../../components/Map3D/Map2D";
 import BottomSheet from "../../components/BottomSheet/BottomSheet";
 

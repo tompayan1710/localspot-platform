@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useRef } from 'react';
+import React, { useEffect, useState } from 'react';
 import './styles/VerticalBar.css';
 import hamburgericon from '../../assets/images/hamburgericon.png'
 import qrcodeicon from '../../assets/images/qrcodeicon.png'
@@ -49,7 +49,7 @@ export default function Navbar(props) {
 <header className={`verticalbar ${menuVisible ? '' : 'collapsed'}`}>
       <div className="verticalbar__brand">
         <button className='hamburgericon' onClick={toggleMenu}>
-          <img src={hamburgericon}/>
+          <img src={hamburgericon} alt='hamberger icon'/>
           <span style={{ marginLeft: "8px", color: "black" }}>
             {menuVisible ? '' : ''}
           </span>
@@ -62,7 +62,7 @@ export default function Navbar(props) {
               setSelectedIndex(index)
             }
              }>
-              <img src={item.icon}/>
+              <img src={item.icon} alt='item icon'/>
               <p className={`t5 ${hideText ? 'displayNone' : ''}`}>{item.label}</p>
             </button>
           )
