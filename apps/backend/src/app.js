@@ -13,13 +13,16 @@ const authRoutes = require('./auth/authRoutes');
 const { pool } = require('./db/index'); // Utiliser la pool existante
 
 const cors = require("cors");
+const cookieParser = require('cookie-parser');
+const FRONTEND_URL= process.env.FRONTEND_URL;
 
 // app.use(cors());
 app.use(cors({ 
-  origin: ["http://localhost:3001", "https://localspot-platform.onrender.com"], 
+  origin: [FRONTEND_URL], 
   credentials: true 
 }));
 
+app.use(cookieParser());
 app.use(express.json());
 app.use(compression());
 app.use("/qrcodes", express.static(path.join(__dirname, "data/qrcodes")));

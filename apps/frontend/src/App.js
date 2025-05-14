@@ -9,6 +9,7 @@ import Login from "./components/Auth/Login";
 import Profile from "./components/Auth/Profile";
 import AuthProvider from "./components/Auth/authContext/authProvider";
 import { LoadScript } from "@react-google-maps/api";
+import TestRefresh from "./pages/test-refresh";
 
 
 
@@ -36,6 +37,8 @@ export default function App() {
             <Route path="/login" element={<Login />} />
             <Route path="/profile" element={<Profile />} />
             
+            <Route path="/test-refresh" element={<TestRefresh />} />
+
             {/* FIN : catch-all pour tout le reste → 404 client-side */}
             <Route path="*" element={<NotFound />} />
           </Routes>

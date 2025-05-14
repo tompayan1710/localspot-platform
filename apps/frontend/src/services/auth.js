@@ -1,4 +1,6 @@
 // src/services/api.js
+import { fetchWithAuth } from "./fetchWithAuth";
+
 const URL_BASE = process.env.REACT_APP_API_URL; // Remplace par ton URL backend
 
 // Inscription
@@ -21,6 +23,7 @@ export const login = async (email, password) => {
             headers: {
             "Content-Type": "application/json"
             },
+            credentials: 'include',
             body: JSON.stringify({ email, password })
         });
 
@@ -31,11 +34,12 @@ export const login = async (email, password) => {
         }
 
         const data = await response.json(); // ✅ Ici tu définis la variable data correctement
-
+        console.log("Réponse de l'API Login :", data);
         if (!data.token) {
             return { success: false, message: "Échec de la connexion, no token il respond" };
         }
         else{
+            console.log("Attention Enregistrement jwtToken");
             localStorage.setItem("jwtToken", data.token); // Stocke le JWT
             return { success: true, user: data.user, token: data.token };
         }
@@ -51,58 +55,36 @@ export const login = async (email, password) => {
 
 // Accès au profil protégé
 export const getProfile = async () => {
-    const token = localStorage.getItem("jwtToken");
-    if (!token) {
-      console.log("No token provided to get Profile");
-      return { isAuth: false, message: "No token providedfs" };
-    }
-  
-    try {
-      const response = await fetch(`${URL_BASE}/api/auth/getprofile`, {
-        method: "GET",
-        headers: {
-          "Authorization": `Bearer ${token}`
-        }
-      });
+  const response = await fetchWithAuth(`${URL_BASE}/api/auth/getprofile`, {
+    method: "GET"
+  });
 
-      if (response.status === 403) {
-        console.warn("🚫 Accès interdit : Votre compte n'existe plus ou vous n'avez pas les droits.");
-        localStorage.removeItem("jwtToken"); // Supprime le token car l'utilisateur n'existe plus
-        return { isAuth: false, message: "Votre compte n'existe plus ou vous n'avez pas les droits." };
-      }
-      
-      // ✅ Vérifie si la réponse est réussie
-      if (!response.ok) {
-        console.log("Erreur API: Vous avez un token, mais vous n'avait pas les droit pour accéder à cette route");
-        return { isAuth: false, message: "Unauthorized" };
-      }
-
-
-      const data = await response.json(); // ✅ Utilise await ici
-
-      if(data.isAuth){
-        return {
-          isAuth: true,
-          user: data.user,
-          message: "Authenticated successfully"
-        };
-      }else{
-        return {
-          isAuth: false,
-          error: data.error
-        };
-      }
-      
-    } catch (error) {
-      console.log("Erreur de la requête: ", error);
-      return { isAuth: false, message: error };
-    }
-  };
-  
+  if (response.success) {
+    return {
+      isAuth: true,
+      user: response.data.user,
+      message: "Authenticated successfully"
+    };
+  } else {
+    return {
+      isAuth: false,
+      message: response.message || "Unauthorized"
+    };
+  }
+};
 
 // Déconnexion
-export const logout = () => {
+export const logoutService = async () => {
   localStorage.removeItem("jwtToken");
+
+   // ✅ Demander au serveur de supprimer le Refresh Token (HttpOnly)
+   
+  await fetch(`${URL_BASE}/api/auth/logout`, {
+      method: "POST",
+      credentials: "include" // ✅ Important pour envoyer les Cookies
+    });
+
+  console.log("Déconnecté Avec logoutService");
 };
 
     

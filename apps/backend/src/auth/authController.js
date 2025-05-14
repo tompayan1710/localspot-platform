@@ -1,6 +1,7 @@
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 const pool = require('../db/index');
+const { createRefreshToken, upgradeRefreshToken, deleteRefreshToken } = require('./refreshTokens');
 // const { use } = require('./authRoutes');
 require('dotenv').config();
 
@@ -66,6 +67,7 @@ async function signup(userData) {
 async function login(userData) {
   const { email, password = "", provider = "password-email" } = userData;
   try {
+    console.log("Je fait un LOGIN");
     const user = await pool.query('SELECT * FROM users WHERE email = $1', [email]);
     if (user.rowCount  === 0) return { success: false, status: 404, error: "Utilisateur non trouvé"};
     
@@ -83,16 +85,105 @@ async function login(userData) {
 
     //IF provider === "google" Pas besoin de tester le mot de pass car pas de mot de passe à fournir
 
-    const userData = user.rows[0];
-    const token = jwt.sign({ id: userData.id, email: userData.email }, process.env.JWT_SECRET, { expiresIn: '7d' });
 
+
+
+
+
+    //GESTION DES TOKENS
+    const userData = user.rows[0];
+
+    const token = jwt.sign({ id: userData.id, email: userData.email, iat: Math.floor(Date.now()/1000) }, process.env.JWT_SECRET, { expiresIn: '10s' });
+    
+    console.log("✅ Token généré avec expiration à 10 secondes :", token);
+    // ✅ Décoder le token pour afficher la date d'expiration
+    const decoded = jwt.decode(token);
+
+    const creationDate = new Date().toLocaleString('fr-FR', {
+      year: 'numeric',
+      month: '2-digit',
+      day: '2-digit',
+      hour: '2-digit',
+      minute: '2-digit',
+      second: '2-digit'
+    });
+    const expirationDate = new Date(decoded.exp * 1000).toLocaleString('fr-FR', {
+      year: 'numeric',
+      month: '2-digit',
+      day: '2-digit',
+      hour: '2-digit',
+      minute: '2-digit',
+      second: '2-digit'
+    });
+
+    console.log("✅ Date de création du token (heure exacte) :", creationDate);
+    console.log("✅ Date d'expiration du token (heure exacte) :", expirationDate);
+
+
+
+    const refreshToken = jwt.sign(
+      { id: userData.id, email: userData.email, iat: Math.floor(Date.now()/1000)  },
+      process.env.REFRESH_TOKEN_SECRET,
+      { expiresIn: '180d' } // 6 mois
+    );
+
+    // ✅ Vérifier si un Refresh Token existe déjà pour cet utilisateur
+    const existingTokenResult = await pool.query(
+      'SELECT * FROM refresh_tokens WHERE user_id = $1',
+      [userData.id]
+    );
+
+    if (existingTokenResult.rowCount > 0) {
+      // ✅ Si un Refresh Token existe déjà, nous le mettons à jour (rotation)
+      await upgradeRefreshToken(userData.id, existingTokenResult.rows[0].token, refreshToken, new Date(Date.now() + 180 * 24 * 60 * 60 * 1000));
+    } else {
+      // ✅ Sinon, nous en créons un nouveau
+      await createRefreshToken(userData.id, refreshToken, new Date(Date.now() + 180 * 24 * 60 * 60 * 1000)); // 6 mois
+    }
+
+
+    console.log("VOICI MON REFRESH Token : ", refreshToken);
     // ✅ Envoie le JWT dans la réponse
-    return  {success: true, status: 200, message: "Connexion réussie", token, user: userData}
+    return  {success: true, status: 200, message: "Connexion réussie", token, refreshToken, user: userData}
   } catch (error) {
     return  {success: true, status: 500, error: error.message}
   }
 };
 
+
+
+
+
+async function logout(req, res) {
+ const refreshToken = req.cookies.refreshToken;
+  
+  if (!refreshToken) {
+    return res.status(400).json({ message: "No Refresh Token provided" });
+  }
+
+  try {
+    // ✅ Vérifier et décoder le Refresh Token pour obtenir l'ID utilisateur
+    const decoded = jwt.verify(refreshToken, process.env.REFRESH_TOKEN_SECRET);
+    const userId = decoded.id; // ✅ Récupérer l'ID utilisateur
+    
+    // ✅ Supprimer le Refresh Token de la base de données
+    await deleteRefreshToken(userId, refreshToken);
+
+    // ✅ Supprimer le Refresh Token dans le Cookie
+    res.cookie('refreshToken', '', {
+      httpOnly: true,
+      secure: false,  // HTTPS uniquement en production
+      sameSite: process.env.NODE_ENV === 'production' ? 'Strict' : 'Lax',
+      // path: '/api/auth',
+      expires: new Date(0) // ✅ Expiration immédiate
+    });
+    console.log("Déconnecté avec succès");
+    return res.status(200).json({ message: "Déconnecté avec succès" });
+  } catch (error) {
+    console.error("Erreur lors de la déconnexion :", error);
+    return res.status(400).json({ message: "Invalid Refresh Token" });
+  }
+}
 
 
 
@@ -117,6 +208,7 @@ const CLIENT_ID = process.env.GOOGLE_CLIENT_ID;
 const CLIENT_SECRET = process.env.GOOGLE_CLIENT_SECRET;
 const REDIRECT_URI = process.env.GOOGLE_REDIRECT_URI;
 const JWT_SECRET = process.env.JWT_SECRET;
+const REFRESH_TOKEN_SECRET = process.env.REFRESH_TOKEN_SECRET;
 const FRONTEND_URL = process.env.FRONTEND_URL
 
 
@@ -163,9 +255,9 @@ async function googleCallback(req, res) {
     const userInfoResponse = await fetch(`https://oauth2.googleapis.com/tokeninfo?id_token=${id_token}`);
     if (!userInfoResponse.ok) {
       console.error("❌ Erreur lors de la vérification du token Google :", userInfoResponse.status);
-      return res.status(400).json({ message: "Erreur lors de la vérification du token Google" });
+      return res.status(400).json({success: false, error: "Erreur lors de la vérification du token Google" });
     }
-
+///////////////////////////////////////////////
     const userData = await userInfoResponse.json();
     console.log("Données utilisateur récupérées :", userData);
 
@@ -201,19 +293,35 @@ async function googleCallback(req, res) {
       console.log("Utilisateur Google déjà existant.");
     }
 
-    const loginResponse = await login({email, password: "", provider});
+    const loginResponse = await login({email, password:"", provider});
     if (loginResponse.status !== 200) {
       return res.status(loginResponse.status).json({ message: "Erreur lors de la connexion Google", error: loginResponse.error });
     }
 
     // ✅ Génère ton propre JWT sécurisé
-    const myJwt = jwt.sign({ email, name, picture }, JWT_SECRET, {
-      expiresIn: "7d",
+    // const myJwt = jwt.sign({ email, name, picture, iat: Math.floor(Date.now()/1000) }, JWT_SECRET, {
+    //   expiresIn: "15m",
+    // });
+
+    // console.log("Mon propre JWT généré :", myJwt);
+
+    
+    //  refreshToken = jwt.sign(
+    //   { email, iat: Math.floor(Date.now()/1000) },
+    //   REFRESH_TOKEN_SECRET,
+    //   { expiresIn: "180d" } // Refresh Token long
+    // );
+
+    // ✅ Stocker le Refresh Token en Cookie sécurisé (HTTP-Only)
+    res.cookie('refreshToken', loginResponse.refreshToken, {
+      httpOnly: true,
+      secure: process.env.NODE_ENV === 'production', // HTTPS uniquement en production
+      sameSite: process.env.NODE_ENV === 'production' ? 'Strict' : 'Lax',
+      // path: '/api/auth', // Utiliser uniquement pour les routes d'authentification
+      maxAge: 180 * 24 * 60 * 60 * 1000 // 6 mois
     });
 
-    console.log("Mon propre JWT généré :", myJwt);
-
-    return res.redirect(`${FRONTEND_URL}/login?token=${myJwt}`);
+    return res.redirect(`${FRONTEND_URL}/login?token=${loginResponse.token}`);
 
   } catch (error) {
     console.error("Erreur lors de l'authentification Google :", error.message);
@@ -257,6 +365,7 @@ async function deleteAccount(req, res) {
 module.exports = {
   signup,
   login,
+  logout,
   getProfile,
   googleOAuth2,
   googleCallback,

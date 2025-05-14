@@ -11,7 +11,7 @@ const authMiddleware = async (req, res, next) => {
   if (!token) {
     return res.status(401).json({ 
       isAuth: false, 
-      message: "No token provided to go to this route" 
+      error: "No token provided to go to this route" 
     });
   }
 
@@ -23,16 +23,32 @@ const authMiddleware = async (req, res, next) => {
 
     if (user.rowCount === 0) {
       console.log("Vous avez renseigner un token mais 'Utilisateur non trouvé'");
-      return res.status(403).json({ message: "Votre compte n'existe plus ou à était suppriméds'" });
+      return res.status(403).json({ error: "Votre compte n'existe plus ou à était suppriméds'" });
     }
 
     req.user = user.rows[0];
     next(); // ✅ Continue vers la route demandée
   } catch (err) {
-    console.log("Erreur de vérification JWT:", err);
-    return res.status(403).json({ 
+    console.error("Erreur de vérification JWT:", err.name);
+
+    // ✅ Gestion des erreurs spécifiques
+    if (err.name === "TokenExpiredError") {
+      return res.status(401).json({ 
+        isAuth: false, 
+        error: "Access Token expired, please refresh." 
+      });
+    }
+
+    if (err.name === "JsonWebTokenError") {
+      return res.status(403).json({ 
+        isAuth: false, 
+        error: "Invalid Access Token." 
+      });
+    }
+
+    return res.status(500).json({ 
       isAuth: false, 
-      message: "Invalid or expired token" 
+      error: "Internal server error" 
     });
   }
 };

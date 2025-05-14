@@ -1,7 +1,7 @@
 // Création du contexte
 import React, { useEffect, useState } from "react";
 import { AuthContext } from "./authContext";
-import { getProfile } from "../../../services/auth"
+import { getProfile, logoutService } from "../../../services/auth"
 
 // Fournisseur de contexte
 const AuthProvider = ({ children }) => {
@@ -14,30 +14,24 @@ const AuthProvider = ({ children }) => {
 
     
     useEffect(() => {
+        console.log("AuthProvider : Je vérifie avec un checkAuth");
         checkAuth();
     }, [])
 
     const checkAuth = async () => {
-        try{
+        setAuthState(prevState => ({ ...prevState, loading: true }));
+        console.log("Je met le loading à TRUE");
+        try {
             const response = await getProfile();
             console.log("Auth Contexte response :", response);
-            if(response.isAuth){
-                setAuthState({
-                    user: response.user,
-                    isAuth: true,
-                    message: "Authentifié avec succès",
-                    loading: false
-                });
 
-            }else{                
-                setAuthState({
-                    user: null,
-                    isAuth: false,
-                    message: response.message || "Vous n'êtes pas connecté",
-                    loading: false
-                })
-            }
-        }catch(error) {
+            setAuthState({
+                user: response.isAuth ? response.user : null,
+                isAuth: response.isAuth,
+                message: response.isAuth ? "Authentifié avec succès" : response.message || "Vous n'êtes pas connecté",
+                loading: false
+            });
+        } catch (error) {
             console.error("Erreur lors de la vérification de l'authentification:", error);
             setAuthState({
                 user: null,
@@ -45,11 +39,26 @@ const AuthProvider = ({ children }) => {
                 message: "Erreur réseau. Serveur inaccessible.",
                 loading: false
             });
+        } finally {
+            console.log("Je met le loading à FALSE ");
+        }      
+    };
 
-        }   
-    }
+
+    const logout = async () => {
+    await logoutService(); // ✅ Appelle la fonction logout de auth.js
+    setAuthState({
+        user: null,
+        isAuth: false,
+        message: "Déconnecté",
+        loading: false
+    });
+    };
+
+
+
   return(
-    <AuthContext.Provider value={{authState, checkAuth}}>
+    <AuthContext.Provider value={{authState, checkAuth, logout}}>
         {children}
     </AuthContext.Provider>
   )

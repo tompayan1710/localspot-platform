@@ -1,16 +1,15 @@
 // Profile.jsx
 import React, { useEffect, useContext } from "react";
-import { deleteAccount } from "../../services/auth";
 import { useNavigate } from "react-router-dom";
 import "./styles.css";
-import { AuthContext } from "./authContext/authContext"
+import { AuthContext } from "../../../../components/Auth/authContext/authContext"
 
 
-export default function Profile() {
+export default function ContentAreaGenerateQRCodes() {
   const navigate = useNavigate();
 
 
-    const { authState, logout, checkAuth } = useContext(AuthContext);
+    const { authState } = useContext(AuthContext);
   
   //   useEffect(() => {
   //   console.log("JE Fait un relog ");
@@ -25,20 +24,6 @@ export default function Profile() {
       navigate("/login");
     }
   }, [authState.loading, authState.isAuth]); // ✅ Suivre loading et isAuth
-
-
-
-
-  
-  const handleLogout = () => {
-    logout();
-    navigate("/login");
-  };
-
-  const handleDelete = () => {
-    deleteAccount();
-    navigate("/login");
-  }
 
 
   
@@ -65,8 +50,8 @@ export default function Profile() {
           <p className="t5"><strong>Company ID:</strong> {authState.user?.company_id}</p>
           <p className="t5"><strong>Date de création:</strong> {new Date(authState.user?.created_at).toLocaleDateString()}</p>
         </div>  
-        <button className="logout-button" onClick={handleLogout}>Se déconnecter</button>
-        <button className="logout-button" onClick={handleDelete}>Supprimer le compte</button>
+        <button className="logout-button">Se déconnecter</button>
+        <button className="logout-button">Supprimer le compte</button>
       </div>
     </div>
     }

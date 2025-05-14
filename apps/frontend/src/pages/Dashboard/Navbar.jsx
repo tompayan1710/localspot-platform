@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useRef, useContext } from 'react';
+import { useEffect, useState, useRef, useContext } from 'react';
 
 import './styles/Navbar.css';
 import notificon from '../../assets/images/notificon.png'
@@ -8,7 +8,7 @@ import localspot_logo from '../../assets/images/localspotlogo.png'
 import { motion, AnimatePresence } from "framer-motion";
 import { useNavigate } from 'react-router-dom';
 
-import { logout } from "../../services/auth";
+// import { logout } from "../../services/auth";
 
 import { AuthContext } from "../../components/Auth/authContext/authContext"
 
@@ -19,7 +19,7 @@ export default function Navbar() {
 
   const navigate = useNavigate();
 
-  const { authState } = useContext(AuthContext);
+  const { authState, logout } = useContext(AuthContext);
 
   useEffect(() => {
     function handleClickOutside(event) {
@@ -78,7 +78,7 @@ export default function Navbar() {
         <div className='row'>
           
           <button className='navbarbuttonicon'>
-            <img id="notificon" src={notificon}/>
+            <img id="notificon" src={notificon} alt="notification icon"/>
           </button>
           
           <div style={{ width: "15px", height: "15px", backgroundColor: authState.isAuth ? "green" : "red", borderRadius: "100%", 
