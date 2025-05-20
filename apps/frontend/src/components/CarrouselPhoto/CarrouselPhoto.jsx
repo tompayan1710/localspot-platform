@@ -6,37 +6,37 @@ import gouter from "../../assets/images/gouter.avif"; // Replace with your mp4 v
 export default function CarrouselPhoto() {
   return (
     
-<section class="carousel" aria-label="Gallery">
-  <ol class="carousel__viewport">
+<section className="carousel" aria-label="Gallery">
+  <ol className="carousel__viewport">
     <li id="carousel__slide1"
-        tabindex="0"
-        class="carousel__slide">
-            <img src={gouter} class="carousel__snapper" />
+        tabIndex="0"
+        className="carousel__slide">
+            <img src={gouter} className="carousel__snapper" />
 
     </li>
     <li id="carousel__slide2"
-        tabindex="0"
-        class="carousel__slide">
+        tabIndex="0"
+        className="carousel__slide">
           
-      <img src={Nice} class="carousel__snapper" />
+      <img src={Nice} className="carousel__snapper" />
       {/* <a href="#carousel__slide1"
          class="carousel__prev">Go to previous slide</a>
       <a href="#carousel__slide3"
          class="carousel__next">Go to next slide</a> */}
     </li>
     <li id="carousel__slide3"
-        tabindex="0"
-        class="carousel__slide">
-      <div class="carousel__snapper"></div>
+        tabIndex="0"
+        className="carousel__slide">
+      <div className="carousel__snapper"></div>
       {/* <a href="#carousel__slide2"
          class="carousel__prev">Go to previous slide</a>
       <a href="#carousel__slide4"
          class="carousel__next">Go to next slide</a> */}
     </li>
     <li id="carousel__slide4"
-        tabindex="0"
-        class="carousel__slide">
-      <div class="carousel__snapper"></div>
+        tabIndex="0"
+        className="carousel__slide">
+      <div className="carousel__snapper"></div>
       {/* <a href="#carousel__slide3"
          class="carousel__prev">Go to previous slide</a>
       <a href="#carousel__slide1"

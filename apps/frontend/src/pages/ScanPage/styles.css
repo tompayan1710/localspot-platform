@@ -25,6 +25,7 @@
   background-color: white;
   border-bottom: 1px solid #ddd;
   padding: 15px 15px;
+  z-index: 2;
 }
 
   .StartSearch {
@@ -171,12 +172,12 @@
 
 
 
-.ContainerAll>.t32{
+.ContainerAll>.t3{
   padding: 10px 15px 0 15px;
   font-weight: 900;
 }
 
-.ContainerAll>.t6{
+.ContainerAll>.t5{
   padding: 0px 15px;
   margin-bottom: 20px;
 
@@ -233,4 +234,188 @@ html {
 }
 .OverviewContainer .t3{
   padding:  0;
+  padding-bottom: 10px;
+}
+
+.OverviewItem{
+  display: flex;
+  justify-content: start;
+  align-items: center;
+  padding-bottom: 10px;
+}
+
+
+.OverviewItem img{
+  width: 80px;
+  height: 80px;
+  border-radius: 15px;
+}
+
+.OverviewItem div{
+  padding-left: 10px;
+}
+
+.OverviewItem div .t5{
+  font-weight: 700;
+}
+
+
+.RendezVousMapContainer{
+  padding: 15px;
+  display: flex;
+  flex-direction: column;
+  width: 100vw;
+  height: fit-content;
+  background-color: var(--greyverylight);
+}
+
+.RendezVousMapContainer.Open{
+  height: 400px;
+}
+
+.RendezVousMapContainer.Open .RendezVousRow{
+  padding-bottom: 10px;
+  margin-bottom: 8px;
+}
+
+.RendezVousMapContainer .RendezVousRow{
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  cursor: pointer;
+  margin: 0;
+  padding: 0%;
+}
+.RendezVousMapContainer .RendezVousRow img{
+  width: 15px;
+  height: 15px;
+}
+
+.RendezVousMapContainer > div:nth-of-type(2) {
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+  /* height: 300px!important; */
+}
+
+.RendezVousMapContainer .DistanceRowContainer{
+  display: flex;
+  flex-direction: row;
+  align-items: end;
+  padding-top: 10px;
+}
+
+.RendezVousMapContainer .DistanceRowContainer img{
+  width: 25px;
+  height: 23px;
+  padding-right: 4px;
+}
+
+.RendezVousMapContainer .DistanceRowContainer p{
+  padding-right: 15px;
+}
+
+.AdresseContainer{
+  display: flex;
+  flex-direction: row;
+  align-content: center;
+  align-items: center;
+  padding-top: 7px;
+}
+
+.AdresseContainer .t6{
+  text-decoration: underline;
+}
+
+.AdresseContainer button{
+  background-color: transparent;
+  border: none;
+  align-items: center;
+  justify-content: center;
+  align-content: center;
+  padding: 6px;
+  margin-left: 5px;
+}
+
+.AdresseContainer img{
+  width: 20px;
+  height: 20px;
+}
+
+
+
+
+
+
+
+
+
+
+.AvisContainer{
+  display: flex;
+  padding-top: 50px;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.AvisContainer .ListBigStar{
+  display: flex;
+  flex-direction: row;
+  padding-top: 5px;
+}
+
+.AvisContainer .ListBigStar img{
+  width: 30px;
+  height: 30px;
+  margin: 0 5px;
+}
+
+.AvisContainer .AvisList{
+  display: flex;
+  flex-direction: row;
+  /* background-color: orange; */
+  width: 100vw;
+  /* margin-top: 30px; */
+  padding: 30px 0;
+  overflow: scroll;
+}
+
+.AvisList .AvisItem{
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  width: 75%;
+  margin-right: 20px;
+  min-width: 75%;
+  min-height: 150px;
+  padding: 15px;
+  /* background-color: orange; */
+  border-radius: 20px;
+  border: 1px solid var(--greyverylight);
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+}
+
+.AvisList .AvisItem:first-of-type{
+  margin-left: 20px;
+}
+
+.AvisItem .RowNameNote{
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  font-weight: 600;
+}
+.AvisItem .RowNameNote .t6{
+  font-weight: 100;
+}
+
+.AvisItem .RowNameNote img{
+  width: 20px;
+  height: 20px;
+  margin-left: 5px;
+}
+
+.AvisItem .VerifyAvis{
+  /* color: var(--rednormal); */
+  padding-bottom: 15px;
 }
