@@ -1,60 +1,76 @@
 // Profile.jsx
-import React, { useEffect, useContext } from "react";
+import React, { useEffect, useContext, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import "./styles.css";
-import { AuthContext } from "../../../../components/Auth/authContext/authContext"
+import { AuthContext } from "../../../../components/Auth/authContext/authContext";
+import Spinner from "../../../../components/Spinner/Spinner";
+import crossiconBlack from "../../../../assets/images/crossiconBlack.png"
+import ListEmplacementsActif from "../../../../components/ListEmplacementsActif/ListEmplacementsActif";
 
 
-export default function ContentAreaGenerateQRCodes() {
+export default function ContentAreaGenerateQRCodes({markers, loading, error}) {
   const navigate = useNavigate();
+  const [OpenGenerate, setOpenGenerate] = useState(false);
 
-
-    const { authState } = useContext(AuthContext);
-  
-  //   useEffect(() => {
-  //   console.log("JE Fait un relog ");
-  //   checkAuth();
-  // }, []); 
+  const { authState } = useContext(AuthContext);
 
   useEffect(() => {
     // ✅ Redirection uniquement lorsque loading est terminé
-    console.warn("ACTUELLEMENT mon loading est :", authState.loading, " IsAuth :", authState.isAuth)
+    console.warn(
+      "ACTUELLEMENT mon loading est :",
+      authState.loading,
+      " IsAuth :",
+      authState.isAuth
+    );
     if (!authState.loading && !authState.isAuth) {
       console.log("🔄 Redirection car non authentifié");
       navigate("/login");
     }
-  }, [authState.loading, authState.isAuth]); // ✅ Suivre loading et isAuth
+  }, [authState.loading, authState.isAuth, navigate]); // ✅ Suivre loading et isAuth
 
-
-  
+  const toggleOpen = () => {
+    setOpenGenerate((prev) => !prev);
+  };
 
   if (authState.loading) {
-    return <div className="SinnerTester"></div>;
+    return <Spinner centerPage={true} />;
   }
 
   return (
-    <>
-      {authState.loading ? <div className="SinnerTester"></div> : 
-      <div className="profile-container">
-      <div className="principalcolumn">   
-        <p className="t3">Profile</p>
-        <div className="informationscontainer">
-          <p>{authState.isAuth ? "Bravo tu est connecté" :"Nullos pas connecté"}</p>
-        <p className="t5"><strong>Id:</strong> {authState.user?.id}</p>
-        <p className="t5"><strong>Nom:</strong> {authState.user?.first_name} {authState.user?.last_name}</p>
-        <p className="t5"><strong>Email:</strong> {authState.user?.email}</p>
-        <p className="t5"><strong>Méthode:</strong> {authState.user?.provider}</p>
-        </div> 
-        <div className="informationscontainer">
-          <p className="t5"><strong>Rôle:</strong> {authState.user?.role}</p>
-          <p className="t5"><strong>Company ID:</strong> {authState.user?.company_id}</p>
-          <p className="t5"><strong>Date de création:</strong> {new Date(authState.user?.created_at).toLocaleDateString()}</p>
-        </div>  
-        <button className="logout-button">Se déconnecter</button>
-        <button className="logout-button">Supprimer le compte</button>
-      </div>
+    <div className="GenerateQRCodesContainer">
+      <p className="t3">Mes Offres</p>
+
+      
+      <button className="generateQrcode" onClick={toggleOpen}>Toggle QR Code</button>
+
+      <ListEmplacementsActif markers={markers} loading={loading} error={error}></ListEmplacementsActif>
+      
+      {OpenGenerate && (
+        <div className="genqrGreyOverlay">
+          <form className="genqrContainer" method="POST" action={`${process.env.REACT_APP_API_URL}/generate`}>
+            <button className="closeButton" onClick={toggleOpen}><img src={crossiconBlack} alt="close button"/></button>
+            <h2 className="genqrtitle t3">Générer un QR Code</h2>
+            <div className="hline"></div>
+            <div className="genqrContent">
+              <label><label>URL à rediriger :</label></label>
+              <input type="text" name="url" placeholder="https://tomsites.fr/" className="genqrInput" />
+              <label>ID du présentoir (display_id) :</label>
+              <input type="text" name="display_id" placeholder="1" className="genqrInput" />
+              <label>ID de la catégorie (category_id) :</label>
+              <input type="text" name="category_id" placeholder="1" className="genqrInput" />
+              <label>Nom de l’offre (slug personnalisé) :</label>
+              <input type="text" name="slug" placeholder="myslug" className="genqrInput" />
+              {/* <select className="genqrInput">
+                <option>Priority</option>
+                <option>Low</option>
+                <option>Medium</option>
+                <option>High</option>
+              </select> */}
+              <button type="submit">Générer</button>
+            </div>
+          </form>
+        </div>
+      )}
     </div>
-    }
-  </>
   );
 }

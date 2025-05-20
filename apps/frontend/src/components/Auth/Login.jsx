@@ -64,7 +64,7 @@ export default function Login() {
       // ✅ Redirige l'utilisateur là où il était
       navigate("/dashboard2");
     }
-  }, []);
+  }, [navigate, checkAuth]);//Just to no have the warning, not necessari
 
 
 

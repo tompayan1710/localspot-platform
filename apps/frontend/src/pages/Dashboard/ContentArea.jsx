@@ -19,7 +19,7 @@ export default function ContentArea({menuVisible, activePage}) {
       
       {activePage === "home" && <ContentAreaHome markers={markers} loading={loading} error={error}></ContentAreaHome>}
       {activePage === "emplacement" && <h1>emplacement Page</h1>}
-      {activePage === "myoffers" && <GenerateQRCodes />}
+      {activePage === "myoffers" && <GenerateQRCodes markers={markers} loading={loading} error={error}/>}
       {activePage === "statistic" && <ContentAreaStatistic scans={scans} markers={markers}></ContentAreaStatistic>}
       {activePage === "myteam" && <h1>Mon équipe</h1>}
       {activePage === "settings" && <h1>Parametre</h1>}

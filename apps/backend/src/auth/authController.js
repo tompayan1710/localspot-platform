@@ -146,7 +146,7 @@ async function login(userData) {
     // ✅ Envoie le JWT dans la réponse
     return  {success: true, status: 200, message: "Connexion réussie", token, refreshToken, user: userData}
   } catch (error) {
-    return  {success: true, status: 500, error: error.message}
+    return  {success: false , status: 500, error: error.message}
   }
 };
 

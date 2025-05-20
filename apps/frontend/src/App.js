@@ -10,6 +10,7 @@ import Profile from "./components/Auth/Profile";
 import AuthProvider from "./components/Auth/authContext/authProvider";
 import { LoadScript } from "@react-google-maps/api";
 import TestRefresh from "./pages/test-refresh";
+import ScanPage from "./pages/ScanPage/ScanPage";
 
 
 
@@ -23,8 +24,9 @@ export default function App() {
         <BrowserRouter>
           <Routes>
             {/* Page principale */}
+            
             <Route path="/" element={<Home />} />
-
+            <Route path="/scanpage" element={<ScanPage />} />
             {/* Espace back-office */}
             <Route path="/dashboard" element={<Dashboard />} />
 
