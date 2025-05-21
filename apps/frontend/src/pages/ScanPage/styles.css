@@ -2,7 +2,7 @@
   width: 100vw;
   min-height: 100vh;
   /* background-color: red; */
-  padding-bottom: 80px;
+  /* padding-bottom: 80px; */
 }
 
 
@@ -23,9 +23,14 @@
   width: 100vw;
   /* height: 100px; */
   background-color: white;
-  border-bottom: 1px solid #ddd;
+  border-bottom: 1px solid var(--greylight);
   padding: 15px 15px;
-  z-index: 2;
+  z-index: 3;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
+}
+
+.SearchContainer.searchOpen{
+  height: 100vh;
 }
 
   .StartSearch {
@@ -75,6 +80,7 @@
   }
   
   /* Style du bouton */
+  /*
   .StartSearch button {
     background: linear-gradient(180deg, #545454, #373737);
     color: #ffffff;
@@ -95,26 +101,261 @@
     background: linear-gradient(180deg, #373737, #545454);
   }
   
-
+*/
 
 
 
 .OptionSearch{
   margin: 15px 0;
-  border-radius: 40px;
+  border-radius: 17px;
   border: 1px solid var(--greysemidark);
   display: flex;
+  flex-direction: column;
   justify-content: space-between;
   align-items: center;
-  padding: 0 8px 0 15px;
-  height: 36px;
+  padding: 8px 8px 8px 15px;
 }
 
-.OptionSearch img{
-  width: 20px;
-  height: 20px;
-  opacity: 0.4;
+
+
+.AddPersonne{
+  display: flex;
+  flex-direction: row;
+  width: 100%;
+  justify-content: space-between;
+  align-items: center;
+  cursor: pointer;
 }
+.AddPersonne img{
+  width: 13px;
+  height: 13px;
+  opacity: 0.6;
+}
+
+
+.PersonneItem{
+  margin-top: 20px;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  width: 100%;
+  /* margin-bottom: 10px; */
+}
+
+.PersonneItem .t4{
+   font-weight: 500;
+   padding-bottom: 5px;
+}
+
+.PersonneItem .AddOrRemove{
+   display: flex;
+   flex-direction: row;
+   align-items: center;
+}
+
+.PersonneItem .AddOrRemove button{
+   border-radius: 30px;
+   border: 1px solid var(--greysemidark);
+   background-color: var(--greyverylight);
+   width: 35px;
+   height: 35px;
+   font-size: 1.2rem;
+}
+
+.PersonneItem .AddOrRemove p{
+   padding: 0 10px;
+}
+
+
+
+
+
+
+
+
+.ActivityChoice{
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding-top: 15px;
+  gap: 8px;
+}
+
+.NameAndLevierContainer{
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  width: 100%;
+  gap: 15px;
+}
+
+
+.ActivityChoice .ListChoice{
+  display: flex;
+  flex-direction: row;
+  justify-content: start;
+  width: 100%;
+  flex-wrap: wrap;
+  gap: 6px;
+  row-gap: 8px;
+}
+
+.ActivityChoice .ListChoice .ChoiceItem{
+  cursor: pointer;
+  padding: 8px 10px;
+  border-radius: 40px;
+  border: 1px solid var(--greysemidark);
+}
+
+
+.ActivityChoice .ListChoice .selectedChoice{
+  background-color: var(--greenlight);
+    background-image: linear-gradient(to bottom, #b5edb1, var(--greenlight));
+}
+
+.ActivityChoice .ListChoice .selectedChoice p{
+  color: var(--greennormal);
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+.LastDivScan{
+  height: 500px;
+  background-color: var(--greyverylight);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  padding-bottom: 120px;
+}
+
+
+.LastDivScan p:first-of-type{
+  font-family: 'Cookie', serif;
+  /* font-style: italic; ou normal */
+  font-weight: 500;
+  /* background-color: red; */
+}
+
+.LastDivScan p:nth-child(2){
+  font-family: 'Cookie', serif;
+  /* font-style: italic; ou normal */
+  font-weight: 500;
+  /* background-color: red; */
+}
+
+.LastDivScan p:nth-child(3){
+  font-family: 'Playfair Display', serif;
+  /* font-style: italic; ou normal */
+  font-weight: 500;
+  font-style: italic;
+  /* background-color: orange; */
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+.MapButton{
+  position: fixed;
+  bottom: 125px;
+  background-color: white;
+  border-radius: 13px;
+  border: 1px solid var(--greylight);
+  left: 50%;
+  transform: translateX(-50%);
+  cursor: pointer;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
+}
+
+.MapButton img{
+  width: 25px;
+  height: 25px;
+  margin: 10px;
+}
+
+
+
+
+
+
+
+
+.ReserveContainer{
+  position: fixed;
+  bottom: 60px;
+  width: calc(100vw - 20px);
+  left: 10px;
+  background-color: white;
+  border: 1px solid var(--greylight);
+  border-radius: 40px;
+  padding: 8px;
+  padding-left: 15px;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
+
+}
+
+.ReserveContainer .ReserButton{
+  background-color: var(--greydark);
+  border-radius: 40px;
+  overflow: hidden; /* ✅ Empêche le carré moche au clic */
+  position: relative;
+  
+}
+
+
+  /* Style du bouton */
+  .ReserveContainer .ReserButton {
+    background: linear-gradient(180deg, #545454, #373737);
+    color: #ffffff;
+    padding: 10px 16px;
+    font-size: 1rem;
+    font-weight: lighter;
+    border: none;
+    border-radius: var(--borderradius);
+    cursor: pointer;
+    transition: background 1s, transform 0.2s;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 30px;
+    gap: 8px;
+  }
+  
+  .ReserveContainer .ReserButton:hover {
+    background: linear-gradient(180deg, #373737, #545454);
+  }
+  
+
+
 
 
 

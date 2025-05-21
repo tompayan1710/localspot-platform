@@ -25,6 +25,30 @@ code {
 @import url('https://fonts.googleapis.com/css2?family=Inter&display=swap');
 
 
+
+@font-face {
+  font-family: 'Playfair Display';
+  src: url('./assets/fonts/Playfair/Playfair-VariableFont_opsz,wdth,wght.ttf') format('truetype');
+  font-style: normal;
+  font-weight: 500;
+}
+
+@font-face {
+  font-family: 'Playfair Display';
+  src: url('./assets/fonts/Playfair/Playfair-Italic-VariableFont_opsz,wdth,wght.ttf') format('truetype');
+  font-style: italic;
+  font-weight: 500;
+}
+
+@font-face {
+  font-family: 'Cookie';
+  src: url('./assets/fonts/Cookie/Cookie-Regular.ttf') format('truetype');
+  font-weight: 500;
+}
+
+
+
+
 :root{
   --blacknormal: #3A4150;
   --greydark: #4E5562;
@@ -39,7 +63,7 @@ code {
   --violetlight: #F3EDFE;
   --violetnormal: #9C5DEE;
   --greenlight: #DFF0D8;
-  --greennormal: #5DA235;
+  --greennormal: #5ab054;
 }
 
 

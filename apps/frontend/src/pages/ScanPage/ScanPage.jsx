@@ -12,12 +12,17 @@ import bycicle from "../../assets/images/bycicle.webp";
 import footIcon from "../../assets/images/footIcon.png";
 import carIcon from "../../assets/images/carIcon.png";
 import copieIcon from "../../assets/images/copieIcon.png";
+import mapIcon from "../../assets/images/mapIcon.webp";
 import Map2D from "../../components/Map3D/Map2D";
+import BottomNavBar from "../../components/BottomNavBar/BottomNavBar";
 
 import { motion } from "framer-motion";
 import "./styles.css";
 import { useEffect, useRef, useState } from "react";
 import CarrouselPhoto from "../../components/CarrouselPhoto/CarrouselPhoto";
+import DurationSlider from "./DurationSlider";
+import DistanceSlider from "./DistanceSlider";
+import ButtonLevier from "../../components/ButtonLevier/ButtonLevier";
 
 export default function ScanPage() {
 
@@ -29,7 +34,10 @@ export default function ScanPage() {
    const [searchOpen, setSearchOpen] = useState(false);
 
    const [LieuOpen, setLieuOpen] = useState(false);
-  useEffect(() => {
+   const [addPersonOpen, setAddPersonOpen] = useState(false);
+
+
+   useEffect(() => {
     const logoContainer = logoContainerRef.current;
     const hotel = hotelref.current;
 
@@ -68,9 +76,45 @@ export default function ScanPage() {
     imageOffer.classList.add("fullSize")
   }
 
+
+  const [selectedChoicesActivity, setChoicesActivity] = useState([]);//Levier Choice
+  const choicesActivity = [
+    "JetSki", "Parachute", "Plongée", "Kayak", "Surf", "Paddle", "Bouée", "Ski nautique", "KiteSurf"
+  ];
+  const toggleChoiceActivity = (choice) => {
+    setChoicesActivity((prev) => 
+      prev.includes(choice)
+      ? prev.filter((item) => item !== choice)
+      : [...prev, choice]
+    ) 
+  }
+  const [isActivitySelected, setActivitySelected] = useState(true);
+  const toogleInputActivity = () => {
+    setActivitySelected((prev) => !prev)
+  }
+
+
+  const [selectedChoicesFood, setChoicesFood] = useState([]);//Levier Choice
+  const choicesFood = ["Croissant", "Quiche", "Falafel", "Burrito", "Wok", "Kebab", "Risotto", "Dim Sum", "Poké Bowl"];
+  const toggleChoiceFood = (choice) => {
+    setChoicesFood((prev) => 
+      prev.includes(choice)
+      ? prev.filter((item) => item !== choice)
+      : [...prev, choice]
+    ) 
+  }
+  const [isFoodSelected, setFoodSelected] = useState(false);
+  const toogleInputFood = () => {
+    setFoodSelected((prev) => !prev)
+  }
+
+
+
+
+
   return (
     <div className="offerContainer">
-      <div className="SearchContainer">
+      <div className={`SearchContainer ${searchOpen ?  "searchOpen" : ""}`}>
         <form className="StartSearch"  
         // onSubmit={handleLogin}>
         >     
@@ -88,23 +132,116 @@ export default function ScanPage() {
                       // value={email} 
                       // onChange={(e) => setEmail(e.target.value)} 
                       onFocus={() => setSearchOpen(true)} // Correction ici
-                      required 
+                      // required 
                     />
 
                     {
                       searchOpen ?
                       <>
+                      <DistanceSlider />
+                    <DurationSlider />
                       <div className="OptionSearch">
-                        <p className="t5">Ajouter des personnes</p>
-                        <img src={plusRound} />
+                        <div className="AddPersonne" onClick={() => setAddPersonOpen(prev => !prev)}>
+                          <p className="t5">Ajouter des personnes</p>
+                          <img src={arrowdownicon} />
+                        </div>
+                        { 
+                          addPersonOpen ? 
+                          <>
+                            <div className="PersonneItem">
+                              <div>
+                                <p className="t4">Adultes</p>
+                                <p className="t6">18 et plus</p>
+                              </div>
+                               <div className="AddOrRemove">
+                                <button onClick={(e) => {
+                                  e.preventDefault();
+                                  console.log("tu as cliqué sur -");
+                                }}>-</button>
+                                <p className="t5">0</p>
+                                <button onClick={(e) => {
+                                  e.preventDefault();
+                                  console.log("tu as cliqué sur +");
+                                }}>+</button>
+                              </div>
+                            </div>
+                            <div className="PersonneItem">
+                              <div>
+                                <p className="t4">Enfants</p>
+                                <p className="t6">De 4 à 18ans</p>
+                              </div>
+                               <div className="AddOrRemove">
+                                <button onClick={(e) => {
+                                  e.preventDefault();
+                                  console.log("tu as cliqué sur -");
+                                }}>-</button>
+                                <p className="t5">0</p>
+                                <button onClick={(e) => {
+                                  e.preventDefault();
+                                  console.log("tu as cliqué sur +");
+                                }}>+</button>
+                              </div>
+                            </div>
+                            <div className="PersonneItem">
+                              <div>
+                                <p className="t4">Bébés</p>
+                                <p className="t6">De 0 à 4ans</p>
+                              </div>
+                               <div className="AddOrRemove">
+                                <button onClick={(e) => {
+                                  e.preventDefault();
+                                  console.log("tu as cliqué sur -");
+                                }}>-</button>
+                                <p className="t5">0</p>
+                                <button onClick={(e) => {
+                                  e.preventDefault();
+                                  console.log("tu as cliqué sur +");
+                                }}>+</button>
+                              </div>
+                            </div>
+                          </>
+                          : <></>
+                        }
                       </div>
-                      <input 
-                      type="password" 
-                      placeholder="Mot de passe" 
-                      // value={password} 
-                      // onChange={(e) => setPassword(e.target.value)} 
-                      required 
-                    /> 
+                        
+                      <div className="ActivityChoice">
+                        <di className="NameAndLevierContainer"><p>Activité</p><ButtonLevier toogleInput={toogleInputActivity} isSelected={isActivitySelected}/></di>
+                        { 
+                          isActivitySelected ? 
+                          <div className="ListChoice">
+                          {
+                            choicesActivity.map((choice, index) => (
+                              <div key={index} className={`ChoiceItem ${selectedChoicesActivity.includes(choice) ? "selectedChoice" : ""}`}
+                              onClick={() => toggleChoiceActivity(choice)}>
+                                <p className="t6">{choice}</p>
+                              </div>
+
+                            ))
+                          }
+                        </div>
+                        : ""
+                        }
+                      </div>
+
+
+                      <div className="ActivityChoice">
+                        <di className="NameAndLevierContainer"><p>Food</p><ButtonLevier toogleInput={toogleInputFood} isSelected={isFoodSelected}/></di>
+                        { 
+                          isFoodSelected ? 
+                          <div className="ListChoice">
+                          {
+                            choicesFood.map((choice, index) => (
+                              <div key={index} className={`ChoiceItem ${selectedChoicesFood.includes(choice) ? "selectedChoice" : ""}`}
+                              onClick={() => toggleChoiceFood(choice)}>
+                                <p className="t6">{choice}</p>
+                              </div>
+
+                            ))
+                          }
+                        </div>
+                        : ""
+                        }
+                      </div>
                     </>
                     : <></>
                     }
@@ -116,6 +253,8 @@ export default function ScanPage() {
                     </button> */}
                   </form>
       </div>
+      
+
       <div className="ContainerAll">
         <div ref={imageOfferRef} className="CarrouselPhotoContainer">
           <CarrouselPhoto />
@@ -235,12 +374,27 @@ export default function ScanPage() {
       </div>
       
       
-      <div>
+      <div className="hline"></div>
 
+      <div className="LastDivScan">
+        <p className="t1">Votre hotel</p>
+        <p className="t2">&</p>
+        <p className="t1" style={{fontSize: "2.5rem"}}>Localspot</p>
       </div>
 
-       
-       <div className="Voir les disponnibilité"></div>
+
+
+      <button className="MapButton" onClick={() =>console.log("Clique on map")}>
+        <img src={mapIcon}/>
+      </button>
+      <div className="ReserveContainer">
+        <div className="ReserveInfoCon">
+          <p className="t5" style={{fontWeight: "900"}}>À partir de 59€</p>
+          <p className="t6">par personne</p>
+        </div>
+        <button className="ReserButton">Reserver</button>
+      </div>
+       <BottomNavBar/> 
     </div>
   );
 }

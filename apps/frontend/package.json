@@ -45,5 +45,8 @@
       "last 1 safari version"
     ]
   },
-  "author": "Tom Payan"
+  "author": "Tom Payan",
+  "devDependencies": {
+    "sass": "^1.89.0"
+  }
 }
