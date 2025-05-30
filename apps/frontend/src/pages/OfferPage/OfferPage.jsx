@@ -9,7 +9,7 @@ import bycicle from "../../assets/images/bycicle.webp";
 import footIcon from "../../assets/images/footIcon.png";
 import carIcon from "../../assets/images/carIcon.png";
 import copieIcon from "../../assets/images/copieIcon.png";
-import Map2D from "../../components/Map3D/Map2D";
+import Map2D from "../../components/Maps/Map2D";
 import BottomNavBar from "../../components/BottomNavBar/BottomNavBar";
 import { getOfferBySlug } from "../../services/offers"
 
@@ -17,7 +17,7 @@ import { getOfferBySlug } from "../../services/offers"
 import "./styles.css";
 import { useEffect, useRef, useState } from "react";
 import { useParams } from "react-router-dom";
-import CarrouselPhoto from "../../components/CarrouselPhoto/CarrouselPhoto";
+import CarrouselPhoto from "../../components/Carrousel/CarrouselPhoto";
 
 
 export default function OfferPage() {

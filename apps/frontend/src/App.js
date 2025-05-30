@@ -1,8 +1,7 @@
 // import React, { createContext } from "react";
 import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import Home from "./pages/Home";
-import Dashboard from "./pages/Dashboard";
-import Dashboard2 from "./pages/Dashboard2";
+
 import NotFound from "./pages/NotFound";
 import Signup from "./components/Auth/Signup";
 import Login from "./components/Auth/Login";
@@ -14,7 +13,6 @@ import ProfilScan from "./pages/Profil/ProfilScan";
 import CreateOffer from "./pages/CreateOffer/CreateOffer";
 import CreateOfferAddress from "./pages/CreateOffer/CreateOfferAddress";
 import ContentPolicy from "./pages/DocumentOfficiel/ContentPolicy/ContentPolicy";
-import TestSortable from "./pages/TestSortable";
 import CreateOfferInformations from "./pages/CreateOffer/CreateOfferInformation";
 
 
@@ -58,17 +56,9 @@ export default function App() {
             <Route path="/offer-page/:slug" element={<OfferPage />} />
 
 
-
-            <Route path="/test-sortable" element={<TestSortable />} />
-
             <Route path="/create-offer" element={<CreateOffer />} />
             <Route path="/create-offer-address" element={<CreateOfferAddress />} />
             <Route path="/create-offer-informations" element={<CreateOfferInformations />} />
-
-            {/* Espace back-office */}
-            <Route path="/dashboard" element={<Dashboard />} />
-
-            <Route path="/dashboard2" element={<Dashboard2 />} />
 
             {/* Redirection ou 404 */}
             <Route path="/home" element={<Navigate to="/" replace />} />

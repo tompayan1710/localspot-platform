@@ -10,7 +10,7 @@ import galleryPhotosIcon from "../../assets/images/galleryPhotosIcon.png"
 import { useNavigate } from "react-router-dom"
 
 import { useRef, useState, useEffect } from "react"
-import Map2D from "../../components/Map3D/Map2D"
+import Map2D from "../../components/Maps/Map2D"
 
 import { useJsApiLoader } from "@react-google-maps/api";
 
