@@ -1,16 +1,11 @@
 const express = require("express");
 const app = express();
-const session = require('express-session');
-const genFunc = require('connect-pg-simple');
-const qrRoute = require("./routes/qrgenerator");
-//const adminRoutes = require("./routes/admin");
 const path = require("path");
 const compression = require("compression");
-const qrPlacementsRoutes = require("./routes/placementgenerator");
 const apiRoutes = require("./routes/api/index");
-const authRoutes = require('./auth/authRoutes');
+// const an  uthRoutes = require('./auth/authRoutes');
 
-const { pool } = require('./db/index'); // Utiliser la pool existante
+// const { pool } = require('./db/index'); // Utiliser la pool existante
 
 const cors = require("cors");
 const cookieParser = require('cookie-parser');
@@ -34,7 +29,7 @@ app.use(express.static(path.join(__dirname, "../build")));
 
 
 
-
+/*
 const PostgresqlStore = genFunc(session);
 app.use(session({
   store: new PostgresqlStore({
@@ -63,7 +58,7 @@ app.get('/api/session-test', (req, res) => {
   }
 });
 
-
+*/
 
 
 
@@ -77,14 +72,7 @@ app.get('/api/session-test', (req, res) => {
 
 app.set("trust proxy", true);
 
-// Importer la route de redirection
-const redirectRoute = require("./routes/redirect");
-
 // Utiliser la route
-app.use("/", redirectRoute);
-app.use("/", qrRoute);
-//app.use("/", adminRoutes);
-app.use("/", qrPlacementsRoutes);
 app.use("/api", apiRoutes);
 
 

@@ -7,6 +7,8 @@ import localspotlogo from "../../assets/images/localspotlogo.png";
 import { AuthContext } from '../Auth/authContext/authContext';
 import { GoogleAuthButton } from "./GoogleAuthButton"
 import Spinner from "../Spinner/Spinner"
+import arrowLeft from "../../assets/images/arrowLeft.png";
+
 
 export default function Signup() {
   const [email, setEmail] = useState(""); 
@@ -52,6 +54,10 @@ export default function Signup() {
 
   return (
     <div className="AuthPage">
+      <div className="continueResearchContainer" onClick={() => {navigate("/scanpage")}}>
+          <img src={arrowLeft}/>
+          <p className="t6">revenir</p>
+      </div>
       <div className="authcomponentcontainer">
         <div className="form-container">
           <img src={localspotlogo} alt="localspot logo"/>

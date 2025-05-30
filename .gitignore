@@ -3,3 +3,4 @@
 /apps/frontend/node_modules
 /apps/frontend/.env
 **/.env
+./viarte_backup.sql

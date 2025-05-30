@@ -5,6 +5,7 @@ import { useNavigate } from "react-router-dom";
 import "./styles.css";
 import { AuthContext } from '../Auth/authContext/authContext';
 import localspotlogo from "../../assets/images/localspotlogo.png";
+import arrowLeft from "../../assets/images/arrowLeft.png";
 import { GoogleAuthButton } from "./GoogleAuthButton"
 import Spinner from "../Spinner/Spinner"
 
@@ -71,6 +72,10 @@ export default function Login() {
 
   return (
     <div className="AuthPage">
+      <div className="continueResearchContainer" onClick={() => {navigate("/scanpage")}}>
+        <img src={arrowLeft}/>
+        <p className="t6">revenir</p>
+      </div>
       <div className="authcomponentcontainer">
         <div className="form-container">
           <img src={localspotlogo} alt="localspot logo"/>

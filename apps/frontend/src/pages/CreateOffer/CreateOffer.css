@@ -1,0 +1,1013 @@
+.CreateOfferContainerAll{
+    /* background-color: red; */
+    position: relative;
+    width: 100vw;
+    height: 100vh;
+    padding: 0%;
+    overflow: hidden;
+}
+
+.CreateOfferContainerAll:has(.CreateOfferPage5){
+    overflow: scroll;
+}
+
+.CreateOfferContainerAll>.CloseButton{
+    /* background-color: orange; */
+    position: fixed;
+    z-index: 3;
+    top: 5px;
+    right: 5px;
+    border: none;
+    background-color: transparent;
+    cursor: pointer;
+}
+.CreateOfferContainerAll>.CloseButton>img{
+    height: 12px;
+    width: 12px;
+    margin: 10px;
+}  
+.CreateOfferContainerAll>.GoBackButton{
+    position: fixed;
+    z-index: 3;
+    top: 10px;
+    left: 10px;
+    background-color: transparent;
+    border: none;
+    display: flex;
+    flex-direction: row;
+    cursor: pointer;
+    align-items: center;
+}
+.CreateOfferContainerAll>.GoBackButton>img{
+    height: 10px;
+    width: 10px;
+    margin-right: 3px;
+}
+
+
+
+
+  /* Style du bouton */
+  .CreateOfferContainerAll .NavigateButton {
+    background: linear-gradient(180deg, #545454, #373737);
+    color: #ffffff;
+    padding: 10px 16px;
+    font-size: 1rem;
+    font-weight: lighter;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: background 1s, transform 0.2s;
+    transition: opacity 0.5s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    margin-top: 15px;
+    width: fit-content;
+    align-self: center;
+    font-size: 0.8rem;
+    position: fixed;
+    bottom: 40px;
+    transform: translate(100px);
+    left: 50%;
+    transform: translateX(-50%);
+    width: calc(100% - 200px);
+    opacity: 0;
+    z-index: 2;
+  }
+  
+  .CreateOfferContainerAll .NavigateButton:hover {
+    background: linear-gradient(180deg, #373737, #545454);
+  }
+
+  .CreateOfferContainerAll .NavigateButton.show {
+    animation: NavigateButtonPopUp 0.8s ease forwards;
+    /* animation-delay: 3.3s; */
+  }
+
+@keyframes NavigateButtonPopUp {
+    0% {
+        transform:  translateX(-50%) scale(0.7);
+        opacity: 0;
+    }
+
+    30% {
+        opacity: 1;
+    }
+
+    60% {
+        transform: translateX(-50%)     scale(1.15);
+        opacity: 1;
+    }
+
+    100% {
+        transform: translateX(-50%)     scale(1);
+                opacity: 1;
+
+    }
+}
+
+@keyframes NavigateButtonFadeOut {
+  0% {
+    transform: translateX(-50%) scale(1);
+    opacity: 1;
+  }
+
+  40% {
+    transform: translateX(-50%) scale(1.15);
+    opacity: 1;
+  }
+
+  70% {
+    opacity: 1;
+  }
+
+  100% {
+    transform: translateX(-50%) scale(0.7);
+    opacity: 0;
+  }
+}
+
+
+.CreateOfferContainerAll .NavigateButton.hide {
+  animation: NavigateButtonFadeOut 0.5s ease forwards;
+}
+
+
+
+
+
+
+
+
+
+.CreateOfferContainerAll>.TopDivOpacity{
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  background: linear-gradient(to bottom,
+      rgb(255, 255, 255) 0%,
+      rgb(255, 255, 255) 60%,
+      rgba(255, 255, 255, 0) 100%
+    );
+  height: 60px;
+  z-index: 2;
+}
+
+
+
+
+
+  
+
+
+.CreateOfferPage1{
+  position: absolute;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  width: 100vw;
+  transition:transform 0.6s ease-in-out;
+}
+.CreateOfferPage1>.t32{
+  text-align: center;
+  width: calc(100% - 20px);
+  padding: 30px;
+  transition: opacity 0.5s ease-out;
+}
+.CreateOfferPage1>.OfferTypeContainer{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 40px;
+  border-radius: 15px;
+  border: 1px solid var(--greysemidark);
+  width: calc(100% - 30px);
+  margin-bottom: 10px;
+  cursor: pointer;
+  transition: opacity 0.5s ease-out;
+}
+.CreateOfferPage1>.OfferTypeContainer:nth-of-type(2) {
+  margin-bottom: 40px;
+}
+.CreateOfferPage1>.OfferTypeContainer>img{
+  width: 25px;
+  height: 25px;
+  margin-right: 8px;
+}
+
+
+
+
+
+.ListCategorieType{
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  width: 100%;
+  flex-wrap: wrap;
+  gap: 6px;
+  row-gap: 8px;
+  padding: 0 15px;
+  /* min-height: 80px; */
+  transition: all 0.6s ease-in-out;
+  position: absolute;
+  margin-top: 480px;
+}
+
+.ListCategorieType .CategorieItemButton{
+  cursor: pointer;
+  padding: 8px 10px;
+  border-radius: 40px;
+  background-color: white; 
+  border: 1px solid var(--greysemidark);
+}
+
+
+.ListCategorieType .CategorieItemButton.selectedCategorie{
+  background-color: var(--greenlight);
+  background-image: linear-gradient(to bottom, #b5edb1, var(--greenlight));
+}
+
+.ListCategorieType .CategorieItemButton.selectedCategorie p{
+  color: var(--greennormal);
+} 
+
+
+@keyframes fadeInCascade {
+  0% {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+.ListCategorieType li {
+    opacity: 0;
+}
+
+
+.ListCategorieType li.startAnimation {
+  animation: fadeInCascade 0.4s ease-out forwards;
+}
+
+
+/* .ListCategorieType li.fadeOut {
+  opacity: 0;
+  animation: fadeOutCascade 0.4s ease-in-out forwards;
+} */
+
+
+
+
+.CreateOfferPage1>.CreatOfferErrorContainer{
+  position: relative;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+.CreateOfferPage1>.CreatOfferErrorContainer>p{
+  position: absolute;
+  top: 20vh;
+  text-align: center;
+  width: 60%;
+  /* top: 20px; */
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+.CreateOfferContainerAll>.CreateOfferEtape{
+    /* background-color: orange; */
+    position: fixed;
+    z-index: 3;
+    top: 3px;
+    right: 35px;
+}
+.CreateOfferContainerAll>.CreateOfferEtape>p{
+    height: 12px;
+    width: 12px;
+    margin: 10px;
+}  
+
+
+.CreateOfferPage2{
+  height: 100vh;
+  width: 100vw;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 0 15px;
+  transition: transform 0.8s ease-in-out;
+  position: absolute;
+  top: 0%;
+  left: 0;
+}
+.CreateOfferPage2>.t32{
+  padding: 0 20px;
+  text-align: center;
+}
+.CreateOfferPage2>.t6{
+  text-align: center;
+  padding: 0 20px;
+  padding-bottom: 30px;
+}
+
+.CreateOfferMapContainer{
+  width: 100%;
+  height: 200px;
+}
+
+  .CreateOfferPage2 input {
+    padding: 8px 16px;
+    font-size: 14px;
+    border: 1px solid var(--greysemidark);
+    border-radius: 30px;
+    background-color: var(--greyverylight);
+    outline: none;
+    transition: border 0.3s, box-shadow 0.3s;
+    width: 80%;
+    margin-top: 15px;
+    margin-bottom: 30px;
+  }
+  
+  .CreateOfferPage2 input::placeholder {
+    color: var(--greymiddledark);
+  }
+  
+  .pac-container > div:first-child {
+  display: none !important;
+}
+
+  .CreateOfferPage2 input:focus {
+    border-color: var(--greymiddledark);
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+  }
+
+
+ .pac-container {
+  margin-top: 10px;
+  border-radius: 12px;
+  font-family: inherit;
+  border: 1px solid var(--greymiddledark);
+  /* border-top: none !important; ✅ important */
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.08);
+  z-index: 9999;
+
+  position: relative;
+
+  display: flex;
+  flex-direction: column;
+}
+
+/* Supprime ligne grise en haut (souvent injectée par Google) */
+.pac-container:before {
+  display: none !important; /* ✅ le hack clé */
+}
+
+.pac-item {
+  padding: 2px 14px;
+  font-size: 14px;
+  color: var(--greymiddledark);
+  cursor: pointer;
+}
+
+.pac-item:hover {
+  background-color: var(--greyverylight);
+}
+
+.pac-item .pac-item-query {
+  font-weight: normal;
+  color: var(--black);
+}
+
+
+
+
+.CreateOfferPage2>.CreatOfferErrorContainer{
+  position: relative;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-bottom: 30px;
+}
+.CreateOfferPage2>.CreatOfferErrorContainer>p{
+  position: absolute;
+  top: 0px;
+  text-align: center;
+  width: 70%;
+  /* top: 20px; */
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+.CreateOfferPage3{
+  height: 100vh;
+  width: 100vw;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 0 15px;
+  transform: translateY(100vh);
+  transition: transform 0.8s ease-in-out;
+  position: absolute;
+  top: 0;
+  left: 0;
+}
+
+
+
+.CreateOfferPage3>.CreatOfferErrorContainer{
+  position: relative;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-bottom: 100px;
+}
+.CreateOfferPage3>.CreatOfferErrorContainer>p{
+  position: absolute;
+  top: 0px;
+  text-align: center;
+  width: 70%;
+  /* top: 20px; */
+}
+
+
+.CreateOfferPage3>.t32{
+  padding: 0 20px;
+  text-align: center;
+}
+.CreateOfferPage3>.t6{
+  text-align: center;
+  padding: 0 25px;
+  padding-bottom: 30px;
+}
+.CreateOfferPage3>.t6>a{
+  text-decoration: underline;
+  text-underline-offset: 2px;
+  text-decoration-thickness: 1px;
+}
+
+.CreateOfferPage3 .CreateOfferAddPhotos{
+  width: 80%;
+  max-width: 250px;
+  min-width: 200px;
+  background-color: var(--greylight);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  border: 1.5px dashed var(--greymiddledark); /* couleur et épaisseur à ajuster */
+  border-radius: 20px; /* optionnel pour des coins arrondis */
+  padding: 30px; 
+  cursor: pointer;
+  margin-bottom: 30px;
+
+}
+
+
+.CreateOfferPage3 .CreateOfferAddPhotos>img{
+  width: 30px;
+  margin-top: 5px;
+  margin-bottom: 10px;
+  opacity: 0.6;
+}
+.CreateOfferPage3 .CreateOfferAddPhotos>p{
+  color: var(--greydark);  
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+.CreateOfferPage4{
+  min-height: 100vh;
+  width: 100vw;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 0 15px;
+  /* transition: transform 0.8s ease-in-out; */
+  position: absolute;
+  top: 0;
+  left: 0;
+  padding-top: 80px;
+  padding-bottom: 110px;
+}
+
+.CreateOfferPage4>.RowAddImage{
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 40px;
+  width: 100%;
+  margin-bottom: 15px;
+}
+
+.CreateOfferPage4>.RowAddImage>.CreateOfferAddPhotos{
+  padding: 5px;
+  height: 30px;
+}
+
+.CreateOfferPage4>.RowAddImage>.CreateOfferAddPhotos>img{
+  width: 20px;
+  height: 20px;
+}
+
+
+
+
+
+.TemplateOffer{
+  border-radius: 10px;
+  border: 1px solid var(--greysemidark);
+  /* background-color: red; */
+  
+  width: 60%;
+  min-width: 200px;
+  max-width: 300px;
+  /* margin-left: 8px; */
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+  cursor: pointer;
+}
+.TemplateOffer>.TemplaetOfferImg{
+  border-radius: 9px;
+  border-bottom-right-radius: 0;
+  border-bottom-left-radius: 0;
+  width: 100%;
+  aspect-ratio: 16/9;
+  height: 120px;
+  object-fit: cover;
+  background-color: var(--greysemidark);
+}
+.TemplateOffer>.TemplaetOfferImg>img{
+  height: 100%;
+  width: 100%;
+  border-top-left-radius: 9px;
+  border-top-right-radius: 9px;
+  object-fit: cover;
+}
+.TemplateOffer>.TemplateOfferInfo{
+  min-height: 150px;
+  padding: 10px 10px 10px 10px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between; /* ✅ pousse .BottomDiv en bas */
+}
+
+.TemplateOffer>.TemplateOfferInfo>.TemplateOfferTopDiv>.t5{
+  padding-bottom: 6px;
+  word-break: break-word; /* utile pour couper les mots très longs */
+   white-space: normal;       /* ✅ autorise le retour à la ligne */
+  word-wrap: break-word;     /* ✅ coupe les mots si trop longs */
+  overflow-wrap: break-word; /* ✅ comportement moderne équivalent */
+  max-width: 100%; 
+
+}
+.TemplateOffer>.TemplateOfferInfo>.TemplateOfferTopDiv>.OffersInfoDuration{
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+
+}
+.TemplateOffer>.TemplateOfferInfo>.TemplateOfferTopDiv>.TemplateOfferDuration{
+  height: 15px;
+  margin-right: 4px;
+  background-color: var(--greylight);
+}
+.TemplateOffer>.TemplateOfferInfo>.TemplateOfferTopDiv>.TemplateOfferTitle{
+  margin-right: 20px;
+  background-color: var(--greylight);
+  height: 25px;
+  margin-bottom: 5px;
+}
+
+.TemplateOffer>.TemplateOfferInfo>.TemplateOfferBottomDiv{
+   margin-top: auto;
+}
+.TemplateOffer>.TemplateOfferInfo>.TemplateOfferBottomDiv>.TemplateOfferStarList{
+  margin-bottom: 2px;
+  margin-top: 15px;
+}
+.TemplateOffer>.TemplateOfferInfo>.TemplateOfferBottomDiv>.TemplateOfferStarList>img{
+  width: 13px;
+  height: 13px;
+  margin-right: 5px;
+}
+.TemplateOffer>.TemplateOfferInfo>.TemplateOfferBottomDiv>.TemplateOfferPrice{
+  width: 80%;
+  height: 15px;
+  background-color: var(--greylight);
+}
+
+
+.CreateOfferPhotoList{
+  width: 100vw;
+  padding: 0  15px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+.CreateOfferPhotoItem{
+  /* border: 1px solid var(--greymiddledark);
+  border-radius: 20px; */
+  /* width: calc(100vw - 20px); */
+  width: 100%;
+  min-width: 100%;
+  padding: 0px;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  border: 1px solid var(--greysemidark);
+  border-radius: 15px;
+  padding-left: 15px;
+  background-color: white;
+}
+
+.CreateOfferPhotoItem>.TakeContainer{
+  /* border: 1px solid var(--greymiddledark);
+  border-radius: 20px; */
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+}
+
+.CreateOfferPhotoItem>.TakeContainer>.TakeVerticalBar{
+  /* border: 1px solid var(--greymiddledark);
+  border-radius: 20px; */
+  height: 3px;
+  width: 20px;
+  border-radius: 20px;
+  background-color: var(--greysemidark);
+}
+
+
+
+.CreateOfferPhotoItem>.OverviewImageContainer{
+  position: relative;
+  margin: 8px;
+  width: 100px;
+  height: 100px;
+  border-radius: 8px;
+  overflow: hidden;
+  border: 1px solid var(--greymiddledark);
+}
+
+.CreateOfferPhotoItem>.OverviewImageContainer>img{
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.CreateOfferPhotoItem>.OverviewImageContainer>.RemovePhoto{
+  position: absolute;
+  top: 0;
+  right: 0;
+  background-color: white;
+  padding: 5px;
+  padding-bottom: 2px;
+  border: none;
+  border-bottom-left-radius: 6px;
+  cursor: pointer;
+}
+
+.CreateOfferPhotoItem>.OverviewImageContainer>.RemovePhoto>img{
+  width: 15px;
+  height: 15px;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/*//////////////////////////*/
+
+
+.CreateOfferPage5{
+  min-height: 100vh;
+  width: 100vw;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 0 15px;
+  /* transform: translateY(0vh); */
+  /* transition: transform 0.8s ease-in-out; */
+  position: absolute;
+  top: 0;
+  left: 0;
+  padding-top: 80px;
+  padding-bottom: 110px;
+}
+.CreateOfferPage5 .NavigateButton{
+  opacity: 1!important;
+}
+
+
+
+.CreateOfferPage5>form{
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  padding: 10px;
+  padding-top: 15px;
+}
+.CreateOfferPage5>form>.t4{
+  padding-top: 20px;
+}
+.CreateOfferPage5>form .InputText{
+  border: none;
+  border-bottom: 1px solid var(--greysemidark);
+  padding-bottom: 2px;
+  /* padding-top: 2px; */
+  color: var(--greydark);
+}
+.CreateOfferPage5>form .InputText:focus {
+  outline: none;
+  padding-bottom: 2px; /* ← ajoute de l’espace ici */
+  border-bottom: 1px solid var(--greysemidark); /* facultatif ici, redéfini juste au cas où */
+}
+
+.CreateOfferPage5>form>.DescriptionInput{
+  border: none;
+  border: 1px solid var(--greysemidark);
+  padding-bottom: 2px;
+  padding-top: 5px;
+  color: var(--greydark);
+  margin-top: 5px;
+  padding: 8px 10px;
+  padding-bottom: 10px;
+  border-radius: 10px;
+  font-family: 'Inter', sans-serif;
+}
+.CreateOfferPage5>form>.DescriptionInput:focus {
+  outline: none;
+  border-bottom: 1px solid var(--greysemidark); /* facultatif ici, redéfini juste au cas où */
+}
+
+.CreateOfferPage5>form>.RightInfo {
+  text-align: right;/* facultatif ici, redéfini juste au cas où */
+  margin-top: 4px;
+  margin-right: 5px;
+}
+
+.CreateOfferPage5 .PriceInputWrapper{
+}
+.CreateOfferPage5 .PriceInputWrapper>input{
+  position: relative;
+  width: 40px;
+  top: -0px;
+  padding: 2px;
+}
+
+
+.CreateOfferPage5 .PriceSuffix{
+  color: var(--greydark);
+}
+
+.CreateOfferPage5 .CheckboxLabel{
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  margin-top: 15px;
+}
+.CreateOfferPage5 .CheckboxLabel>.t4{
+  margin-right: 15px;
+  padding-bottom: 3px;
+}
+.CreateOfferPage5 .CheckboxLabel+.t6{
+  /* margin-top: 3px; */
+  color: var(--greymiddledark);
+}
+
+.CreateOfferPage5 form>.NavigateButton{
+  margin-top: 60px;
+  position: relative;
+  top: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  align-self: auto;
+  opacity: 1;
+}
+
+.CreateOfferPage5 .RowDuration{
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+}
+.CreateOfferPage5 .RowDuration>img{
+  width: 13px;
+  height: 13px;
+  margin-right: 5px;
+}
+.CreateOfferPage5 .RowConcellablre{
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  padding-top: 5px;
+}
+.CreateOfferPage5 .RowConcellablre>img{
+  width: 14px;
+  height: 14px;
+  margin-right: 5px;
+}
+.CreateOfferPage5 .RowConcellablre>p{
+  color: var(--greennormal);
+}
+
+.CreateOfferPage5 .OptionSearch{
+  padding: 8px 12px;
+}
+
+.CreateOfferPage5 .OptionSearch .PointOpenButton{ 
+  display: flex;
+  flex-direction: row;
+  width: 100%;
+  justify-content: space-between;
+  align-items: center;
+  cursor: pointer;
+}
+.CreateOfferPage5 .OptionSearch .PointOpenButton>img{ 
+  width: 12px;
+  height: 12px;
+}
+.CreateOfferPage5 .PointInput{
+  width: 100%;
+  border: none;
+  border: 1px solid var(--greysemidark);
+  padding-bottom: 2px;
+  padding-top: 5px;
+  color: var(--greydark);
+  margin-top: 10px;
+  padding: 8px 10px;
+  padding-bottom: 10px;
+  border-radius: 80px;
+  font-family: 'Inter', sans-serif;
+}
+.CreateOfferPage5 .PointInput:focus {
+  outline: none;
+  border-bottom: 1px solid var(--greysemidark); /* facultatif ici, redéfini juste au cas où */
+}
+
+.CreateOfferPage5 .PointInput:focus {
+  outline: none;
+  border-bottom: 1px solid var(--greysemidark); /* facultatif ici, redéfini juste au cas où */
+}
+.CreateOfferPage5 .OptionSearch .AddPointButton{
+  width: 100%;
+  border: none;
+  border: 1px solid var(--greysemidark);
+  padding-bottom: 2px;
+  padding-top: 5px;
+  color: var(--greydark);
+  background-color: var(--greyverylight);
+  margin-top: 10px;
+  padding: 8px 10px;
+  padding-bottom: 10px;
+  border-radius: 80px;
+  font-family: 'Inter', sans-serif;
+  cursor: pointer;
+  margin-bottom: 5px;
+}
+.CreateOfferPage5 .OptionSearch .AddPointButton:disabled{
+  opacity: 0.5;
+  pointer-events: none;
+  cursor: not-allowed;
+}
+
+
+
+/*/////////////////////////Select */
+.CreateOfferPage5 .PriceInputWrapper select {
+  padding: 5px 6px;
+  border: none;
+  border-bottom: 1px solid var(--greysemidark);
+  color: var(--greydark);
+  font-family: inherit;
+  margin-left: 5px;
+  cursor: pointer;
+  appearance: none; /* cache la flèche par défaut */
+  background-image: url("../../assets/images/arrowdownicon.png"); /* une icône de ton choix */
+  background-repeat: no-repeat;
+  background-position: right 4px top 10px;
+  background-size: 10px;
+  padding-right: 20px; /* espace pour l'icône */
+}
+
+.PriceInputWrapper select::after {
+  content: "";
+  position: absolute;
+  right: 8px;
+  top: 50%;
+  transform: translateY(-50%) rotate(0deg);
+  width: 10px;
+  height: 10px;
+  background-image: url("../../assets/images/arrowdownicon.png");
+  background-size: cover;
+  background-repeat: no-repeat;
+  transition: transform 0.3s ease;
+  pointer-events: none;
+}
+
+.CreateOfferPage5 .PriceInputWrapper select:focus {
+  padding: 5px 6px;
+  outline: none;  
+   background-image: url("../../assets/images/arrowdownicon.png"); /* une icône de ton choix */
+  background-repeat: no-repeat;
+  background-position: right 4px top 10px;
+  background-size: 10px;
+  padding-right: 20px;
+}

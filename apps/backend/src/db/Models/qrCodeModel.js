@@ -1,38 +1,27 @@
 const db = require("../index");
 
 // 🔹 Crée un nouveau QR code
-async function createQRCode(slug, url, displayId, category_id) {
+async function createQRCode(slug, id_hote, latitude, longitude, adresse, image_url) {
   const query = `
-    INSERT INTO qr_codes (slug, url, display_id, category_id)
-    VALUES ($1, $2, $3, $4)
+    INSERT INTO qr_codes (slug, id_hote, latitude, longitude, adresse, image_url)
+    VALUES ($1, $2, $3, $4, $5, $6)
     RETURNING *;
   `;
-  const values = [slug, url, displayId, category_id];
+  const values = [slug, id_hote, latitude, longitude, adresse, image_url];
   const result = await db.query(query, values);
   return result.rows[0];
 }
 
-// 🔹 Récupère un QR code par son slug
 async function getQRCodeBySlug(slug) {
-  const result = await db.query("SELECT * FROM qr_codes WHERE slug = $1", [slug]);
-  return result.rows[0];
-}
-
-// 🔹 Récupère tous les QR codes
-async function getAllQRCodes() {
-  const result = await db.query(`
-    SELECT 
-      q.*, 
-      c.name AS category_name
-    FROM qr_codes q
-    LEFT JOIN categories c ON q.category_id = c.id
-    ORDER BY q.created_at DESC;
-  `);
-  return result.rows;
+  const query = `
+    SELECT * FROM qr_codes WHERE qr_codes.slug = $1
+  `;
+  const values = [slug];
+  const result = await db.query(query, values);
+  return result;
 }
 
 module.exports = {
   createQRCode,
   getQRCodeBySlug,
-  getAllQRCodes,
 };

@@ -2,15 +2,13 @@ const express = require("express");
 const router = express.Router();
 
 // Importe les sous-routes
-const qrPlacementsRoutes = require("./qr-placements");
-const scansRoutes = require("./scan");
 const authRoutes = require('../../auth/authRoutes');
-
-// Monte les routes sur leur chemin respectif
-router.use("/qr-placements", qrPlacementsRoutes);
- router.use("/scans", scansRoutes);
+const offerRoutes = require('./offer/offerRoutes');
+const qrcodeRoutes = require('./qrcode/qrcodeRoutes');
 
 router.use('/auth', authRoutes);
+router.use('/offer', offerRoutes);
+router.use('/qrcode', qrcodeRoutes);
 
  
 module.exports = router;

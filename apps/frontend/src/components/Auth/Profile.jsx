@@ -5,6 +5,7 @@ import { useNavigate } from "react-router-dom";
 import "./styles.css";
 import { AuthContext } from "./authContext/authContext"
 import Spinner from "../Spinner/Spinner";
+import plusRound from "../../assets/images/plusRound.png"
 
 export default function Profile() {
   const navigate = useNavigate();
@@ -50,7 +51,26 @@ export default function Profile() {
       {authState.loading ? <Spinner centerPage={true}/> : 
       <div className="profile-container">
         <div className="principalcolumn">   
-          <p className="t3">Profile</p>
+
+          <p className="t2">Profile</p>
+          <p className="t4">Mes offres</p>
+          <div className="ProfileOfferContainer">
+            <div className="ProfileOfferItem">
+              <div className="ProfileOfferImg"></div>
+              <div className="ProfileOfferTitle"></div>
+              <div className="ProfileOfferDescription"></div>
+              <div className="ProfileOfferComplement"></div>
+              <div className="ProfileOfferPrice"></div>
+            </div>
+            <div className="ProfileOfferItem">
+              <div className="ProfileOfferImg"></div>
+              <div className="ProfileOfferTitle"></div>
+              <div className="ProfileOfferTitle"></div>
+            </div>
+          </div>
+          <button className="ProfileAddOffertContainer" onClick={() => {navigate("/create-offer")}}>
+            Ajouter une offre
+          </button>
           <div className="informationscontainer">
             <p>{authState.isAuth ? "Bravo tu est connecté" :"Nullos pas connecté"}</p>
           <p className="t5"><strong>Id:</strong> {authState.user?.id}</p>

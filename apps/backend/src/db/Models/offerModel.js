@@ -1,0 +1,89 @@
+const db = require("../index");
+
+// 🔹 Crée une nouvelle offre
+async function createOffer({
+  title,
+  description,
+  adresse,
+  latitude,
+  longitude,
+  categories,
+  type,
+  city_id,
+  price,
+  duration,
+  image_urls,
+  id_hote,
+  pricePer,
+  qrcode_url,
+  slug,
+}) {
+  const query = `
+    INSERT INTO offers (
+      title,
+      description,
+      adresse,
+      latitude,
+      longitude,
+      categories,
+      type,
+      city_id,
+      price,
+      duration,
+      image_urls,
+      id_hote,
+      pricePer,
+      qrcode_url,
+      slug
+    )
+    VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, $14, $15)
+    RETURNING *;
+  `;
+
+  const values = [
+    title,
+    description,
+    adresse,
+    latitude,
+    longitude,
+    categories,
+    type,
+    city_id,
+    price,
+    duration,
+    image_urls,
+    id_hote,
+    pricePer,
+    qrcode_url,
+    slug
+  ];
+
+  const result = await db.query(query, values);
+  return result.rows[0];
+}
+
+// 🔹 Récupère une offre par son ID
+async function getOfferBySlug(slug) {
+  const result = await db.query(`SELECT * FROM offers WHERE slug = $1`, [slug]);
+  return result.rows[0];
+}
+
+// 🔹 Récupère toutes les offres
+async function getAllOffers() {
+  const result = await db.query(`SELECT * FROM offers ORDER BY created_at DESC`);
+  return result.rows;
+}
+
+
+
+
+
+
+
+
+
+module.exports = {
+  createOffer,
+  getOfferBySlug,
+  getAllOffers
+};
