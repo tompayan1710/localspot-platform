@@ -2,7 +2,7 @@ import "./CreateOffer.css"
 
 import crossiconBlack from "../../assets/images/crossiconBlack.png"
 import arrowLeft from "../../assets/images/arrowLeft.png"
-import jetskyIcon from "../../assets/images/jetskyIcon.png"
+import jetSkieIcon from "../../assets/images/jetSkieIcon.png"
 import foodIcon from "../../assets/images/foodIcon.png"
 import plusicon from "../../assets/images/plusicon.png"
 import trashicon from "../../assets/images/trashicon.png"

@@ -1,7 +1,7 @@
 import "./BottomNavBar.css";
 import { useNavigate } from "react-router-dom"; // 👈 pour naviguer
 import { forwardRef } from "react"
-import jetskyIcon from "../../assets/images/jetskyIcon.png"
+import jetSkieIcon from "../../assets/images/jetSkieIcon.png"
 import foodIcon from "../../assets/images/foodIcon.png"
 import userIcon from "../../assets/images/userIcon.png"
 import mapIcon from "../../assets/images/mapIcon.webp"
@@ -11,7 +11,7 @@ const BottomNavBar = forwardRef((props, ref) => {
 
 
   return (
-    <div ref={ref} className={`BottomNavBar ${props.firstRender ? "firstRender" : ""}`}>
+    <div ref={ref} className={`BottomNavBar`}>
       
       {
         props.isMap?
@@ -22,10 +22,10 @@ const BottomNavBar = forwardRef((props, ref) => {
         <></>
       }
 
-        <button className="NavBarButton">
-            <img src={jetskyIcon}/>
+        <button className="NavBarButton" onClick={() => navigate("/")}>
+            <img src={jetSkieIcon}/>
         </button>
-        <button className="NavBarButton">
+        <button className="NavBarButton" onClick={() => navigate("/")}>
             <img src={foodIcon} />
         </button>
         <button className="NavBarButton" onClick={() => navigate("/profile")}> 

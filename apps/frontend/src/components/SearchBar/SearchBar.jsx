@@ -47,7 +47,7 @@ const SearchBar = forwardRef((props, ref) => {
 
 
   return (
-      <div ref={ref} className={`SearchContainer ${searchOpen ?  "searchOpen" : ""} ${props.firstRender ? "firstRender" : ""}`}>
+      <div ref={ref} className={`SearchContainer ${searchOpen ?  "searchOpen" : ""}`}>
         <form className="StartSearch"  
         // onSubmit={handleLogin}>
         >     

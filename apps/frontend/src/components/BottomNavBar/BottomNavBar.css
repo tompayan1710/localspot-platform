@@ -20,16 +20,13 @@
     padding: 0 10px;
     cursor: pointer;
 }
-
+ 
 .NavBarButton img{
     height: 30px;
     width: 30px;
+    opacity: 0.8;
 }
-
-
-.BottomNavBar.firstRender{
-  bottom: -200px   ;
-}
+ 
 .BottomNavBar.sliderInBottomNav{
   animation: sliderInBottomNav 0.8s ease-out forwards;
 }

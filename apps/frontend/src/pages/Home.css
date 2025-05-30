@@ -51,7 +51,7 @@
   width: 100vw;
   /* background-color: orange; */
   position: relative;
-  top: 100vh;
+  top: 0;
   padding-bottom: 60px;
 }
 .HomeContainer.slideUpHome{
@@ -83,10 +83,11 @@ animation: slideUpHome 0.8s ease forwards;
 .HomeListOffers{
   display: flex;
   flex-direction: row;
-  width: 100vw;
+  /* width: 100vw; */
   padding: 15px 0;
   padding-left: 15px;
   padding-right: 7px;
+  margin: 0%;
   overflow: scroll;
   
 }

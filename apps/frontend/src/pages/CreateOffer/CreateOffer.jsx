@@ -2,7 +2,7 @@ import "./CreateOffer.css"
 
 import crossiconBlack from "../../assets/images/crossiconBlack.png"
 import arrowLeft from "../../assets/images/arrowLeft.png"
-import jetskyIcon from "../../assets/images/jetskyIcon.png"
+import jetSkieIcon from "../../assets/images/jetSkieIcon.png"
 import foodIcon from "../../assets/images/foodIcon.png"
 import { useNavigate } from "react-router-dom"
 
@@ -160,7 +160,7 @@ export default function CreateOffer(){
             <div className="CreateOfferPage1" ref={refCreateOfferPage1}>
                 <p ref={refTitleType} className="t32">Quelle type d'offre proposez-vous&nbsp;?</p>
                 <div ref={refActivityType} className="OfferTypeContainer" onClick={(e) => show(e, "Activite")}>
-                    <img src={jetskyIcon}/>
+                    <img src={jetSkieIcon}/>
                     <p>Activité / Service</p>
                 </div>
                 <div ref={refFoodType} className="OfferTypeContainer" onClick={(e) => show(e, "Food")}>
