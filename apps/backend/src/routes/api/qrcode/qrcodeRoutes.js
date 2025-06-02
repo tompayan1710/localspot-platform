@@ -57,4 +57,25 @@ router.post("/create", async (req, res) => {
   }
 });
 
+
+// (optionnel) Récupère une offre par son ID
+router.get("/get", async (req, res) => {
+  const slug = req.query.slug;
+
+  if (!slug) {
+    return res.status(400).json({ success: false, error: "slug manquant" });
+  }
+
+  try {
+    const qrcode = await getQRCodeBySlug(slug);
+    if (!qrcode) {
+      return res.status(404).json({ success: false, error: "QRCode non trouvée" });
+    }
+    res.json({ success: true, qrcode: qrcode.rows[0] });
+  } catch (err) {
+    res.status(500).json({ success: false, error: "Erreur serveur" });
+  }
+});
+
+
 module.exports = router;

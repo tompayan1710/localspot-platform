@@ -1,0 +1,430 @@
+.BecomeProviderAll{
+    /* background-color: red; */
+    position: relative;
+    width: 100vw;
+    height: 100vh;
+    padding: 0%;
+    overflow: hidden;
+}
+
+.BecomeProviderAll:has(.CreateOfferPage5){
+    overflow: scroll;
+}
+
+.BecomeProviderAll>.CloseButton{
+    /* background-color: orange; */
+    position: fixed;
+    z-index: 3;
+    top: 5px;
+    right: 5px;
+    border: none;
+    background-color: transparent;
+    cursor: pointer;
+}
+.BecomeProviderAll>.CloseButton>img{
+    height: 12px;
+    width: 12px;
+    margin: 10px;
+}  
+.BecomeProviderAll>.GoBackButton{
+    position: fixed;
+    z-index: 3;
+    top: 10px;
+    left: 10px;
+    background-color: transparent;
+    border: none;
+    display: flex;
+    flex-direction: row;
+    cursor: pointer;
+    align-items: center;
+    opacity: 0;
+    transition: opacity 0.6s ease-in-out;
+}
+.BecomeProviderAll>.GoBackButton>img{
+    height: 10px;
+    width: 10px;
+    margin-right: 3px;
+}
+
+
+
+
+
+
+
+
+.CreateOfferContainerAll>.CloseButton{
+    /* background-color: orange; */
+    position: fixed;
+    z-index: 3;
+    top: 5px;
+    right: 5px;
+    border: none;
+    background-color: transparent;
+    cursor: pointer;
+}
+.CreateOfferContainerAll>.CloseButton>img{
+    height: 12px;
+    width: 12px;
+    margin: 10px;
+}  
+
+
+
+
+
+
+  /* Style du bouton */
+  .BecomeProviderAll .NavigateButton {
+    background: linear-gradient(180deg, #545454, #373737);
+    color: #ffffff;
+    padding: 10px 16px;
+    font-size: 1rem;
+    font-weight: lighter;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: background 1s, transform 0.2s;
+    transition: opacity 0.5s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    margin-top: 15px;
+    width: fit-content;
+    align-self: center;
+    font-size: 0.8rem;
+    position: fixed;
+    bottom: 40px;
+    transform: translate(100px);
+    left: 50%;
+    transform: translateX(-50%);
+    width: calc(100% - 200px);
+    opacity: 0;
+    z-index: 2;
+  }
+  
+  .BecomeProviderAll .NavigateButton:hover {
+    background: linear-gradient(180deg, #373737, #545454);
+  }
+
+  .BecomeProviderAll .NavigateButton.show {
+    animation: NavigateButtonPopUp 0.8s ease forwards;
+    /* animation-delay: 3.3s; */
+  }
+
+@keyframes NavigateButtonPopUp {
+    0% {
+        transform:  translateX(-50%) scale(0.7);
+        opacity: 0;
+    }
+
+    30% {
+        opacity: 1;
+    }
+
+    60% {
+        transform: translateX(-50%)     scale(1.15);
+        opacity: 1;
+    }
+
+    100% {
+        transform: translateX(-50%)     scale(1);
+                opacity: 1;
+
+    }
+}
+
+@keyframes NavigateButtonFadeOut {
+  0% {
+    transform: translateX(-50%) scale(1);
+    opacity: 1;
+  }
+
+  40% {
+    transform: translateX(-50%) scale(1.15);
+    opacity: 1;
+  }
+
+  70% {
+    opacity: 1;
+  }
+
+  100% {
+    transform: translateX(-50%) scale(0.7);
+    opacity: 0;
+  }
+}
+
+
+.BecomeProviderAll .NavigateButton.hide {
+  animation: NavigateButtonFadeOut 0.5s ease forwards;
+}
+
+
+
+
+
+
+
+
+
+.BecomeProviderAll>.TopDivOpacity{
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  background: linear-gradient(to bottom,
+      rgb(255, 255, 255) 0%,
+      rgb(255, 255, 255) 60%,
+      rgba(255, 255, 255, 0) 100%
+    );
+  height: 60px;
+  z-index: 2;
+}
+
+
+
+
+
+  
+
+
+.BecomeProviderPage1{
+  position: absolute;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  width: 100vw;
+  transition:transform 0.6s ease-in-out;
+}
+.BecomeProviderPage1>.t32{
+  text-align: center;
+  width: calc(100% - 20px);
+  padding: 30px;
+  transition: opacity 0.5s ease-out;
+}
+.BecomeProviderPage1>.ProviderTypeContainer{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 40px;
+  border-radius: 15px;
+  border: 1px solid var(--greysemidark);
+  width: calc(100% - 30px);
+  margin-bottom: 10px;
+  cursor: pointer;
+  transition: opacity 0.5s ease-out;
+}
+.BecomeProviderPage1>.ProviderTypeContainer:nth-of-type(2) {
+  margin-bottom: 40px;
+}
+.BecomeProviderPage1>.ProviderTypeContainer>img{
+  width: 25px;
+  height: 25px;
+  margin-right: 8px;
+}
+
+
+
+
+
+.ListStrucQuestion{
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  width: 100%;
+  flex-wrap: wrap;
+  gap: 6px;
+  row-gap: 8px;
+  padding: 0 15px;
+  /* min-height: 80px; */
+  transition: all 0.6s ease-in-out;
+  position: absolute;
+  margin-top: 480px;
+}
+.ListStrucQuestion>.StrucQuestionContainer{
+    width: 100%;
+    padding: 0 10px;
+    text-align: center;
+    opacity: 0;
+    transition: opacity 0.6s ease-in-out;
+}
+
+.ListStrucQuestion>li{
+  list-style: none;
+}
+.ListStrucQuestion .SizeItemButton{
+  cursor: pointer;
+  padding: 8px 10px;
+  border-radius: 40px;
+  background-color: white; 
+  border: 1px solid var(--greysemidark);
+}
+
+
+.ListStrucQuestion .SizeItemButton.selectedSize{
+  background-color: var(--greenlight);
+  background-image: linear-gradient(to bottom, #b5edb1, var(--greenlight));
+}
+
+.ListStrucQuestion .SizeItemButton.selectedSize p{
+  color: var(--greennormal);
+} 
+
+
+@keyframes fadeInCascade {
+  0% {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+.ListStrucQuestion li {
+    opacity: 0;
+}
+
+
+.ListStrucQuestion li.startAnimation {
+  animation: fadeInCascade 0.4s ease-out forwards;
+}
+
+
+/* .ListStrucQuestion li.fadeOut {
+  opacity: 0;
+  animation: fadeOutCascade 0.4s ease-in-out forwards;
+} */
+
+
+
+
+.BecomeProviderPage1>.CreatOfferErrorContainer{
+  position: relative;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+.BecomeProviderPage1>.CreatOfferErrorContainer>p{
+  position: absolute;
+  top: 20vh;
+  text-align: center;
+  width: 60%;
+  /* top: 20px; */
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+.BecomeProviderAll>.CreateOfferEtape{
+    /* background-color: orange; */
+    position: fixed;
+    z-index: 3;
+    top: 3px;
+    right: 35px;
+}
+.BecomeProviderAll>.CreateOfferEtape>p{
+    height: 12px;
+    width: 12px;
+    margin: 10px;
+}  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/*///////////////////////////////*/
+
+
+.BecomePartnerContainer{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-content: center;
+    align-items: center;
+    width: 100vw;
+    height: 100vh;
+}
+
+.PartnerEtape{
+    position: fixed;
+    top: 0;
+    right: 0;
+    padding: 10px;
+}
+
+.BecomePartnerContainer>p:nth-of-type(1){
+    text-align: center;
+    padding: 0 15px 6px 15px;
+}
+.BecomePartnerContainer>p:nth-of-type(2){
+    text-align: center;
+    padding: 0 15px 50px 15px;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+

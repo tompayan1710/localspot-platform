@@ -45,7 +45,7 @@ export default function Signup() {
 
         checkAuth();
 
-        navigate("/dashboard2");
+        navigate("/profile");
       } else {
         setMessage("Erreur lors de la connexion automatique.");
       }

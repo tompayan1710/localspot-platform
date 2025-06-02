@@ -8,8 +8,10 @@ import plusicon from "../../assets/images/plusicon.png"
 import trashicon from "../../assets/images/trashicon.png"
 import galleryPhotosIcon from "../../assets/images/galleryPhotosIcon.png"
 import { useNavigate } from "react-router-dom"
+import { useRef, useState, useEffect } from "react";
+import { AuthContext } from "../../components/Auth/authContext/authContext"
+import { useContext } from "react";
 
-import { useRef, useState, useEffect } from "react"
 import Map2D from "../../components/Maps/Map2D"
 
 import { useJsApiLoader } from "@react-google-maps/api";
@@ -20,10 +22,27 @@ import Sortable from "sortablejs";
 
 
 import { useLocation } from "react-router-dom";
+// import Spinner from "../../components/Spinner/Spinner"
 
 export default function CreateOfferAddress(){
+  const { authState, logout } = useContext(AuthContext);
+  const navigate = useNavigate();
+
   const location = useLocation();
   const { type, categories } = location.state || {};
+
+  useEffect(() => {
+    const missingData = !type || !categories;
+
+    if (missingData) {
+        console.warn("⛔️ Données manquantes dans location.state, redirection...");
+        navigate("/create-offer"); // ou la première étape
+      } else if (!authState.loading && !authState.isAuth) {
+        console.warn("🔒 Utilisateur non connecté, redirection...");
+        navigate("/login");
+    }
+  }, [authState, navigate, location.state]); // ✅ Suivre loading et isAuth
+
 
   const adresseRef = useRef(null);
   const [formData, setFormData] = useState({
@@ -43,9 +62,6 @@ export default function CreateOfferAddress(){
       console.warn(type, categories);
 
       console.log("Offre sélectionnée :", type, categories);
-
-
-
     if (!window.google) return;
 
     const autocomplete = new window.google.maps.places.Autocomplete(adresseRef.current, {
@@ -103,7 +119,6 @@ export default function CreateOfferAddress(){
     // 👉 ici, envoie vers ton API backend avec fetch ou axios
   };
 
-    const navigate = useNavigate();
     const refNavigateButton = useRef(null);
 
     const refCreateOfferPage2 = useRef(null);
@@ -220,7 +235,7 @@ export default function CreateOfferAddress(){
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
-          id_hote: 1, // à récupérer dynamiquement si possible
+          id_hote: authState.user.id, // à récupérer dynamiquement si possible
           latitude: formData.latitude,
           longitude: formData.longitude,
           adresse: formData.adresse,
@@ -294,7 +309,6 @@ export default function CreateOfferAddress(){
 
 
 
-    
     return (
         <div className="CreateOfferContainerAll" ref={refContainerAll}>
             <button className="CloseButton" onClick={() => navigate("/profile")}><img src={crossiconBlack}/></button>

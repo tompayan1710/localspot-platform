@@ -10,6 +10,15 @@ body {
   overflow-x: hidden;
 }
 
+html, body {
+  scrollbar-width: none;         /* Firefox */
+  -ms-overflow-style: none;      /* IE */
+}
+
+body::-webkit-scrollbar {
+  display: none;                 /* Chrome/Safari */
+}
+
 code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;

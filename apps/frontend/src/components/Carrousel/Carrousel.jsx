@@ -18,7 +18,7 @@ export default function Carrousel({photos}) {
       })
     }  
   </div>
-</div>
+</div> 
   );
 }
 

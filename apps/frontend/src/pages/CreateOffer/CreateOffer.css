@@ -37,6 +37,8 @@
     flex-direction: row;
     cursor: pointer;
     align-items: center;
+    opacity: 0;
+    transition: opacity 0.6s ease-in-out;
 }
 .CreateOfferContainerAll>.GoBackButton>img{
     height: 10px;
@@ -219,6 +221,9 @@
   margin-top: 480px;
 }
 
+.ListCategorieType>li{
+  list-style: none;
+}
 .ListCategorieType .CategorieItemButton{
   cursor: pointer;
   padding: 8px 10px;

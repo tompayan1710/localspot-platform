@@ -5,10 +5,23 @@ import arrowLeft from "../../assets/images/arrowLeft.png"
 import jetSkieIcon from "../../assets/images/jetSkieIcon.png"
 import foodIcon from "../../assets/images/foodIcon.png"
 import { useNavigate } from "react-router-dom"
+import { useEffect, useContext } from "react";
+import { AuthContext } from "../../components/Auth/authContext/authContext"
 
 import { useRef, useState } from "react"
+import Spinner from "../../components/Spinner/Spinner"
 export default function CreateOffer(){
+    const { authState, logout } = useContext(AuthContext);
     const navigate = useNavigate();
+    
+    useEffect(() => {
+        if (!authState.loading && !authState.isAuth) {
+        console.log("🔄 Redirection car non authentifié");
+        navigate("/login");
+        }
+    }, [authState.loading, authState.isAuth, navigate]); // ✅ Suivre loading et isAuth
+
+    
     const refNavigateButton = useRef(null);
 
     const refCreateOfferPage1 = useRef(null);
@@ -17,6 +30,7 @@ export default function CreateOffer(){
     const refTitleType= useRef(null);
     const refListCategorie= useRef(null);
     const RefErrorContainer= useRef(null);
+    const refGoBackButton= useRef(null);
 
     const [typeSelected, setTypeSelected] = useState("");
     const [errorSelected, setErrorSelected] = useState("");
@@ -47,8 +61,7 @@ export default function CreateOffer(){
           }
 
             refTitleType.current.style.opacity = "0"; // on cache l'autre
-
-            
+            refGoBackButton.current.style.opacity = "1";
             refCreateOfferPage1.current.style.transform = `translateY(-${20 + offset}vh)`;
 
             setTimeout(() => {
@@ -95,6 +108,8 @@ export default function CreateOffer(){
         refCreateOfferPage1.current.style.transform = `translateY(0vh)`;
         refListCategorie.current.style.transform = `translateY(0vh)`;
         refListCategorie.current.style.marginTop = `480px`;
+        refGoBackButton.current.style.opacity = "0";
+
 
         setTimeout(() => {
             refListCategorie.current.style.opacity="0";            
@@ -132,6 +147,9 @@ export default function CreateOffer(){
 
 
 
+    if (authState.loading) {
+        return <Spinner centerPage={true} />;
+    }
 
     
     return (
@@ -142,7 +160,7 @@ export default function CreateOffer(){
                     categories: selectedCategorie
                 }
             })}><img src={crossiconBlack}/></button>
-            <button className="GoBackButton" onClick={() => {goBack(typeSelected)}}><img src={arrowLeft}/><p className="t6">précédent</p></button>
+            <button className="GoBackButton" onClick={() => {goBack(typeSelected)}} ref={refGoBackButton}><img src={arrowLeft}/><p className="t6">précédent</p></button>
             <button className="NavigateButton" ref={refNavigateButton} 
                 onClick={() => {
                     if(selectedCategorie.length==0){
@@ -158,7 +176,7 @@ export default function CreateOffer(){
             <div className="TopDivOpacity"></div>
             {/* <button onClick={show} style={{padding: "40px"}}>Mon button</button> */}
             <div className="CreateOfferPage1" ref={refCreateOfferPage1}>
-                <p ref={refTitleType} className="t32">Quelle type d'offre proposez-vous&nbsp;?</p>
+                <p ref={refTitleType} className="t32">Quel type d'offre proposez-vous&nbsp;?</p>
                 <div ref={refActivityType} className="OfferTypeContainer" onClick={(e) => show(e, "Activite")}>
                     <img src={jetSkieIcon}/>
                     <p>Activité / Service</p>

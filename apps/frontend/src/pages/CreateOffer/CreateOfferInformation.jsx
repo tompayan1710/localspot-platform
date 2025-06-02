@@ -7,8 +7,9 @@ import clockIcon from "../../assets/images/clockIcon.png"
 import starIcon from "../../assets/images/starIcon.png"
 import arrowdownicon from "../../assets/images/arrowdownicon.png"
 import { useNavigate, useLocation } from "react-router-dom"
-
-import { useRef, useState } from "react"
+import { useState, useRef } from "react";
+import { useEffect, useContext} from "react";
+import { AuthContext } from "../../components/Auth/authContext/authContext"
 
 import ButtonLevier from "../../components/ButtonLevier/ButtonLevier"
 import DurationSlider from "../OfferPage/DurationSlider"
@@ -16,20 +17,30 @@ import DurationSlider from "../OfferPage/DurationSlider"
 
 
 export default function CreateOfferInformations(){
-    const navigate = useNavigate();
     const location = useLocation();
+
+    const { authState, logout } = useContext(AuthContext);
+    const navigate = useNavigate();
+    
+
 
     const {images_urls, city_id, adresse, latitude, longitude, type, categories, 
         departement, ville,  qrcode_url, slug} =  location.state || {};
-    /*const images = location.state?.images || [];
-    const mylocation = location.state?.location || "";
-    const type = location.state?.type || "";
-    const category = location.state?.type || [""];
-    const city_id = location.state?.city_id || "";
-    const adresse = location.state?.adresse || "";
-    const latitude = location.state?.latitude || "";
-    const longitude = location.state?.longitude || "";
-*/
+        
+        
+    useEffect(() => {
+        const missingData = !images_urls || !city_id || !adresse || !latitude || !longitude || !type || !categories || !departement || !ville || !qrcode_url || !slug;
+
+        if (missingData) {
+            console.warn("⛔️ Données manquantes dans location.state, redirection...");
+            navigate("/create-offer"); // ou la première étape
+        } else if (!authState.loading && !authState.isAuth) {
+            console.warn("🔒 Utilisateur non connecté, redirection...");
+            navigate("/login");
+        }
+    }, [authState, navigate, location.state]);
+
+    
     const [isLoading, setIsLoading] = useState(false);
     const [isCancellable, setIsCancellable] = useState(true);
     const [duration, setDuration] = useState(-1);
@@ -118,6 +129,7 @@ export default function CreateOfferInformations(){
             pricePer: form.pricePer,
             qrcode_url: qrcode_url,
             slug: slug,
+            cancellable: isCancellable
         }; 
         console.warn(body);
         try {
@@ -155,7 +167,9 @@ export default function CreateOfferInformations(){
             <div className="CreateOfferPage5">    
                 <div className="TemplateOffer">
                 <div className="TemplaetOfferImg">
-                    <img src={images_urls[0]}/>
+                    {images_urls?.length > 0 && (
+                        <img src={images_urls[0]} alt="Preview de l’offre" />
+                    )}
                     </div>
                     <div className="TemplateOfferInfo">
                     <div className="TemplateOfferTopDiv">

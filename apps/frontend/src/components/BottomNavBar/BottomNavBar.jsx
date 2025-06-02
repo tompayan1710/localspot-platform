@@ -20,7 +20,7 @@ const BottomNavBar = forwardRef((props, ref) => {
         </button>
         :
         <></>
-      }
+      } 
 
         <button className="NavBarButton" onClick={() => navigate("/")}>
             <img src={jetSkieIcon}/>

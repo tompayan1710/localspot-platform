@@ -23,6 +23,7 @@ router.post("/create", async (req, res) => {
     pricePer,
     qrcode_url,
     slug,
+    cancellable
   } = req.body;
 
 
@@ -43,6 +44,7 @@ router.post("/create", async (req, res) => {
     "pricePer",pricePer,
     "qrcode_url", qrcode_url,
     "slug", slug,
+    "cancellable", cancellable
   );
   
   let city_id, departement_id;
@@ -72,7 +74,8 @@ router.post("/create", async (req, res) => {
     id_hote,
     pricePer,
     qrcode_url,
-    slug,);
+    slug,
+    cancellable);
 
   try {
     const newOffer = await createOffer({
@@ -92,6 +95,7 @@ router.post("/create", async (req, res) => {
       pricePer,
       qrcode_url,
       slug,
+      cancellable
     });
 
     res.status(201).json({ success: true, offer: newOffer });

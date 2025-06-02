@@ -1,5 +1,5 @@
 // Login.jsx
-import React, { useState, useContext, useEffect } from "react";
+import { useState, useContext, useEffect } from "react";
 import { login } from "../../services/auth";
 import { useNavigate } from "react-router-dom";
 import "./styles.css";
@@ -10,7 +10,7 @@ import { GoogleAuthButton } from "./GoogleAuthButton"
 import Spinner from "../Spinner/Spinner"
 
 export default function Login() {
-  const [email, setEmail] = useState("");
+  const [email, setEmail] = useState(""); 
   const [password, setPassword] = useState("");
   const [message, setMessage] = useState("");
   const [loading, setLoading] = useState(false);
@@ -42,7 +42,7 @@ export default function Login() {
         setMessage("Connexion réussie ✅");
         localStorage.setItem("jwtToken", response.token);
         setTimeout(() => {
-            navigate("/dashboard2");
+            navigate("/profile");
             checkAuth();
           }, 1000);
     } else {
@@ -63,7 +63,7 @@ export default function Login() {
       checkAuth();
 
       // ✅ Redirige l'utilisateur là où il était
-      navigate("/dashboard2");
+      navigate("/profile");
     }
   }, [navigate, checkAuth]);//Just to no have the warning, not necessari
 

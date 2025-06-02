@@ -5,7 +5,6 @@ import { useNavigate } from "react-router-dom";
 import "./styles.css";
 import { AuthContext } from "./authContext/authContext"
 import Spinner from "../Spinner/Spinner";
-import plusRound from "../../assets/images/plusRound.png"
 
 export default function Profile() {
   const navigate = useNavigate();
@@ -14,7 +13,7 @@ export default function Profile() {
     const { authState, logout } = useContext(AuthContext);
 
 
-
+ 
     
   useEffect(() => {
     // ✅ Redirection uniquement lorsque loading est terminé
@@ -83,6 +82,8 @@ export default function Profile() {
             <p className="t5"><strong>Company ID:</strong> {authState.user?.company_id}</p>
             <p className="t5"><strong>Date de création:</strong> {new Date(authState.user?.created_at).toLocaleDateString()}</p>
           </div>  
+          <button className="logout-button" onClick={() => navigate("/become-provider")}>Devenir prestataire</button>
+
           <button className="logout-button" onClick={handleLogout}>Se déconnecter</button>
           <button className="logout-button" onClick={handleDelete}>Supprimer le compte</button>
         </div>

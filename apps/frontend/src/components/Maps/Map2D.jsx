@@ -1,11 +1,16 @@
 // src/components/Map2D/Map2D.jsx
 import React, { memo, useEffect, useRef } from "react";
-import { GoogleMap, Marker } from "@react-google-maps/api";
+import { GoogleMap, Marker,  DirectionsRenderer, DirectionsService } from "@react-google-maps/api";
+import { useState } from "react";
+import HotelIcon from "../../assets/images/HotelIcon.png";
+
+
 import './Map2D.css'
 
 function Map2D({
   apiKey,
   center = { lat: 43.7002, lng: 7.2620 },
+  destination = null,
   zoom = 13,
   containerStyle = { width: "100%", height:  "100%" },
   markers = [],                 // [{ id, latitude, longitude, position_description, ... }]
@@ -25,6 +30,7 @@ function Map2D({
 
 
   const mapRef = useRef(null);
+  const [directions, setDirections] = useState(null);
 
 
   
@@ -42,6 +48,27 @@ function Map2D({
 
 
   
+  useEffect(() => {
+    if (center && destination) {
+      const directionsService = new window.google.maps.DirectionsService();
+
+      directionsService.route(
+        {
+          origin: center,
+          destination: destination,
+          travelMode: "DRIVING",
+        },
+        (result, status) => {
+          if (status === "OK") {
+            setDirections(result);
+          } else {
+            console.error("Erreur DirectionsService :", result);
+          }
+        }
+      );
+    }
+  }, [center, destination]);
+
 
   // → Log clair pour chaque changement de markers
   useEffect(() => {
@@ -188,6 +215,64 @@ const mapOptions = {
       id="map"
 
       >
+
+        {directions && (
+          <>
+            <DirectionsRenderer
+              directions={directions}
+              options={{
+                suppressMarkers: true,
+                polylineOptions: {
+                  strokeColor: "#ff4d4d",
+                  strokeWeight: 5,
+                },
+              }}
+            />
+
+
+              <Marker
+                position={center}
+                title="Activité"
+                icon={{
+                  url: HotelIcon,
+                  scaledSize: new window.google.maps.Size(48, 48),
+                  anchor: new window.google.maps.Point(24, 48),
+                }}
+              />
+            {/* <Marker
+              position={center}
+              label={{
+                text: "H",
+                color: "#fff",         // ✅ couleur du texte
+                fontSize: "16px",      // ✅ taille du texte
+                fontWeight: "bold",    // ✅ épaisseur du texte
+                fontFamily: "Arial",   // ✅ police (standard uniquement)
+              }}
+            /> */}
+
+            {
+              center.lat == destination.lat && center.lng == destination.lng ?
+              <></>
+              :
+              <Marker
+                position={destination} // activité
+                label={{
+                  text: "★",
+                  color: "#fff",         // ✅ couleur du texte
+                  fontSize: "16px",      // ✅ taille du texte
+                  fontWeight: "bold",    // ✅ épaisseur du texte
+                  fontFamily: "Arial",   // ✅ police (standard uniquement)
+                }}
+                title="Activité"
+              />
+
+            }
+          </>
+        )}
+
+
+
+
         {markers.map((m) => {
           // ignore si pas de coords
           if (!m.latitude || !m.longitude) return null;

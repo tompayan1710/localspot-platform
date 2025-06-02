@@ -9,11 +9,13 @@ import Profile from "./components/Auth/Profile";
 import AuthProvider from "./components/Auth/authContext/authProvider";
 import { LoadScript } from "@react-google-maps/api";
 import OfferPage from "./pages/OfferPage/OfferPage";
-import ProfilScan from "./pages/Profil/ProfilScan";
 import CreateOffer from "./pages/CreateOffer/CreateOffer";
 import CreateOfferAddress from "./pages/CreateOffer/CreateOfferAddress";
 import ContentPolicy from "./pages/DocumentOfficiel/ContentPolicy/ContentPolicy";
 import CreateOfferInformations from "./pages/CreateOffer/CreateOfferInformation";
+import BecomeProvider from "./pages/BecomeProvider/BecomeProvider";
+import BecomeProviderAddInfo from "./pages/BecomeProvider/BecomeProviderAddInfo";
+import BecomeProviderAddContact from "./pages/BecomeProvider/BecomeProviderContact";
 
 
 //Pour sauvegarder : pg_dump "postgresql://postgres:TomPayan-1710@localhost:5432/localspot" -f viarte_backup.sql
@@ -66,8 +68,11 @@ export default function App() {
             <Route path="/signup" element={<Signup />} />
             <Route path="/login" element={<Login />} />
             <Route path="/profile" element={<Profile />} />
-            <Route path="/profilscan" element={<ProfilScan />} />
             
+            <Route path="/become-provider" element={<BecomeProvider />} />
+            <Route path="/become-provider/add-info" element={<BecomeProviderAddInfo/>} />
+            <Route path="/become-provider/add-contact" element={<BecomeProviderAddContact/>} />
+
 
             <Route path="/content-policy" element={<ContentPolicy />} />
 

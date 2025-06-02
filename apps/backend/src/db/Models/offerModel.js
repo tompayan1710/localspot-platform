@@ -17,6 +17,7 @@ async function createOffer({
   pricePer,
   qrcode_url,
   slug,
+  cancellable
 }) {
   const query = `
     INSERT INTO offers (
@@ -36,7 +37,7 @@ async function createOffer({
       qrcode_url,
       slug
     )
-    VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, $14, $15)
+    VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, $14, $15, $16)
     RETURNING *;
   `;
 
@@ -55,7 +56,8 @@ async function createOffer({
     id_hote,
     pricePer,
     qrcode_url,
-    slug
+    slug,
+    cancellable
   ];
 
   const result = await db.query(query, values);
