@@ -3,7 +3,7 @@ const db = require("../index");
 // 🔹 Crée un nouveau QR code
 async function createQRCode(slug, id_hote, latitude, longitude, adresse, image_url) {
   const query = `
-    INSERT INTO qr_codes (slug, id_hote, latitude, longitude, adresse, image_url)
+    INSERT INTO qr_codes (slug, user_id, latitude, longitude, adresse, image_url)
     VALUES ($1, $2, $3, $4, $5, $6)
     RETURNING *;
   `;

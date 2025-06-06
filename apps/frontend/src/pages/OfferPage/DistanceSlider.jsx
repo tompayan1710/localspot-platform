@@ -1,8 +1,9 @@
 import { useState } from "react";
 import "./DurationSlider.css";
-import bycicle from "../../assets/images/bycicle.webp";
+import bycicle from "../../assets/images/bycicle.png";
 import footIcon from "../../assets/images/footIcon.png";
 import carIcon from "../../assets/images/carIcon.png";
+
 
 export default function DistanceSlider() {
   const [value, setValue] = useState(0);
@@ -12,7 +13,7 @@ export default function DistanceSlider() {
   return (
     <div className="duration-slider">
         <div className="durationType">
-            <p className="t4">Distance à</p>
+            <p className="t4">Distance /</p>
             <button><img src={footIcon} /></button>
             <button className="selected"><img src={bycicle} /></button>
             <button><img src={carIcon} /></button>

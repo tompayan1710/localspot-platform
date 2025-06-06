@@ -1,7 +1,7 @@
 .duration-slider {
   width: 100%;
-  padding: 3px;
   padding-bottom: 10px;
+  margin-bottom: 10px;
 }
 
 .duration-slider>.t4{
@@ -15,26 +15,32 @@
 }
 
 .durationType p{
-    margin-right: 10px;
+    margin-right: 5px;
+    margin-top: 10px;
 }
 
 .durationType button{
     background-color: transparent;
     border: none;
-    margin-right: 10px;
+    margin-right: 5px;
+    margin-left: 0px;
     opacity: 0.2;
+    display: flex;
+    align-content: center;
+    justify-content: center;
+    justify-items: center;
+    align-items: center;
 }
 .durationType button.selected{
     background-color: transparent;
     border: none;
-    margin-right: 10px;
     opacity: 1;
 }
 .durationType img{
-    width: 25px;
-    height: 25px;
-    margin: 0px 5px;
+    height: 40px;
+    width: 40px;
     cursor: pointer;
+    align-self: center;
 }
 
 .track-wrapper {
@@ -43,7 +49,8 @@
   margin-top: 10px;
 }
 
-.slider {
+
+.duration-slider .slider {
   -webkit-appearance: none;
   width: 100%;
   height: 10px;
@@ -58,6 +65,7 @@
     background-color: var(--greyverylight);
     outline: none;
     transition: border 0.3s, box-shadow 0.3s;
+    margin-bottom: 0%;
 }
 
 /* THUMB aligné au centre verticalement */

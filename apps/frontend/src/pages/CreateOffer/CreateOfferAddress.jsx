@@ -22,6 +22,7 @@ import Sortable from "sortablejs";
 
 
 import { useLocation } from "react-router-dom";
+import Spinner from "../../components/Spinner/Spinner"
 // import Spinner from "../../components/Spinner/Spinner"
 
 export default function CreateOfferAddress(){
@@ -192,7 +193,7 @@ export default function CreateOfferAddress(){
 
     const handleRemoveFile = (indexToRemove) => {
       setSelectedFiles((prev) => prev.filter((_, i) => i !== indexToRemove));
-    };
+    }; 
 
 
     const [uploadedImageUrls, setUploadedImageUrls] = useState([]);
@@ -209,7 +210,7 @@ export default function CreateOfferAddress(){
         uploadFormData .append("images", file); // Important : même nom que .array("images") côté backend
       });
 
-      uploadFormData .append("offerId", "temp"); // Remplace "temp" par un vrai ID si dispo
+      uploadFormData .append("offerId", "offers"); // Remplace "temp" par un vrai ID si dispo
 
       let data;
       try {
@@ -231,6 +232,7 @@ export default function CreateOfferAddress(){
       }
 
 
+      console.log("QRCODE user ID: ", authState.user.id);
      const qrRes = await fetch(`${process.env.REACT_APP_API_URL}/api/qrcode/create`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
@@ -252,11 +254,30 @@ export default function CreateOfferAddress(){
       }
 
 
+      const locationRes = await fetch(`${process.env.REACT_APP_API_URL}/api/location/get-or-create-city`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          ville: formData.ville,
+          departement: formData.departement,
+        }),
+      });
+
+      const locationData = await locationRes.json();
+
+      if (!locationData.success) {
+        console.error("❌ Erreur lors de la récupération/ajout de la ville :", locationData.message);
+        return;
+      }
+
+      const city_id = locationData.city_id;
+
+
   
       navigate("/create-offer-informations", {
           state: { 
             images_urls: data.urls,
-            city_id: formData.city_id,
+            city_id: city_id,
             adresse: formData.adresse,
             latitude: formData.latitude,
             longitude: formData.longitude,
@@ -268,7 +289,7 @@ export default function CreateOfferAddress(){
             slug: qrData.slug,
           },
       });
-  setIsLoading(false);
+  setIsLoading(false); 
   return;
 };
 
@@ -314,7 +335,7 @@ export default function CreateOfferAddress(){
             <button className="CloseButton" onClick={() => navigate("/profile")}><img src={crossiconBlack}/></button>
             <div className="CreateOfferEtape"><p className="t6"> {etapeNum}</p></div>
             <button className="GoBackButton"><img src={arrowLeft}/><p className="t6">précédent</p></button>
-            <button className="NavigateButton" ref={refNavigateButton} onClick={() =>textInButton == "Ajouter l'adresse" ? goToPage3() : uploadImages()}>{isLoading ? "chargement" : textInButton}</button>
+            <button className="NavigateButton" ref={refNavigateButton} onClick={() =>textInButton == "Ajouter l'adresse" ? goToPage3() : uploadImages()}>{isLoading ? <Spinner /> : textInButton}</button>
             <div className="TopDivOpacity"></div>
             <div className="CreateOfferPage2" ref={refCreateOfferPage2}>
                 <p className="t32">Saisisez l'adresse de votre offre&nbsp;!</p>

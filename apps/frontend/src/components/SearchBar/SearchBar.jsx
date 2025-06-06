@@ -72,7 +72,8 @@ const SearchBar = forwardRef((props, ref) => {
                       searchOpen ?
                       <>
                       <DistanceSlider />
-                    <DurationSlider />
+                      <label className="t4">Durée</label>
+                      <DurationSlider />
                       <div className="OptionSearch">
                         <div className="AddPersonne" onClick={() => setAddPersonOpen(prev => !prev)}>
                           <p className="t5">Ajouter des personnes</p>

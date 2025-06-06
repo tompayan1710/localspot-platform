@@ -5,6 +5,8 @@ import { useNavigate } from "react-router-dom";
 import "./styles.css";
 import { AuthContext } from "./authContext/authContext"
 import Spinner from "../Spinner/Spinner";
+import BottomNavBar from "../BottomNavBar/BottomNavBar";
+import BottomNavBarNotAnimate from "../BottomNavBar/BottomNavBarNotAnimate";
 
 export default function Profile() {
   const navigate = useNavigate();
@@ -49,9 +51,11 @@ export default function Profile() {
     <>
       {authState.loading ? <Spinner centerPage={true}/> : 
       <div className="profile-container">
+        <BottomNavBarNotAnimate/>
         <div className="principalcolumn">   
 
           <p className="t2">Profile</p>
+          <div></div>
           <p className="t4">Mes offres</p>
           <div className="ProfileOfferContainer">
             <div className="ProfileOfferItem">

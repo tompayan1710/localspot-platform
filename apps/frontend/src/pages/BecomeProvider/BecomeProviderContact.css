@@ -1,0 +1,83 @@
+
+/* .BecomeProviderPage2 .ContainerNavigateButton{
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    align-content: center;
+    flex-direction: column;
+} */
+
+
+
+/* Cible l'input à l'intérieur de PhoneInput///////////////////////////////////////// */
+.PhoneInputInput {
+  width: 100%;
+  padding: 12px 16px;
+  font-size: 14px;
+  border: 1px solid var(--greysemidark);
+  border-radius: 8px;
+  outline: none;
+  transition: border 0.3s, box-shadow 0.3s;
+  color: var(--greydark);
+  margin-top: 8px;
+}
+
+.PhoneInputInput:focus {
+  border-color: var(--greymiddledark);
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+}
+
+/* Conteneur général */
+/*
+.PhoneInput {
+  margin-top: 20px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}*/
+
+/* Sélecteur de pays */
+.PhoneInputCountry {
+  border: 1px solid var(--greysemidark);
+  border-radius: 8px;
+  padding: 5px 8px;
+  background-color: white;
+  cursor: pointer;
+  transition: border-color 0.2s;
+  margin-top: 8px;
+}
+
+.PhoneInputCountry:focus-within {
+  border-color: var(--greymiddledark);
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+}
+
+.PhoneInputCountryIcon {
+  box-shadow: none ;
+}
+
+
+/* Style du drapeau (facultatif) */
+/*.PhoneInputCountryIcon {
+  display: none !important;
+}
+*/
+  
+/* Cible l'input à l'intérieur de PhoneInput///////////////////////////////////////// */
+
+
+
+
+.BecomeProviderAll .rowSocialNetwork{
+    display: flex;
+    flex-direction: row;
+    gap: 30px;
+    margin-top: 30px;
+}
+.BecomeProviderAll .rowSocialNetwork .InputText{
+    width: 100%;
+}
+.BecomeProviderPage2 .RightInfo.error{
+    color: var(--rednormal);
+}

@@ -13,10 +13,41 @@
 
 
 
+.BecomeProviderPage3,
+.BecomeProviderPage2 .ContinueButton {
+    background: linear-gradient(180deg, #545454, #373737);
+    color: #ffffff;
+    padding: 10px 16px;
+    font-size: 1rem;
+    font-weight: lighter;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: background 1s, transform 0.2s;
+    transition: opacity 0.5s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    margin-top: 50px;
+    margin-bottom: 40px;
+    align-self: center;
+    font-size: 0.8rem;
+    opacity: 1;
+    width: fit-content;
+    min-width: 180px;
+  }
 
 
+  
+  .CreateOfferContainerAll .ContinueButton:hover {
+    background: linear-gradient(180deg, #373737, #545454);
+  }
 
-
+.CreateOfferContainerAll .errorMessage{
+  position: absolute;
+  bottom: 0%;
+}
 
 .BecomeProviderAll:has(.BecomeProviderPage2){
     overflow: scroll;
@@ -35,6 +66,7 @@
     width: 100%;
     text-align: center;
     margin-bottom: 40px;
+    padding: 0 30px;
 }
 
 
@@ -45,63 +77,6 @@
 
 
 
-
-
-
-
-
-
-/* Cible l'input à l'intérieur de PhoneInput///////////////////////////////////////// */
-.PhoneInputInput {
-  width: 100%;
-  padding: 8px 16px;
-  font-size: 14px;
-  border: 1px solid var(--greymiddledark);
-  border-radius: 30px;
-  background-color: var(--greyverylight);
-  outline: none;
-  transition: border 0.3s, box-shadow 0.3s;
-  color: var(--greydark);
-}
-
-.PhoneInputInput:focus {
-  border-color: var(--greymiddledark);
-  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-}
-
-/* Conteneur général */
-/*
-.PhoneInput {
-  margin-top: 20px;
-  display: flex;
-  align-items: center;
-  gap: 8px;
-}*/
-
-/* Sélecteur de pays */
-.PhoneInputCountry {
-  border: 1px solid var(--greymiddledark);
-  border-radius: 8px;
-  padding: 5px 8px;
-  background-color: white;
-  cursor: pointer;
-  transition: border-color 0.2s;
-  margin-left: 15px;
-
-}
-
-.PhoneInputCountry:focus-within {
-  border-color: var(--greymiddledark);
-  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-}
-
-/* Style du drapeau (facultatif) */
-/*.PhoneInputCountryIcon {
-  display: none !important;
-}
-*/
-  
-/* Cible l'input à l'intérieur de PhoneInput///////////////////////////////////////// */
 
 
 
@@ -117,17 +92,60 @@
     border: 1px solid var(--greysemidark);
     width: 80%;
     max-width: 250px;
-    padding: 30px 10px 10px 10px;
-    border-radius: 10px;
+    padding: 30px 15px 15px 15px;
+    border-radius: 30px;
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
     gap: 8px;
+    box-shadow: 0 2px 20px rgba(0, 0, 0, 0.05);
 }
-.BecomeProviderPage2 .PreviewContainer>img{
+
+.BecomeProviderPage2 .PreviewContainer>.PreviewImageBigContainer{
+  width: 100px;
+  height: 100px;
+  position: relative;
+  margin-bottom: 10px; 
+}
+
+.BecomeProviderPage2 .PreviewContainer>.PreviewImageBigContainer>img{
     width: 100px;
 }
+
+.BecomeProviderPage2 .PreviewContainer .PreviewImageContainer{
+    position: absolute;
+    top: 0; 
+    right: 0;
+    opacity: 1;
+}
+.BecomeProviderPage2 .PreviewContainer .PreviewImageContainer>button{
+    position: absolute;
+    top: 0px;
+    right: -3px;
+    border: none;
+    background-color: var(--greylight);
+    padding: 7px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 40px;
+    background-color: rgba(255, 255, 255, 0.3); /* transparent pour voir le flou */
+    backdrop-filter: blur(8px); /* effet de flou */
+    -webkit-backdrop-filter: blur(8px); 
+    cursor: pointer;
+}
+.BecomeProviderPage2 .PreviewContainer .PreviewImageContainer>button>img{
+    width: 14px;
+}
+.BecomeProviderPage2 .PreviewContainer .PreviewImageContainer>img{
+    width: 100px;;
+    height: 100px;
+    border-radius: 100px;
+    object-fit: cover;
+    opacity: 1;
+}
+
 .BecomeProviderPage2 .PreviewContainer>.PreviewTitle{
     background-color: var(--greylight);
     width: 80%;
@@ -136,15 +154,21 @@
     /* align-self: flex-start; */
     border-radius: 5px;
 }
-.BecomeProviderPage2 .PreviewContainer>.PreviewDescription{
+.BecomeProviderPage2 .PreviewContainer>.PreviewBio{
     background-color: var(--greylight);
     width: 100%;
     height: 60px;
     border-radius: 5px;
+    border-bottom-left-radius: 18px;
+    border-bottom-right-radius: 18px;
 }
-.BecomeProviderPage2 .PreviewContainer>p{
-    word-wrap: normal;/*////////////////////////////////////////////////////////*/
+.BecomeProviderPage2 .PreviewContainer > p {
+    word-break: break-word;
+    overflow-wrap: break-word;
+    white-space: normal;
+    text-align: center;
 }
+
 
 
 .hlinePartner{
@@ -161,7 +185,7 @@
   display: flex;
   flex-direction: column;
   width: 100%;
-  padding: 10px;
+  padding: 10px; 
   padding-top: 15px;
 }
 .BecomeProviderPage2>form>.t4{
@@ -169,7 +193,7 @@
 }
 
 .BecomeProviderPage2>form .InputText{
-  border: 1px solid var(--greysemidark);
+  border: 1px solid #ddd;
   padding: 12px 10px;
   color: var(--greydark);
   border-radius: 10px;
@@ -178,8 +202,11 @@
 .BecomeProviderPage2>form .InputText:focus {
   outline: none;
   border: 1px solid var(--greysemidark);
+      border-color: var(--greymiddledark);
+
   padding: 12px 10px;
-  border-bottom: 1px solid var(--greysemidark); /* facultatif ici, redéfini juste au cas où */
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+
 }
 
 .BecomeProviderPage2>form>.DescriptionInput{
@@ -204,7 +231,21 @@
   margin-top: 4px;
   margin-right: 5px;
 }
+.BecomeProviderPage2>form>.RightInfo.error {
+  color: var(--rednormal);
+}
 
+.BecomeProviderPage2>form .ErrorContainer {
+  position: relative;
+}
+.BecomeProviderPage2>form .leftError {
+  text-align: left;/* facultatif ici, redéfini juste au cas où */
+  margin-top: 4px;
+  margin-right: 5px;
+  position: absolute;
+  top: 0;
+  color: var(--rednormal);
+}
 
 
 
@@ -215,6 +256,10 @@
 }
 .BecomeProviderPage2>form>.row {
   margin-top: 30px;
+}
+.BecomeProviderPage2>form>.row>label:nth-of-type(2) {
+  color: var(--greydark); 
+  font-weight: 400;
 }
 
 .BecomeProviderPage2 .CreateOfferAddPhotos{
@@ -230,7 +275,7 @@
   border-radius: 20px; /* optionnel pour des coins arrondis */
   padding: 30px; 
   cursor: pointer;
-  margin-bottom: 100px;
+  margin-bottom: 0px;
   margin-top: 8px;
 }
 
@@ -242,13 +287,4 @@
 }
 .BecomeProviderPage2 .CreateOfferAddPhotos>p{
   color: var(--greydark);  
-}
-
-
-.BecomeProviderPage2 .PreviewImageContainer>img{
-    width: 80%;
-    max-width: 250px;
-    min-width: 200px;
-    height: 130px;
-    object-fit: cover;
 }

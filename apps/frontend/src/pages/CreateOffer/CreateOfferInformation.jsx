@@ -13,6 +13,7 @@ import { AuthContext } from "../../components/Auth/authContext/authContext"
 
 import ButtonLevier from "../../components/ButtonLevier/ButtonLevier"
 import DurationSlider from "../OfferPage/DurationSlider"
+import Spinner from "../../components/Spinner/Spinner"
 
 
 
@@ -29,6 +30,9 @@ export default function CreateOfferInformations(){
         
         
     useEffect(() => {
+        console.log("images_urls :", images_urls, "city_id :", city_id, "adresse :",adresse 
+            , "latitude :", latitude, "longitude :", longitude, "type :", type, "categories: ", categories, 
+            "departement :", departement, "ville :", ville,  "qrcode_url : ", qrcode_url, "slug :", slug);
         const missingData = !images_urls || !city_id || !adresse || !latitude || !longitude || !type || !categories || !departement || !ville || !qrcode_url || !slug;
 
         if (missingData) {
@@ -233,7 +237,7 @@ export default function CreateOfferInformations(){
                     <p className="RightInfo t6">{form.description.length}/{limitDescription}</p>
 
 
-                    <label className="t4">Prix</label>
+                    {/* <label className="t4">Prix</label>
                     <div className="PriceInputWrapper">
                         <span className="t6">À partir de </span>
                         <input
@@ -256,13 +260,34 @@ export default function CreateOfferInformations(){
                         <option value="personne">personne</option>
                         <option value="groupe">groupe</option>
                     </select>
-
-                        {/* <p className="t6">Le prix doit être compris entre 0 et 3000 €</p> */}
+                    </div> */}
+                    <label className="t4">Prix</label>
+                    <div className="PriceContainer">
+                        <input
+                            type="number"
+                            name="price"
+                            className="InputText"
+                            value={form.price}
+                            onChange={handleChange}
+                            min="0"
+                            max={maxPrice}
+                            required
+                        />
+                        <p>€</p>
+                        <select
+                            name="pricePer"
+                            value={form.pricePer}
+                            onChange={handleChange}
+                            className="t6"
+                            >
+                            <option value="personne">personne</option>
+                            <option value="groupe">groupe</option>
+                        </select>
                     </div>
                     <label className="t4">Durée de l'activité</label>
                     <DurationSlider setValue={setDuration} value={duration}/>
 
-<div className="OptionSearch">
+                    <div className="OptionSearch">
                                             <div className="PointOpenButton" onClick={() => setOpenPointImportant(prev => !prev)}>
                                               <p className="t5">Points importants</p>
                                               <img src={arrowdownicon} />
@@ -272,7 +297,7 @@ export default function CreateOfferInformations(){
                                               <>
                                                 {
                                                     pointImportant.map((point, index) =>  {
-                                                        return (
+                                                        return ( 
                                                             <input 
                                                             key={index}
                                                             type="text" 
@@ -303,11 +328,11 @@ export default function CreateOfferInformations(){
                     </label>
                     <p className="t6">L'annulation gratuite est un avantage est favorise la conversion.</p>
 
-
+ 
                      
 
 
-                    <button type="submit" className="NavigateButton" ref={refNavigateButton}>{isLoading ? "chargement" : "Créer mon offre"}</button>
+                    <button type="submit" className="NavigateButton" ref={refNavigateButton}>{isLoading ? <Spinner /> : "Créer mon offre"}</button>
 
                 </form>
 

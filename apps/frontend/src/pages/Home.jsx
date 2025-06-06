@@ -9,10 +9,11 @@ import carIcon from "../assets/images/carIcon.png"
 import starIcon from "../assets/images/starIcon.png"
 import { useEffect, useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import BottomNavBarNotAnimate from "../components/BottomNavBar/BottomNavBarNotAnimate";
 
 export default function Home() {
-   const logoContainerRef = useRef(null);
-   const HomeContainerRef = useRef(null);
+  const logoContainerRef = useRef(null);
+  const HomeContainerRef = useRef(null);
   const navigate = useNavigate();
 
   const searchBarRef = useRef(null);
@@ -38,7 +39,7 @@ export default function Home() {
   return (
     <div className="HomeContainerPrincipal">
       <SearchBar ref={searchBarRef} firstRender={firstRender}/>
-      <BottomNavBar ref={BottomNavBarRef} firstRender={firstRender}/>
+      <BottomNavBarNotAnimate/>
       <div ref={HomeContainerRef} className="HomeContainer">
         <div className="HomeSectionContainer">
           <p className="t4">Activité disponnible aujourd'huit</p>

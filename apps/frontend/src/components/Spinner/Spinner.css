@@ -20,7 +20,7 @@
     height: 20px;
     animation: spin 0.7s linear infinite;
     display: inline-block;
-    margin-left: 10px;
+    /* margin-left: 10px; */
   }
 
 .centerPage .spinner{

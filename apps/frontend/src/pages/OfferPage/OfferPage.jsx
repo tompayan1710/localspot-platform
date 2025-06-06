@@ -141,7 +141,7 @@
           <div className="OfferMapContainer">
             {offer.latitude && offer.longitude && qrcode.latitude && qrcode.longitude ? (
               <>
-                <Map2D 
+                <Map2D
                   center={{ lat: offer.latitude, lng: offer.longitude }}
                   destination={{ lat: qrcode.latitude, lng: qrcode.longitude }}
                 />

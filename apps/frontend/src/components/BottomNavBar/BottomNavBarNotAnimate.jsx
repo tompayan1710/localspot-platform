@@ -6,12 +6,12 @@ import foodIcon from "../../assets/images/foodIcon.png"
 import userIcon from "../../assets/images/userIcon.png"
 import mapIcon from "../../assets/images/mapIcon.webp"
 
-const BottomNavBar = forwardRef((props, ref) => {
+const BottomNavBarNotAnimate = forwardRef((props, ref) => {
   const navigate = useNavigate(); // 👈 hook de navigation
 
 
   return (
-    <div ref={ref} className={`BottomNavBar`}>
+    <div ref={ref} className={`BottomNavBarNotAnimate`}>
       {
         props.isMap?
         <button className="MapButton" onClick={() =>console.log("Clique on map")}>
@@ -35,5 +35,5 @@ const BottomNavBar = forwardRef((props, ref) => {
 }
 )
 
-export default BottomNavBar
+export default BottomNavBarNotAnimate
 
