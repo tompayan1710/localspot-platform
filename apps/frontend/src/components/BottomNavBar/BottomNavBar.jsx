@@ -23,12 +23,15 @@ const BottomNavBar = forwardRef((props, ref) => {
 
         <button className="NavBarButton" onClick={() => navigate("/")}>
             <img src={jetSkieIcon}/>
+            <p className="t6">Activité</p>
         </button>
         <button className="NavBarButton" onClick={() => navigate("/")}>
             <img src={foodIcon} />
+            <p className="t6">Restauration</p>
         </button>
         <button className="NavBarButton" onClick={() => navigate("/profile")}> 
             <img src={userIconBlack} />
+            <p className="t6">Profile</p>
         </button>
     </div>
   );

@@ -168,7 +168,10 @@ CREATE TABLE public.hotes (
     location text NOT NULL,
     type character varying(50),
     created_at timestamp without time zone DEFAULT now(),
-    updated_at timestamp without time zone DEFAULT now()
+    updated_at timestamp without time zone DEFAULT now(),
+    latitude double precision,
+    longitude double precision,
+    city_id integer
 );
 
 
@@ -302,8 +305,6 @@ CREATE TABLE public.qr_codes (
     id_hote integer,
     adresse text,
     image_url text,
-    longitude double precision,
-    latitude double precision,
     user_id integer
 );
 
@@ -537,9 +538,9 @@ COPY public.departments (id, name) FROM stdin;
 -- Data for Name: hotes; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
-COPY public.hotes (id, name, location, type, created_at, updated_at) FROM stdin;
-1	Hôtel Belle Vue	12 rue de la Paix, 75002 Paris, France	Hotel	2025-05-21 11:17:21.124918	2025-05-21 11:17:21.124918
-2	Appartement Cosy Montmartre	45 boulevard de Clichy, 75018 Paris, France	Appartement	2025-05-21 11:17:21.124918	2025-05-21 11:17:21.124918
+COPY public.hotes (id, name, location, type, created_at, updated_at, latitude, longitude, city_id) FROM stdin;
+1	Hôtel Belle Vue	12 rue de la Paix, 75002 Paris, France	Hotel	2025-05-21 11:17:21.124918	2025-05-21 11:17:21.124918	\N	\N	\N
+2	Appartement Cosy Montmartre	45 boulevard de Clichy, 75018 Paris, France	Appartement	2025-05-21 11:17:21.124918	2025-05-21 11:17:21.124918	48.883071	2.334281	2
 \.
 
 
@@ -579,30 +580,30 @@ COPY public.providers (id, name, bio, logo_url, tel, email, instagram, facebook,
 -- Data for Name: qr_codes; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
-COPY public.qr_codes (id, slug, id_hote, adresse, image_url, longitude, latitude, user_id) FROM stdin;
-1	49902297-1703-4562-93f5-dd33be67a545	1	23 Quai Anatole France, 75007 Paris, France	https://knswskkdaimyrcstijsm.supabase.co/storage/v1/object/public/offers-images/qrcodes/1748584847413_49902297-1703-4562-93f5-dd33be67a545.png	2.3217852	48.8616196	\N
-2	2adca96d-e541-4c7b-816f-7fe59ec38ae4	1	23 Quai Anatole France, 75007 Paris, France	https://knswskkdaimyrcstijsm.supabase.co/storage/v1/object/public/offers-images/qrcodes/1748585081808_2adca96d-e541-4c7b-816f-7fe59ec38ae4.png	2.3217852	48.8616196	\N
-3	4ed74bbd-7928-4e3f-a619-428ed1721db9	1	23 Quai Anatole France, 75007 Paris, France	https://knswskkdaimyrcstijsm.supabase.co/storage/v1/object/public/offers-images/qrcodes/1748585549600_4ed74bbd-7928-4e3f-a619-428ed1721db9.png	2.3217852	48.8616196	\N
-4	5b214a31-ddbe-403b-8426-afd0ddc3fc69	1	56 Av. Victor Hugo, 75016 Paris, France	https://knswskkdaimyrcstijsm.supabase.co/storage/v1/object/public/offers-images/qrcodes/1748585683513_5b214a31-ddbe-403b-8426-afd0ddc3fc69.png	2.287313800000001	48.87078460000001	\N
-5	c6dee409-e7cc-49ca-bf84-57bc74551a39	1	45 Av. de la Bourdonnais, 75007 Paris, France	https://knswskkdaimyrcstijsm.supabase.co/storage/v1/object/public/offers-images/qrcodes/1748585829152_c6dee409-e7cc-49ca-bf84-57bc74551a39.png	2.2999471	48.8580052	\N
-6	a06f316f-599a-4279-9d64-cd4572c57e5c	1	23 Quai Anatole France, 75007 Paris, France	https://knswskkdaimyrcstijsm.supabase.co/storage/v1/object/public/offers-images/qrcodes/1748589782858_a06f316f-599a-4279-9d64-cd4572c57e5c.png	2.3217852	48.8616196	\N
-7	da6d4489-4bff-4f6d-9088-5f24bf4f81ac	1	4 Pl. Godeau, 06140 Vence, France	https://knswskkdaimyrcstijsm.supabase.co/storage/v1/object/public/offers-images/qrcodes/1748632511422_da6d4489-4bff-4f6d-9088-5f24bf4f81ac.png	7.114235	43.722468	\N
-8	708b596b-caf0-48e4-81a7-b131c5427172	1	76190 Yvetot, France	https://knswskkdaimyrcstijsm.supabase.co/storage/v1/object/public/offers-images/qrcodes/1748680201918_708b596b-caf0-48e4-81a7-b131c5427172.png	0.755212	49.617779	\N
-9	97909581-a8c3-4a7f-8d51-b50ab749468f	1	Fafournoux, 63120 Vollore-Montagne, France	https://knswskkdaimyrcstijsm.supabase.co/storage/v1/object/public/offers-images/qrcodes/1748681333122_97909581-a8c3-4a7f-8d51-b50ab749468f.png	3.683237	45.785748	\N
-14	f938bf3d-55c3-4476-ba43-1144c5f92fee	\N	Hyères, France	https://knswskkdaimyrcstijsm.supabase.co/storage/v1/object/public/offers-images/qrcodes/1749132336533_f938bf3d-55c3-4476-ba43-1144c5f92fee.png	6.1285466	43.1198436	32
-15	0a6fb752-02e7-4df3-a1ff-fdb8f571316b	\N	29890 Kerlouan, France	https://knswskkdaimyrcstijsm.supabase.co/storage/v1/object/public/offers-images/qrcodes/1749132549405_0a6fb752-02e7-4df3-a1ff-fdb8f571316b.png	-4.365641	48.64517799999999	32
-16	bf78a6ae-20d6-4fab-bee5-8cb0c252bc65	\N	French Riviera, France	https://knswskkdaimyrcstijsm.supabase.co/storage/v1/object/public/offers-images/qrcodes/1749132701976_bf78a6ae-20d6-4fab-bee5-8cb0c252bc65.png	6.637857700000001	43.2547731	32
-17	5077ae77-3462-4b18-8862-6f3e40c91032	\N	35190 Tinténiac, France	https://knswskkdaimyrcstijsm.supabase.co/storage/v1/object/public/offers-images/qrcodes/1749136795754_5077ae77-3462-4b18-8862-6f3e40c91032.png	-1.838123	48.32890829999999	32
-18	a4c6f1ae-6493-4b1c-ae61-fd3d1a9a3d5f	\N	40150 Hossegor, France	https://knswskkdaimyrcstijsm.supabase.co/storage/v1/object/public/offers-images/qrcodes/1749136884399_a4c6f1ae-6493-4b1c-ae61-fd3d1a9a3d5f.png	-1.3976871	43.6646192	32
-19	1ff80286-f690-480a-b14b-08df50a11667	\N	Juan-les-Pins, 06160 Antibes, France	https://knswskkdaimyrcstijsm.supabase.co/storage/v1/object/public/offers-images/qrcodes/1749136926350_1ff80286-f690-480a-b14b-08df50a11667.png	7.1123854	43.5691905	32
-20	02bb2225-2663-4f2c-8c6a-0c8e05c82517	\N	Jean-Macé, 69007 Lyon, France	https://knswskkdaimyrcstijsm.supabase.co/storage/v1/object/public/offers-images/qrcodes/1749137317815_02bb2225-2663-4f2c-8c6a-0c8e05c82517.png	4.842692899999999	45.7465373	32
-21	25574157-2d0a-4cab-8df3-96baac79765c	\N	32360 Jegun, France	https://knswskkdaimyrcstijsm.supabase.co/storage/v1/object/public/offers-images/qrcodes/1749137471206_25574157-2d0a-4cab-8df3-96baac79765c.png	0.458815	43.7573269	32
-22	6f8c8717-f464-4b1f-8469-3ba5553661f4	\N	Fréjus, France	https://knswskkdaimyrcstijsm.supabase.co/storage/v1/object/public/offers-images/qrcodes/1749224089399_6f8c8717-f464-4b1f-8469-3ba5553661f4.png	6.7378809	43.4344545	32
-23	578989e1-1076-4c28-89ce-58c2e9e11a5f	\N	Juan-les-Pins, 06160 Antibes, France	https://knswskkdaimyrcstijsm.supabase.co/storage/v1/object/public/offers-images/qrcodes/1749226962237_578989e1-1076-4c28-89ce-58c2e9e11a5f.png	7.1123854	43.5691905	32
-24	dd4fb41a-3fa4-44cf-ac7f-fc30fe58f143	\N	83990 Saint-Tropez, France	https://knswskkdaimyrcstijsm.supabase.co/storage/v1/object/public/offers-images/qrcodes/1749227049330_dd4fb41a-3fa4-44cf-ac7f-fc30fe58f143.png	6.640710899999999	43.2676808	32
-25	d094c5e4-46f7-4e96-bb10-8d705530170a	\N	19200 Ussel, France	https://knswskkdaimyrcstijsm.supabase.co/storage/v1/object/public/offers-images/qrcodes/1749321429632_d094c5e4-46f7-4e96-bb10-8d705530170a.png	2.313835	45.548905	32
-26	fb120df5-3b65-44e3-a626-11446732085c	\N	77300 Fontainebleau, France	https://knswskkdaimyrcstijsm.supabase.co/storage/v1/object/public/offers-images/qrcodes/1749321550576_fb120df5-3b65-44e3-a626-11446732085c.png	2.70162	48.40467599999999	32
-27	ddd4ada2-8034-41b3-a97d-a46a64bb6e16	\N	77300 Fontainebleau, France	https://knswskkdaimyrcstijsm.supabase.co/storage/v1/object/public/offers-images/qrcodes/1749322199784_ddd4ada2-8034-41b3-a97d-a46a64bb6e16.png	2.70162	48.40467599999999	32
+COPY public.qr_codes (id, slug, id_hote, adresse, image_url, user_id) FROM stdin;
+1	49902297-1703-4562-93f5-dd33be67a545	1	23 Quai Anatole France, 75007 Paris, France	https://knswskkdaimyrcstijsm.supabase.co/storage/v1/object/public/offers-images/qrcodes/1748584847413_49902297-1703-4562-93f5-dd33be67a545.png	\N
+2	2adca96d-e541-4c7b-816f-7fe59ec38ae4	1	23 Quai Anatole France, 75007 Paris, France	https://knswskkdaimyrcstijsm.supabase.co/storage/v1/object/public/offers-images/qrcodes/1748585081808_2adca96d-e541-4c7b-816f-7fe59ec38ae4.png	\N
+3	4ed74bbd-7928-4e3f-a619-428ed1721db9	1	23 Quai Anatole France, 75007 Paris, France	https://knswskkdaimyrcstijsm.supabase.co/storage/v1/object/public/offers-images/qrcodes/1748585549600_4ed74bbd-7928-4e3f-a619-428ed1721db9.png	\N
+4	5b214a31-ddbe-403b-8426-afd0ddc3fc69	1	56 Av. Victor Hugo, 75016 Paris, France	https://knswskkdaimyrcstijsm.supabase.co/storage/v1/object/public/offers-images/qrcodes/1748585683513_5b214a31-ddbe-403b-8426-afd0ddc3fc69.png	\N
+5	c6dee409-e7cc-49ca-bf84-57bc74551a39	1	45 Av. de la Bourdonnais, 75007 Paris, France	https://knswskkdaimyrcstijsm.supabase.co/storage/v1/object/public/offers-images/qrcodes/1748585829152_c6dee409-e7cc-49ca-bf84-57bc74551a39.png	\N
+6	a06f316f-599a-4279-9d64-cd4572c57e5c	1	23 Quai Anatole France, 75007 Paris, France	https://knswskkdaimyrcstijsm.supabase.co/storage/v1/object/public/offers-images/qrcodes/1748589782858_a06f316f-599a-4279-9d64-cd4572c57e5c.png	\N
+7	da6d4489-4bff-4f6d-9088-5f24bf4f81ac	1	4 Pl. Godeau, 06140 Vence, France	https://knswskkdaimyrcstijsm.supabase.co/storage/v1/object/public/offers-images/qrcodes/1748632511422_da6d4489-4bff-4f6d-9088-5f24bf4f81ac.png	\N
+8	708b596b-caf0-48e4-81a7-b131c5427172	1	76190 Yvetot, France	https://knswskkdaimyrcstijsm.supabase.co/storage/v1/object/public/offers-images/qrcodes/1748680201918_708b596b-caf0-48e4-81a7-b131c5427172.png	\N
+9	97909581-a8c3-4a7f-8d51-b50ab749468f	1	Fafournoux, 63120 Vollore-Montagne, France	https://knswskkdaimyrcstijsm.supabase.co/storage/v1/object/public/offers-images/qrcodes/1748681333122_97909581-a8c3-4a7f-8d51-b50ab749468f.png	\N
+14	f938bf3d-55c3-4476-ba43-1144c5f92fee	\N	Hyères, France	https://knswskkdaimyrcstijsm.supabase.co/storage/v1/object/public/offers-images/qrcodes/1749132336533_f938bf3d-55c3-4476-ba43-1144c5f92fee.png	32
+15	0a6fb752-02e7-4df3-a1ff-fdb8f571316b	\N	29890 Kerlouan, France	https://knswskkdaimyrcstijsm.supabase.co/storage/v1/object/public/offers-images/qrcodes/1749132549405_0a6fb752-02e7-4df3-a1ff-fdb8f571316b.png	32
+16	bf78a6ae-20d6-4fab-bee5-8cb0c252bc65	\N	French Riviera, France	https://knswskkdaimyrcstijsm.supabase.co/storage/v1/object/public/offers-images/qrcodes/1749132701976_bf78a6ae-20d6-4fab-bee5-8cb0c252bc65.png	32
+17	5077ae77-3462-4b18-8862-6f3e40c91032	\N	35190 Tinténiac, France	https://knswskkdaimyrcstijsm.supabase.co/storage/v1/object/public/offers-images/qrcodes/1749136795754_5077ae77-3462-4b18-8862-6f3e40c91032.png	32
+18	a4c6f1ae-6493-4b1c-ae61-fd3d1a9a3d5f	\N	40150 Hossegor, France	https://knswskkdaimyrcstijsm.supabase.co/storage/v1/object/public/offers-images/qrcodes/1749136884399_a4c6f1ae-6493-4b1c-ae61-fd3d1a9a3d5f.png	32
+19	1ff80286-f690-480a-b14b-08df50a11667	\N	Juan-les-Pins, 06160 Antibes, France	https://knswskkdaimyrcstijsm.supabase.co/storage/v1/object/public/offers-images/qrcodes/1749136926350_1ff80286-f690-480a-b14b-08df50a11667.png	32
+20	02bb2225-2663-4f2c-8c6a-0c8e05c82517	\N	Jean-Macé, 69007 Lyon, France	https://knswskkdaimyrcstijsm.supabase.co/storage/v1/object/public/offers-images/qrcodes/1749137317815_02bb2225-2663-4f2c-8c6a-0c8e05c82517.png	32
+21	25574157-2d0a-4cab-8df3-96baac79765c	\N	32360 Jegun, France	https://knswskkdaimyrcstijsm.supabase.co/storage/v1/object/public/offers-images/qrcodes/1749137471206_25574157-2d0a-4cab-8df3-96baac79765c.png	32
+22	6f8c8717-f464-4b1f-8469-3ba5553661f4	\N	Fréjus, France	https://knswskkdaimyrcstijsm.supabase.co/storage/v1/object/public/offers-images/qrcodes/1749224089399_6f8c8717-f464-4b1f-8469-3ba5553661f4.png	32
+23	578989e1-1076-4c28-89ce-58c2e9e11a5f	\N	Juan-les-Pins, 06160 Antibes, France	https://knswskkdaimyrcstijsm.supabase.co/storage/v1/object/public/offers-images/qrcodes/1749226962237_578989e1-1076-4c28-89ce-58c2e9e11a5f.png	32
+24	dd4fb41a-3fa4-44cf-ac7f-fc30fe58f143	\N	83990 Saint-Tropez, France	https://knswskkdaimyrcstijsm.supabase.co/storage/v1/object/public/offers-images/qrcodes/1749227049330_dd4fb41a-3fa4-44cf-ac7f-fc30fe58f143.png	32
+25	d094c5e4-46f7-4e96-bb10-8d705530170a	\N	19200 Ussel, France	https://knswskkdaimyrcstijsm.supabase.co/storage/v1/object/public/offers-images/qrcodes/1749321429632_d094c5e4-46f7-4e96-bb10-8d705530170a.png	32
+26	fb120df5-3b65-44e3-a626-11446732085c	\N	77300 Fontainebleau, France	https://knswskkdaimyrcstijsm.supabase.co/storage/v1/object/public/offers-images/qrcodes/1749321550576_fb120df5-3b65-44e3-a626-11446732085c.png	32
+27	ddd4ada2-8034-41b3-a97d-a46a64bb6e16	2	77300 Fontainebleau, France	https://knswskkdaimyrcstijsm.supabase.co/storage/v1/object/public/offers-images/qrcodes/1749322199784_ddd4ada2-8034-41b3-a97d-a46a64bb6e16.png	32
 \.
 
 
@@ -620,7 +621,7 @@ COPY public.refresh_tokens (id, user_id, refresh_token, expires_at, created_at) 
 64	32	eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MzIsImVtYWlsIjoidG9tcGF5YW4xNzEwQGdtYWlsLmNvbSIsImlhdCI6MTc0ODU4NDMzNiwiZXhwIjoxNzY0MTM2MzM2fQ.HttlpZJ923z9dX8d0rSthcGhtQdU0CwBLNX-AkZXkNA	2025-11-26 06:52:16.407	2025-05-24 19:40:33.351187
 70	32	eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MzIsImVtYWlsIjoidG9tcGF5YW4xNzEwQGdtYWlsLmNvbSIsImlhdCI6MTc0ODY4MTkyNiwiZXhwIjoxNzY0MjMzOTI2fQ.7ffD7dZLmuYhWiMVJ56kr2D8yk6ZXPT1PZBwlmUcAuU	2025-11-27 09:58:46.361	2025-05-31 10:56:51.818549
 65	32	eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MzIsImVtYWlsIjoidG9tcGF5YW4xNzEwQGdtYWlsLmNvbSIsImlhdCI6MTc0ODU4OTgwOSwiZXhwIjoxNzY0MTQxODA5fQ.5JR-4gLef8CkEAVZCifT8WIS61aaaWzTRS6Oe67gGdo	2025-11-26 08:23:29.672	2025-05-30 07:55:31.615536
-76	32	eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MzIsImVtYWlsIjoidG9tcGF5YW4xNzEwQGdtYWlsLmNvbSIsImlhdCI6MTc0OTM3NTIxMiwiZXhwIjoxNzY0OTI3MjEyfQ.VmXS_vVazRTPdDObd9wwqYDldnGNnYRkLrzxsGzKzFQ	2025-12-05 10:33:32.848	2025-06-07 17:33:23.331419
+76	32	eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MzIsImVtYWlsIjoidG9tcGF5YW4xNzEwQGdtYWlsLmNvbSIsImlhdCI6MTc0OTQwNDc3NywiZXhwIjoxNzY0OTU2Nzc3fQ.JUTVKg2FFakG2OR4kWP1XiZv0DUIFodLsA1PxP0tbE0	2025-12-05 18:46:17.247	2025-06-07 17:33:23.331419
 \.
 
 
@@ -819,6 +820,14 @@ ALTER TABLE ONLY public.users
 
 ALTER TABLE ONLY public.cities
     ADD CONSTRAINT cities_department_id_fkey FOREIGN KEY (department_id) REFERENCES public.departments(id);
+
+
+--
+-- Name: hotes hotes_city_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.hotes
+    ADD CONSTRAINT hotes_city_id_fkey FOREIGN KEY (city_id) REFERENCES public.cities(id);
 
 
 --
