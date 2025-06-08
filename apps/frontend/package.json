@@ -53,6 +53,8 @@
   },
   "author": "Tom Payan",
   "devDependencies": {
+    "ajv": "^6.12.6",
+    "ajv-keywords": "^3.5.2",
     "sass": "^1.89.0",
     "typescript": "^4.9.5"
   }
