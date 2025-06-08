@@ -106,15 +106,15 @@ export default function Profile() {
             <img src={userIconRelief} alt="profil picture"/>
           </div>
           <div className="ColumnName">
-            <p className="t4">{authState.user.first_name ? t(authState.user.first_name) : t('User')}</p>
+            <p className="t4">{authState.user?.first_name ? t(authState.user?.first_name) : t('User')}</p>
             <p className="t6">Show profile</p>
           </div>
         </div>
         <img src={arrowRight} alt="arrow right"/>
       </div>
       <div className="hline"></div>
-      {authState.user.provider_id ? (
-        authState.user.provider?.is_validated ? (
+      {authState.user?.provider_id ? (
+        authState.user?.provider?.is_validated ? (
           <>
           <div className="OfferListContainer">
             { providerOffers ? providerOffers.map((offer) => (
