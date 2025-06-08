@@ -209,7 +209,7 @@ CREATE TABLE public.offers (
     image_urls text[],
     created_at timestamp without time zone DEFAULT now(),
     updated_at timestamp without time zone DEFAULT now(),
-    id_hote integer,
+    provider_id integer,
     latitude double precision,
     longitude double precision,
     city_id integer,
@@ -512,6 +512,8 @@ COPY public.cities (id, name, department_id) FROM stdin;
 6	Jegun	9
 7	Fréjus	10
 8	Saint-Tropez	10
+9	Ussel	11
+10	Fontainebleau	12
 \.
 
 
@@ -526,6 +528,8 @@ COPY public.departments (id, name) FROM stdin;
 8	Rhône
 9	Gers
 10	Var
+11	Corrèze
+12	Seine-et-Marne
 \.
 
 
@@ -543,7 +547,7 @@ COPY public.hotes (id, name, location, type, created_at, updated_at) FROM stdin;
 -- Data for Name: offers; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
-COPY public.offers (id, title, description, type, price, image_urls, created_at, updated_at, id_hote, latitude, longitude, city_id, adresse, categories, priceper, duration, qrcode_url, slug, cancellable) FROM stdin;
+COPY public.offers (id, title, description, type, price, image_urls, created_at, updated_at, provider_id, latitude, longitude, city_id, adresse, categories, priceper, duration, qrcode_url, slug, cancellable) FROM stdin;
 2	Mon Atelier Croissant & Pâtisseries Parisiennes	Plongez dans l art de la patisserie française lors de cet atelier situé au cœur du Marais à Paris. Accompagné d’un chef local, apprenez à préparer de vrais croissants, pains au chocolat et autres classiques de la boulangerie.	food	32.00	{https://knswskkdaimyrcstijsm.supabase.co/storage/v1/object/public/offers-images/temp/1748000186535_Capture_dAcran_2025-04-20_082417.png,https://knswskkdaimyrcstijsm.supabase.co/storage/v1/object/public/offers-images/temp/1748000328132_Capture_dAcran_2025-04-18_125804.png}	2025-05-24 09:51:57.699709	2025-05-24 09:51:57.699709	1	\N	\N	\N	\N	\N	\N	\N	\N	\N	f
 3	Initiation au Jet Ski sur la Baie des Anges	Vivez des sensations fortes en Jet Ski sur la magnifique Baie des Anges à Nice. Encadré par un professionnel, cette activité est parfaite pour les amateurs de vitesse et de mer.	activité	59.00	{https://cdn.getyourguide.com/img/tour/e85ab841efe43073cd4a0eb1030022c6d3ba1295f83d050b3e36b56742f9df98.jpeg/98.jpg,https://cdn.getyourguide.com/img/tour/3572895670a1afa9733f3b84dd27067372a96b833fc1cf956027df461e38a850.jpg/145.jpg}	2025-05-24 10:00:34.619928	2025-05-24 10:00:34.619928	1	\N	\N	\N	\N	\N	\N	\N	\N	\N	f
 4	Mon titre	ma description	Activite	13.00	{https://knswskkdaimyrcstijsm.supabase.co/storage/v1/object/public/offers-images/temp/1748524793152_Appartement1.jpg,https://knswskkdaimyrcstijsm.supabase.co/storage/v1/object/public/offers-images/temp/1748524794030_Appartement2.jpg,https://knswskkdaimyrcstijsm.supabase.co/storage/v1/object/public/offers-images/temp/1748524794344_arrowdownicon.png,https://knswskkdaimyrcstijsm.supabase.co/storage/v1/object/public/offers-images/temp/1748524794561_arrowLeft.png}	2025-05-29 15:52:51.331672	2025-05-29 15:52:51.331672	1	\N	\N	\N	\N	{Plongée,"Ski nautique"}	groupe	\N	\N	\N	f
@@ -555,6 +559,7 @@ COPY public.offers (id, title, description, type, price, image_urls, created_at,
 10	Préparez une tarte tropézienne avec un chef pâtissière local	Plongez d'abord dans la création du gâteau provençal classique rendu célèbre par Brigitte Bardot.	Activite	80.00	{https://knswskkdaimyrcstijsm.supabase.co/storage/v1/object/public/offers-images/temp/1748632509215_walkIcon.png,https://knswskkdaimyrcstijsm.supabase.co/storage/v1/object/public/offers-images/temp/1748632510040_gouter.avif,https://knswskkdaimyrcstijsm.supabase.co/storage/v1/object/public/offers-images/temp/1748632510349_Nice.avif}	2025-05-30 21:16:37.286208	2025-05-30 21:16:37.286208	1	43.722468	7.114235	2	4 Pl. Godeau, 06140 Vence, France	{"Ski nautique",Bouée}	personne	2 h	https://knswskkdaimyrcstijsm.supabase.co/storage/v1/object/public/offers-images/qrcodes/1748632511422_da6d4489-4bff-4f6d-9088-5f24bf4f81ac.png	da6d4489-4bff-4f6d-9088-5f24bf4f81ac	f
 11	Mon barman	Ma descrtipont	Activite	45.00	{https://knswskkdaimyrcstijsm.supabase.co/storage/v1/object/public/offers-images/offers/1749137468541_ChatGPT_Image_Jun_3_2025_09_08_13_AM.png}	2025-06-05 17:31:35.224853	2025-06-05 17:31:35.224853	1	43.7573269	0.458815	6	32360 Jegun, France	{Parachute,Plongée,"Ski nautique"}	groupe	1 h	https://knswskkdaimyrcstijsm.supabase.co/storage/v1/object/public/offers-images/qrcodes/1749137471206_25574157-2d0a-4cab-8df3-96baac79765c.png	25574157-2d0a-4cab-8df3-96baac79765c	t
 12	Ma page rouge	ma descritpon	Activite	2000.00	{https://knswskkdaimyrcstijsm.supabase.co/storage/v1/object/public/offers-images/offers/1749227046794_images.jpg,https://knswskkdaimyrcstijsm.supabase.co/storage/v1/object/public/offers-images/offers/1749227047330_TestRename.jpg}	2025-06-06 18:25:08.171499	2025-06-06 18:25:08.171499	1	43.2676808	6.640710899999999	8	83990 Saint-Tropez, France	{Parachute,Plongée}	groupe	+ 6 h	https://knswskkdaimyrcstijsm.supabase.co/storage/v1/object/public/offers-images/qrcodes/1749227049330_dd4fb41a-3fa4-44cf-ac7f-fc30fe58f143.png	dd4fb41a-3fa4-44cf-ac7f-fc30fe58f143	t
+14	Title good	Voici ma description	Activite	123.00	{https://knswskkdaimyrcstijsm.supabase.co/storage/v1/object/public/offers-images/offers/1749322195628_ChatGPT_Image_Jun_7_2025_08_41_35_PM.png,https://knswskkdaimyrcstijsm.supabase.co/storage/v1/object/public/offers-images/offers/1749322197580_ChatGPT_Image_Jun_7_2025_08_41_32_PM.png}	2025-06-07 20:50:22.173867	2025-06-07 20:50:22.173867	4	48.40467599999999	2.70162	10	77300 Fontainebleau, France	{JetSki,Parachute,Bouée,"Ski nautique"}	personne	15 min	https://knswskkdaimyrcstijsm.supabase.co/storage/v1/object/public/offers-images/qrcodes/1749322199784_ddd4ada2-8034-41b3-a97d-a46a64bb6e16.png	ddd4ada2-8034-41b3-a97d-a46a64bb6e16	t
 \.
 
 
@@ -566,7 +571,7 @@ COPY public.providers (id, name, bio, logo_url, tel, email, instagram, facebook,
 1	localspot-db	FLJSOFJSOIFJS	https://knswskkdaimyrcstijsm.supabase.co/storage/v1/object/public/providers-images/logo/1749127966506_images.jpg	+33765594097	tompayan1710@gmail.com	insta	okfoskfosokfoks	SFS.fr	Company	11 - 20	fsfsfsfsfs	f
 2	MonNomOfficial	Ma biographie official	https://knswskkdaimyrcstijsm.supabase.co/storage/v1/object/public/providers-images/logo/1749129298417_TestRename.jpg	+33765594098	lechat@gmail.com	MonInstagram	Monfacebook	monbigsite.fr	Company	3 - 10	Il est vrai que tout parti politique moderne temps inexorablement à l'oligarchie et au désir de haine	f
 3	Monbignom	oijfs	https://knswskkdaimyrcstijsm.supabase.co/storage/v1/object/public/providers-images/logo/1749129562611_TestRename.jpg	+33765594020	lebigchat@gmail.com	mlfjsfs		siteweb.fr	Independent	seul		f
-4	LocalSpot	Ma desctiption	https://knswskkdaimyrcstijsm.supabase.co/storage/v1/object/public/providers-images/logo/1749227206471_images.jpg	+33765594097	tompayan1710@gmail.com	moninsta	fac	siteweb	Company	3 - 10	Mon détail à ajouter	f
+4	LocalSpot	Ma desctiption	https://knswskkdaimyrcstijsm.supabase.co/storage/v1/object/public/providers-images/logo/1749227206471_images.jpg	+33765594097	tompayan1710@gmail.com	moninsta	fac	siteweb	Company	3 - 10	Mon détail à ajouter	t
 \.
 
 
@@ -595,6 +600,9 @@ COPY public.qr_codes (id, slug, id_hote, adresse, image_url, longitude, latitude
 22	6f8c8717-f464-4b1f-8469-3ba5553661f4	\N	Fréjus, France	https://knswskkdaimyrcstijsm.supabase.co/storage/v1/object/public/offers-images/qrcodes/1749224089399_6f8c8717-f464-4b1f-8469-3ba5553661f4.png	6.7378809	43.4344545	32
 23	578989e1-1076-4c28-89ce-58c2e9e11a5f	\N	Juan-les-Pins, 06160 Antibes, France	https://knswskkdaimyrcstijsm.supabase.co/storage/v1/object/public/offers-images/qrcodes/1749226962237_578989e1-1076-4c28-89ce-58c2e9e11a5f.png	7.1123854	43.5691905	32
 24	dd4fb41a-3fa4-44cf-ac7f-fc30fe58f143	\N	83990 Saint-Tropez, France	https://knswskkdaimyrcstijsm.supabase.co/storage/v1/object/public/offers-images/qrcodes/1749227049330_dd4fb41a-3fa4-44cf-ac7f-fc30fe58f143.png	6.640710899999999	43.2676808	32
+25	d094c5e4-46f7-4e96-bb10-8d705530170a	\N	19200 Ussel, France	https://knswskkdaimyrcstijsm.supabase.co/storage/v1/object/public/offers-images/qrcodes/1749321429632_d094c5e4-46f7-4e96-bb10-8d705530170a.png	2.313835	45.548905	32
+26	fb120df5-3b65-44e3-a626-11446732085c	\N	77300 Fontainebleau, France	https://knswskkdaimyrcstijsm.supabase.co/storage/v1/object/public/offers-images/qrcodes/1749321550576_fb120df5-3b65-44e3-a626-11446732085c.png	2.70162	48.40467599999999	32
+27	ddd4ada2-8034-41b3-a97d-a46a64bb6e16	\N	77300 Fontainebleau, France	https://knswskkdaimyrcstijsm.supabase.co/storage/v1/object/public/offers-images/qrcodes/1749322199784_ddd4ada2-8034-41b3-a97d-a46a64bb6e16.png	2.70162	48.40467599999999	32
 \.
 
 
@@ -607,12 +615,12 @@ COPY public.refresh_tokens (id, user_id, refresh_token, expires_at, created_at) 
 60	32	eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MzIsImVtYWlsIjoidG9tcGF5YW4xNzEwQGdtYWlsLmNvbSIsImlhdCI6MTc0NzYzNTI4MCwiZXhwIjoxNzYzMTg3MjgwfQ.5axDkDA1wwse950hacV5OFGoXbZB_U0DYTu-GJ9RZU8	2025-11-15 07:14:40.438	2025-05-14 14:37:37.658329
 62	32	eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MzIsImVtYWlsIjoidG9tcGF5YW4xNzEwQGdtYWlsLmNvbSIsImlhdCI6MTc0ODAwNzczMywiZXhwIjoxNzYzNTU5NzMzfQ.2X-hEtlPMfVDstYilbw3N9Qw3FFi9cBULYzfWYn_9Hg	2025-11-19 14:42:13.445	2025-05-23 14:44:39.105683
 63	32	eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MzIsImVtYWlsIjoidG9tcGF5YW4xNzEwQGdtYWlsLmNvbSIsImlhdCI6MTc0ODA3NzUxNSwiZXhwIjoxNzYzNjI5NTE1fQ.BeipdGx7ZA2WTCUnTVImp6SxpYJjlzJJtLkAvyXLZ4E	2025-11-20 10:05:15.203	2025-05-24 11:00:58.263674
-72	32	eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MzIsImVtYWlsIjoidG9tcGF5YW4xNzEwQGdtYWlsLmNvbSIsImlhdCI6MTc0OTIzMjUwNSwiZXhwIjoxNzY0Nzg0NTA1fQ.sU1lgx0GxzsGePU5j0lz0kN9hmkmFTkicAgU3CyJdUs	2025-12-03 18:55:05.562	2025-06-05 14:45:51.801655
 61	32	eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MzIsImVtYWlsIjoidG9tcGF5YW4xNzEwQGdtYWlsLmNvbSIsImlhdCI6MTc0ODAwNDIzMiwiZXhwIjoxNzYzNTU2MjMyfQ.8eUW74d-TG3-EsjpHSXhPMJrht0vB2lCaRUEBGqMvA4	2025-11-19 13:43:52.082	2025-05-23 14:29:04.571936
 59	32	eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MzIsImVtYWlsIjoidG9tcGF5YW4xNzEwQGdtYWlsLmNvbSIsImlhdCI6MTc0NzIyMDI2OCwiZXhwIjoxNzYyNzcyMjY4fQ.MBgT8cU7LpNDSWWZEgnglxF7-RdCS6vkf49el7yqTYU	2025-11-10 11:57:48.358	2025-05-14 12:57:48.359308
 64	32	eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MzIsImVtYWlsIjoidG9tcGF5YW4xNzEwQGdtYWlsLmNvbSIsImlhdCI6MTc0ODU4NDMzNiwiZXhwIjoxNzY0MTM2MzM2fQ.HttlpZJ923z9dX8d0rSthcGhtQdU0CwBLNX-AkZXkNA	2025-11-26 06:52:16.407	2025-05-24 19:40:33.351187
 70	32	eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MzIsImVtYWlsIjoidG9tcGF5YW4xNzEwQGdtYWlsLmNvbSIsImlhdCI6MTc0ODY4MTkyNiwiZXhwIjoxNzY0MjMzOTI2fQ.7ffD7dZLmuYhWiMVJ56kr2D8yk6ZXPT1PZBwlmUcAuU	2025-11-27 09:58:46.361	2025-05-31 10:56:51.818549
 65	32	eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MzIsImVtYWlsIjoidG9tcGF5YW4xNzEwQGdtYWlsLmNvbSIsImlhdCI6MTc0ODU4OTgwOSwiZXhwIjoxNzY0MTQxODA5fQ.5JR-4gLef8CkEAVZCifT8WIS61aaaWzTRS6Oe67gGdo	2025-11-26 08:23:29.672	2025-05-30 07:55:31.615536
+76	32	eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MzIsImVtYWlsIjoidG9tcGF5YW4xNzEwQGdtYWlsLmNvbSIsImlhdCI6MTc0OTM3NTIxMiwiZXhwIjoxNzY0OTI3MjEyfQ.VmXS_vVazRTPdDObd9wwqYDldnGNnYRkLrzxsGzKzFQ	2025-12-05 10:33:32.848	2025-06-07 17:33:23.331419
 \.
 
 
@@ -657,14 +665,14 @@ SELECT pg_catalog.setval('public.categories_id_seq', 1, false);
 -- Name: cities_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
 
-SELECT pg_catalog.setval('public.cities_id_seq', 8, true);
+SELECT pg_catalog.setval('public.cities_id_seq', 10, true);
 
 
 --
 -- Name: departments_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
 
-SELECT pg_catalog.setval('public.departments_id_seq', 10, true);
+SELECT pg_catalog.setval('public.departments_id_seq', 12, true);
 
 
 --
@@ -678,7 +686,7 @@ SELECT pg_catalog.setval('public.hotes_id_seq', 2, true);
 -- Name: offers_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
 
-SELECT pg_catalog.setval('public.offers_id_seq', 12, true);
+SELECT pg_catalog.setval('public.offers_id_seq', 14, true);
 
 
 --
@@ -692,14 +700,14 @@ SELECT pg_catalog.setval('public.providers_id_seq', 4, true);
 -- Name: qr_codes_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
 
-SELECT pg_catalog.setval('public.qr_codes_id_seq', 24, true);
+SELECT pg_catalog.setval('public.qr_codes_id_seq', 27, true);
 
 
 --
 -- Name: refresh_tokens_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
 
-SELECT pg_catalog.setval('public.refresh_tokens_id_seq', 72, true);
+SELECT pg_catalog.setval('public.refresh_tokens_id_seq', 76, true);
 
 
 --
@@ -822,11 +830,11 @@ ALTER TABLE ONLY public.offers
 
 
 --
--- Name: offers offers_id_hote_fkey; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+-- Name: offers offers_provider_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: postgres
 --
 
 ALTER TABLE ONLY public.offers
-    ADD CONSTRAINT offers_id_hote_fkey FOREIGN KEY (id_hote) REFERENCES public.hotes(id);
+    ADD CONSTRAINT offers_provider_id_fkey FOREIGN KEY (provider_id) REFERENCES public.providers(id);
 
 
 --

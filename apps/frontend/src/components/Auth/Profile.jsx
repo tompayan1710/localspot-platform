@@ -85,15 +85,20 @@ export default function Profile() {
       {authState.loading ? <Spinner centerPage={true}/> : 
       <div className="profile-container">
         <BottomNavBarNotAnimate/>
-        <div className="principalcolumn">   
-        {authState.user.provider_id ?
-          <div className="ProviderOrNormalContainer">
-            <p className="t1">{t('Profile')}</p>
-            <p className="t3">{t('(provider)')}</p>
-          </div>
-          :
-          <p className="t1">{t('profile')}</p>
-        }
+        <div className="principalcolumn">  
+        {
+        authState.user && (
+          authState.user.provider_id ? (
+            <div className="ProviderOrNormalContainer">
+              <p className="t1">{t('Profile')}</p>
+              <p className="t3">{t('(provider)')}</p>
+            </div>
+          ) : (
+            <p className="t1">{t('profile')}</p>
+          )
+        )}
+
+        
         
         <div className="ProfileEditContainer" onClick={() => navigate("/edit-profile")}>
         <div>
