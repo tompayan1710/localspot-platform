@@ -276,6 +276,13 @@ justify-content: center;
   height: 30vh;
 }
 
+.ContainerOfferPageAll .OfferMapContainer .OpenInMapsBtn{
+  color: var(--greydark);
+  margin-top: 10px;
+  display: block;
+  width: fit-content;
+}
+
 .ContainerOfferPageAll .SquelletteMap{
   width: 100%;
   height: 100%;

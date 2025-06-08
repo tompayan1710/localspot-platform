@@ -3,6 +3,8 @@ import React, { memo, useEffect, useRef } from "react";
 import { GoogleMap, Marker,  DirectionsRenderer, DirectionsService } from "@react-google-maps/api";
 import { useState } from "react";
 import HotelIcon from "../../assets/images/HotelIcon.png";
+import Map2DPoint from "../../assets/images/Map2DPoint.png";
+import Map2DPin from "../../assets/images/Map2DPin.png";
 
 
 import './Map2D.css'
@@ -11,7 +13,7 @@ function Map2D({
   apiKey,
   center = { lat: 43.7002, lng: 7.2620 },
   destination = null,
-  zoom = 13,
+  zoom = 10,
   containerStyle = { width: "100%", height:  "100%" },
   markers = [],                 // [{ id, latitude, longitude, position_description, ... }]
   onMarkerClick = () => {},     // callback quand on clique sur un marker
@@ -33,13 +35,13 @@ function Map2D({
   const [directions, setDirections] = useState(null);
 
 
-  
+ /* 
   useEffect(() => {
     if (mapRef.current) {
       mapRef.current.panTo(center);
       mapRef.current.setZoom(zoom);
     }
-  }, [center, zoom]);
+  }, [center, zoom]);*/
 
   const handleLoad = (map) => {
     mapRef.current = map;
@@ -61,18 +63,42 @@ function Map2D({
         (result, status) => {
           if (status === "OK") {
             setDirections(result);
+
+            const bounds = new window.google.maps.LatLngBounds();
+            const route = result.routes[0];
+
+            if (route && route.overview_path) {
+              route.overview_path.forEach(point => {
+                bounds.extend(point);
+              });
+              mapRef.current.fitBounds(bounds); // ← c’est lui qui fait tout
+
+              // ➕ Zoomer un peu plus après le fitBounds
+              const listener = window.google.maps.event.addListenerOnce(mapRef.current, "bounds_changed", () => {
+              const currentZoom = mapRef.current.getZoom();
+              if (currentZoom) {
+                mapRef.current.setZoom(currentZoom + 1); // ← Zoom un peu plus
+              }
+            });
+            }
           } else {
             console.error("Erreur DirectionsService :", result);
+
+            if (mapRef.current) {
+              mapRef.current.panTo(center);
+              mapRef.current.setZoom(zoom);
+            }
           }
         }
       );
     }
-  }, [center, destination]);
+  }, [center, destination, zoom]);
 
 
   // → Log clair pour chaque changement de markers
   useEffect(() => {
     console.log("Map2D: markers prop =", markers);
+    console.log("MAP -> : ", center, destination);
   }, [markers]);
 
 // src/components/Map2D/Map2D.jsx (mapOptions uniquement)
@@ -222,9 +248,10 @@ const mapOptions = {
               directions={directions}
               options={{
                 suppressMarkers: true,
+                preserveViewport: true,
                 polylineOptions: {
-                  strokeColor: "#ff4d4d",
-                  strokeWeight: 5,
+                  strokeColor: "#373737",
+                  strokeWeight: 3,
                 },
               }}
             />
@@ -234,9 +261,9 @@ const mapOptions = {
                 position={center}
                 title="Activité"
                 icon={{
-                  url: HotelIcon,
-                  scaledSize: new window.google.maps.Size(48, 48),
-                  anchor: new window.google.maps.Point(24, 48),
+                  url: Map2DPoint,
+                  scaledSize: new window.google.maps.Size(30, 30),
+                  anchor: new window.google.maps.Point(15,15),
                 }}
               />
             {/* <Marker
@@ -256,12 +283,10 @@ const mapOptions = {
               :
               <Marker
                 position={destination} // activité
-                label={{
-                  text: "★",
-                  color: "#fff",         // ✅ couleur du texte
-                  fontSize: "16px",      // ✅ taille du texte
-                  fontWeight: "bold",    // ✅ épaisseur du texte
-                  fontFamily: "Arial",   // ✅ police (standard uniquement)
+                icon={{
+                  url: Map2DPin,
+                  scaledSize: new window.google.maps.Size(30, 30),
+                  anchor: new window.google.maps.Point(15,27),
                 }}
                 title="Activité"
               />

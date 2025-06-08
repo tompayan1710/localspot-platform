@@ -274,6 +274,7 @@
   align-items: start;
   /* background-color: #f9fafb; */
   padding: 0px 0;
+  padding-bottom: 150px;
 }
 
 .profile-container .ProfileEditContainer{
@@ -651,22 +652,6 @@
   height: 13px;
 }
 
-
-
-.logout-button {
-  background-color: #ff4b5c;
-  color: #ffffff;
-  border: none;
-  border-radius: 8px;
-  padding: 12px;
-  font-size: 16px;
-  cursor: pointer;
-  transition: background-color 0.3s ease;
-}
-
-.logout-button:hover {
-  background-color: #e04050;
-}
 
 
 

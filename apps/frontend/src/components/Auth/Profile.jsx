@@ -1,6 +1,5 @@
 // Profile.jsx
 import { useEffect, useContext, useState } from "react";
-import { deleteAccount } from "../../services/auth";
 import { useNavigate } from "react-router-dom";
 import "./styles.css";
 import { AuthContext } from "./authContext/authContext"
@@ -68,10 +67,6 @@ export default function Profile() {
     navigate("/login");
   };
 
-  const handleDelete = () => {
-    deleteAccount();
-    navigate("/login");
-  }
 
 
   
@@ -198,7 +193,7 @@ export default function Profile() {
                 <img src={arrowRight} alt="arrow right"/>
               </div>
               <div className="hline"></div>
-            </div>
+            </div> 
             <div className="SettingsListItem" onClick={handleLogout}>
               <div className="SettingsRow">
                 <div className="RowFirst"><img src={logOutIcon} alt="log out icon"/><p className="t4">Log out</p></div>
@@ -207,8 +202,6 @@ export default function Profile() {
               <div className="hline"></div>
             </div>
           </div>
-          
-          <button className="logout-button" onClick={handleDelete}>Supprimer le compte</button>
         </div>
       </div>
       }
