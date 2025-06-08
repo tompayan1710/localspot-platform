@@ -13,7 +13,7 @@ async function createOffer({
   price,
   duration,
   image_urls,
-  id_hote,
+  provider_id,
   pricePer,
   qrcode_url,
   slug,
@@ -32,7 +32,7 @@ async function createOffer({
       price,
       duration,
       image_urls,
-      id_hote,
+      provider_id,
       pricePer,
       qrcode_url,
       slug,
@@ -54,7 +54,7 @@ async function createOffer({
     price,
     duration,
     image_urls,
-    id_hote,
+    provider_id,
     pricePer,
     qrcode_url,
     slug,
@@ -77,7 +77,11 @@ async function getAllOffers() {
   return result.rows;
 }
 
-
+async function getOffersProvider(provider_id) {
+  console.log("🔍 Récupération des offres du provider", provider_id);
+  const result = await db.query('SELECT * FROM offers WHERE provider_id = $1 ORDER BY created_at DESC', [provider_id]);
+  return result.rows;
+}
 
 
 
@@ -88,5 +92,6 @@ async function getAllOffers() {
 module.exports = {
   createOffer,
   getOfferBySlug,
-  getAllOffers
+  getAllOffers,
+  getOffersProvider
 };

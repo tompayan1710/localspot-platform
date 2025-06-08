@@ -4,7 +4,6 @@ const path = require("path");
 const compression = require("compression");
 const apiRoutes = require("./routes/api/index");
 // const an  uthRoutes = require('./auth/authRoutes');
-
 // const { pool } = require('./db/index'); // Utiliser la pool existante
 
 const cors = require("cors");

@@ -1,0 +1,44 @@
+.SettingsPageContianer>.t2{
+    padding-top: 60px;
+    padding-left: 10px;
+    font-weight: bold;
+}
+
+
+.SettingsPageContianer .SettingsListContainer{
+  display: flex;
+  flex-direction: column;
+  margin-top: 30px;
+  padding: 0 10px;
+}
+.SettingsPageContianer .SettingsListItem{
+  display: flex;
+  flex-direction: column;
+  cursor: pointer;
+}
+.SettingsPageContianer .SettingsListItem>.SettingsRow{
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 30px;
+  margin-top: 30px;
+}
+.SettingsPageContianer .SettingsListItem>.SettingsRow>.RowFirst{
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 15px;
+}
+.SettingsPageContianer .SettingsListItem>.SettingsRow>.RowFirst>img{
+  width: 30px;
+  height: 30px;
+}
+/* .SettingsPageContianer .SettingsListItem>.SettingsRow>.RowFirst>p{
+  font-weight: bold;
+} */
+
+.SettingsPageContianer .SettingsListItem>.SettingsRow>img{
+  width: 15px;
+  height: 15px;
+}

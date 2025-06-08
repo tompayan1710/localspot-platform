@@ -10,12 +10,12 @@ $knob-size: 0.8em;
 .toggle-input {
   position: absolute;
   z-index: 2;
-  bottom: 100.5%;
+  bottom:70.5%;
   border-radius: 50%;//ICI CHANGE BUTTONNNNNNNNNNNNNNNNNNNNNNNNNNNN
   transform: rotate(-25deg);
   transform-origin: 50% 2em;//ICI CHANGE BUTTONNNNNNNNNNNNNNNNNNNNNNNNNNNN
-  width: $knob-size;
-  height: $knob-size;
+  width: calc($knob-size * 2);
+  height: calc($knob-size * 2);
   opacity: 0;
   transition: transform .24s cubic-bezier(.65, 1.35, .5, 1);
   cursor: pointer;

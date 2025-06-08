@@ -71,6 +71,7 @@ const SearchBar = forwardRef((props, ref) => {
                     {
                       searchOpen ?
                       <>
+                      <span style={{height: "20px"}}></span>
                       <DistanceSlider />
                       <label className="t4">Durée</label>
                       <DurationSlider />
@@ -158,6 +159,60 @@ const SearchBar = forwardRef((props, ref) => {
                       </div>
 
 
+                      <div className="ActivityChoice">
+                        <div className="NameAndLevierContainer"><p>Food</p><ButtonLevier toogleInput={toogleInputFood} isSelected={isFoodSelected}/></div>
+                        { 
+                          isFoodSelected ? 
+                          <div className="ListChoice">
+                          {
+                            choicesFood.map((choice, index) => (
+                              <div key={index} className={`ChoiceItem ${selectedChoicesFood.includes(choice) ? "selectedChoice" : ""}`}
+                              onClick={() => toggleChoiceFood(choice)}>
+                                <p className="t6">{choice}</p>
+                              </div>
+
+                            ))
+                          }
+                        </div>
+                        : ""
+                        }
+                      </div>
+                      <div className="ActivityChoice">
+                        <div className="NameAndLevierContainer"><p>Food</p><ButtonLevier toogleInput={toogleInputFood} isSelected={isFoodSelected}/></div>
+                        { 
+                          isFoodSelected ? 
+                          <div className="ListChoice">
+                          {
+                            choicesFood.map((choice, index) => (
+                              <div key={index} className={`ChoiceItem ${selectedChoicesFood.includes(choice) ? "selectedChoice" : ""}`}
+                              onClick={() => toggleChoiceFood(choice)}>
+                                <p className="t6">{choice}</p>
+                              </div>
+
+                            ))
+                          }
+                        </div>
+                        : ""
+                        }
+                      </div>
+                      <div className="ActivityChoice">
+                        <div className="NameAndLevierContainer"><p>Food</p><ButtonLevier toogleInput={toogleInputFood} isSelected={isFoodSelected}/></div>
+                        { 
+                          isFoodSelected ? 
+                          <div className="ListChoice">
+                          {
+                            choicesFood.map((choice, index) => (
+                              <div key={index} className={`ChoiceItem ${selectedChoicesFood.includes(choice) ? "selectedChoice" : ""}`}
+                              onClick={() => toggleChoiceFood(choice)}>
+                                <p className="t6">{choice}</p>
+                              </div>
+
+                            ))
+                          }
+                        </div>
+                        : ""
+                        }
+                      </div>
                       <div className="ActivityChoice">
                         <div className="NameAndLevierContainer"><p>Food</p><ButtonLevier toogleInput={toogleInputFood} isSelected={isFoodSelected}/></div>
                         { 

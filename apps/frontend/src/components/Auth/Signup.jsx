@@ -4,6 +4,7 @@ import { signup, login } from "../../services/auth";
 import { useNavigate } from "react-router-dom";
 import "./styles.css";
 import localspotlogo from "../../assets/images/localspotlogo.png";
+import ViarteLogo from "../../assets/images/ViarteLogo.png";
 import { AuthContext } from '../Auth/authContext/authContext';
 import { GoogleAuthButton } from "./GoogleAuthButton"
 import Spinner from "../Spinner/Spinner"
@@ -60,7 +61,7 @@ export default function Signup() {
       </div>
       <div className="authcomponentcontainer">
         <div className="form-container">
-          <img src={localspotlogo} alt="localspot logo"/>
+          <img src={ViarteLogo} alt="localspot logo"/>
           <p className="t32">Créer votre compte</p>
           <p className="t6">Bienvenue ! Veuillez compléter les informations pour continuer.</p>
           <GoogleAuthButton />

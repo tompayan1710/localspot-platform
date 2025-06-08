@@ -1,7 +1,7 @@
 const express = require("express");
 const router = express.Router();
 
-const { createOffer, getAllOffers, getOfferBySlug } = require("../../../db/Models/offerModel");
+const { createOffer, getAllOffers, getOfferBySlug, getOffersProvider } = require("../../../db/Models/offerModel");
 const { findOrCreateCityByName } = require("../../../db/Models/AdresseModel");
 
 // ➕ Route pour créer une nouvelle offre
@@ -19,7 +19,7 @@ router.post("/create", async (req, res) => {
     price,
     duration,
     image_urls,
-    id_hote,
+    provider_id,
     pricePer,
     qrcode_url,
     slug,
@@ -40,7 +40,7 @@ router.post("/create", async (req, res) => {
     "price",price,
     "duration",duration,
     "image_urls",image_urls,
-    "id_hote",id_hote,
+    "provider_id",provider_id,
     "pricePer",pricePer,
     "qrcode_url", qrcode_url,
     "slug", slug,
@@ -71,7 +71,7 @@ router.post("/create", async (req, res) => {
     price,
     duration,
     image_urls,
-    id_hote,
+    provider_id,
     pricePer,
     qrcode_url,
     slug,
@@ -91,7 +91,7 @@ router.post("/create", async (req, res) => {
       price,
       duration,
       image_urls,
-      id_hote,
+      provider_id,
       pricePer,
       qrcode_url,
       slug,
@@ -115,6 +115,20 @@ router.get("/getall", async (req, res) => {
   }
 });
 
+router.get("/getall-provider", async (req, res) => {
+  const provider_id = req.query.provider_id;
+
+  if (!provider_id) {
+    return res.status(400).json({ success: false, error: "provider_id manquant" });
+  }
+
+  try {
+    const offers = await getOffersProvider(provider_id);
+    res.json({success: true, offers});
+  }catch(err){
+    res.status(500).json({ success: false, error: "Erreur serveur" });
+  }
+})
 // (optionnel) Récupère une offre par son ID
 router.get("/get", async (req, res) => {
   const slug = req.query.slug;

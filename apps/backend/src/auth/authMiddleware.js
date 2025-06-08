@@ -26,6 +26,17 @@ const authMiddleware = async (req, res, next) => {
       return res.status(403).json({ error: "Votre compte n'existe plus ou à était suppriméds'" });
     }
 
+    if(user.rows[0].provider_id){
+      console.log("Le Provider est renseigner et est de ", user.rows[0].provider_id);
+      const provider = await pool.query('SELECT * FROM providers WHERE id = $1', [user.rows[0].provider_id])
+
+      if (provider.rowCount === 0) {
+        console.log("Vous avez un champs provider dans users à ",  user.rows[0].provider_id, " mais pourtant celui ci ne figure pas dans la table providers");
+      } else {
+        user.rows[0].provider = provider.rows[0];
+      }
+    }
+    
     req.user = user.rows[0];
     next(); // ✅ Continue vers la route demandée
   } catch (err) {

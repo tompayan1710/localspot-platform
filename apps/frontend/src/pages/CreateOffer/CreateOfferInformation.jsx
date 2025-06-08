@@ -113,8 +113,7 @@ export default function CreateOfferInformations(){
     const createOffer = async (e) => {
         e.preventDefault();
         setIsLoading(true);
-
-
+        
         const body = {
             title: form.title,
             description: form.description,
@@ -129,7 +128,7 @@ export default function CreateOfferInformations(){
             price: form.price,
             duration: durations[duration==-1 ? 0 : duration],
             image_urls: images_urls, // ou [images[0]] si c'est une seule
-            id_hote: "1", // à récupérer dynamiquement si possible
+            provider_id: authState.user.provider.id, // à récupérer dynamiquement si possible
             pricePer: form.pricePer,
             qrcode_url: qrcode_url,
             slug: slug,

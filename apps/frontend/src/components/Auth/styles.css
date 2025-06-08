@@ -276,6 +276,49 @@
   padding: 0px 0;
 }
 
+.profile-container .ProfileEditContainer{
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 10px;
+}
+.profile-container .ProfileEditContainer>div{
+  display: flex;
+  flex-direction: row;
+  gap: 10px;
+  justify-content: center;
+} 
+.profile-container .ProfileEditContainer .ProfilPictureContainer{
+  background-color: #ecead94b;
+  border-radius: 80px;
+  display: flex;
+  justify-content: center;
+} 
+.profile-container .ProfileEditContainer .ProfilPictureContainer>img{
+  width: 50px;
+  height: 50px;
+  margin: 7px;
+} 
+.profile-container .ProfileEditContainer .ColumnName{
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+} 
+.profile-container .ProfileEditContainer p:first-of-type{
+  font-weight: bold;
+  margin-bottom: 2px;
+} 
+
+
+.profile-container .ProfileEditContainer>img{
+  width: 15px;
+  height: 15px;
+  margin-right: 10px;
+  opacity: 0.6;
+} 
+
+
 .principalcolumn {
   display: flex;
   flex-direction: column;
@@ -284,64 +327,195 @@
   max-width: 700px;
   width: 100%;
 }
-
-
-.ProfileOfferContainer{
-  display: grid;
-  grid-template-columns: 1fr;
-  gap: 15px;
+.principalcolumn>.t1{
+  font-weight: bold;
+  text-align: center;
+  padding-top: 40px;
+  text-align: start;
+  margin-bottom: 30px;
 }
-.ProfileOfferItem{
-  background-color: white;
-  width: 100%;
+
+
+.profile-container .ProviderOrNormalContainer{
+  display: flex;
+  flex-direction: row;
+  align-items: end;
+  padding-top: 40px;
+  gap: 10px;
+  margin-bottom: 30px;
+}
+.profile-container .ProviderOrNormalContainer>p:first-child{
+  font-weight: bold;
+}
+.profile-container .ProviderOrNormalContainer>p:last-child{
+  padding-bottom: 7px;
+}
+
+.profile-container .IsValidateMessage{
+  padding: 50px 30px;
+  margin: 50px 0;
+  text-align: center;
+  border-radius: 20px;
   border: 1px solid var(--greysemidark);
-  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
-  border-radius: 15px;
-  cursor: pointer;
+  box-shadow: 0 0px 20px rgba(0, 0, 0, 0.08);
+
 }
-.ProfileOfferItem>.ProfileOfferImg{
-  background-color: var(--greylight);
-  width: 100%;
-  height: 120px;
-  border-radius: var(--radiusItem);
-  border-top-left-radius: 14px;
-  border-top-right-radius: 14px;
-}
-.ProfileOfferItem>.ProfileOfferTitle{
-  background-color: var(--greylight);
-  height: 20px;
-  width: calc(100% - 40px);
-  margin: 8px;
-  border-radius: 3px;
-}
-.ProfileOfferItem>.ProfileOfferDescription{
-  background-color: var(--greylight);
-  height: 30px;
-  width: calc(100% - 16px);
-  margin: 8px;
-  border-radius: 3px;
-}
-.ProfileOfferItem>.ProfileOfferComplement{
-  background-color: var(--greylight);
-  height: 10px;
-  width: 100px;
-  margin: 8px;
-  margin-top: 15px;
-  border-radius: 3px;
-}
-.ProfileOfferItem>.ProfileOfferPrice{
-  margin-top: auto;
-  background-color: var(--greylight);
-  height: 15px;
-  width: 150px;
-  margin: 8px;
+
+
+.principalcolumn>.t3{
+  text-align: start;
   margin-top: 20px;
-  border-radius: 3px;
+  font-weight: bold;
+}
+
+.profile-container .OfferListContainer{
+  display: flex;
+  flex-direction: column;
+  margin-top: 50px;
+}
+.profile-container .OfferListItem{
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  padding: 8px;
+  border: 1px solid var(--greysemidark);
+  border-radius: 20px;
+  box-shadow: 0 0px 20px rgba(0, 0, 0, 0.08);
+}
+.profile-container .OfferListItem .OfferImageContainer{
+  width: 100px;
+  height: 100px;
+}
+.profile-container .OfferListItem .OfferImageContainer>img{
+  width: 100px;
+  height: 100px; 
+  border-radius: 15px;
+}
+.profile-container .OfferListItem .OfferImageContainer>img{
+  width: 100px;
+  height: 100px;
+  border-radius: 15px;
+}
+.profile-container .OfferListItem .columnInfoOffer{
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  margin-left: 10px;
+}
+.profile-container .OfferListItem .columnInfoOffer>p{
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+
+
+
+
+.profile-container .NoOffersContainer {
+  position: relative;
+  width: 160px;
+  height: 160px;
+  margin: 0 auto;
+}
+
+/*
+.profile-container .NoOffersContainer > img {
+  position: absolute;
+  top: 10px;
+  left: 10px;
+  width: 140px;
+  height: 115px;
+  z-index: 5;
+}*/
+
+.profile-container .NoOffersContainer > div {
+  height: 70px;
+  width: 50px;
+  background-color: var(--greyverylight);
+  border-radius: 10px;
+  border: 1px solid #c7c9cf;
+  position: absolute;
+  left: 50%;
+  top: 0;
+  transform: translateX(-50%) translateY(35%);
+  box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+}
+
+
+
+/* Feuille du fond gauche */
+.profile-container .NoOffersContainer > div:nth-of-type(2) {
+  border-color: var(--greysemidark) ;
+  transform: translateX(-105%) translateY(55%) rotate(-20deg);
+  z-index: 1;
+}
+
+/* Feuille du fond droite */
+.profile-container .NoOffersContainer > div:nth-of-type(3) {
+  border-color: var(--greysemidark) ;
+  transform: translateX(5%) translateY(55%) rotate(20deg) ;
+  z-index: 2;
+}
+
+/* Feuille du dessus */
+.profile-container .NoOffersContainer > div:nth-of-type(1) {
+  height: 90px;
+  width: 70px;
+  z-index: 3;
+}
+
+.profile-container .NoOffersContainer .BackgroundLinear{
+  background: linear-gradient(180deg, var(--greylight) 0%, transparent 70%, transparent 100%);
+  position: absolute;
+  top: 0;
+   /* background-color: red; */
+  height: 160px;
+  width: 160px;
+  border-radius: 200px;
+}
+.profile-container .NoOffersContainer>.PlusButton {
+  background: linear-gradient(180deg, #545454, #373737);
+  height: 35px;
+  width: 35px;
+  position: absolute;
+  bottom: 28px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 5;
+  border-radius: 100px;
+  display: flex;
+  align-items: center;  
+  justify-content: center;
+}
+.profile-container .NoOffersContainer > .PlusButton>img {
+  width: 17px;
+  height: 17px;
+}
+
+.NoOffersBig{
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+.NoOffersBig>.t4{
+  font-weight: bolder;
+  position: relative;
+  top: -12px;
+}
+.NoOffersBig>.t6{
+  position: relative;
+  text-align: center;
+  padding: 5px 20px 0 20px;
+  top: -12px;
 }
 
 
   /* Style du bouton */
-  .ProfileAddOffertContainer {
+.profile-container  .ProfileAddOffertContainer {
     background: linear-gradient(180deg, #545454, #373737);
     color: #ffffff;
     padding: 7px 16px;
@@ -359,39 +533,126 @@
     width: fit-content;
     align-self: center;
     font-size: 0.8rem;
+    margin-bottom: 50px;
   }
   
-  .ProfileAddOffertContainer:hover {
+.profile-container .ProfileAddOffertContainer:hover {
     background: linear-gradient(180deg, #373737, #545454);
   }
   
 
 
 
-
-.t2 {
-  font-weight: bold;
-  text-align: center;
-  font-family: "Playfair Display";
-  padding-top: 40px;
-  padding-bottom: 0px;
-  padding-bottom: 10px;
-}
-
-.informationscontainer {
-  background-color: #ffffff;
-  padding: 35px;
-  border-radius: 12px;
-  box-shadow: 0 8px 10px -6px #00000008,0 20px 25px -5px #00000008;
+.profile-container .BecomProviderBig{
   display: flex;
   flex-direction: column;
-  gap: 10px;
+  justify-content: center;
+  align-items: center;
+  padding-top: 50px;
+}
+.profile-container .BecomProviderBig>.BecomProviderContainer{
+  position: relative;
+  height: 140px;
+  width: 180px;
+  /* background-color: red; */
+}
+.profile-container .BecomProviderBig>.BecomProviderContainer>img{
+  position: absolute;
+  top: 0;
+  border: 3px solid white;
+  border-radius: 10px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+  object-fit: cover;
+}
+.profile-container .BecomProviderBig>.t4{
+  font-weight: bold;
+  margin-bottom: 2px;
+}
+.profile-container .BecomProviderBig>.t6{
+  text-align: center;
+  padding: 0 20px;
+}
+.profile-container .BecomProviderBig>.BecomProviderContainer>img:first-of-type{
+  width: 100px;
+  height: 120px;
+  left: 0;
+  transform: rotate(-10deg);
+}
+.profile-container .BecomProviderBig>.BecomProviderContainer>img:last-of-type{
+  width: 120px;
+  height: 100px;
+  right: 0;
+  top: 25px;
+  transform: rotate(5deg);
 }
 
 
-.principalcolumn>.t4{
-  padding-bottom: 10px;
+  /* Style du bouton */
+.profile-container .BecomeProviderButton {
+    background: linear-gradient(180deg, #545454, #373737);
+    color: #ffffff;
+    padding: 7px 16px;
+    font-size: 1rem;
+    font-weight: lighter;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: background 1s, transform 0.2s;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    margin-top: 15px;
+    width: fit-content;
+    align-self: center;
+    font-size: 0.8rem;
+    margin-bottom: 50px;
+  }
+  
+.profile-container  .BecomeProviderButton:hover {
+    background: linear-gradient(180deg, #373737, #545454);
+  }
+  
+
+.profile-container .SettingsListContainer{
+  display: flex;
+  flex-direction: column;
+  margin-top: 30px;
 }
+.profile-container .SettingsListItem{
+  display: flex;
+  flex-direction: column;
+  cursor: pointer;
+}
+.profile-container .SettingsListItem>.SettingsRow{
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 30px;
+  margin-top: 30px;
+}
+.profile-container .SettingsListItem>.SettingsRow>.RowFirst{
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 15px;
+}
+.profile-container .SettingsListItem>.SettingsRow>.RowFirst>img{
+  width: 30px;
+  height: 30px;
+}
+/* .profile-container .SettingsListItem>.SettingsRow>.RowFirst>p{
+  font-weight: bold;
+} */
+
+.profile-container .SettingsListItem>.SettingsRow>img{
+  width: 13px;
+  height: 13px;
+}
+
+
+
 .logout-button {
   background-color: #ff4b5c;
   color: #ffffff;
@@ -416,11 +677,8 @@
 
 
 
-
-
-
 .SinnerTester{
-  background-color: red;
+  background-color: rgb(0, 255, 34);
   height: 100vh;
   width: 100vw;
 

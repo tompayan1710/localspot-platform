@@ -9,7 +9,7 @@ import crossiconBlack from "../../assets/images/crossiconBlack.png"
 import galleryPhotosIcon from "../../assets/images/galleryPhotosIcon.png"
 import userIconRelief from "../../assets/images/userIconRelief.png"
 import trashicon from "../../assets/images/trashicon.png"
-
+ 
 import 'react-phone-number-input/style.css'
 import PhoneInput from 'react-phone-number-input'
 

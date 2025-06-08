@@ -1,0 +1,159 @@
+.EditProfilContainer{
+    /* background-color: red; */
+    height: 100vh;
+    width: 100vw;
+}
+
+.EditProfilContainer>.GoBackButton{
+    position: fixed;
+    z-index: 3;
+    top: 10px;
+    left: 10px;
+    background-color: transparent;
+    border: none;
+    display: flex;
+    flex-direction: row;
+    cursor: pointer;
+    align-items: center;
+    opacity: 0;
+    transition: opacity 0.6s ease-in-out;
+}
+.EditProfilContainer>.GoBackButton>img{
+    height: 10px;
+    width: 10px;
+    margin-right: 3px;
+}
+.EditProfilContainer>.t2{
+    padding-top: 60px;
+    padding-left: 10px;
+    font-weight: bold;
+}
+
+.EditProfilContainer .ImageContainer{
+    position: relative;
+    margin: 0 auto;
+    width: 150px;
+    margin-top: 50px;
+}
+.EditProfilContainer .ImageContainer>img{
+    width: 150px;
+    height: 150px;
+    border-radius: 200px;
+}
+.EditProfilContainer .ImageContainer>button{
+    position: absolute;
+    top: 10px;
+    right: 2px;
+    border: none;
+    background-color: var(--greylight);
+    padding: 7px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 40px;
+    background-color: rgba(255, 255, 255, 0.3); /* transparent pour voir le flou */
+    backdrop-filter: blur(8px); /* effet de flou */
+    -webkit-backdrop-filter: blur(8px); 
+    cursor: pointer;
+}
+.EditProfilContainer .ImageContainer>button>img{
+    width: 14px;
+}
+
+
+.EditProfilContainer .ListInformation{
+    display: flex;
+    flex-direction: column;
+    padding: 0 15px;
+    margin-top: 50px;
+}
+.EditProfilContainer form .InputText{
+  border: 1px solid #ddd;
+  padding: 12px 10px;
+  color: var(--greydark);
+  border-radius: 10px;
+  margin-top: 8px;
+  width: 100%;
+  margin-bottom: 30px;
+}
+.EditProfilContainer form .InputText:focus {
+  outline: none;
+  border: 1px solid var(--greysemidark);
+      border-color: var(--greymiddledark);
+
+  padding: 12px 10px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+
+}
+
+.EditProfilContainer form>.DescriptionInput{
+  border: none;
+  border: 1px solid var(--greysemidark);
+  padding-bottom: 2px;
+  padding-top: 5px;
+  color: var(--greydark);
+  margin-top: 5px;
+  padding: 8px 10px;
+  padding-bottom: 10px;
+  border-radius: 12px;
+  width: 100%;
+  font-family: 'Inter', sans-serif;
+}
+.EditProfilContainer form>.DescriptionInput:focus {
+  outline: none;
+  border-bottom: 1px solid var(--greysemidark); /* facultatif ici, redéfini juste au cas où */
+}
+
+.EditProfilContainer form>.RightInfo {
+  text-align: right;/* facultatif ici, redéfini juste au cas où */
+  margin-top: 4px;
+  margin-right: 5px;
+}
+.EditProfilContainer form>.RightInfo.error {
+  color: var(--rednormal);
+}
+
+.EditProfilContainer form>button {
+  background-color: transparent;
+  display: flex;
+  flex-direction: row;
+  border: none;
+  gap: 10px;
+  margin-top: 20px;
+}
+.EditProfilContainer form>button>img {
+  width: 20px;
+  height: 20px;
+}
+
+
+.EditProfilContainer  .SaveButton {
+    background: linear-gradient(180deg, #545454, #373737);
+    color: #ffffff;
+    padding: 7px 16px;
+    font-size: 1rem;
+    font-weight: lighter;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: background 1s, transform 0.2s;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    width: fit-content;
+    align-self: center;
+    font-size: 0.8rem;
+    margin-top: 35px;
+  }
+.EditProfilContainer .SaveButton>p {
+  color: white;
+}
+.EditProfilContainer .SaveButton>img {
+  width: 15px;
+  height: 15px;
+}
+.EditProfilContainer .SaveButton:hover {
+    background: linear-gradient(180deg, #373737, #545454);
+  }
+  

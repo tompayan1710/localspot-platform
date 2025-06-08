@@ -5,6 +5,7 @@ import { useNavigate } from "react-router-dom";
 import "./styles.css";
 import { AuthContext } from '../Auth/authContext/authContext';
 import localspotlogo from "../../assets/images/localspotlogo.png";
+import ViarteLogo from "../../assets/images/ViarteLogo.png";
 import arrowLeft from "../../assets/images/arrowLeft.png";
 import { GoogleAuthButton } from "./GoogleAuthButton"
 import Spinner from "../Spinner/Spinner"
@@ -78,7 +79,7 @@ export default function Login() {
       </div>
       <div className="authcomponentcontainer">
         <div className="form-container">
-          <img src={localspotlogo} alt="localspot logo"/>
+          <img src={ViarteLogo} alt="localspot logo"/>
 
           {/* {myauthContext.isAuth ? "Connectééééé Contexte" : "Déconnecter Je suis une merde en code"}
           <p>{myauthContext.message}</p> */}

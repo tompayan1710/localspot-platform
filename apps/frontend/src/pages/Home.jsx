@@ -10,30 +10,69 @@ import starIcon from "../assets/images/starIcon.png"
 import { useEffect, useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import BottomNavBarNotAnimate from "../components/BottomNavBar/BottomNavBarNotAnimate";
+import { useTranslation } from "react-i18next";
+
+
+// Fonction utilitaire de traduction
+async function batchTranslate(texts, lang) {
+  const res = await fetch(`${process.env.REACT_APP_API_URL}/api/translate`, {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ texts, targetLang: lang }),
+  });
+  const data = await res.json();
+  return data.translations;
+}
+
 
 export default function Home() {
-  const logoContainerRef = useRef(null);
   const HomeContainerRef = useRef(null);
   const navigate = useNavigate();
+
+  const { i18n } = useTranslation();
+  const currentLang = i18n.language;
+
 
   const searchBarRef = useRef(null);
   const [firstRender, setfirstRender] = useState(true);
 
-  const BottomNavBarRef = useRef(null);
 
   const [HomeOffers, setHomeOffers] = useState([]);
-    
+  const [loading, setLoading] = useState(true);
+
     const getHomeOffers = async () => {
       const data = await getOffersToday();
       if(data.success){
-        console.warn(data.offers);
-        setHomeOffers(data.offers);
+
+        let offers = data.offers;
+
+        if (currentLang !== "fr") {
+        // Traduire chaque titre (en parallèle)
+          const titles = offers.map(o => o.title);
+          const descriptions = offers.map(o => o.description);
+
+          const translatedTitles = await batchTranslate(titles, currentLang);
+          const translatedDescriptions = await batchTranslate(descriptions, currentLang);
+
+          offers = offers.map((offer, i) => ({
+            ...offer,
+            title: translatedTitles[i],
+            description: translatedDescriptions[i],
+          }));
+        } else {
+          // Français : on garde le titre d'origine
+          offers = offers.map((offer) => ({ ...offer, title: offer.title }));
+        }
+      
+        console.warn(offers);
+        setHomeOffers(offers);
       }
+      setLoading(false);
     }
 
     useEffect(() => {
       getHomeOffers();
-    }, [])
+    }, [i18n.language])
 
 
   return (

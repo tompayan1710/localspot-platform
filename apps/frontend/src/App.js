@@ -16,6 +16,9 @@ import CreateOfferInformations from "./pages/CreateOffer/CreateOfferInformation"
 import BecomeProvider from "./pages/BecomeProvider/BecomeProvider";
 import BecomeProviderAddInfo from "./pages/BecomeProvider/BecomeProviderAddInfo";
 import BecomeProviderAddContact from "./pages/BecomeProvider/BecomeProviderContact";
+import EditProfile from "./components/Auth/ProfilPage/EditProfile";
+import EditLanguage from "./components/Auth/ProfilPage/EditLanguage";
+import SettingsPage from "./components/Auth/ProfilPage/SettingsPage/SettingsPage";
 
 
 //Pour sauvegarder : pg_dump "postgresql://postgres:TomPayan-1710@localhost:5432/localspot" -f viarte_backup.sql
@@ -68,7 +71,10 @@ export default function App() {
             <Route path="/signup" element={<Signup />} />
             <Route path="/login" element={<Login />} />
             <Route path="/profile" element={<Profile />} />
-            
+            <Route path="/edit-profile" element={<EditProfile />} />
+            <Route path="/edit-language" element={<EditLanguage />} />
+            <Route path="/settings" element={<SettingsPage />} />
+    
             <Route path="/become-provider" element={<BecomeProvider />} />
             <Route path="/become-provider/add-info" element={<BecomeProviderAddInfo/>} />
             <Route path="/become-provider/add-contact" element={<BecomeProviderAddContact/>} />

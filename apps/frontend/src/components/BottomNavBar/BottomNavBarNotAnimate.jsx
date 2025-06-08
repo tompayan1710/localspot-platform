@@ -3,7 +3,7 @@ import { useNavigate } from "react-router-dom"; // 👈 pour naviguer
 import { forwardRef } from "react"
 import jetSkieIcon from "../../assets/images/jetSkieIcon.png"
 import foodIcon from "../../assets/images/foodIcon.png"
-import userIcon from "../../assets/images/userIcon.png"
+import userIconBlack from "../../assets/images/userIconBlack.png"
 import mapIcon from "../../assets/images/mapIcon.webp"
 
 const BottomNavBarNotAnimate = forwardRef((props, ref) => {
@@ -28,7 +28,7 @@ const BottomNavBarNotAnimate = forwardRef((props, ref) => {
             <img src={foodIcon} />
         </button>
         <button className="NavBarButton" onClick={() => navigate("/profile")}> 
-            <img src={userIcon} />
+            <img src={userIconBlack} />
         </button>
     </div>
   );
