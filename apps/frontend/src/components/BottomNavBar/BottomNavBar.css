@@ -39,13 +39,57 @@
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    gap: 5px;
+    gap: 4px;
+    /* padding-bottom: 6px; */
 }
  
-.NavBarButton img{
-    height: 30px;
-    opacity: 0.8;
+
+
+.IconWrapper {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 4px;
 }
+
+.IconWrapper img{
+    width: 30px;
+    opacity: 0.2;
+    transition: all 0.4s ease;
+}
+.IconWrapper p{
+    position: relative;
+    opacity: 0.6;
+    top: 0px;
+    transition: all 0.4s ease;
+}   
+
+
+.IconWrapper.active img {
+  /* width: 30px; */
+  opacity: 100;
+    transform: scale(1.35);
+}
+.IconWrapper.active p {
+    top: 4px;
+    opacity: 1;
+    /* font-size: 0.6rem;  */
+}
+
+/*
+.IconWrapper.active {
+  background: linear-gradient(180deg, #545454, #373737);
+  border-radius: 15px;
+  width: 50px;
+  height: 50px;
+  box-shadow:
+   -4px -4px 6px rgba(255, 255, 255, 0.3),
+    5px 8px 20px rgba(0, 0, 0, 0.3),
+    inset -4px -4px 20px rgba(0, 0, 0, 8),
+    inset 4px 4px 7px rgba(255, 255, 255, 0.5); 
+}
+*/
  
 .BottomNavBar.sliderInBottomNav{
   animation: sliderInBottomNav 0.8s ease-out forwards;

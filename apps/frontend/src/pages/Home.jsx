@@ -7,6 +7,13 @@ import Nice from "../assets/images/Nice.avif"
 import footIcon from "../assets/images/footIcon.png"
 import carIcon from "../assets/images/carIcon.png"
 import starIcon from "../assets/images/starIcon.png"
+import StartIconMiddle from "../assets/images/StartIconMiddle.png"
+import extendIcon from "../assets/images/extendIcon.png"
+import NiceIntro from "../assets/images/NiceIntro.jpg"
+import NiceIntro1 from "../assets/images/NiceIntro1.png"
+import NiceIntro2 from "../assets/images/NiceIntro2.png"
+import NiceIntro3 from "../assets/images/NiceIntro3.png"
+import arrowRight from "../assets/images/arrowRight.png"
 import { useEffect, useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import BottomNavBarNotAnimate from "../components/BottomNavBar/BottomNavBarNotAnimate";
@@ -81,6 +88,60 @@ export default function Home() {
       <BottomNavBarNotAnimate/>
       <div ref={HomeContainerRef} className="HomeContainer">
         <div className="HomeSectionContainer">
+          <div className="IntroImage">
+            <p className="t6">Discover the best of</p>
+            <p className="t2">Nice</p>
+            <div className="ContainerCenter">
+              <img src={NiceIntro2} alt="Intro Image illustration"/>
+              <img src={NiceIntro1} alt="Intro Image illustration"/>
+              <img src={NiceIntro3} alt="Intro Image illustration"/>
+              <div className="Shadow"></div>
+            </div>
+          </div>
+          <p className="t6">disponnible aujourd'huit</p>
+          <div className="row">
+            <p className="t4">Activité d'été</p>
+            <button>
+              <img src={arrowRight} alt="arrow right icon"/>
+            </button>
+          </div>
+          <div className="HomeListPrestation">
+            {
+              HomeOffers.map((offer, index) => {
+                return(
+                  <div key={index} className="HomeListPrestationItem" onClick={() => {navigate(`/offer-page/${offer.slug}`)}}>
+                    <div className="ImageContainer">
+                      <img src={offer.image_urls[0]}/>
+                      <div className="shine"></div> {/* Effet de lueur ici */}
+                      {/* <div></div> */}
+                      <button>
+                        <img src={extendIcon} alt="extend icon"/>
+                      </button>
+                    </div>
+                    <div className="containerTopBottom">
+                      <div>
+                        <p className="t6 isFreeCancelation">free cancellation</p>
+                        <p className="t5">{offer.title}</p>
+                      </div>
+                      <div>
+                        <p className="t6"><strong>{offer.price}€</strong> par {offer.priceper}</p>
+                        <div className="HomeStarList">
+                          {Array.from({ length: 4 }).map((_, i) => (
+                            <img key={i} src={starIcon} alt="star icon"/>
+                          ))}
+                          <img src={StartIconMiddle}/>
+                          <p className="t6">4.5/5</p>
+                        </div>
+                      </div>
+                    </div>
+                    
+                  </div>
+                )
+              })
+            }
+           
+          </div>
+          
           <p className="t4">Activité disponnible aujourd'huit</p>
           <div className="HomeListOffers">
             {
