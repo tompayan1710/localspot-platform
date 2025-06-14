@@ -77,7 +77,7 @@ function Map2D({
               const listener = window.google.maps.event.addListenerOnce(mapRef.current, "bounds_changed", () => {
               const currentZoom = mapRef.current.getZoom();
               if (currentZoom) {
-                mapRef.current.setZoom(currentZoom + 1); // ← Zoom un peu plus
+                mapRef.current.setZoom(currentZoom + 0.4); // ← Zoom un peu plus
               }
             });
             }

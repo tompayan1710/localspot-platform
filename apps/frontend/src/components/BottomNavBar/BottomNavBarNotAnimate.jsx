@@ -1,6 +1,6 @@
 import "./BottomNavBar.css";
 import { useNavigate } from "react-router-dom"; // 👈 pour naviguer
-import { forwardRef, useContext, useState } from "react"
+import { forwardRef, useContext, useEffect, useState } from "react"
 import jetSkieIcon from "../../assets/images/jetSkieIcon.png"
 import foodIcon from "../../assets/images/foodIcon.png"
 import userIconBlack from "../../assets/images/userIconBlack.png"
@@ -13,10 +13,31 @@ import { AuthContext } from "../Auth/authContext/authContext"
 const BottomNavBarNotAnimate = forwardRef((props, ref) => {
   const navigate = useNavigate(); // 👈 hook de navigation
   const { authState, logout } = useContext(AuthContext);
-const [activeTab, setActiveTab] = useState("explorer");
+  const [activeTab, setActiveTab] = useState("explorer");
+
+  const [hidden, setHidden] = useState(false); // état pour cacher / montrer la navbar
+  const [lastScrollY, setLastScrollY] = useState(0);
+
+   useEffect(() => {
+    const handleScroll = () => {
+      const currentScrollY = window.scrollY;
+
+      if (currentScrollY > lastScrollY && currentScrollY > 100) {
+        setHidden(true); // scroll vers le bas ⇒ cacher
+      } else {
+        setHidden(false); // scroll vers le haut ⇒ montrer
+      }
+
+      setLastScrollY(currentScrollY);
+    };
+
+    window.addEventListener("scroll", handleScroll);
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, [lastScrollY]);
+
 
   return (
-    <div ref={ref} className={`BottomNavBarNotAnimate`}>
+    <div ref={ref} className={`BottomNavBarNotAnimate ${hidden ? "hidden" : ""}`}>
       {
         props.isMap?
         <button className="MapButton" onClick={() =>console.log("Clique on map")}>
@@ -57,13 +78,17 @@ const [activeTab, setActiveTab] = useState("explorer");
         {authState.user?.provider_id ? (
           authState.user?.provider?.is_validated ? (
             <>
-            <button className="NavBarButton" onClick={() => navigate("/")}>
-              <img src={OffersNav} />
-              <p className="t6">Mes offres</p>
+            <button className="NavBarButton" onClick={() => setActiveTab("myoffers")}>
+              <div className={`IconWrapper ${activeTab === "myoffers" ? "active" : ""}`}>
+                <img src={OffersNav}/>
+                <p className="t6">Mes offres</p>
+              </div>
             </button>
-            <button className="NavBarButton" onClick={() => navigate("/")}>
-              <img src={Calendar} />
-              <p className="t6">Reservation</p>
+            <button className="NavBarButton" onClick={() => setActiveTab("calendar")}>
+              <div className={`IconWrapper ${activeTab === "calendar" ? "active" : ""}`}>
+                <img src={Calendar}/>
+                <p className="t6">Calendar</p>
+              </div>
             </button>
             
           </>

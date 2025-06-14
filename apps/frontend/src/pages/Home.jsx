@@ -9,6 +9,7 @@ import carIcon from "../assets/images/carIcon.png"
 import starIcon from "../assets/images/starIcon.png"
 import StartIconMiddle from "../assets/images/StartIconMiddle.png"
 import extendIcon from "../assets/images/extendIcon.png"
+import yoga2 from "../assets/images/yoga2.jpg"
 import NiceIntro from "../assets/images/NiceIntro.jpg"
 import NiceIntro1 from "../assets/images/NiceIntro1.png"
 import NiceIntro2 from "../assets/images/NiceIntro2.png"
@@ -89,8 +90,8 @@ export default function Home() {
       <div ref={HomeContainerRef} className="HomeContainer">
         <div className="HomeSectionContainer">
           <div className="IntroImage">
-            <p className="t6">Discover the best of</p>
-            <p className="t2">Nice</p>
+            <p className="t5">Discover the best of</p>
+            <p className="t1">Nice</p>
             <div className="ContainerCenter">
               <img src={NiceIntro2} alt="Intro Image illustration"/>
               <img src={NiceIntro1} alt="Intro Image illustration"/>
@@ -98,98 +99,200 @@ export default function Home() {
               <div className="Shadow"></div>
             </div>
           </div>
-          <p className="t6">disponnible aujourd'huit</p>
+          <p className="t6">Parfait pour l'été</p>
+          {/* <p className="t6">Populaire sur Viarte</p> */}
           <div className="row">
-            <p className="t4">Activité d'été</p>
+            {/* <p className="t4">Les activité d'été</p>  */}
+            <p className="t4">disponibles cet après-midi</p>
             <button>
               <img src={arrowRight} alt="arrow right icon"/>
             </button>
-          </div>
+          </div> 
           <div className="HomeListPrestation">
             {
               HomeOffers.map((offer, index) => {
                 return(
-                  <div key={index} className="HomeListPrestationItem" onClick={() => {navigate(`/offer-page/${offer.slug}`)}}>
-                    <div className="ImageContainer">
-                      <img src={offer.image_urls[0]}/>
-                      <div className="shine"></div> {/* Effet de lueur ici */}
-                      {/* <div></div> */}
-                      <button>
-                        <img src={extendIcon} alt="extend icon"/>
-                      </button>
-                    </div>
-                    <div className="containerTopBottom">
-                      <div>
-                        <p className="t6 isFreeCancelation">free cancellation</p>
-                        <p className="t5">{offer.title}</p>
+                  <div key={index} className={`HomeListPrestationItem ${index === HomeOffers.length - 1 ? "flou" : ""}`} onClick={() => {navigate(`/offer-page/${offer.slug}`)}}>
+                    {
+                      index === HomeOffers.length - 1 ? <p className="seeMore t32">Voir <strong>+</strong></p> : <></>
+                    }
+                    <div className={`${index === HomeOffers.length - 1 ? "flou-interne" : ""}`}>
+                      <div className="ImageContainer">
+                        <img src={offer.image_urls[0]}/>
+                        <div className="shine"></div> {/* Effet de lueur ici */}
+                        {/* <div></div> */}
+                        <button>
+                          <img src={extendIcon} alt="extend icon"/>
+                        </button>
                       </div>
-                      <div>
-                        <p className="t6"><strong>{offer.price}€</strong> par {offer.priceper}</p>
-                        <div className="HomeStarList">
-                          {Array.from({ length: 4 }).map((_, i) => (
-                            <img key={i} src={starIcon} alt="star icon"/>
-                          ))}
-                          <img src={StartIconMiddle}/>
-                          <p className="t6">4.5/5</p>
+                      <div className="containerTopBottom">
+                        <div>
+                          <p className="t6 isFreeCancelation">free cancellation</p>
+                          <p className="t5">{offer.title}</p>
+                        </div>
+                        <div>
+                          <p className="t6"><strong>{offer.price}€</strong> par {offer.priceper}</p>
+                          <div className="HomeStarList">
+                            {Array.from({ length: 4 }).map((_, i) => (
+                              <img key={i} src={starIcon} alt="star icon"/>
+                            ))}
+                            <img src={StartIconMiddle}/>
+                            <p className="t6">4.5/5</p>
+                          </div>
                         </div>
                       </div>
                     </div>
-                    
                   </div>
                 )
               })
             }
-           
           </div>
-          
-          <p className="t4">Activité disponnible aujourd'huit</p>
-          <div className="HomeListOffers">
+
+
+
+          <p className="t6">Autour de vous</p>
+          <div className="row">
+            <p className="t4"> À moins de 5 min à pied</p> 
+            <button>
+              <img src={arrowRight} alt="arrow right icon"/>
+            </button>
+          </div> 
+          <div className="HomeListPrestation">
             {
               HomeOffers.map((offer, index) => {
                 return(
-                  <div key={index} className="HomeOffersItem" onClick={() => {navigate(`/offer-page/${offer.slug}`)}}>
-                    <img src={offer.image_urls[0]}/>
-                    <div className="OffersInfo">
-                      <div className="TopDiv">   
-                        <p className="t5">{offer.title}</p>
-                        <div className="OffersInfoDuration">
-                          <img src={footIcon}/><p className="t6">12 min</p>
-                          <img src={carIcon}/><p className="t6">5 min</p>
-                        </div>
+                  <div key={index} className={`HomeListPrestationItem ${index === HomeOffers.length - 1 ? "flou" : ""}`} onClick={() => {navigate(`/offer-page/${offer.slug}`)}}>
+                    {
+                      index === HomeOffers.length - 1 ? <p className="seeMore t32">Voir <strong>+</strong></p> : <></>
+                    }
+                    <div className={`${index === HomeOffers.length - 1 ? "flou-interne" : ""}`}>
+                      <div className="ImageContainer">
+                        <img src={offer.image_urls[0]}/>
+                        <div className="shine"></div> {/* Effet de lueur ici */}
+                        {/* <div></div> */}
+                        <button>
+                          <img src={extendIcon} alt="extend icon"/>
+                        </button>
                       </div>
-                      <div className="BottomDiv">
-                        <div className="HomeStarList">
-                          {Array.from({ length: 5 }).map((_, i) => (
-                            <img key={i} src={starIcon} />
-                          ))}
+                      <div className="containerTopBottom">
+                        <div>
+                          <p className="t6 isFreeCancelation">free cancellation</p>
+                          <p className="t5">{offer.title}</p>
                         </div>
-                        <p className="t6"><strong>À partir de {offer.price} €</strong> par personne</p>
+                        <div>
+                          <p className="t6"><strong>{offer.price}€</strong> par {offer.priceper}</p>
+                          <div className="HomeStarList">
+                            {Array.from({ length: 4 }).map((_, i) => (
+                              <img key={i} src={starIcon} alt="star icon"/>
+                            ))}
+                            <img src={StartIconMiddle}/>
+                            <p className="t6">4.5/5</p>
+                          </div>
+                        </div>
                       </div>
                     </div>
                   </div>
                 )
               })
             }
-            <div className="HomeOffersItem" onClick={() => {console.log("Je t'aime clara")}}>
-              <img src={Nice}/>
-              <div className="OffersInfo">
-                <div className="TopDiv">   
-                  <p className="t5">Atelier Croissant & Pâtisseries Parisiennes</p>
-                  <div className="OffersInfoDuration">
-                    <img src={footIcon}/><p className="t6">12 min</p>
-                    <img src={carIcon}/><p className="t6">5 min</p>
+          </div>
+
+          
+          {/* <p className="t6">Sorties de dernière minute</p> */}
+          <p className="t6">Réservez une sortie de dernière minute</p>
+          <div className="row">
+            <p className="t4">À faire ce soir</p> 
+            <button>
+              <img src={arrowRight} alt="arrow right icon"/>
+            </button>
+          </div> 
+          <div className="HomeListPrestation">
+            {
+              HomeOffers.map((offer, index) => {
+                return(
+                  <div key={index} className={`HomeListPrestationItem ${index === HomeOffers.length - 1 ? "flou" : ""}`} onClick={() => {navigate(`/offer-page/${offer.slug}`)}}>
+                    {
+                      index === HomeOffers.length - 1 ? <p className="seeMore t32">Voir <strong>+</strong></p> : <></>
+                    }
+                    <div className={`${index === HomeOffers.length - 1 ? "flou-interne" : ""}`}>
+                      <div className="ImageContainer">
+                        <img src={offer.image_urls[0]}/>
+                        <div className="shine"></div> {/* Effet de lueur ici */}
+                        {/* <div></div> */}
+                        <button>
+                          <img src={extendIcon} alt="extend icon"/>
+                        </button>
+                      </div>
+                      <div className="containerTopBottom">
+                        <div>
+                          <p className="t6 isFreeCancelation">free cancellation</p>
+                          <p className="t5">{offer.title}</p>
+                        </div>
+                        <div>
+                          <p className="t6"><strong>{offer.price}€</strong> par {offer.priceper}</p>
+                          <div className="HomeStarList">
+                            {Array.from({ length: 4 }).map((_, i) => (
+                              <img key={i} src={starIcon} alt="star icon"/>
+                            ))}
+                            <img src={StartIconMiddle}/>
+                            <p className="t6">4.5/5</p>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
                   </div>
-                </div>
-                <div className="BottomDiv">
-                  <div className="HomeStarList">
-                    {Array.from({ length: 5 }).map((_, i) => (
-                      <img key={i} src={starIcon} />
-                    ))}
+                )
+              })
+            }
+          </div>
+
+          {/* <p className="t6">disponnible aujourd'huit</p> */}
+
+          <p className="t6">Populaire cet été</p>
+          <div className="row">
+            <p className="t4">Activités les plus aimées de la saison</p> 
+            <button>
+              <img src={arrowRight} alt="arrow right icon"/>
+            </button>
+          </div> 
+          <div className="HomeListPrestation">
+            {
+              HomeOffers.map((offer, index) => {
+                return(
+                  <div key={index} className={`HomeListPrestationItem ${index === HomeOffers.length - 1 ? "flou" : ""}`} onClick={() => {navigate(`/offer-page/${offer.slug}`)}}>
+                    {
+                      index === HomeOffers.length - 1 ? <p className="seeMore t32">Voir <strong>+</strong></p> : <></>
+                    }
+                    <div className={`${index === HomeOffers.length - 1 ? "flou-interne" : ""}`}>
+                      <div className="ImageContainer">
+                        <img src={offer.image_urls[0]}/>
+                        <div className="shine"></div> {/* Effet de lueur ici */}
+                        {/* <div></div> */}
+                        <button>
+                          <img src={extendIcon} alt="extend icon"/>
+                        </button>
+                      </div>
+                      <div className="containerTopBottom">
+                        <div>
+                          <p className="t6 isFreeCancelation">free cancellation</p>
+                          <p className="t5">{offer.title}</p>
+                        </div>
+                        <div>
+                          <p className="t6"><strong>{offer.price}€</strong> par {offer.priceper}</p>
+                          <div className="HomeStarList">
+                            {Array.from({ length: 4 }).map((_, i) => (
+                              <img key={i} src={starIcon} alt="star icon"/>
+                            ))}
+                            <img src={StartIconMiddle}/>
+                            <p className="t6">4.5/5</p>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
                   </div>
-                  <p className="t6"><strong>À partir de 32,00 €</strong> par personne</p>
-                </div>
-              </div>
-            </div>
+                )
+              })
+            }
           </div>
 
         </div>
