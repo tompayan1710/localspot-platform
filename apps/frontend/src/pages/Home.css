@@ -52,7 +52,7 @@
   /* background-color: orange; */
   position: relative;
   top: 0;
-  padding-bottom: 60px;
+  padding-bottom: 20px;
 }
 .HomeContainer.slideUpHome{
     /* background-color: rgba(255, 0, 0, 0.1); TEST */
@@ -75,7 +75,7 @@ animation: slideUpHome 0.8s ease forwards;
 
 
 .HomeSectionContainer{
-  padding-top: 70px;
+  /* padding-top: 70px; */
 }
 .HomeSectionContainer>.t4{
   padding-left: 15px;
@@ -121,7 +121,7 @@ animation: slideUpHome 0.8s ease forwards;
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  margin-top: 40px;
+  margin-top: 80px;
   margin-bottom: 20px;
 }
 .HomeSectionContainer .IntroImage>.t6{
@@ -215,9 +215,8 @@ animation: slideUpHome 0.8s ease forwards;
   border-radius: 32px;
   border: 1px solid var(--greysemidark);
   /* background-color: red; */
-  min-height: 240px; 
-  height: 100%;
-
+  min-height: 250px; 
+  height : 250px;
   min-width: 60vw; 
   max-width: 300px;
   /* margin-left: 8px; */
@@ -247,6 +246,7 @@ animation: slideUpHome 0.8s ease forwards;
   position: relative; 
   overflow: hidden;
   min-height: 120px;
+  height: 120px;
   min-width: 100%;
   border-radius: 28px; 
   border-bottom-left-radius: 20px;
@@ -260,6 +260,16 @@ animation: slideUpHome 0.8s ease forwards;
   border-bottom-right-radius: 16px;
   object-fit: cover;
 } 
+.HomeListPrestationItem .ImageContainer>img.loading{
+  opacity: 0;
+  transition: opacity 0.4s ease;
+} 
+.HomeListPrestationItem .ImageContainer>img.loaded{
+  opacity: 1;
+  transition: opacity 0.4s ease;
+} 
+
+
 .HomeListPrestationItem .ImageContainer>button{
   position: absolute;
   top: 10px;
@@ -322,7 +332,7 @@ background: linear-gradient(to bottom,
 }*/
 .HomeListPrestationItem>div{
   height: 100%;
-  min-height: 230px;
+  /* min-height: 230px; */
   display: flex;
   flex-direction: column;
   justify-content: space-between;
@@ -419,3 +429,72 @@ background: linear-gradient(to bottom,
 
 
 
+
+
+
+.HomeListPrestationItem .skeleton-image{
+  background-color: var(--greylight);/*greysemidark*/
+  position: relative; 
+  overflow: hidden;
+  min-height: 120px;
+  height: 120px;
+  min-width: 100%;
+  border-radius: 28px; 
+  border-bottom-left-radius: 20px;
+  border-bottom-right-radius: 20px;
+}
+
+.HomeListPrestationItem .skeleton-title{
+  background-color: var(--greylight);/*greysemidark*/
+  min-height: 20px;
+  width: 80%;
+  border-radius: 28px; 
+  margin-top: 10px;
+  margin-left: 10px;
+}
+.HomeListPrestationItem.loading>.containerTopBottom{
+  height: 200px;
+  /* background-color: red; */
+}
+.HomeListPrestationItem .skeleton-details{
+  background-color: var(--greylight);/*greysemidark*/
+  min-height: 15px;
+  width: 50%;
+  border-radius: 28px; 
+  margin-top: 20px;
+  margin-left: 10px;
+}
+
+
+
+
+.shimmer {
+  position: relative;
+  overflow: hidden;
+}
+
+.shimmer::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: -200%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(
+    110deg,
+    transparent 10%,
+    rgb(255, 255, 255) 50%,
+    transparent 90%
+  );
+  animation: shimmer 2s infinite ease-in;
+  z-index: 1;
+}
+
+@keyframes shimmer {
+  0% {
+    left: -200%;
+  }
+  100% {
+    left: 200%;
+  }
+}

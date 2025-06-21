@@ -7,9 +7,14 @@ import Italy from "../../../assets/images/Italy.png"
 import Germany from "../../../assets/images/Germany.png"
 import "./EditLanguage.css"
 import GoBack from '../../GoBack/GoBack';
+import { useLocation } from 'react-router-dom';
+
 
 export default function EditLanguage(){
     const { i18n } = useTranslation();
+    const location = useLocation();
+    const { origin, scrollTo } = location.state || {};
+
 
     const changeLanguage = (lng) => {
     i18n.changeLanguage(lng);
@@ -17,7 +22,7 @@ export default function EditLanguage(){
 
     return(
         <div className='EditLanguageContianer'>
-            <GoBack nagigation={"/profile"} text={"revenir"}/>
+            <GoBack nagigation={`${origin}`} scrollTo={`${scrollTo}`} text={"revenir"}/>
             <p className="t2">Language</p> 
             <div className='LanguageButtonList'>
             {[

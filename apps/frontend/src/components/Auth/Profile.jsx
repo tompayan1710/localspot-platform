@@ -180,7 +180,11 @@ export default function Profile() {
               </div>
               <div className="hline"></div>
             </div>
-            <div className="SettingsListItem" onClick={() => navigate("/edit-language")}>
+            <div className="SettingsListItem" onClick={() => navigate("/edit-language",{
+              state : {
+                origin : "/profile"
+              }
+            })}>
               <div className="SettingsRow">
                 <div className="RowFirst"><img src={EuroIcon} alt="currenncy icon"/><p className="t4">Currency</p></div>
                 <img src={arrowRight} alt="arrow right"/>

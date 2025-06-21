@@ -52,20 +52,23 @@ const BottomNavBarNotAnimate = forwardRef((props, ref) => {
 
         {!authState.user?.provider_id && !authState.user?.provider?.is_validated && (
           <>
-          <button className="NavBarButton" onClick={() => setActiveTab("explorer")}>
+          {/* <button className="NavBarButton" onClick={() => setActiveTab("explorer")}> */}
+          <button className="NavBarButton" onClick={() => navigate("/")}>
             <div className={`IconWrapper ${activeTab === "explorer" ? "active" : ""}`}>
               <img src={Explore} />
               <p className="t6">Explorer</p>
             </div>
                          
           </button>
-           <button className="NavBarButton" onClick={() =>  setActiveTab("activity")}> 
+           {/* <button className="NavBarButton" onClick={() =>  setActiveTab("activity")}>  */}
+           <button className="NavBarButton" onClick={() =>  navigate("/")}> 
             <div className={`IconWrapper ${activeTab === "activity" ? "active" : ""}`}>
               <img src={jetSkieIcon}/>
               <p className="t6">Activité</p>
             </div>
             </button>
-            <button className="NavBarButton" onClick={() => setActiveTab("restauration")}>
+            {/* <button className="NavBarButton" onClick={() => setActiveTab("restauration")}> */}
+            <button className="NavBarButton" onClick={() => navigate("/")}>
               <div className={`IconWrapper ${activeTab === "restauration" ? "active" : ""}`}>
                 <img src={foodIcon}/>
                 <p className="t6">Restauration</p>
@@ -94,7 +97,8 @@ const BottomNavBarNotAnimate = forwardRef((props, ref) => {
           </>
           ):<></>)
         :<></>}
-        <button className="NavBarButton" onClick={() => setActiveTab("profile")}> 
+        {/* <button className="NavBarButton" onClick={() => setActiveTab("profile")}>  */}
+        <button className="NavBarButton" onClick={() => navigate("/profile")}> 
           <div className={`IconWrapper ${activeTab === "profile" ? "active" : ""}`}>
             <img src={userIconBlack}/>
             <p className="t6">Profile</p>

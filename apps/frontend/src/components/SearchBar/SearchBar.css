@@ -1,5 +1,5 @@
 .SearchContainer{
-  position: absolute;
+
   top: 0;
   left: 0;
   width: 100%;
@@ -8,7 +8,7 @@
   background-color: white;
   border-bottom: 1px solid var(--greylight);
   padding: 15px 15px;
-  z-index: 3;
+  z-index: 10;
   box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
 }
 
@@ -27,9 +27,10 @@
 }
 
 .SearchContainer.searchOpen{
-  min-height: 100vh;
+  height: 100vh;
   top: 0;
-  overflow-y: scroll;
+  position: fixed;
+  overflow: scroll;
 }
 
   .StartSearch {

@@ -1,0 +1,111 @@
+.FooterContainer{
+    background: linear-gradient(180deg, #545454, #373737);
+    width: 100%;
+    padding-bottom: 20px;
+}
+.FooterContainer>img{
+    margin: 40px 0px 0px 20px;
+    width: 30px;
+    align-self: center;
+}
+.FooterContainer p,a{
+    color: white;
+}
+.FooterContainer>p{
+    padding-top: 20px;
+    margin-left: 15px;
+    margin-bottom: 20px;
+    text-align: start;
+}
+.FooterContainer .whiteHline{
+    width: calc(100% - 30px);
+    height: 1px;
+    background-color: white;
+    margin: 10px auto;
+}
+.FooterContainer .BottomContainer{
+    display: flex;
+    flex-direction: column;
+}
+.FooterContainer .BottomContainer .t5{
+    margin-bottom: 10px;
+    margin-top: 5px;
+    margin-left: 15px;
+    margin-right: 15px;
+    font-weight: bold;
+}
+.FooterContainer .BottomContainer a{
+    font-size: 0.8rem; 
+    /* color: var(--greydark); */
+    margin-bottom: 10px;
+    margin-left: 15px;
+    margin-right: 15px;
+    text-decoration: none;
+}
+
+.FooterContainer .BottomContainer .LanguageButton{
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    width: fit-content;
+    padding: 8px 12px;
+    border: none;
+    border-radius: 5px;
+    background: linear-gradient(180deg, #e0e0e0, #ffffff);
+    margin-left: 15px;
+    margin-bottom: 15px;
+}
+.FooterContainer .BottomContainer .LanguageButton>p{
+    margin: 0;
+    color: var(--blacknormal);
+    margin-right: 5px;
+}
+.FooterContainer .BottomContainer .LanguageButton>img{
+    width: 8px;
+    height: 8px;
+    margin-top: 2px;
+}
+
+.FooterContainer .BottomContainer .CopyButton{
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    background-color: transparent;
+    border: none;
+    width: fit-content;
+    margin-bottom: 15px;
+    position: relative;
+}
+.FooterContainer .BottomContainer .CopyButton>p{
+    margin: 0%;
+    margin-left: 15px;
+    margin-right: 10px;
+}
+.FooterContainer .BottomContainer .CopyButton>img{
+    width: 15px;
+}
+.FooterContainer .BottomContainer .CopyButton>.CopiedFeedback{
+    position: absolute;
+    right: 6px;
+    transform: translateX(50%);
+    top: -30px;
+    background-color: var(--greenlight);
+    background-image: linear-gradient(to bottom, #b5edb1, var(--greenlight));
+    color: var(--greennormal);
+    padding: 3px 6px;
+    border-radius: 100px;
+    border: 1px solid  var(--greysemidark);
+    transition: opacity 0.15s ease;
+    opacity: 0;
+}
+.FooterContainer .BottomContainer .CopyButton>.CopiedFeedback.copied{
+    opacity: 1;
+}
+
+
+.FooterContainer .BottomContainer p{
+    margin-bottom: 10px;
+    margin-left: 15px;
+    margin-right: 15px;
+    font-weight: 200;
+}
