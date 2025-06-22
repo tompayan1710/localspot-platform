@@ -15,6 +15,7 @@
   import NiceIntro2 from "../assets/images/NiceIntro2.png"
   import NiceIntro3 from "../assets/images/NiceIntro3.png"
   import arrowRight from "../assets/images/arrowRight.png"
+  import ViarteLogo from "../assets/images/ViarteLogo.png"
   import { useEffect, useRef, useState } from "react";
   import { useNavigate } from "react-router-dom";
   import BottomNavBarNotAnimate from "../components/BottomNavBar/BottomNavBarNotAnimate";
@@ -51,6 +52,14 @@ function FadeInImage({ src, alt, className }) {
 
 
   export default function Home() {
+    const offerContainerRef = useRef(null);
+    const LogoContainerAnimationRef = useRef(null); 
+    const HomePageRef = useRef(null); 
+    const BottomNavBarRef = useRef(null);
+
+
+
+
     const location = useLocation();
     const { scrollTo } = location.state || {};
 
@@ -64,8 +73,6 @@ function FadeInImage({ src, alt, className }) {
         }
       }
     }, [scrollTo]);
-
-    const HomeContainerRef = useRef(null);
     const navigate = useNavigate();
 
     const { i18n } = useTranslation();
@@ -90,9 +97,11 @@ function FadeInImage({ src, alt, className }) {
             const titles = offers.map(o => o.title);
             const descriptions = offers.map(o => o.description);
 
-            const translatedTitles = await batchTranslate(titles, currentLang);
-            const translatedDescriptions = await batchTranslate(descriptions, currentLang);
+            // const translatedTitles = await batchTranslate(titles, currentLang);
+            // const translatedDescriptions = await batchTranslate(descriptions, currentLang);
 
+            const translatedTitles =titles;
+            const translatedDescriptions= descriptions;
             offers = offers.map((offer, i) => ({
               ...offer,
               title: translatedTitles[i],
@@ -111,14 +120,52 @@ function FadeInImage({ src, alt, className }) {
 
       useEffect(() => {
         getHomeOffers();
+
+        setTimeout(() => OfferAnimationShow(), 200);
       }, [i18n.language])
 
 
+      const OfferAnimationShow = () => {
+        // LogoContainerAnimationRef.current.style.top = "-100vh";
+        const logo = LogoContainerAnimationRef.current;
+
+        if (!logo) return;
+
+        logo.classList.add("appear");
+
+        setTimeout(() => {
+          logo.classList.remove("appear");
+          logo.classList.add("disappear");
+        }, 2000)
+        setTimeout(() => {
+          
+          HomePageRef.current.style.top = "0";
+          HomePageRef.current.style.opacity = "1";
+          HomePageRef.current.style.overflowY = "auto";
+        }, 2300);
+        
+        
+        setTimeout(() => {
+          BottomNavBarRef.current.classList.add("sliderInBottomNav");
+          searchBarRef.current.style.top = "0";
+          setTimeout(() => {
+            offerContainerRef.current.style.overflowY = "scroll";
+          }, 1800)
+
+        }, 2300)
+    }
+    
+
     return (
-      <div className="HomeContainerPrincipal">
+      <div className="HomeContainerPrincipal" ref={offerContainerRef}>
+        <div ref={LogoContainerAnimationRef} className={`${true ? "" : ""} LogoContainerAnimation`}>
+          <div className="LogoContainer">
+            <img src={ViarteLogo} alt="Viarte Logo"/>
+          </div>
+        </div>
         <SearchBar ref={searchBarRef} firstRender={firstRender}/>
-        <BottomNavBarNotAnimate/>
-        <div ref={HomeContainerRef} className="HomeContainer">
+        <BottomNavBar isMap={false}  ref={BottomNavBarRef}/>
+        <div ref={HomePageRef} className="HomeContainer">
           <div className="HomeSectionContainer">
             <div className="IntroImage">
               <p className="t5">Discover the best of</p>
@@ -340,8 +387,8 @@ function FadeInImage({ src, alt, className }) {
             </div>
 
           </div>
+          <Footer />
         </div>
-        <Footer />
       </div>
     );
   }

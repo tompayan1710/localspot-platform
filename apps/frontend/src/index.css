@@ -58,8 +58,13 @@ code {
   font-weight: 500;
 }
 
+html{
+  background-color: red;
+}
 
-
+body{
+  background-color: orange;
+}
 
 :root{
   --blacknormal: #3A4150;

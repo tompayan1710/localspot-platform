@@ -1,18 +1,63 @@
-.LogoContainerAnimation {
-  position: fixed;
-  left: 50%;
-  top: 50%;
-  transform: translate(-50%, -50%);
-  background-color: purple;
-  width: 60px;
-  height: 60px;
-  border-radius: 100px;
-  opacity: 1;
-  /* box-shadow: 0px 10px 30px rgba(0, 0, 0, 0.3); */
-
-  z-index: 10;
+.HomeContainerPrincipal{
+  width: 100vw;
+  min-height: 100vh;
+  height: 100vh;
+  max-width: 100vw;
+  /* background-color: red; */
+  /* margin-bottom: 50px; */
+  overflow: hidden;
+  position: relative;
+  /* background-color: rebeccapurple; */
+}
+.HomeContainerPrincipal {
+  /* overflow-y: scroll; */
+  scrollbar-width: none;
+  -ms-overflow-style: none;
 }
 
+.HomeContainerPrincipal::-webkit-scrollbar {
+  display: none; 
+} 
+.LogoContainerAnimation {
+  position: absolute;
+  top: 0;
+  width: 100vw;
+  height: 100vh;
+  background-color: purple;
+  opacity: 0;
+  z-index: 9999;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  /* transition: top 1s ease-in-out, opacity 1s ease-in-out; */
+}
+
+.LogoContainerAnimation.appear {
+  transition: opacity 1s ease-in;
+  opacity: 1;
+}
+
+.LogoContainerAnimation.disappear {
+  transition: top 8s ease-out, opacity 0.2s ease-out;
+  top: -100vh;
+  opacity: 0;
+}
+
+
+
+.LogoContainerAnimation>.LogoContainer{
+  width: 60px;
+  height: 60px;
+  background-color: blue;
+}
+.LogoContainerAnimation>.LogoContainer>img{
+  width: 100%;
+  
+}
+.LogoContainerAnimation>.LogoContainer>img{
+  opacity: 1;
+}
+/*
 .LogoContainerAnimation.popIn {
   animation: popIn 0.8s ease-out forwards;
 }
@@ -43,7 +88,7 @@
   100% {
     transform: translate(-50%, -100vh) scale(0.6);
   }
-}
+}*/
 
 
 .HomeContainer{
@@ -51,8 +96,14 @@
   width: 100vw;
   /* background-color: orange; */
   position: relative;
-  top: 0;
+  top: 10vh;
   padding-bottom: 20px;
+  opacity: 0;
+  transition: top 1s ease-in-out, opacity 1s ease-in-out;
+}
+.HomeContainer.visible{
+  opacity: 1;
+  top: 0;
 }
 .HomeContainer.slideUpHome{
     /* background-color: rgba(255, 0, 0, 0.1); TEST */
