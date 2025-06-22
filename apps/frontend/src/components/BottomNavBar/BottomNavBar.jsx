@@ -72,7 +72,8 @@ const BottomNavBar = forwardRef((props, ref) => {
         ):<></>)
         :<></>}
         
-        <button className="NavBarButton" onClick={() => setActiveTab("profile")}> 
+        {/* <button className="NavBarButton" onClick={() => setActiveTab("profile")}>  */}
+        <button className="NavBarButton" onClick={() => navigate("/profile")}> 
           <div className={`IconWrapper ${activeTab === "profile" ? "active" : ""}`}>
               <img src={userIconBlack}/>
               <p className="t6">Profile</p>

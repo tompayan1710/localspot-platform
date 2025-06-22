@@ -45,6 +45,7 @@ const SearchBar = forwardRef((props, ref) => {
     setFoodSelected((prev) => !prev)
   }
 
+  
 
   return (
       <div ref={ref} className={`SearchContainer ${searchOpen ?  "searchOpen" : ""}`}>
@@ -64,7 +65,7 @@ const SearchBar = forwardRef((props, ref) => {
                       placeholder="Commencer ma recherche" 
                       // value={email} 
                       // onChange={(e) => setEmail(e.target.value)} 
-                      onFocus={() => setSearchOpen(true)} // Correction ici
+                      onFocus={() => setSearchOpen(false)} // Correction ici
                       // required 
                     />
 

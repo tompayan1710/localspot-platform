@@ -23,7 +23,7 @@
   top: 0;
   width: 100vw;
   height: 100vh;
-  background-color: purple;
+  /* background-color: purple; */
   opacity: 0;
   z-index: 9999;
   display: flex;
@@ -38,8 +38,8 @@
 }
 
 .LogoContainerAnimation.disappear {
-  transition: top 8s ease-out, opacity 0.2s ease-out;
-  top: -100vh;
+  transition: top 5s ease-out, opacity 0.5s ease-in;
+  /* top: -100vh; */
   opacity: 0;
 }
 

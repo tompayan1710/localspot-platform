@@ -136,23 +136,27 @@ function FadeInImage({ src, alt, className }) {
         setTimeout(() => {
           logo.classList.remove("appear");
           logo.classList.add("disappear");
+          setTimeout(() => {
+            logo.style.top = "-100vh";
+          }, 1000);
         }, 2000)
         setTimeout(() => {
           
           HomePageRef.current.style.top = "0";
           HomePageRef.current.style.opacity = "1";
           HomePageRef.current.style.overflowY = "auto";
-        }, 2300);
+        }, 2500);
         
         
         setTimeout(() => {
           BottomNavBarRef.current.classList.add("sliderInBottomNav");
-          searchBarRef.current.style.top = "0";
+          searchBarRef.current.classList.add("slideInSearch")
+          // searchBarRef.current.style.top = "0";
           setTimeout(() => {
             offerContainerRef.current.style.overflowY = "scroll";
-          }, 1800)
+          }, 1500)
 
-        }, 2300)
+        }, 3000)
     }
     
 
@@ -163,7 +167,7 @@ function FadeInImage({ src, alt, className }) {
             <img src={ViarteLogo} alt="Viarte Logo"/>
           </div>
         </div>
-        <SearchBar ref={searchBarRef} firstRender={firstRender}/>
+        <SearchBar ref={searchBarRef}/>
         <BottomNavBar isMap={false}  ref={BottomNavBarRef}/>
         <div ref={HomePageRef} className="HomeContainer">
           <div className="HomeSectionContainer">
