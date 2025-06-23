@@ -2,7 +2,7 @@ import arrowLeft from "../../assets/images/arrowLeft.png"; // Replace with your 
 import arrowdownicon from "../../assets/images/arrowdownicon.png";
 
 import "./SearchBar.css";
-import { useState, forwardRef } from "react";
+import { useState, forwardRef, useEffect } from "react";
 import DurationSlider from "../../pages/OfferPage/DurationSlider";
 import DistanceSlider from "../../pages/OfferPage/DistanceSlider";
 import ButtonLevier from "../../components/ButtonLevier/ButtonLevier";
@@ -45,10 +45,14 @@ const SearchBar = forwardRef((props, ref) => {
     setFoodSelected((prev) => !prev)
   }
 
+  useEffect(() => {
+    searchOpen ? ref.current.classList.add("searchOpen")
+    : ref.current.classList.remove("searchOpen");
+  },[searchOpen])
   
 
   return (
-      <div ref={ref} className={`SearchContainer ${searchOpen ?  "searchOpen" : ""}`}>
+      <div ref={ref} className={`SearchContainer `}>
         <form className="StartSearch"  
         // onSubmit={handleLogin}>
         >     
@@ -65,7 +69,7 @@ const SearchBar = forwardRef((props, ref) => {
                       placeholder="Commencer ma recherche" 
                       // value={email} 
                       // onChange={(e) => setEmail(e.target.value)} 
-                      onFocus={() => setSearchOpen(false)} // Correction ici
+                      onFocus={() => setSearchOpen(true)} // Correction ici
                       // required 
                     />
 

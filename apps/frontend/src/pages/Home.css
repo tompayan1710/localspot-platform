@@ -38,7 +38,7 @@
 }
 
 .LogoContainerAnimation.disappear {
-  transition: top 5s ease-out, opacity 0.5s ease-in;
+  transition: top 0.8s ease-out, opacity 0.5s ease-in;
   /* top: -100vh; */
   opacity: 0;
 }
@@ -153,13 +153,16 @@ animation: slideUpHome 0.8s ease forwards;
   right: 0;
 }
 .HomeSectionContainer>.row>button>img{
-  height: 18px;
+  height: 15px;
 }
 
 
 
 
-
+#DivSpace{
+  height: 20px;
+  width: 10px;
+}
 
 
 
@@ -172,7 +175,7 @@ animation: slideUpHome 0.8s ease forwards;
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  margin-top: 80px;
+  margin-top: 60px;
   margin-bottom: 20px;
 }
 .HomeSectionContainer .IntroImage>.t6{
