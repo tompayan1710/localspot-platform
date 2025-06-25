@@ -97,7 +97,7 @@
   /* background-color: orange; */
   position: relative;
   top: 10vh;
-  padding-bottom: 20px;
+  /* padding-bottom: 20px; */
   opacity: 0;
   transition: top 1s ease-in-out, opacity 1s ease-in-out;
 }

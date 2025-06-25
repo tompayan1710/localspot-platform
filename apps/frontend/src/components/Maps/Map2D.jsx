@@ -5,7 +5,7 @@ import { useState } from "react";
 import HotelIcon from "../../assets/images/HotelIcon.png";
 import Map2DPoint from "../../assets/images/Map2DPoint.png";
 import Map2DPin from "../../assets/images/Map2DPin.png";
-
+import MapLabel from "./MapLabel";
 
 import './Map2D.css'
 
@@ -18,6 +18,7 @@ function Map2D({
   markers = [],                 // [{ id, latitude, longitude, position_description, ... }]
   onMarkerClick = () => {},     // callback quand on clique sur un marker
   borderRadius = 40,
+  adresseTexte 
 }) {
 
 
@@ -318,6 +319,26 @@ const mapOptions = {
           );
         })}
       </GoogleMap>
+      {mapRef.current && destination && (
+        <>
+          <MapLabel map={mapRef.current} position={center}>
+            <div className="MapHotelContainer">
+              <p className="t32">my </p>
+              <p className="t4">Hotel</p>
+            </div>
+          </MapLabel>
+          <MapLabel map={mapRef.current} position={destination}>
+            <div className="MapAdresseContainer">
+              <div>
+                <p className="t4">9</p>
+                <p className="t6">min</p>
+              </div>
+              <p className="t6">{adresseTexte}</p>
+            </div>
+          </MapLabel>
+        </>
+      )}
+
       </div>
   );
 

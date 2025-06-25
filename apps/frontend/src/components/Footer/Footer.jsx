@@ -5,7 +5,7 @@ import arrowRight from "../../assets/images/arrowRight.png";
 import { useNavigate } from "react-router-dom";
 import { useState } from "react";
 
-export default function Footer() {
+export default function Footer({paddingBottom}) {
   const navigate = useNavigate();
   const [copied, setCopied] = useState(false);
   const email = "tompayan1710@gmail.com";
@@ -19,7 +19,7 @@ export default function Footer() {
 
 
   return (
-    <div className="FooterContainer">
+    <div className="FooterContainer" style={{ paddingBottom: paddingBottom || "70px" }}>
       <img src={ViarteV} alt="ViarteV"/>
       <p className="t6">
         Les offres affichées ont fait l'objet d'une sélection rigoureuse et d’un contrôle qualité strict, dans le but de vous proposer des prestations de grande qualité. 

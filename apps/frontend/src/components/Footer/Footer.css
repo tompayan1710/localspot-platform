@@ -1,7 +1,7 @@
 .FooterContainer{
     background: linear-gradient(180deg, #545454, #373737);
     width: 100%;
-    padding-bottom: 50px;
+    /* padding-bottom: 70px; */
 }
 .FooterContainer>img{
     margin: 40px 0px 0px 20px;
