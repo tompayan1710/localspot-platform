@@ -225,7 +225,7 @@
     color: #ffffff;
     padding: 7px 16px;
     font-size: 1rem;
-    font-weight: lighter;
+    font-weight: 100;
     border: none;
     border-radius: var(--borderradius);
     cursor: pointer;
@@ -234,6 +234,7 @@
     align-items: center;
     justify-content: center;
     gap: 8px;
+
   }
   
   .emailPasswordForm button:hover {

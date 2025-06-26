@@ -19,6 +19,8 @@ import BecomeProviderAddContact from "./pages/BecomeProvider/BecomeProviderConta
 import EditProfile from "./components/Auth/ProfilPage/EditProfile";
 import EditLanguage from "./components/Auth/ProfilPage/EditLanguage";
 import SettingsPage from "./components/Auth/ProfilPage/SettingsPage/SettingsPage";
+import Availability from "./pages/OfferPage/Reserve/Availability";
+import PayementPage from "./pages/OfferPage/Payement/PayementPage";
 
 
 //Pour sauvegarder : pg_dump "postgresql://postgres:TomPayan-1710@localhost:5432/localspot" -f viarte_backup.sql
@@ -59,6 +61,8 @@ export default function App() {
             
             <Route path="/" element={<Home />} />
             <Route path="/offer-page/:slug" element={<OfferPage />} />
+            <Route path="/offer-page/:sulg/availibility" element={<Availability />} />
+            <Route path="/offer-page/:sulg/payement" element={<PayementPage />} />
 
 
             <Route path="/create-offer" element={<CreateOffer />} />

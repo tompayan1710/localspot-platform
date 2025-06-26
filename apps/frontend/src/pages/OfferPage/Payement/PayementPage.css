@@ -1,0 +1,131 @@
+.PayementPageContainer{
+
+}
+.PayementPageContainer .TopDivOpacity {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    background: linear-gradient(to bottom, rgb(255, 255, 255) 0%, rgb(255, 255, 255) 60%, rgba(255, 255, 255, 0) 100%);
+    height: 60px;
+    z-index: 2;
+}
+
+
+.PayementPageContainer .TitleContainer{
+  margin: 0 6%;
+  margin-top: 60px;
+}
+.PayementPageContainer .TitleContainer>p:first-of-type{
+  margin-bottom: 5px;
+}
+
+
+.PayementPageContainer .MethodesContainer{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-top: 30px;
+    padding: 0 6%;
+}
+.PayementPageContainer .MethodesContainer>.MethodeItem{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+    border-radius: 15px;
+    border: 1px solid var(--greysemidark);
+    padding: 15px 18px;
+    margin-bottom: 10px;
+    cursor: pointer;
+    transition: all 0.3s ease-in-out;
+}
+.PayementPageContainer .MethodesContainer>.MethodeItem.selected{
+    border: 1px solid var(--greymiddledark);
+    box-shadow: 0 0px 10px rgba(0, 0, 0, 0.08);
+    background-color: var(--greylight);
+}
+.PayementPageContainer .MethodesContainer>.MethodeItem>.row{
+    gap: 10px;
+}
+.PayementPageContainer .MethodesContainer>.MethodeItem>.row>img{
+    height: 25px;
+}
+.PayementPageContainer .MethodesContainer>.MethodeItem>.round{
+    height: 20px;
+    width: 20px;
+    border-radius: 100px;
+    border: 2px solid var(--greydark);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.PayementPageContainer .MethodesContainer>.MethodeItem>.round>div{
+    height: 12px;
+    width: 12px;
+    border-radius: 100px;
+    transition: all 0.2s ease-in-out;
+}
+.PayementPageContainer .MethodesContainer>.MethodeItem>.round>.underRound{
+    background-color: var(--greydark);
+}
+
+
+
+
+/*////////////CB Container */
+.CBContainer{
+    width: 88%;
+    margin: 0 auto;
+}
+.CBContainer>.hline{
+    margin-top: 10px;
+}
+.CBForm {
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+  margin-top: 15px;
+}
+
+.CBForm input[type="text"] {
+  margin-top: 6px;
+  padding: 10px;
+  border-radius: 6px;
+  border: 1px solid var(--greysemidark);
+  font-size: 0.9rem;
+  width: 100%;
+}
+
+.rowInput {
+  display: flex;
+  gap: 10px;
+}
+
+.rowInput label {
+  flex: 1;
+}
+
+.checkboxContainer {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.CBContainer {
+  opacity: 0;
+  transform: translateY(20px);
+  transition: opacity 0.4s ease, transform 0.4s ease;
+  max-height: 0;
+  /* overflow: hidden; */
+}
+
+.CBContainer.show {
+  opacity: 1;
+  transform: translateY(0);
+  max-height: 1000px; /* assez grand pour tout le contenu */
+}
+/* .CBContainer.desapear{
+    transform: translateY(-20px)!important;
+} */

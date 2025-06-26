@@ -1,57 +1,63 @@
+import copieIcon from "../../assets/images/copieIcon.png";
+import arrowLeft from "../../assets/images/arrowLeft.png"
+import walkIcon from "../../assets/images/walkIcon.png"
+import bycicleIcon from "../../assets/images/bycicleIcon.png"
+import carRedIcon from "../../assets/images/carRedIcon.png"
+import validateIcon from "../../assets/images/validateIcon.png"
+import clockIcon from "../../assets/images/clockIcon.png"
+import dureeIcon from "../../assets/images/dureeIcon.png"
+import starIcon from "../../assets/images/starIcon.png"
+import Lorier from "../../assets/images/Lorier.png" 
+import crossiconBlack from "../../assets/images/crossiconBlack.png" 
+import customerKing from "../../assets/images/customerKing.png" 
+import arrowRight from "../../assets/images/arrowRight.png" 
+import extendMap from "../../assets/images/extendMap.png" 
+import userIconBlackline from "../../assets/images/userIconBlackline.png"
+import BottomNavBar from "../../components/BottomNavBar/BottomNavBar";
+import Map2D from "../../components/Maps/Map2D";
+import { getOfferBySlug } from "../../services/offers"
+import { getQRCodeBySlug } from "../../services/QRCodeService"
+import { getHoteById } from "../../services/hotes"
+import "../../components/GoBack/GoBack.css"
+import React from "react";
+import { getDurations } from "../../services/map2D";
 
-    import copieIcon from "../../assets/images/copieIcon.png";
-    import arrowLeft from "../../assets/images/arrowLeft.png"
-    import walkIcon from "../../assets/images/walkIcon.png"
-    import bycicleIcon from "../../assets/images/bycicleIcon.png"
-    import carRedIcon from "../../assets/images/carRedIcon.png"
-    import validateIcon from "../../assets/images/validateIcon.png"
-    import clockIcon from "../../assets/images/clockIcon.png"
-    import dureeIcon from "../../assets/images/dureeIcon.png"
-    import starIcon from "../../assets/images/starIcon.png"
-    import Lorier from "../../assets/images/Lorier.png" 
-    import crossiconBlack from "../../assets/images/crossiconBlack.png" 
-    import customerKing from "../../assets/images/customerKing.png" 
-    import arrowRight from "../../assets/images/arrowRight.png" 
-    import extendMap from "../../assets/images/extendMap.png" 
-    import BottomNavBar from "../../components/BottomNavBar/BottomNavBar";
-    import Map2D from "../../components/Maps/Map2D";
-    import { getOfferBySlug } from "../../services/offers"
-    import { getQRCodeBySlug } from "../../services/QRCodeService"
-    import { getHoteById } from "../../services/hotes"
-    import "../../components/GoBack/GoBack.css"
-  import React from "react";
-  import { getDurations } from "../../services/map2D";
+import "./OfferPage.css";
+import { useEffect, useRef, useState } from "react";
+import { Navigate, useParams } from "react-router-dom";
+import Carrousel from "../../components/Carrousel/Carrousel";
+import Footer from "../../components/Footer/Footer";
+import GoBack from "../../components/GoBack/GoBack";
+import ReviewItem from "./ReviewItem";
+import { useNavigate } from "react-router-dom";
+import PopUpBottom from "../../components/PopUpBottom/PopUpBottom";
 
-    import "./OfferPage.css";
-    import { useEffect, useRef, useState } from "react";
-    import { useParams } from "react-router-dom";
-    import Carrousel from "../../components/Carrousel/Carrousel";
-  import Footer from "../../components/Footer/Footer";
-  import GoBack from "../../components/GoBack/GoBack";
-  import ReviewItem from "./ReviewItem";
+export default function OfferPage() {
+  const { slug } = useParams();
+  const navigate = useNavigate();
+  const offerContainerRef = useRef(null);
+  const OfferPageAnimationRef = useRef(null); 
+  const OfferPageRef = useRef(null); 
+  const ReserveButtonRef = useRef(null); 
+  const BottomNavBarRef = useRef(null);
+  const CarrouselRef = useRef(null);
+  const PopUpBottomRef = useRef(null);
+  const CancelBottomRef = useRef(null);
+  const ParticipantBottomRef = useRef(null);
+  const refOfferMapContainer = useRef(null);
 
-
-    export default function OfferPage() {
-      const { slug } = useParams();
-
-      const offerContainerRef = useRef(null);
-      const OfferPageAnimationRef = useRef(null); 
-      const OfferPageRef = useRef(null); 
-      const ReserveButtonRef = useRef(null); 
-      const BottomNavBarRef = useRef(null);
-      const CarrouselRef = useRef(null);
-      const PopUpBottomRef = useRef(null);
-
-      const [offer, setOffer] = useState({});
-      const [qrcode, setQRCode] = useState({});
-      const [hote, setHote] = useState({});
-      const [durations, setDurations] = useState({});
-      const [navigationSelected, setNavigationSelected] = useState(0);
-      const [scrollSyncEnabled, setScrollSyncEnabled] = useState(true);
-      const [readMoreIsEnable, setReadMoreIsEnable] = useState({});
-      const [openCancelPolity, setOpenCancelPolity] = useState(false);
-
-      
+  const [offer, setOffer] = useState({});
+  const [qrcode, setQRCode] = useState({});
+  const [hote, setHote] = useState({});
+  const [durations, setDurations] = useState({});
+  const [navigationSelected, setNavigationSelected] = useState(0);
+  const [scrollSyncEnabled, setScrollSyncEnabled] = useState(true);
+  const [readMoreIsEnable, setReadMoreIsEnable] = useState({});
+  const [openCancelPolity, setOpenCancelPolity] = useState(false);
+  const [openParticipant, setOpenParticipant] = useState(false);
+  const [isOccultView, setIsOccultView] = useState(false);
+  const [participantAdult, setParticipantAdult] = useState(4);
+  const [participantReduced, setParticipantReduced] = useState(0);      
       /*
       const getQRCodesAndHote = async (slug) => {
         const qrcodeData = await getQRCodeBySlug(slug);
@@ -72,83 +78,110 @@
 
         }
       }*/
+    
+function allRefsReady() {
+  return (
+    OfferPageAnimationRef.current &&
+    OfferPageRef.current &&
+    ReserveButtonRef.current &&
+    BottomNavBarRef.current &&
+    offerContainerRef.current
+  );
+}
 
-      const OfferAnimationShow = () => {
-          OfferPageAnimationRef.current.style.top = "-100vh";
-          OfferPageRef.current.style.top = "0";
-          OfferPageRef.current.style.overflowY = "auto";
+  const OfferAnimationShow = () => {
+    if (
+      !OfferPageAnimationRef.current ||
+      !OfferPageRef.current ||
+      !ReserveButtonRef.current ||
+      !BottomNavBarRef.current ||
+      !offerContainerRef.current
+    ) {
+      console.warn("Un ou plusieurs éléments ne sont pas encore montés.");
+      return;
+    }
+
+    OfferPageAnimationRef.current.style.top = "-100vh";
+    OfferPageRef.current.style.top = "0";
+    OfferPageRef.current.style.overflowY = "auto";
           
-          setTimeout(() => {
-            ReserveButtonRef.current.classList.add("pupUp");
-            BottomNavBarRef.current.classList.add("sliderInBottomNav");
+    setTimeout(() => {
+      // if (ReserveButtonRef.current && BottomNavBarRef.current) {
+      ReserveButtonRef.current.classList.add("pupUp");
+      BottomNavBarRef.current.classList.add("sliderInBottomNav");
+// }
 
-            setTimeout(() => {
-              offerContainerRef.current.style.overflowY = "scroll";
-            }, 800)
+      // ReserveButtonRef.current.classList.add("pupUp");
+      // BottomNavBarRef.current.classList.add("sliderInBottomNav");
 
-          }, 1000)
-      }
+      setTimeout(() => {
+        offerContainerRef.current.style.overflowY = "scroll";
+        }, 800)
+
+    }, 1000)
+  }
       
-    const fetchDurations = async (offer, hote) => {
-      if (!offer.latitude || !hote.latitude) return;
-      const res = await getDurations({
-        origin: { lat: hote.latitude, lng: hote.longitude },
-        destination: { lat: offer.latitude, lng: offer.longitude },
-        apiKey: process.env.REACT_APP_GOOGLE_MAPS_KEY
-      });
-      setDurations(res);
-    };
+  const fetchDurations = async (offer, hote) => {
+    if (!offer.latitude || !hote.latitude) return;
+    const res = await getDurations({
+      origin: { lat: hote.latitude, lng: hote.longitude },
+      destination: { lat: offer.latitude, lng: offer.longitude },
+      apiKey: process.env.REACT_APP_GOOGLE_MAPS_KEY
+    });
+    setDurations(res);
+  };
 
 
 
     
-      useEffect(() => {
-        async function loadData(slug) {
-        try {
-          const offerData = await getOfferBySlug(slug);
-          if (!offerData.success) return;
-          setOffer(offerData.offer);
+  useEffect(() => {
+    async function loadData(slug) {
+      try {
+        const offerData = await getOfferBySlug(slug);
+        if (!offerData.success) return;
+        setOffer(offerData.offer);
 
-          console.log(offerData.offer);
-          const qrcodeData = await getQRCodeBySlug(slug);
-          if (!qrcodeData.success) return;
-          setQRCode(qrcodeData.qrcode);
+        console.log(offerData.offer);
+        const qrcodeData = await getQRCodeBySlug(slug);
+        if (!qrcodeData.success) return;
+        setQRCode(qrcodeData.qrcode);
 
-          const hoteData = await getHoteById(qrcodeData.qrcode.id_hote);
-          if (!hoteData.success) return;
-          setHote(hoteData.hote);
+        const hoteData = await getHoteById(qrcodeData.qrcode.id_hote);
+        if (!hoteData.success) return;
+        setHote(hoteData.hote);
 
-          await fetchDurations(offerData.offer, hoteData.hote);
+        await fetchDurations(offerData.offer, hoteData.hote);
         } catch (error) {
           console.error("Erreur dans loadData :", error);
-        }
       }
+    }
+
+    if (slug) {
+      console.log("Mon SLUG est : ", slug);
+      loadData(slug);
+      setTimeout(() => {
+      if (allRefsReady()) {
+        OfferAnimationShow();
+      }}, 1000);
+    }
+  }, []);
 
 
-        if (slug) {
-          console.log("Mon SLUG est : ", slug);
-          loadData(slug);
-          setTimeout(() => OfferAnimationShow(), 1000);
-        }
-      }, []);
 
 
+  function formatDuration(durationText) {
+    if (!durationText) return "...";
+
+    return durationText
+      .replace(" hours", "h")
+      .replace(" hour", "h")
+      .replace(" mins", "m")
+      .replace(" min", "m");
+    }
 
 
-      function formatDuration(durationText) {
-        if (!durationText) return "...";
-
-        return durationText
-          .replace(" hours", "h")
-          .replace(" hour", "h")
-          .replace(" mins", "m")
-          .replace(" min", "m");
-      }
-
-
-      return (
-        <div className="offerContainer" ref={offerContainerRef}>
-
+    return (
+      <div className="offerContainer" ref={offerContainerRef}>
         <div className="OfferPageAnimation" ref={OfferPageAnimationRef}>
           <div className="ContainerTextWelcome">
             <p className="t2">Welcome</p>
@@ -160,22 +193,18 @@
             <p className="t4">wishes you a great stay</p>
           </div>
           <p className="t6">*a Viarte experience</p>
-
         </div>
-        
 
-
-
-          <div className="ContainerOfferPageAll" ref={OfferPageRef}>
-            <GoBack nagigation={"/"} scrollTo={""} text={"revenir"}/> 
-            <button className="AllImages" onClick={() => {console.log("Appuie")}}>
-              <img src={copieIcon} alt="copie Icon"/>
-            </button>
-            {/* <button className="goBackButton" onClick={() => {}}><img src={arrowLeft}/><p className="t6">précédent</p></button> */}
-            <Carrousel  photos={offer.image_urls}  setNavigationSelected={setNavigationSelected} ref={CarrouselRef} scrollSyncEnabled={scrollSyncEnabled}/>
-            <div className="pointNavigationContainer">
-              {
-                Array.isArray(offer.image_urls) &&
+        <div className="ContainerOfferPageAll" ref={OfferPageRef}>
+          <GoBack nagigation={"/"} scrollTo={""} text={"revenir"}/> 
+          <button className="AllImages" onClick={() => {console.log("Appuie")}}>
+            <img src={copieIcon} alt="copie Icon"/>
+          </button>
+          {/* <button className="goBackButton" onClick={() => {}}><img src={arrowLeft}/><p className="t6">précédent</p></button> */}
+          <Carrousel  photos={offer.image_urls}  setNavigationSelected={setNavigationSelected} ref={CarrouselRef} scrollSyncEnabled={scrollSyncEnabled}/>
+          <div className="pointNavigationContainer">
+            {
+              Array.isArray(offer.image_urls) &&
                 offer.image_urls.map((_, index) => (
                   <button
                     key={index}
@@ -234,8 +263,10 @@
               </div>
             </div>
 
-            <div className="OfferMapContainer">
-              <button>
+            <div className="OfferMapContainer" ref={refOfferMapContainer}>
+              <button onClick={() => {
+
+              }}>
                 <img src={extendMap} alt="extend icon"/>
               </button>
               {offer.latitude && offer.longitude && hote.latitude && hote.longitude ? (
@@ -270,20 +301,49 @@
             {/* <div className="MargeBottom"></div> */}
             
             <div className={"cancelline"}></div>
-            <button id="CancellationPolicy" onClick={() => {setOpenCancelPolity(true)}}>
+            <button id="CancellationPolicy" onClick={() => {
+              // CancelBottomRef.current.style.bottom = "0px";
+              PopUpBottomRef.current.classList.add("open")
+              setIsOccultView(true);
+            }}>
               <div>
-                <p className="32">Cancellation Policy</p>
+                <p className="t4">Cancellation Policy</p>
                 <p className="t6">You can cancel up to 24 hours in advance of the experience for a full refund.</p>
               </div>
               <img src={arrowRight} alt="arrow right icon"/>
             </button>
             <div className={"cancelline"}></div>
 
+            <div className="ParticipantSelectContainer" onClick={() => {
+              // ParticipantBottomRef.current.style.bottom = "0px";
+              ParticipantBottomRef.current.classList.add("open")
+              setIsOccultView(true);
+            }}>
+              <div>
+                <p className="t4">Select participants</p>
+                <div className="row">
+                  <p className="t5">Participants :</p> 
+                  <p className="t5">2</p>
+                </div>
+                <p className="t6">×2 adult</p>
+              </div>
+              
+              <img src={arrowRight}/>
+              {/* <div className="row">
+
+                <img src={userIconBlackline}/>
+                <p>x2 : </p>
+                <p className="t6">X2 adult</p>
+              </div> */}
+            </div>
+
             <div className="ClientReviewContainer">
               <div className="row">
                 <p className="t4 ReviewTitle">Customer Riviews</p>
                 <button className="iButton" onClick={() => {
-                  PopUpBottomRef.current.style.bottom = "0px";
+                  // PopUpBottomRef.current.style.bottom = "0px";
+                  PopUpBottomRef.current.classList.add("open")
+                  setIsOccultView(true);
                 }}
               >i</button>
               </div>        
@@ -349,7 +409,7 @@
            
             <p className="seeMore t5">Voir <strong>+</strong></p>
             </div>
-            <Footer paddingBottom={"140px"}/>
+            <Footer paddingBottom={"150px"}/>
           </div>
 
 
@@ -359,39 +419,132 @@
               <p className="t5" style={{fontWeight: "900"}}>À partir de {offer.price}€</p>
               <p className="t6">par {offer.priceper}</p>
             </div>
-            <button className="ReserveButton">Reserver</button>
+            <button className="ReserveButton" onClick={() => {
+              navigate(`/offer-page/${slug}/availibility`)
+            }}>Voir les<br></br>disponnibilités</button>
           </div>
 
           <BottomNavBar isMap={false}  ref={BottomNavBarRef}/>  
 
-          <div className="openCancelPolity">
-            <button className="closeButton" onClick={() => {setOpenCancelPolity(true)}}>
-              <img src={crossiconBlack}/>
-            </button>
-            <div className="row">
-              <img src={customerKing} alt="customer is king"/>
-              <p className="t5">ustomer Riviews</p>
-            </div>
-            <div className="PopUpLine"></div>
-            <p className="t6">Après avoir vécu l’expérience, les voyageurs sont invités à partager leur ressenti : des avis fiables et authentiques. Vous êtes certain de lire un retour d’expérience réel.</p>
-          </div>
+          <PopUpBottom 
+            onClose={() => {
+              CancelBottomRef.current.classList.remove("open");
+              // CancelBottomRef.current.style.bottom = "-100%";
+              setIsOccultView(false);
+            }}
+            title={(
+              <p className="t5">CancelPolicy</p>
+            )}
+            ref={CancelBottomRef}
+          >
+            <p className="t6">Vous pouvez annuler votre réservation jusqu’à 24 heures avant le début de l’activité pour obtenir un remboursement complet. Passé ce délai, aucune annulation ni remboursement ne sera possible.</p>
+          </PopUpBottom>
 
-          <div className="PopUpBottom" ref={PopUpBottomRef}>
+          <PopUpBottom 
+            onClose={() => {
+              ParticipantBottomRef.current.classList.remove("open");
+              // ParticipantBottomRef.current.style.bottom = "-100%";
+              setIsOccultView(false);
+            }}
+            title={(
+              <p className="t5">Ajouter des participants</p>
+            )}
+            ref={ParticipantBottomRef}
+          >
+            <>
+              <p className="t6">il reste actuellement <strong className={`${10<3 ? "short" : ""}`}>10 places</strong></p>
+              <div className="AnimationHuman">
+
+              </div>
+              <div className="rowTotal">
+                <p className="t5">Participants :</p> 
+                <p className="t5">2</p>
+              </div>
+              <div className="rowAddParticipant">
+                <div className="column">
+                  <p className="t5">Adult</p>
+                  <p className="t6">18 - 99 ans</p>
+                </div>
+                <div className="row">
+                  <button className="buttonParticipant" onClick={() => {
+                    setParticipantAdult((prev) => prev - 1)
+                    }}>
+                    <p className="t3">-</p>
+                  </button>
+                  <p className="t4">{participantAdult}</p>
+                  <button className="buttonParticipant" onClick={() => {
+                    setParticipantAdult((prev) => prev + 1)
+                    }}>
+                    <p className="t3">+</p>
+                  </button>
+                </div>
+              </div>
+              <div className="rowAddParticipant">
+                <div className="column">
+                  <p className="t5">Tarif réduit</p>
+                  <p className="t6">-18 ans</p>
+                </div>
+                <div className="row">
+                  <button className="buttonParticipant" onClick={() => {
+                    setParticipantReduced((prev) => prev - 1)
+                    }}>
+                    <p className="t3">-</p>
+                  </button>
+                  <p className="t4">{participantReduced}</p>
+                  <button className="buttonParticipant" onClick={() => {setParticipantReduced((prev) => prev + 1)}}>
+                    <p className="t3">+</p>
+                  </button>
+                </div>
+              </div>
+            </>
+          </PopUpBottom>
+
+
+          <PopUpBottom 
+            onClose={() => {
+              // PopUpBottomRef.current.style.bottom = "-100%";
+              PopUpBottomRef.current.classList.remove("open");
+              setIsOccultView(false);
+            }}
+            title={(
+              <div className="row">
+                <img src={customerKing} alt="customer is king"/>
+                <p className="t5">ustomer Riviews</p>
+              </div>
+            )}
+            ref={PopUpBottomRef}
+          >
+            <p className="t6">Après avoir participé à l’activité, les voyageurs sont invités à partager leur expérience en laissant un commentaire. Ces avis sont 100 % authentiques, rédigés uniquement par les participants ayant réellement vécu l’expérience.</p>
+          </PopUpBottom>
+          
+          {/* <div className="PopUpBottom" ref={PopUpBottomRef}>
             <button className="closeButton" onClick={() => {
               PopUpBottomRef.current.style.bottom = "-150px";
+              setIsOccultView(false);
             }}>
               <img src={crossiconBlack}/>
             </button>
-            <div className="row">
+            <div className="row">      
               <img src={customerKing} alt="customer is king"/>
               <p className="t5">ustomer Riviews</p>
             </div>
             <div className="PopUpLine"></div>
             <p className="t6">Après avoir vécu l’expérience, les voyageurs sont invités à partager leur ressenti : des avis fiables et authentiques. Vous êtes certain de lire un retour d’expérience réel.</p>
-          </div>
-        </div>
-      );
-    }
+          </div> */}
+
+          <div className={`occultView ${isOccultView ? "open" : ""}`} onClick={() => {
+            PopUpBottomRef.current.classList.remove("open");
+            CancelBottomRef.current.classList.remove("open");
+            ParticipantBottomRef.current.classList.remove("open");
+
+            // PopUpBottomRef.current.style.bottom = "-100%";
+            // CancelBottomRef.current.style.bottom = "-100%";
+            // ParticipantBottomRef.current.style.bottom = "-100%";
+            setIsOccultView(false);
+          }}></div>
+    </div>
+  );
+}
 
 
 

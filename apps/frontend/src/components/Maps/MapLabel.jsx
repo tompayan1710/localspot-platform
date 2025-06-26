@@ -28,7 +28,9 @@ export default function MapLabel({ map, position, children }) {
     };
 
     overlay.onRemove = function () {
-      divRef.current.remove();
+      if (divRef.current && divRef.current.parentNode) {
+        divRef.current.parentNode.removeChild(divRef.current);
+      }
     };
 
     overlay.setMap(map);
