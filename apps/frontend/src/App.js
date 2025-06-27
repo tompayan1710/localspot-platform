@@ -21,6 +21,7 @@ import EditLanguage from "./components/Auth/ProfilPage/EditLanguage";
 import SettingsPage from "./components/Auth/ProfilPage/SettingsPage/SettingsPage";
 import Availability from "./pages/OfferPage/Reserve/Availability";
 import PayementPage from "./pages/OfferPage/Payement/PayementPage";
+import { useEffect } from "react";
 
 
 //Pour sauvegarder : pg_dump "postgresql://postgres:TomPayan-1710@localhost:5432/localspot" -f viarte_backup.sql
@@ -49,7 +50,9 @@ const LIBRARIES = ["places"];
 
 
 export default function App() {
+
   return (
+    <div id="AppWrapper">
     <LoadScript googleMapsApiKey={process.env.REACT_APP_GOOGLE_MAPS_KEY}   
               loadingElement={<div className="skeleton" style={{ width: "100%", height: "100%" }}></div>}
               libraries={LIBRARIES}
@@ -92,6 +95,7 @@ export default function App() {
         </BrowserRouter>
       </AuthProvider>
     </LoadScript>
+    </div>
   );
 }
 

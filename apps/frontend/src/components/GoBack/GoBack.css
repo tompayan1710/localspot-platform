@@ -1,14 +1,16 @@
 .goBackButton{
+    --taillemin: min(250px, 50vw);
     position: fixed;
     z-index: 3;
     top: 10px;
-    left: 10px;
     background-color: transparent;
     border: none;
     display: flex;
     flex-direction: row;
     cursor: pointer;
     align-items: center;
+    left: 50%;
+    transform: translateX(calc(var(--taillemin) * -1 + 10px));
 }
 .goBackButton>img{
     height: 10px;

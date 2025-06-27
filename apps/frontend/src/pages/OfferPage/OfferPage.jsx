@@ -31,6 +31,7 @@ import GoBack from "../../components/GoBack/GoBack";
 import ReviewItem from "./ReviewItem";
 import { useNavigate, useLocation } from "react-router-dom";
 import PopUpBottom from "../../components/PopUpBottom/PopUpBottom";
+import TopDivOpacity from "../../components/GoBack/TopDivOpacity";
 
 export default function OfferPage() {
   const { slug } = useParams();
@@ -95,17 +96,6 @@ function allRefsReady() {
 }
 
   const OfferAnimationShow = () => {
-    if (
-      !OfferPageAnimationRef.current ||
-      !OfferPageRef.current ||
-      !ReserveButtonRef.current ||
-      !BottomNavBarRef.current ||
-      !offerContainerRef.current
-    ) {
-      console.warn("Un ou plusieurs éléments ne sont pas encore montés.");
-      return;
-    }
-
     console.error("Voici mon isAnimation : ", isAnimation);
 
       OfferPageAnimationRef.current.style.top = "-100vh";
@@ -114,16 +104,18 @@ function allRefsReady() {
             
       setTimeout(() => {
         // if (ReserveButtonRef.current && BottomNavBarRef.current) {
-        ReserveButtonRef.current.classList.add("pupUp");
-        BottomNavBarRef.current.classList.add("sliderInBottomNav");
+        if(ReserveButtonRef.current && BottomNavBarRef.current){
+          ReserveButtonRef.current.classList.add("pupUp");
+          BottomNavBarRef.current.classList.add("sliderInBottomNav");
+        }
   // }
 
         // ReserveButtonRef.current.classList.add("pupUp");
         // BottomNavBarRef.current.classList.add("sliderInBottomNav");
 
-        setTimeout(() => {
+        // setTimeout(() => {
           offerContainerRef.current.style.overflowY = "scroll";
-          }, 0)
+          // }, 0)
 
       }, 1000)    
   }
@@ -132,24 +124,31 @@ function allRefsReady() {
   const OfferWithoutAnimation = () => {
     console.error("Voici mon isAnimation OfferWithoutAnimation : ", isAnimation);
 
-      // OfferPageAnimationRef.current.style.display = "none";
+    // OfferPageAnimationRef.current.style.display = "none";
       OfferPageRef.current.style.top = "0";
       OfferPageRef.current.style.overflowY = "auto";
             
-      setTimeout(() => {
+      offerContainerRef.current.style.overflowY = "scroll";
+      /*setTimeout(() => {
         // if (ReserveButtonRef.current && BottomNavBarRef.current) {
-        ReserveButtonRef.current.classList.add("pupUp");
-        BottomNavBarRef.current.classList.add("sliderInBottomNav");
+        if(ReserveButtonRef.current && BottomNavBarRef.current){
+          ReserveButtonRef.current.classList.add("pupUp");
+          BottomNavBarRef.current.classList.add("sliderInBottomNav");
+        }
   // }
 
+  
         // ReserveButtonRef.current.classList.add("pupUp");
         // BottomNavBarRef.current.classList.add("sliderInBottomNav");
 
-        setTimeout(() => {
-          offerContainerRef.current.style.overflowY = "scroll";
-          }, 0)
+        offerContainerRef.current.style.overflowY = "scroll";
 
-      }, 1000)    
+      }, 1000)    */
+
+      if(ReserveButtonRef.current && BottomNavBarRef.current){
+          ReserveButtonRef.current.classList.add("pupUp");
+          BottomNavBarRef.current.classList.add("sliderInBottomNav");
+        }
   }
       
   const fetchDurations = async (offer, hote) => {
@@ -199,9 +198,9 @@ function allRefsReady() {
           OfferAnimationShow();
         }}, 1000);
       }else{//Ici Pas d'animation
-        setTimeout(() => {
+        if(allRefsReady()){
           OfferWithoutAnimation();
-        }, 0)
+        }
       }
     }
   }, []);
@@ -237,6 +236,7 @@ function allRefsReady() {
 
         <div className={`ContainerOfferPageAll ${!isAnimation ? "Without" : ""}`} ref={OfferPageRef}>
           <GoBack nagigation={"/"} scrollTo={""} text={"revenir"}/> 
+          {/* <TopDivOpacity /> */}
           <button className="AllImages" onClick={() => {console.log("Appuie")}}>
             <img src={copieIcon} alt="copie Icon"/>
           </button>
@@ -270,19 +270,37 @@ function allRefsReady() {
               }
             </div>
 
-            <p className="OfferTitle t3">{offer.title}</p>
-            <p className="OfferDescription t5">{offer.description}</p>
-            <p className="t5 OfferType">*{offer.type}</p>
+            <p className={`OfferTitle t3 ${isLoading ? "loading shimmer" : ""}`}>{isLoading ? "" :offer.title}</p>
+            <p className={`OfferDescription t5 ${isLoading ? "loading shimmer" : ""}`}>{isLoading ? "" : offer.description}</p>
+            <p className={`t5 OfferType ${isLoading ? "loading shimmer" : ""}`}>{isLoading ? "" : `*${offer.type}`}</p>
             <div className="Offerhline"></div>     
 
               <div className="OfferInfoContainer">
                 {
                   offer.cancellable ?
-                    <div className="row"><img src={validateIcon} alt="validate icon"/><p className="t6">Free cancellation</p></div>
+                    <div className={`row ${isLoading ? "loading shimmer" : ""}`}>
+                      {isLoading ?
+                        <></>
+                        : 
+                        <>
+                          <img src={validateIcon} alt="validate icon"/>
+                          <p className="t6">Free cancellation</p>
+                        </>
+                      }
+                    </div>
                     :
                     <></>
                 }
-                <div className="row"><img src={dureeIcon} alt="clock icon"/><p className="t6">Durée {offer.duration}</p></div>
+                <div className={`row ${isLoading ? "loading shimmer" : ""}`}>
+                  {isLoading ?
+                    <></>
+                    : 
+                    <>
+                      <img src={dureeIcon} alt="clock icon"/>
+                      <p className="t6">Durée {offer.duration}</p>
+                    </>
+                  }
+                </div>
               </div>
 
             <div className="Offerhline"></div>     
@@ -290,15 +308,30 @@ function allRefsReady() {
             <p className="t32 DistanceText">Distance depuis votre Hotel :</p>
             <div className="OfferDistanceContainer">
               <div className="OfferDistanceColumn">
-                <img src={walkIcon}/>
+                {
+                  isLoading ?
+                    <div className="skeletonType shimmer"></div>
+                  :
+                    <img src={walkIcon} alt="walk icon"/>
+                }
                 <p className="t3">{formatDuration(durations.walking) || "..."}</p>
               </div>
               <div className="OfferDistanceColumn">
-                <img src={bycicleIcon}/>
+                {
+                  isLoading ?
+                    <div className="skeletonType shimmer"></div>
+                  :
+                    <img src={bycicleIcon} alt="bycicle icon"/>
+                }
                 <p className="t3">{formatDuration(durations.bicycling) || "..."}</p>
               </div>
               <div className="OfferDistanceColumn">
-                <img src={carRedIcon}/>
+                {
+                  isLoading ?
+                    <div className="skeletonType shimmer"></div>
+                  :
+                    <img src={carRedIcon} alt="car icon"/>
+                }
                 <p className="t3">{formatDuration(durations.driving) || "..."}</p>
               </div>
             </div>

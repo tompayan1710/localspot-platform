@@ -78,7 +78,7 @@ function Map2D({
               const listener = window.google.maps.event.addListenerOnce(mapRef.current, "bounds_changed", () => {
               const currentZoom = mapRef.current.getZoom();
               if (currentZoom) {
-                mapRef.current.setZoom(currentZoom + 0.4); // ← Zoom un peu plus
+                // mapRef.current.setZoom(currentZoom + 0.4); // ← Zoom un peu plus
               }
             });
             }
@@ -98,8 +98,8 @@ function Map2D({
 
   // → Log clair pour chaque changement de markers
   useEffect(() => {
-    console.log("Map2D: markers prop =", markers);
-    console.log("MAP -> : ", center, destination);
+    // console.log("Map2D: markers prop =", markers);
+    // console.log("MAP -> : ", center, destination);
   }, [markers]);
 
 // src/components/Map2D/Map2D.jsx (mapOptions uniquement)

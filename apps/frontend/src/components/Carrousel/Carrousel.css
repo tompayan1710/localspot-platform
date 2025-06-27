@@ -28,6 +28,8 @@
   -ms-overflow-style: none;       /* Internet Explorer */
     align-items: center;
   /* Chrome/Safari */
+  width: 100%;
+  aspect-ratio: 3 / 2;
 }
 .carouselContainerPrincipal .CarouselListPhoto::-webkit-scrollbar {
   display: none;
@@ -51,15 +53,17 @@
     /* min-height: 300px; */
     /* height: 100%; */
 
-    height: 250px;
+    /* height: 250px; */
+    aspect-ratio: 3 / 2;
 }
 .carouselContainerPrincipal .CarouselListPhoto .CarouselPhotoItem.loaded{
   /* min-height: unset; */
+  aspect-ratio: 3 / 2;
 }
 
 .carouselContainerPrincipal .CarouselListPhoto .CarouselPhotoItem img{
     display: block;
-    height: auto;
+    height: 100%;
     width: 88%;
     /* margin-left: 6%; */
     object-fit: cover;
@@ -68,7 +72,7 @@
     max-height: 400px;
     /* opacity: 0; */
     border: 1px solid white;
-    background-color: var(--greylight);
+    /* background-color: var(--greylight); */
     transition: all 1s ease-in-out;
 }
 .carouselContainerPrincipal .CarouselListPhoto .CarouselPhotoItem img.loaded {
@@ -77,13 +81,37 @@
 }
 
 
-.carouselContainerPrincipal .LoadingItem{
-  position: relative;
-  height: 200px;
+
+
+
+
+.SkeletonOverlay {
+  position: absolute;
+  border-radius: 30px;
+  /* animation: loadingAnimation 2s infinite ease-in-out; */
+  z-index: 1;
+  pointer-events: none;
+  transition: opacity 0.3s ease;
   width: 88%;
   background-color: var(--greylight);
+  /* background-color: green; */
+  margin: 0 auto;
+  height: 100%;
+}
+
+.SkeletonOverlay.hide {
+  opacity: 0;
+}
+
+
+.carouselContainerPrincipal .LoadingItem{
+  position: relative;
+  width: 88%;
+  background-color: var(--greylight);
+  /* background-color: red; */
   border-radius: 30px;
-  margin: 25px auto;
+  margin: 0 auto;
+  height: 100%;
 }
 .carouselContainerPrincipal .LoadingItem::after{
   content: "";

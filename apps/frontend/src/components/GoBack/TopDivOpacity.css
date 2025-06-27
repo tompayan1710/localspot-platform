@@ -1,0 +1,9 @@
+.TopDivOpacity{
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    background: linear-gradient(to bottom, rgb(255, 255, 255) 0%, rgb(255, 255, 255) 60%, rgba(255, 255, 255, 0) 100%);
+    height: 60px;
+    z-index: 2;
+}

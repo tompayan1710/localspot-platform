@@ -131,10 +131,10 @@ function FadeInImage({ src, alt, className }) {
 
         if (!logo) return;
 
-        logo.classList.add("appear");
+        // logo.classList.add("appear");
 
         setTimeout(() => {
-          logo.classList.remove("appear");
+          // logo.classList.remove("appear");
           logo.classList.add("disappear");
           setTimeout(() => {
             logo.style.top = "-100vh";
@@ -164,7 +164,10 @@ function FadeInImage({ src, alt, className }) {
       <div className="HomeContainerPrincipal" ref={offerContainerRef}>
         <div ref={LogoContainerAnimationRef} className={`${true ? "" : ""} LogoContainerAnimation`}>
           <div className="LogoContainer">
-            <img src={ViarteLogo} alt="Viarte Logo"/>
+            <img src={ViarteLogo} alt="Viarte Logo" 
+            onLoad={(e) => {
+              e.currentTarget.classList.add("loaded");
+            }}/>
           </div>
         </div>
         <SearchBar ref={searchBarRef}/>

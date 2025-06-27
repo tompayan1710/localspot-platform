@@ -138,7 +138,9 @@ export default function Availability() {
         
         <div className="CreneauPicker" ref={creneauRef}>
           <p className="t5">Creneaux disponnibles : </p>
-          <div className="CreneauItem Full">
+          <div className="CreneauItem Full"  onClick={() => {
+            setSelectedCreneau(undefined)
+          }}>
             <div className="NoCreneau" 
             style={{
               '--bar-width': `${barStyle.width}px`,

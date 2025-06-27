@@ -41,27 +41,29 @@ const Carrousel = forwardRef(function Carrousel({ isLoading, setNavigationSelect
     };
   }, [ref, photos, setNavigationSelected, scrollSyncEnabled]);
 
-  if (!Array.isArray(photos)) return <div>Aucune Photo fournie</div>;
-
+  // if (!Array.isArray(photos)) return <div>Aucune Photo fournie</div>;
+ 
   return (
     <div className="carouselContainerPrincipal" aria-label="Gallery">
       <div className="CarouselListPhoto" ref={ref}>
-        {
-          isLoading ? <div className="LoadingItem"></div> 
-          :
-          photos.map((photo, index) => (
-            <div key={index} className="CarouselPhotoItem">
-              <img 
-                src={photo} alt={`CarrouselPhoto n°${index}`} 
-                onLoad={(e) => {
-                  e.currentTarget.classList.add("loaded");
-                  e.currentTarget.parentElement.classList.add("loaded");
-                }}
-              />
-            </div>
-          ))
+        {Array.isArray(photos) && photos.length > 0 && !isLoading
+          ? photos.map((photo, index) => (
+              <div key={index} className="CarouselPhotoItem">
+                <div className="SkeletonOverlay"></div>
+                <img
+                  src={photo}
+                  alt={`CarrouselPhoto n°${index}`}
+                  onLoad={(e) => {
+                    e.currentTarget.classList.add("loaded");
+                    const skeleton = e.currentTarget.previousSibling;
+                    if (skeleton) skeleton.classList.add("hide");
+                    e.currentTarget.parentElement.classList.add("loaded");
+                  }}
+                />
+              </div>
+            ))
+          : <div className="LoadingItem"></div>
         }
-        
       </div>
     </div>
   )

@@ -1,9 +1,11 @@
 .BottomNavBar{
     position: fixed;
     bottom: 0%;
-    left: 0%;
+    left: 50%;
+    transform: translateX(-50%);
     height: 60px;
-    width: 100vw;
+    width: 100%;
+    max-width: 500px;
     z-index: 2;
     background-color: white;
     border-top: 1px solid var(--greylight);
@@ -17,9 +19,11 @@
 .BottomNavBarNotAnimate{
     position: fixed;
     bottom: 0%;
-    left: 0%;
+    left: 50%;
+    transform: translateX(-50%);
     height: 60px;
-    width: 100vw;
+    width: 100%;
+    max-width: 500px;
     z-index: 2;
     background-color: white;
     border-top: 1px solid var(--greylight);
@@ -32,7 +36,7 @@
 
 
 .BottomNavBarNotAnimate.hidden {
-  transform: translateY(100%);
+  transform: translateY(100%) translateX(-50%);
   transition: transform 0.3s ease;
 }
 

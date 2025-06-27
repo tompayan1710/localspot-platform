@@ -33,6 +33,14 @@ code {
   box-sizing: border-box;
 }
 
+#AppWrapper {
+  max-width: 500px;
+  margin: 0 auto;
+  width: 100%;
+  /* border: 2px solid black; */
+  box-shadow: 0 0px 30px rgba(0, 0, 0, 0.04)
+}
+
 
 @import url('https://fonts.googleapis.com/css2?family=Inter&display=swap');
 
@@ -86,6 +94,9 @@ body{
   --greennormal: #5ab054;
   --yellownormal: #FFD85C;
   --yellowlight: #FFF4C1;
+
+  --lineargradientblack: linear-gradient(180deg, #545454, #373737);
+  --maxsize: 500px;
 }
 
 
