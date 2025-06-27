@@ -36,6 +36,9 @@
   justify-content: center;
   transition: top 1s ease-in-out;
 }
+.OfferPageAnimation.Without{
+  display: none;
+}
 .OfferPageAnimation .ContainerTextWelcome{
   /* background-color: orange; */
   display: flex;
@@ -246,8 +249,11 @@
   flex-direction: column;
   align-content: center;
   justify-content: center;
+  transition: all 1s ease-in-out;
   /* padding-bottom: 200px; */
-
+}
+.ContainerOfferPageAll.Without{
+  top: 0;
 }
 .ContainerOfferPageAll .OfferTitle{
   text-align: center;

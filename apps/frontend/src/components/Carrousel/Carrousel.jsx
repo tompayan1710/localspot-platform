@@ -2,7 +2,7 @@ import "./Carrousel.css";
 import { useEffect, forwardRef } from "react";
 import extendIcon from "../../assets/images/extendIcon.png"
 
-const Carrousel = forwardRef(function Carrousel({ setNavigationSelected, photos, scrollSyncEnabled  }, ref) {
+const Carrousel = forwardRef(function Carrousel({ isLoading, setNavigationSelected, photos, scrollSyncEnabled  }, ref) {
   useEffect(() => {
     const carrousel = ref?.current;
     if (!carrousel || !Array.isArray(photos)) return;
@@ -46,11 +46,22 @@ const Carrousel = forwardRef(function Carrousel({ setNavigationSelected, photos,
   return (
     <div className="carouselContainerPrincipal" aria-label="Gallery">
       <div className="CarouselListPhoto" ref={ref}>
-        {photos.map((photo, index) => (
-          <div key={index} className="CarouselPhotoItem">
-            <img src={photo} alt={`CarrouselPhoto n°${index}`} />
-          </div>
-        ))}
+        {
+          isLoading ? <div className="LoadingItem"></div> 
+          :
+          photos.map((photo, index) => (
+            <div key={index} className="CarouselPhotoItem">
+              <img 
+                src={photo} alt={`CarrouselPhoto n°${index}`} 
+                onLoad={(e) => {
+                  e.currentTarget.classList.add("loaded");
+                  e.currentTarget.parentElement.classList.add("loaded");
+                }}
+              />
+            </div>
+          ))
+        }
+        
       </div>
     </div>
   )

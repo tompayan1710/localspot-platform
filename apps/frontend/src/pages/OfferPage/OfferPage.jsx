@@ -29,11 +29,15 @@ import Carrousel from "../../components/Carrousel/Carrousel";
 import Footer from "../../components/Footer/Footer";
 import GoBack from "../../components/GoBack/GoBack";
 import ReviewItem from "./ReviewItem";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 import PopUpBottom from "../../components/PopUpBottom/PopUpBottom";
 
 export default function OfferPage() {
   const { slug } = useParams();
+  const location = useLocation();
+  const isAnimation = location.state?.isAnimation || false;
+
+
   const navigate = useNavigate();
   const offerContainerRef = useRef(null);
   const OfferPageAnimationRef = useRef(null); 
@@ -58,6 +62,7 @@ export default function OfferPage() {
   const [isOccultView, setIsOccultView] = useState(false);
   const [participantAdult, setParticipantAdult] = useState(4);
   const [participantReduced, setParticipantReduced] = useState(0);      
+  const [isLoading, setIsLoading] = useState(true);      
       /*
       const getQRCodesAndHote = async (slug) => {
         const qrcodeData = await getQRCodeBySlug(slug);
@@ -101,24 +106,50 @@ function allRefsReady() {
       return;
     }
 
-    OfferPageAnimationRef.current.style.top = "-100vh";
-    OfferPageRef.current.style.top = "0";
-    OfferPageRef.current.style.overflowY = "auto";
-          
-    setTimeout(() => {
-      // if (ReserveButtonRef.current && BottomNavBarRef.current) {
-      ReserveButtonRef.current.classList.add("pupUp");
-      BottomNavBarRef.current.classList.add("sliderInBottomNav");
-// }
+    console.error("Voici mon isAnimation : ", isAnimation);
 
-      // ReserveButtonRef.current.classList.add("pupUp");
-      // BottomNavBarRef.current.classList.add("sliderInBottomNav");
-
+      OfferPageAnimationRef.current.style.top = "-100vh";
+      OfferPageRef.current.style.top = "0";
+      OfferPageRef.current.style.overflowY = "auto";
+            
       setTimeout(() => {
-        offerContainerRef.current.style.overflowY = "scroll";
-        }, 800)
+        // if (ReserveButtonRef.current && BottomNavBarRef.current) {
+        ReserveButtonRef.current.classList.add("pupUp");
+        BottomNavBarRef.current.classList.add("sliderInBottomNav");
+  // }
 
-    }, 1000)
+        // ReserveButtonRef.current.classList.add("pupUp");
+        // BottomNavBarRef.current.classList.add("sliderInBottomNav");
+
+        setTimeout(() => {
+          offerContainerRef.current.style.overflowY = "scroll";
+          }, 0)
+
+      }, 1000)    
+  }
+
+  
+  const OfferWithoutAnimation = () => {
+    console.error("Voici mon isAnimation OfferWithoutAnimation : ", isAnimation);
+
+      // OfferPageAnimationRef.current.style.display = "none";
+      OfferPageRef.current.style.top = "0";
+      OfferPageRef.current.style.overflowY = "auto";
+            
+      setTimeout(() => {
+        // if (ReserveButtonRef.current && BottomNavBarRef.current) {
+        ReserveButtonRef.current.classList.add("pupUp");
+        BottomNavBarRef.current.classList.add("sliderInBottomNav");
+  // }
+
+        // ReserveButtonRef.current.classList.add("pupUp");
+        // BottomNavBarRef.current.classList.add("sliderInBottomNav");
+
+        setTimeout(() => {
+          offerContainerRef.current.style.overflowY = "scroll";
+          }, 0)
+
+      }, 1000)    
   }
       
   const fetchDurations = async (offer, hote) => {
@@ -137,6 +168,7 @@ function allRefsReady() {
   useEffect(() => {
     async function loadData(slug) {
       try {
+        setIsLoading(true);
         const offerData = await getOfferBySlug(slug);
         if (!offerData.success) return;
         setOffer(offerData.offer);
@@ -151,6 +183,8 @@ function allRefsReady() {
         setHote(hoteData.hote);
 
         await fetchDurations(offerData.offer, hoteData.hote);
+        setIsLoading(false);
+        
         } catch (error) {
           console.error("Erreur dans loadData :", error);
       }
@@ -159,10 +193,16 @@ function allRefsReady() {
     if (slug) {
       console.log("Mon SLUG est : ", slug);
       loadData(slug);
-      setTimeout(() => {
-      if (allRefsReady()) {
-        OfferAnimationShow();
-      }}, 1000);
+      if(isAnimation){
+        setTimeout(() => {
+        if (allRefsReady()) {
+          OfferAnimationShow();
+        }}, 1000);
+      }else{//Ici Pas d'animation
+        setTimeout(() => {
+          OfferWithoutAnimation();
+        }, 0)
+      }
     }
   }, []);
 
@@ -182,7 +222,7 @@ function allRefsReady() {
 
     return (
       <div className="offerContainer" ref={offerContainerRef}>
-        <div className="OfferPageAnimation" ref={OfferPageAnimationRef}>
+        <div className={`OfferPageAnimation ${!isAnimation ? "Without" : ""}`} ref={OfferPageAnimationRef}>
           <div className="ContainerTextWelcome">
             <p className="t2">Welcome</p>
             <div className="row">
@@ -195,13 +235,13 @@ function allRefsReady() {
           <p className="t6">*a Viarte experience</p>
         </div>
 
-        <div className="ContainerOfferPageAll" ref={OfferPageRef}>
+        <div className={`ContainerOfferPageAll ${!isAnimation ? "Without" : ""}`} ref={OfferPageRef}>
           <GoBack nagigation={"/"} scrollTo={""} text={"revenir"}/> 
           <button className="AllImages" onClick={() => {console.log("Appuie")}}>
             <img src={copieIcon} alt="copie Icon"/>
           </button>
           {/* <button className="goBackButton" onClick={() => {}}><img src={arrowLeft}/><p className="t6">précédent</p></button> */}
-          <Carrousel  photos={offer.image_urls}  setNavigationSelected={setNavigationSelected} ref={CarrouselRef} scrollSyncEnabled={scrollSyncEnabled}/>
+          <Carrousel isLoading={isLoading}  photos={offer.image_urls}  setNavigationSelected={setNavigationSelected} ref={CarrouselRef} scrollSyncEnabled={scrollSyncEnabled}/>
           <div className="pointNavigationContainer">
             {
               Array.isArray(offer.image_urls) &&

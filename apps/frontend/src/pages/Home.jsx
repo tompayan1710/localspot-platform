@@ -154,7 +154,7 @@ function FadeInImage({ src, alt, className }) {
           // searchBarRef.current.style.top = "0";
           setTimeout(() => {
             offerContainerRef.current.style.overflowY = "scroll";
-          }, 1500)
+          }, 500)
 
         }, 3000)
     }
@@ -195,7 +195,14 @@ function FadeInImage({ src, alt, className }) {
                 !loading ?
                 HomeOffers.map((offer, index) => {
                   return(
-                    <div key={index} className={`HomeListPrestationItem ${index === HomeOffers.length - 1 ? "flou" : ""}`} onClick={() => {navigate(`/offer-page/${offer.slug}`)}}>
+                    <div key={index} className={`HomeListPrestationItem ${index === HomeOffers.length - 1 ? "flou" : ""}`} 
+                    onClick={() => {
+                        navigate(`/offer-page/${offer.slug}`, {
+                        state: {
+                          isAnimation: false,
+                        }
+                      });
+                    }}>
                       {
                         index === HomeOffers.length - 1 ? <p className="seeMore t32">Voir <strong>+</strong></p> : <></>
                       }
@@ -256,7 +263,14 @@ function FadeInImage({ src, alt, className }) {
               {
                 HomeOffers.map((offer, index) => {
                   return(
-                    <div key={index} className={`HomeListPrestationItem ${index === HomeOffers.length - 1 ? "flou" : ""}`} onClick={() => {navigate(`/offer-page/${offer.slug}`)}}>
+                    <div key={index} className={`HomeListPrestationItem ${index === HomeOffers.length - 1 ? "flou" : ""}`} 
+                    onClick={() => {
+                        navigate(`/offer-page/${offer.slug}`, {
+                        state: {
+                          isAnimation: false,
+                        }
+                      });
+                    }}>
                       {
                         index === HomeOffers.length - 1 ? <p className="seeMore t32">Voir <strong>+</strong></p> : <></>
                       }
@@ -305,7 +319,14 @@ function FadeInImage({ src, alt, className }) {
               {
                 HomeOffers.map((offer, index) => {
                   return(
-                    <div key={index} className={`HomeListPrestationItem ${index === HomeOffers.length - 1 ? "flou" : ""}`} onClick={() => {navigate(`/offer-page/${offer.slug}`)}}>
+                    <div key={index} className={`HomeListPrestationItem ${index === HomeOffers.length - 1 ? "flou" : ""}`} 
+                    onClick={() => {
+                        navigate(`/offer-page/${offer.slug}`, {
+                        state: {
+                          isAnimation: false,
+                        }
+                      });
+                    }}>
                       {
                         index === HomeOffers.length - 1 ? <p className="seeMore t32">Voir <strong>+</strong></p> : <></>
                       }
@@ -354,7 +375,14 @@ function FadeInImage({ src, alt, className }) {
               {
                 HomeOffers.map((offer, index) => {
                   return(
-                    <div key={index} className={`HomeListPrestationItem ${index === HomeOffers.length - 1 ? "flou" : ""}`} onClick={() => {navigate(`/offer-page/${offer.slug}`)}}>
+                    <div key={index} className={`HomeListPrestationItem ${index === HomeOffers.length - 1 ? "flou" : ""}`} 
+                    onClick={() => {
+                        navigate(`/offer-page/${offer.slug}`, {
+                        state: {
+                          isAnimation: false,
+                        }
+                      });
+                    }}>
                       {
                         index === HomeOffers.length - 1 ? <p className="seeMore t32">Voir <strong>+</strong></p> : <></>
                       }
