@@ -41,10 +41,10 @@ export default function Footer({paddingBottom}) {
         </button>
           
         <p className="t5">Ressources légales</p>
-        <a className="t6" href="/content-policy">Mentions légales</a>
-        <a className="t6" href="/content-policy">Politique de confidentialité</a>
-        <a className="t6" href="/content-policy">Conditions Générales d’Utilisation</a>
-        <a className="t6" href="/content-policy">Conditions Générales de Vente</a>
+        <a className="t6" href="/legal-notice">Mentions légales</a>
+        <a className="t6" href="/privacy-policy">Politique de confidentialité</a>
+        <a className="t6" href="/terms-of-service">Conditions Générales d’Utilisation</a>
+        <a className="t6" href="/terms-and-conditions-of-sal">Conditions Générales de Vente</a>
         <a className="t6" href="/content-policy">Content Policy</a>
         <div className="whiteHline"></div>
         <p className="t6">© 2025 Viarte. Tous droits réservés.</p>

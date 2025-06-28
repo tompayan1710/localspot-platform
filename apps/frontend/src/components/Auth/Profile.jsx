@@ -14,6 +14,7 @@ import global from "../../assets/images/global.png"
 import parametres from "../../assets/images/parametres.png"
 import EuroIcon from "../../assets/images/EuroIcon.png"
 import CreditCard from "../../assets/images/CreditCard.png"
+import Calendar from "../../assets/images/Calendar.png"
 import Nice from "../../assets/images/Nice.avif"
 import crossWhite from "../../assets/images/crossWhite.png"
 import files from "../../assets/images/files.png"
@@ -187,6 +188,13 @@ export default function Profile() {
             })}>
               <div className="SettingsRow">
                 <div className="RowFirst"><img src={EuroIcon} alt="currenncy icon"/><p className="t4">Currency</p></div>
+                <img src={arrowRight} alt="arrow right"/>
+              </div>
+              <div className="hline"></div>
+            </div>
+            <div className="SettingsListItem" onClick={() => navigate("/booking-system")}>
+              <div className="SettingsRow">
+                <div className="RowFirst"><img src={Calendar} alt="currenncy icon"/><p className="t4">Booking system</p></div>
                 <img src={arrowRight} alt="arrow right"/>
               </div>
               <div className="hline"></div>

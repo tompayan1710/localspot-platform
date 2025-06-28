@@ -16,12 +16,14 @@
   import NiceIntro3 from "../assets/images/NiceIntro3.png"
   import arrowRight from "../assets/images/arrowRight.png"
   import ViarteLogo from "../assets/images/ViarteLogo.png"
+  import Terms from "../assets/images/Terms.png"
   import { useEffect, useRef, useState } from "react";
   import { useNavigate } from "react-router-dom";
   import BottomNavBarNotAnimate from "../components/BottomNavBar/BottomNavBarNotAnimate";
   import { useTranslation } from "react-i18next";
   import Footer from "../components/Footer/Footer";
   import { useLocation } from 'react-router-dom';
+import PopUpBottom from "../components/PopUpBottom/PopUpBottom";
 
 
 function FadeInImage({ src, alt, className }) {
@@ -52,11 +54,13 @@ function FadeInImage({ src, alt, className }) {
 
 
   export default function Home() {
+    const [isOccultView, setIsOccultView] = useState(false);
+
     const offerContainerRef = useRef(null);
     const LogoContainerAnimationRef = useRef(null); 
     const HomePageRef = useRef(null); 
     const BottomNavBarRef = useRef(null);
-
+    const generalTerms = useRef(null);
 
 
 
@@ -122,6 +126,11 @@ function FadeInImage({ src, alt, className }) {
         getHomeOffers();
 
         setTimeout(() => OfferAnimationShow(), 200);
+
+        setTimeout(() => {
+           generalTerms.current.classList.add("open");
+            setIsOccultView(true);
+        },5000)
       }, [i18n.language])
 
 
@@ -425,6 +434,55 @@ function FadeInImage({ src, alt, className }) {
           <div id="DivSpace"></div>
           <Footer />
         </div>
+
+        <PopUpBottom
+          onClose={() => {
+            generalTerms.current.classList.remove("open");
+            setIsOccultView(false);
+          }}
+          title={<p className="t5">Veuillez accepter les conditions générales pour continuer</p>}
+          isHeader={false}
+          ref={generalTerms}
+        >
+        <div className="generalTerms">
+          <img src={Terms} alt="generals terms illustration"/>
+          <h3 className="t3">Conditions Générales</h3>
+          {/* <p className="t5">
+            Pour finaliser votre réservation, vous devez accepter nos conditions générales d’utilisation et de vente.
+          </p> */}
+          <p className="t6">
+            En poursuivant, vous acceptez nos{" "}
+            <a href="/terms-of-service" className="t6" target="_blank" rel="noopener noreferrer">
+              Conditions Générales d’Utilisation
+            </a>{" "}
+            ainsi que nos{" "}
+            <a href="/terms-and-conditions-of-sale" className="t6" target="_blank" rel="noopener noreferrer">
+              Conditions Générales de Vente
+            </a>.
+          </p>
+          <div className="column">
+            <button onClick={() => {
+              generalTerms.current.classList.remove("open");
+              setIsOccultView(false);
+              }}
+            >
+              <p className="t5">Accepter</p>
+            </button>
+            <button onClick={() => {
+              generalTerms.current.classList.remove("open");
+              setIsOccultView(false);
+              }}
+            >
+              <p className="t5">Décliner</p>
+            </button>
+          </div>
+        </div>
+      </PopUpBottom>
+
+      <div className={`occultView ${isOccultView ? "open" : ""}`} onClick={() => {
+        generalTerms.current.classList.remove("open");
+        setIsOccultView(false);
+      }}></div>
       </div>
     );
   }

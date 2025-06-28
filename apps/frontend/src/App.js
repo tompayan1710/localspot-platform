@@ -22,6 +22,11 @@ import SettingsPage from "./components/Auth/ProfilPage/SettingsPage/SettingsPage
 import Availability from "./pages/OfferPage/Reserve/Availability";
 import PayementPage from "./pages/OfferPage/Payement/PayementPage";
 import { useEffect } from "react";
+import BookingSystem from "./components/Auth/ProfilPage/BookingSystem/BookingSystem";
+import PrivacyPolicy from "./pages/DocumentOfficiel/PrivacyPolicy/PrivacyPolicy";
+import LegalNotice from "./pages/DocumentOfficiel/LegalNotice/LegalNotice";
+import TermsAndConditionsOfSale from "./pages/DocumentOfficiel/TermsAndConditionsOfSal/TermsAndConditionsOfSal";
+import TermsOfService from "./pages/DocumentOfficiel/TermsOfService/TermsOfService";
 
 
 //Pour sauvegarder : pg_dump "postgresql://postgres:TomPayan-1710@localhost:5432/localspot" -f viarte_backup.sql
@@ -80,6 +85,7 @@ export default function App() {
             <Route path="/profile" element={<Profile />} />
             <Route path="/edit-profile" element={<EditProfile />} />
             <Route path="/edit-language" element={<EditLanguage />} />
+            <Route path="/booking-system" element={<BookingSystem />} />
             <Route path="/settings" element={<SettingsPage />} />
     
             <Route path="/become-provider" element={<BecomeProvider />} />
@@ -88,6 +94,10 @@ export default function App() {
 
 
             <Route path="/content-policy" element={<ContentPolicy />} />
+            <Route path="/legal-notice" element={<LegalNotice />} />
+            <Route path="/privacy-policy" element={<PrivacyPolicy />} />
+            <Route path="/terms-and-conditions-of-sal" element={<TermsAndConditionsOfSale />} />
+            <Route path="/terms-of-service" element={<TermsOfService />} />
 
             {/* FIN : catch-all pour tout le reste → 404 client-side */}
             <Route path="*" element={<NotFound />} />

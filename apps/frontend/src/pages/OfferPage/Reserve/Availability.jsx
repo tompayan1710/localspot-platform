@@ -285,7 +285,7 @@ export default function Availability() {
         </>
       </PopUpBottom>
 
-<PopUpBottom
+      <PopUpBottom
         onClose={() => {
           LoginBottomRef.current.classList.remove("open");
           setIsOccultView(false);
@@ -326,6 +326,32 @@ export default function Availability() {
           </form>
         </div>
       </PopUpBottom>
+
+      <PopUpBottom
+        onClose={() => {
+          // LoginBottomRef.current.classList.remove("open");
+          setIsOccultView(false);
+        }}
+        title={<p className="t5">Veuillez accepter les conditions générales pour continuer</p>}
+        // ref={LoginBottomRef}
+      >
+        <div className="LoginContainer">
+          <p className="t6" style={{ margin: "16px 0" }}>
+            Pour finaliser votre réservation, vous devez accepter nos conditions générales d’utilisation et de vente.
+          </p>
+          <p className="t6">
+            En poursuivant, vous acceptez nos{" "}
+            <a href="/terms-of-service" className="t6" target="_blank" rel="noopener noreferrer">
+              Conditions Générales d’Utilisation
+            </a>{" "}
+            ainsi que nos{" "}
+            <a href="/terms-and-conditions-of-sale" className="t6" target="_blank" rel="noopener noreferrer">
+              Conditions Générales de Vente
+            </a>.
+          </p>
+        </div>
+      </PopUpBottom>
+
 
       <div className={`occultView ${isOccultView ? "open" : ""}`} onClick={() => {
         ParticipantBottomRef.current.classList.remove("open");

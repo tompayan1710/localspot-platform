@@ -8,10 +8,10 @@ import clockIcon from "../../assets/images/clockIcon.png"
 import dureeIcon from "../../assets/images/dureeIcon.png"
 import starIcon from "../../assets/images/starIcon.png"
 import Lorier from "../../assets/images/Lorier.png" 
-import crossiconBlack from "../../assets/images/crossiconBlack.png" 
 import customerKing from "../../assets/images/customerKing.png" 
 import arrowRight from "../../assets/images/arrowRight.png" 
 import extendMap from "../../assets/images/extendMap.png" 
+import crossiconBlack from "../../assets/images/crossiconBlack.png" 
 import userIconBlackline from "../../assets/images/userIconBlackline.png"
 import BottomNavBar from "../../components/BottomNavBar/BottomNavBar";
 import Map2D from "../../components/Maps/Map2D";
@@ -64,6 +64,7 @@ export default function OfferPage() {
   const [participantAdult, setParticipantAdult] = useState(4);
   const [participantReduced, setParticipantReduced] = useState(0);      
   const [isLoading, setIsLoading] = useState(true);      
+  const [isExtendMap, setIsExtendMap] = useState(false);      
       /*
       const getQRCodesAndHote = async (slug) => {
         const qrcodeData = await getQRCodeBySlug(slug);
@@ -336,11 +337,14 @@ function allRefsReady() {
               </div>
             </div>
 
-            <div className="OfferMapContainer" ref={refOfferMapContainer}>
+            <div className={`OfferMapContainer ${isExtendMap ? "extendMap" : ""}`} ref={refOfferMapContainer}>
               <button onClick={() => {
-
+                setIsExtendMap(!isExtendMap)
               }}>
-                <img src={extendMap} alt="extend icon"/>
+                {
+                  isExtendMap ? <img src={crossiconBlack} alt="close icon"/>
+                  : <img src={extendMap} alt="extend icon"/>
+                }
               </button>
               {offer.latitude && offer.longitude && hote.latitude && hote.longitude ? (
                 <>
@@ -349,7 +353,7 @@ function allRefsReady() {
                     destination={{ lat: hote.latitude, lng: hote.longitude }}
                     zoom={17}
                     adresseTexte ={offer.adresse ? offer.adresse : ""}
-                    borderRadius={35}
+                    borderRadius={isExtendMap ? 0 : 35}
 
                   />
                   <a 
