@@ -1,3 +1,160 @@
 .BookingSystemContainer>p{
     margin-top: 40px;
 }
+
+
+.BookingSystemContainer .DayCreneaux{
+    padding: 0 6%;
+}
+.BookingSystemContainer .DayCreneaux>.DayContainer{
+    background-color: var(--greylight);
+    margin-bottom: 10px;
+    border-radius: 12px;
+    padding: 8px 12px;
+    border: 1px solid white;
+    transition: all 0.2s ease-in-out;
+}
+.BookingSystemContainer .DayCreneaux>.DayContainer>.row{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+}
+.BookingSystemContainer .DayCreneaux>.DayContainer>.row>p{
+    height: 1.5rem;
+    align-content: center;
+}
+
+.BookingSystemContainer .DayContainer>.row>.switch{
+    background-color: var(--greysemidark);
+    padding: 4px;
+    width: 40px;
+    border-radius: 100px;
+    border: none;
+    transition: background-color 0.2s ease-in-out;
+    cursor: pointer;
+}
+.BookingSystemContainer .DayContainer>.row>.switch>div{
+    background-color: white;
+    height: 20px;
+    width: 20px;
+    border-radius: 100px;
+    transition: all 0.2s ease-in-out;
+}
+
+
+
+.BookingSystemContainer .DayContainer.open>.row>.switch{
+    background-color: var(--greydark);
+}
+.BookingSystemContainer .DayContainer.open>.row>.switch>div{
+    margin-left: 12px;
+}
+.BookingSystemContainer .DayContainer.open{
+    background-color: white;
+    border: 1px solid var(--greysemidark);
+}
+
+
+
+.BookingSystemContainer .DayContainer .column {
+    max-height: 0;
+    overflow: hidden;
+    opacity: 0;
+    transition: all 0.3s ease-in-out;
+}
+
+.BookingSystemContainer .DayContainer.open .column {
+    opacity: 1;
+}
+
+
+
+
+
+
+
+
+
+
+.BookingSystemContainer .DayContainer .column>.row{
+    margin-top: 10px;
+}
+
+
+.BookingSystemContainer .DayContainer .column>.row>p{
+    margin-right: 5px;
+    margin-left: 10px;
+}
+.BookingSystemContainer .DayContainer .column>.row>p:first-of-type{
+    margin-left: 0;
+}
+.BookingSystemContainer .DayContainer .removecreneau{
+    padding: 8px;
+    display: flex;
+    align-items: center;
+    background-color: var(--greylight);
+    border: none;
+    border-radius: 5px;
+    margin-left: auto;
+}
+.BookingSystemContainer .DayContainer .removecreneau>img{
+    height: 13px;
+    width: 13px;
+    opacity: 0.7;
+}
+
+.BookingSystemContainer .DayContainer input{
+    background-color: white;
+    border-radius: 10px;
+    font-size: 1rem;
+    width: 80px;
+    padding: 8px 12px;
+    align-content: center;
+    justify-content: center;
+    /* border: 1px solid var(--greysemidark); */
+    border: none;
+    outline: 1px solid var(--greysemidark);
+    overflow: auto;
+    margin-top: 1px;
+    transition: outline 0.2s ease-in-out;
+    /* width: 40px; */
+}
+.BookingSystemContainer .DayContainer input:focus{
+    /* background-color: red; */
+    outline: 1px solid var(--greydark);
+    border: none;
+    /* width: 40px; */
+}
+
+
+
+/*////////Add More*/
+.BookingSystemContainer .DayContainer .addOne{
+    border: 1px solid var(--greylight);
+    background-color: var(--greylight);
+    border-radius: 6px;
+    padding: 0 14px;
+    margin-top: 15px;
+    margin-bottom: 4px;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+}
+
+.BookingSystemContainer .DayContainer .addOne>p{
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+
+.BookingSystemContainer .DayContainer .addOne>p>strong{
+    font-family: "Cookie";
+    font-size: 2rem;
+    font-weight: 100;
+    position: relative;
+    top: 0; /* ← retire ce que tu avais ici */
+    margin-left: 5px;
+}

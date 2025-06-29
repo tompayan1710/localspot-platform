@@ -466,22 +466,22 @@ function FadeInImage({ src, alt, className }) {
               setIsOccultView(false);
               }}
             >
-              <p className="t5">Accepter</p>
+              <p className="t5">Décliner</p>
             </button>
             <button onClick={() => {
               generalTerms.current.classList.remove("open");
               setIsOccultView(false);
               }}
             >
-              <p className="t5">Décliner</p>
+              <p className="t5">Accepter</p>
             </button>
           </div>
         </div>
       </PopUpBottom>
 
       <div className={`occultView ${isOccultView ? "open" : ""}`} onClick={() => {
-        generalTerms.current.classList.remove("open");
-        setIsOccultView(false);
+        // generalTerms.current.classList.remove("open");
+        // setIsOccultView(false);
       }}></div>
       </div>
     );

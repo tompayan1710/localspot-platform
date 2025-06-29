@@ -10,6 +10,7 @@ const map2DRoutes = require('./map2D/map2DRoutes');
 const providerRoutes = require('./provider/providerRoutes');
 const locationRoutes = require('./location/locationRoutes');
 const translate = require('./translate/translate');
+const googleRoutes = require('./google/googleRooutes');
 
 router.use('/auth', authRoutes);
 router.use('/offer', offerRoutes);
@@ -19,6 +20,7 @@ router.use('/maps', map2DRoutes);
 router.use('/provider', providerRoutes);
 router.use('/location', locationRoutes);
 router.use('/translate', translate);
+router.use('/google', googleRoutes);
 
 
  

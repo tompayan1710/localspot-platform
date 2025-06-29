@@ -4,11 +4,10 @@ import { login } from "../../services/auth";
 import { useNavigate } from "react-router-dom";
 import "./styles.css";
 import { AuthContext } from '../Auth/authContext/authContext';
-import localspotlogo from "../../assets/images/localspotlogo.png";
 import ViarteLogo from "../../assets/images/ViarteLogo.png";
-import arrowLeft from "../../assets/images/arrowLeft.png";
 import { GoogleAuthButton } from "./GoogleAuthButton"
 import Spinner from "../Spinner/Spinner"
+import GoBack from "../GoBack/GoBack";
 
 export default function Login() {
   const [email, setEmail] = useState(""); 
@@ -44,7 +43,10 @@ export default function Login() {
         localStorage.setItem("jwtToken", response.token);
         setTimeout(() => {
             navigate("/profile");
-            checkAuth();
+            setTimeout(() => {
+              checkAuth(); // << Appelle un peu après la redirection
+            }, 200);
+            // checkAuth();
           }, 1000);
     } else {
       setIsSuccess(false);
@@ -73,10 +75,7 @@ export default function Login() {
 
   return (
     <div className="AuthPage">
-      <div className="continueResearchContainer" onClick={() => {navigate("/scanpage")}}>
-        <img src={arrowLeft}/>
-        <p className="t6">revenir</p>
-      </div>
+      <GoBack nagigation={"/"} scrollTo={""} text={"revefsnir"}/>
       <div className="authcomponentcontainer">
         <div className="form-container">
           <img src={ViarteLogo} alt="localspot logo"/>

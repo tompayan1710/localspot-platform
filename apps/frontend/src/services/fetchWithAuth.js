@@ -1,8 +1,6 @@
 // ✅ src/services/fetchWithAuth.js
 import { jwtDecode } from "jwt-decode";
 
-let isRefreshing = false; // ✅ Verrou de renouvellement
-let refreshPromise = null; 
 
 // ✅ Fonction pour gérer les requêtes avec Access Token + Refresh automatique
 export const fetchWithAuth = async (url, options = {}) => {

@@ -1,14 +1,13 @@
 // Signup.jsx
-import React, { useState, useContext } from "react";
+import { useState, useContext } from "react";
 import { signup, login } from "../../services/auth";
 import { useNavigate } from "react-router-dom";
 import "./styles.css";
-import localspotlogo from "../../assets/images/localspotlogo.png";
 import ViarteLogo from "../../assets/images/ViarteLogo.png";
 import { AuthContext } from '../Auth/authContext/authContext';
 import { GoogleAuthButton } from "./GoogleAuthButton"
 import Spinner from "../Spinner/Spinner"
-import arrowLeft from "../../assets/images/arrowLeft.png";
+import GoBack from "../GoBack/GoBack";
 
 
 export default function Signup() {
@@ -55,10 +54,7 @@ export default function Signup() {
 
   return (
     <div className="AuthPage">
-      <div className="continueResearchContainer" onClick={() => {navigate("/scanpage")}}>
-          <img src={arrowLeft}/>
-          <p className="t6">revenir</p>
-      </div>
+      <GoBack nagigation={`/`} scrollTo={""} text={"revenir"}/>
       <div className="authcomponentcontainer">
         <div className="form-container">
           <img src={ViarteLogo} alt="localspot logo"/>

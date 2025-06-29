@@ -19,9 +19,8 @@ import BecomeProviderAddContact from "./pages/BecomeProvider/BecomeProviderConta
 import EditProfile from "./components/Auth/ProfilPage/EditProfile";
 import EditLanguage from "./components/Auth/ProfilPage/EditLanguage";
 import SettingsPage from "./components/Auth/ProfilPage/SettingsPage/SettingsPage";
-import Availability from "./pages/OfferPage/Reserve/Availability";
+import Availability from "./pages/OfferPage/Availibility/Availability";
 import PayementPage from "./pages/OfferPage/Payement/PayementPage";
-import { useEffect } from "react";
 import BookingSystem from "./components/Auth/ProfilPage/BookingSystem/BookingSystem";
 import PrivacyPolicy from "./pages/DocumentOfficiel/PrivacyPolicy/PrivacyPolicy";
 import LegalNotice from "./pages/DocumentOfficiel/LegalNotice/LegalNotice";

@@ -16,9 +16,9 @@ export default function GoBack({nagigation, scrollTo, text}){
 
     return (
         <button className="goBackButton" style={{opacity: "1"}} onClick={() => {
-             navigate(-1);
+             handleClick();
         }}>
-            <img src={arrowLeft}/>
+            <img src={arrowLeft} alt="arrow left"/>
             <p className="t6">{text}</p>
         </button>
     );

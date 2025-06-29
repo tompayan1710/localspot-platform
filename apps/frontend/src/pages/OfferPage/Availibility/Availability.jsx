@@ -5,11 +5,7 @@ import "react-day-picker/dist/style.css";
 import { useParams, useNavigate } from "react-router-dom";
 import { AuthContext } from '../../../components/Auth/authContext/authContext';
 import { GoogleAuthButton } from "../../../components/Auth/GoogleAuthButton"
-
-import ViarteLogo from "../../../assets/images/ViarteLogo.png"
-import googleicon from "../../../assets/images/googleicon.png";
 import Map2DPin from "../../../assets/images/Map2DPin.png";
-import dureeIcon from "../../../assets/images/dureeIcon.png";
 import VerifyIcon from "../../../assets/images/VerifyIcon.png";
 import arrowRight from "../../../assets/images/arrowRight.png";
 import arrowLeft from "../../../assets/images/arrowLeft.png";
@@ -22,7 +18,6 @@ export default function Availability() {
   const { slug } = useParams();
 
   const creneauRef = useRef(null); // ← Étape 1
-  const [creneauWidth, setCreneauWidth] = useState(0); 
   const [barStyle, setBarStyle] = useState({ width: 0, angle: 0 });
   const [isOccultView, setIsOccultView] = useState(false);
   const [participantAdult, setParticipantAdult] = useState(4);
@@ -38,10 +33,8 @@ export default function Availability() {
       const height = 70;
       const hypotenuse = Math.sqrt(Math.pow(width, 2) + Math.pow(height, 2));
       const angleDeg = Math.atan2(height, width) * (180 / Math.PI) - 1;
-      setCreneauWidth(width);
       setBarStyle({ width: hypotenuse, angle: angleDeg });
 
-      setCreneauWidth(width);
       console.log("Largeur de CreneauPicker:", width);
       console.log("Hauteur de CreneauPicker:", height);
     }
@@ -57,7 +50,7 @@ export default function Availability() {
 
 
   /*Login*/
-  const { authState, logout } = useContext(AuthContext);
+  const { authState } = useContext(AuthContext);
 
   const TestAuth = () => {
     // ✅ Redirection uniquement lorsque loading est terminé
@@ -82,7 +75,7 @@ export default function Availability() {
 
   const navigate = useNavigate();
 
-  const { checkAuth } = useContext(AuthContext);
+  // const { checkAuth } = useContext(AuthContext);
 
   const handleSignup = async (e) => {
     e.preventDefault();
@@ -152,7 +145,7 @@ export default function Availability() {
             </div>
             <p className="t5">10:30 - 12:30</p>
           </div>
-          <div  className={`CreneauItem ${selectedCreneau==1 ? "selected" : ""}`} onClick={() => {setSelectedCreneau(1)}}>
+          <div  className={`CreneauItem ${selectedCreneau === 1 ? "selected" : ""}`} onClick={() => {setSelectedCreneau(1)}}>
             <div>
               <p className="t6">Il reste actuellement :</p>
               <p className="t6">5 places</p>
@@ -160,7 +153,7 @@ export default function Availability() {
             <p className="t5">10:30 - 12:30</p>
           </div>
           <div 
-          className={`CreneauItem ${selectedCreneau==2 ? "selected" : ""}`} onClick={() => {setSelectedCreneau(2)}}>
+          className={`CreneauItem ${selectedCreneau === 2 ? "selected" : ""}`} onClick={() => {setSelectedCreneau(2)}}>
             <div>
               <p className="t6">Il reste actuellement :</p>
               <p className="t6">5 places</p>
