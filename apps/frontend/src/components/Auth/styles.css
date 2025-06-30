@@ -75,7 +75,7 @@
     border-radius: 12px;
     border-bottom: 1px solid var(--greysemidark);
     height: fit-content;
-    max-width: 400px;
+    max-width: 500px;
     display: flex;
     flex-direction: column;
     justify-content: center;

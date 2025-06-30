@@ -12,7 +12,7 @@ import { AuthContext } from "../Auth/authContext/authContext"
 
 const BottomNavBarNotAnimate = forwardRef((props, ref) => {
   const navigate = useNavigate(); // 👈 hook de navigation
-  const { authState, logout } = useContext(AuthContext);
+  const { authState } = useContext(AuthContext);
   const [activeTab, setActiveTab] = useState("explorer");
 
   const [hidden, setHidden] = useState(false); // état pour cacher / montrer la navbar
@@ -41,7 +41,7 @@ const BottomNavBarNotAnimate = forwardRef((props, ref) => {
       {
         props.isMap?
         <button className="MapButton" onClick={() =>console.log("Clique on map")}>
-          <img src={mapIcon}/>
+          <img src={mapIcon} alt="map icon"/>
         </button>
         :
         <></>
@@ -55,7 +55,7 @@ const BottomNavBarNotAnimate = forwardRef((props, ref) => {
           {/* <button className="NavBarButton" onClick={() => setActiveTab("explorer")}> */}
           <button className="NavBarButton" onClick={() => navigate("/")}>
             <div className={`IconWrapper ${activeTab === "explorer" ? "active" : ""}`}>
-              <img src={Explore} />
+              <img src={Explore} alt="explore icon"/>
               <p className="t6">Explorer</p>
             </div>
                          
@@ -63,14 +63,14 @@ const BottomNavBarNotAnimate = forwardRef((props, ref) => {
            {/* <button className="NavBarButton" onClick={() =>  setActiveTab("activity")}>  */}
            <button className="NavBarButton" onClick={() =>  navigate("/")}> 
             <div className={`IconWrapper ${activeTab === "activity" ? "active" : ""}`}>
-              <img src={jetSkieIcon}/>
+              <img src={jetSkieIcon} alt="activity icon"/>
               <p className="t6">Activité</p>
             </div>
             </button>
             {/* <button className="NavBarButton" onClick={() => setActiveTab("restauration")}> */}
             <button className="NavBarButton" onClick={() => navigate("/")}>
               <div className={`IconWrapper ${activeTab === "restauration" ? "active" : ""}`}>
-                <img src={foodIcon}/>
+                <img src={foodIcon} alt="restauration icon"/>
                 <p className="t6">Restauration</p>
               </div>
             </button>
@@ -83,13 +83,13 @@ const BottomNavBarNotAnimate = forwardRef((props, ref) => {
             <>
             <button className="NavBarButton" onClick={() => setActiveTab("myoffers")}>
               <div className={`IconWrapper ${activeTab === "myoffers" ? "active" : ""}`}>
-                <img src={OffersNav}/>
-                <p className="t6">Mes offres</p>
+                <img src={OffersNav} alt="offers icon"/>
+                <p className="t6">Annonces</p>
               </div>
             </button>
             <button className="NavBarButton" onClick={() => setActiveTab("calendar")}>
               <div className={`IconWrapper ${activeTab === "calendar" ? "active" : ""}`}>
-                <img src={Calendar}/>
+                <img src={Calendar} alt="calendar icon"/>
                 <p className="t6">Calendar</p>
               </div>
             </button>
@@ -100,7 +100,7 @@ const BottomNavBarNotAnimate = forwardRef((props, ref) => {
         {/* <button className="NavBarButton" onClick={() => setActiveTab("profile")}>  */}
         <button className="NavBarButton" onClick={() => navigate("/profile")}> 
           <div className={`IconWrapper ${activeTab === "profile" ? "active" : ""}`}>
-            <img src={userIconBlack}/>
+            <img src={userIconBlack} alt="user icon"/>
             <p className="t6">Profile</p>
           </div>
         </button>

@@ -1,7 +1,18 @@
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
-import { useState } from "react";
+import React, { useState } from "react";
 import { fr } from "date-fns/locale";
+
+const ReadOnlyInput = React.forwardRef(({ value, onClick }, ref) => (
+  <input
+    value={value}
+    onClick={onClick}
+    ref={ref}
+    readOnly // ✅ EMPÊCHE clavier, mais PAS le click
+    className="time-input" // 👈 tu peux styliser ici
+  />
+));
+
 
 export default function TimeOnlyPicker({ updateAvailability, day, id, field, hour = 12, minute = 0, slot }) {
   const initialDate = new Date();
@@ -46,7 +57,7 @@ export default function TimeOnlyPicker({ updateAvailability, day, id, field, hou
         // field === "from" => on veut que FROM soit STRICTEMENT avant TO
         return time.getTime() < refDate.getTime();
       }}
-
+      customInput={<ReadOnlyInput />}
     />
   );
 }

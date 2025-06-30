@@ -1,57 +1,34 @@
-import React, { useState, useRef, useEffect } from "react";
+import React, { useState, useRef, useEffect, useContext } from "react";
 import GoBack from "../../../GoBack/GoBack";
 import "./BookingSystem.css";
 import TimeOnlyPicker from "./TimeOnlyPicker";
 import crossiconBlack from "../../../../assets/images/crossiconBlack.png"
+import { AuthContext } from "../../authContext/authContext";
 
 export default function BookingSystem() {
+  const { authState } = useContext(AuthContext);
   
   const connectGoogle = () => {
-    window.location.href = `${process.env.REACT_APP_API_URL}/api/google/auth`; // ⬅️ redirige vers le backend
+    if(authState.loading){
+      console.warn("Veuillez passienté, chargement de l'authentification");
+      return;
+    }else{
+      if(authState.isAuth){
+        window.location.href = `${process.env.REACT_APP_API_URL}/api/google/auth?provider_id=${authState.user?.provider_id}`;// ⬅️ redirige vers le backend
+      }else{
+        console.error("Vous devez être prestataire pour pouvoir connecter un système de réservation")
+      }
+    }
   };
 
   const getEvents = async () => {
-    
-    const res = await fetch(`${process.env.REACT_APP_API_URL}/api/google/events`, {
-      credentials: "include", // ⬅️ pour envoyer le cookie
-    });
+    const providerId = authState.user?.provider_id;
+    const res = await fetch(`${process.env.REACT_APP_API_URL}/api/google/events?provider_id=${providerId}`);
     const data = await res.json();
     console.log("📅 Événements :", data);
   };
 
-  const addEvent = async () => {
-    const event = {
-      summary: "Visite guidée locale",
-      location: "Place du marché, Toulouse",
-      description: "Activité avec un guide",
-      start: {
-        dateTime: "2025-07-05T10:00:00+02:00",
-        timeZone: "Europe/Paris"
-      },
-      end: {
-        dateTime: "2025-07-05T12:00:00+02:00",
-        timeZone: "Europe/Paris"
-      }
-    };
 
-    const res = await fetch("http://localhost:3000/api/google/events", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json"
-      },
-      credentials: "include",
-      body: JSON.stringify(event)
-    });
-
-    const data = await res.json();
-    if (res.ok) {
-      alert("✅ Événement ajouté !");
-      console.log(data);
-    } else {
-      alert("❌ Erreur ajout !");
-      console.error(data);
-    }
-  };
 
 
   const [availability, setAvailability] = useState({
@@ -111,14 +88,15 @@ export default function BookingSystem() {
   };
 
 
+  /*///////////////////////////*/
+
   return (
     <div className="BookingSystemContainer">
       <GoBack nagigation={`/profile`} scrollTo={``} text={"revenir"} />
-      <p className="t2">BookingSystem</p>
 
       <button onClick={connectGoogle} className="connectBtn">Connecter Google Calendar</button>
       <button onClick={getEvents} className="connectBtn">Voir événements</button>
-      <button onClick={addEvent} className="connectBtn">Ajouter événement</button>
+      {/* <button onClick={addEvent} className="connectBtn">Ajouter événement</button> */}
 
       <div className="DayCreneaux">
         {

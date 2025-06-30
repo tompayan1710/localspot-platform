@@ -60,7 +60,7 @@ const SearchBar = forwardRef((props, ref) => {
          {
                       searchOpen ?  
         <div className="continueResearchContainer" onClick={() => setSearchOpen(false)}>
-          <img src={arrowLeft}/>
+          <img src={arrowLeft} alt="arrow left"/>
           <p className="t6">revenir</p>
         </div> : <></>
           }
@@ -83,7 +83,7 @@ const SearchBar = forwardRef((props, ref) => {
                       <div className="OptionSearch">
                         <div className="AddPersonne" onClick={() => setAddPersonOpen(prev => !prev)}>
                           <p className="t5">Ajouter des personnes</p>
-                          <img src={arrowdownicon} />
+                          <img src={arrowdownicon} alt="arrow down"/>
                         </div>
                         { 
                           addPersonOpen ? 

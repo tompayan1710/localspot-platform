@@ -4,20 +4,16 @@ import { useNavigate } from "react-router-dom";
 import "./styles.css";
 import { AuthContext } from "./authContext/authContext"
 import Spinner from "../Spinner/Spinner";
-import BottomNavBar from "../BottomNavBar/BottomNavBar";
 import BottomNavBarNotAnimate from "../BottomNavBar/BottomNavBarNotAnimate";
 import userIconRelief from "../../assets/images/userIconRelief.png"
 import arrowRight from "../../assets/images/arrowRight.png"
-import userIconBlackline from "../../assets/images/userIconBlackline.png"
 import logOutIcon from "../../assets/images/logOutIcon.png"
 import global from "../../assets/images/global.png"
 import parametres from "../../assets/images/parametres.png"
 import EuroIcon from "../../assets/images/EuroIcon.png"
 import CreditCard from "../../assets/images/CreditCard.png"
 import Calendar from "../../assets/images/Calendar.png"
-import Nice from "../../assets/images/Nice.avif"
 import crossWhite from "../../assets/images/crossWhite.png"
-import files from "../../assets/images/files.png"
 import yoga3 from "../../assets/images/yoga3.jpg"
 import Cuisto from "../../assets/images/Cuisto.jpg"
 import { useTranslation } from "react-i18next";

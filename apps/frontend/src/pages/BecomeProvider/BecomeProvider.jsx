@@ -102,7 +102,7 @@ import { useRef, useState } from "react"
 import Spinner from "../../components/Spinner/Spinner"
 
 export default function BecomeProvider(){
-    const { authState, logout } = useContext(AuthContext);
+    const { authState } = useContext(AuthContext);
     const navigate = useNavigate();
     
     useEffect(() => {
@@ -256,11 +256,11 @@ export default function BecomeProvider(){
     
     return (
         <div className="BecomeProviderAll">
-            <button className="CloseButton" onClick={() => navigate("/profile")}><img src={crossiconBlack}/></button>
-            <button className="GoBackButton" onClick={() => {goBack(typeSelected)}} ref={refGoBackButton}><img src={arrowLeft}/><p className="t6">précédent</p></button>
+            <button className="CloseButton" onClick={() => navigate("/profile")}><img src={crossiconBlack} alt="cross icon"/></button>
+            <button className="GoBackButton" onClick={() => {goBack(typeSelected)}} ref={refGoBackButton}><img src={arrowLeft} alt="arrow left"/><p className="t6">précédent</p></button>
             <button className="NavigateButton" ref={refNavigateButton} 
                 onClick={() => {
-                    if(selectedSize.length==0){
+                    if(selectedSize.length === 0){
                     setErrorSelected("Vous devez choisir au moins une catégorie !")
                     }else{
                         navigate("/become-provider/add-info", {state: {
@@ -276,11 +276,11 @@ export default function BecomeProvider(){
                 <p ref={refTitleType} className="t32">Sous quel statut exercez-vous&nbsp;?</p>
 
                 <div ref={refCompanyType} className="ProviderTypeContainer" onClick={(e) => show(e, "Company")}>
-                    <img src={companyIcon}/>
+                    <img src={companyIcon} alt="company icon"/>
                     <p>Entreprise immatriculée</p>
                 </div>
                 <div ref={refIndependantType} className="ProviderTypeContainer" onClick={(e) => show(e, "Independent")}>
-                    <img src={userIconBlackline}/>
+                    <img src={userIconBlackline} alt="user icon"/>
                     <p>Travailleur indépendant ou auto-entrepreneur</p>
                 </div>
                 <ul className="ListStrucQuestion" ref={refListStrucQuestion}>
@@ -290,7 +290,7 @@ export default function BecomeProvider(){
                             <li key={index}
                                 style={{ animationDelay: `${index * 0.1}s` }}
                             >
-                                <div className={`SizeItemButton ${selectedSize == size ? "selectedSize" : ""}`}
+                                <div className={`SizeItemButton ${selectedSize === size ? "selectedSize" : ""}`}
                                 onClick={() => toggleSize(size)}>
                                     <p className="t6">{size}</p>
                                 </div>

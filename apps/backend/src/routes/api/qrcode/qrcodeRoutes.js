@@ -13,9 +13,9 @@ const supabase = createClient(
 
 // Créer un QR code
 router.post("/create", async (req, res) => {
-  const { id_hote, latitude, longitude, adresse } = req.body;
+  const { user_id, id_hote, latitude, longitude, adresse } = req.body;
 
-  if (!id_hote || !latitude || !longitude || !adresse) {
+  if (!user_id || !id_hote || !latitude || !longitude || !adresse) {
     return res.status(400).json({ success: false, message: "Champs manquants." });
   }
 
@@ -48,7 +48,7 @@ router.post("/create", async (req, res) => {
 
     // 👉 insérer en DB
     
-    await createQRCode(slug, id_hote, latitude, longitude, adresse, image_url)
+    await createQRCode(slug, user_id, id_hote, latitude, longitude, adresse, image_url)
 
     return res.status(200).json({ success: true, qrImageUrl: image_url, slug: slug });
   } catch (err) {

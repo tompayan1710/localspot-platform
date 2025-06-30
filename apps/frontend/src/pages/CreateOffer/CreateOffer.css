@@ -5,6 +5,7 @@
     height: 100vh;
     padding: 0%;
     overflow: hidden;
+    max-width: var(--maxsize);
 }
 
 .CreateOfferContainerAll:has(.CreateOfferPage5){
@@ -12,25 +13,27 @@
 }
 
 .CreateOfferContainerAll>.CloseButton{
+    --taillemin: min(250px, 50vw);
     /* background-color: orange; */
     position: fixed;
     z-index: 3;
     top: 5px;
-    right: 5px;
+    /* right: 5px; */
     border: none;
     background-color: transparent;
     cursor: pointer;
+    right: 50%;
+    transform: translateX(calc(var(--taillemin) - 5px));
 }
 .CreateOfferContainerAll>.CloseButton>img{
-    height: 12px;
+    height: 12px; 
     width: 12px;
     margin: 10px;
 }  
 .CreateOfferContainerAll>.GoBackButton{
+    --taillemin: min(250px, 50vw);
     position: fixed;
     z-index: 3;
-    top: 10px;
-    left: 10px;
     background-color: transparent;
     border: none;
     display: flex;
@@ -38,6 +41,10 @@
     cursor: pointer;
     align-items: center;
     opacity: 0;
+     /* left: 10px; */
+    top: 10px;
+    left: 50%;
+    transform: translateX(calc(var(--taillemin) * -1 + 10px));
     transition: opacity 0.6s ease-in-out;
 }
 .CreateOfferContainerAll>.GoBackButton>img{
@@ -77,6 +84,7 @@
     width: calc(100% - 200px);
     opacity: 0;
     z-index: 2;
+    max-width: calc(var(--maxsize) - 200px);
   }
   
   .CreateOfferContainerAll .NavigateButton:hover {
@@ -173,6 +181,7 @@
   align-items: center;
   height: 100vh;
   width: 100vw;
+  max-width: var(--maxsize);
   transition:transform 0.6s ease-in-out;
 }
 .CreateOfferPage1>.t32{
@@ -319,11 +328,16 @@
 
 
 .CreateOfferContainerAll>.CreateOfferEtape{
+    --taillemin: min(250px, 50vw);
     /* background-color: orange; */
     position: fixed;
     z-index: 3;
     top: 3px;
-    right: 35px;
+    /* right: 35px; */
+    right: 50%;
+    transform: translateX(calc(var(--taillemin) - 35px));
+    transition: opacity 0.6s ease-in-out;
+
 }
 .CreateOfferContainerAll>.CreateOfferEtape>p{
     height: 12px;
@@ -344,6 +358,7 @@
   position: absolute;
   top: 0%;
   left: 0;
+  max-width: var(--maxsize);
 }
 .CreateOfferPage2>.t32{
   padding: 0 20px;
@@ -479,6 +494,7 @@
   position: absolute;
   top: 0;
   left: 0;
+  max-width: var(--maxsize);
 }
 
 
@@ -513,6 +529,7 @@
   text-decoration: underline;
   text-underline-offset: 2px;
   text-decoration-thickness: 1px;
+  /* font-weight: bold; */
 }
 
 .CreateOfferPage3 .CreateOfferAddPhotos{
@@ -576,6 +593,7 @@
   left: 0;
   padding-top: 80px;
   padding-bottom: 110px;
+  max-width: var(--maxsize);
 }
 
 .CreateOfferPage4>.RowAddImage{
@@ -691,6 +709,7 @@
   display: flex;
   flex-direction: column;
   gap: 10px;
+  max-width: var(--maxsize);
 }
 .CreateOfferPhotoItem{
   /* border: 1px solid var(--greymiddledark);
@@ -795,6 +814,7 @@
   left: 0;
   padding-top: 80px;
   padding-bottom: 110px;
+  max-width: var(--maxsize);
 }
 .CreateOfferPage5 .NavigateButton{
   opacity: 1!important;

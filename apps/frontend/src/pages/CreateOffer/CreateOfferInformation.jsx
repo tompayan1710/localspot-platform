@@ -20,7 +20,7 @@ import Spinner from "../../components/Spinner/Spinner"
 export default function CreateOfferInformations(){
     const location = useLocation();
 
-    const { authState, logout } = useContext(AuthContext);
+    const { authState } = useContext(AuthContext);
     const navigate = useNavigate();
     
 
@@ -126,7 +126,7 @@ export default function CreateOfferInformations(){
             type: type,  // idem
             city_id: city_id,
             price: form.price,
-            duration: durations[duration==-1 ? 0 : duration],
+            duration: durations[duration === -1 ? 0 : duration],
             image_urls: images_urls, // ou [images[0]] si c'est une seule
             provider_id: authState.user.provider.id, // à récupérer dynamiquement si possible
             pricePer: form.pricePer,
@@ -163,9 +163,9 @@ export default function CreateOfferInformations(){
 
     return (
         <div className="CreateOfferContainerAll">
-            <button className="CloseButton" onClick={() => navigate("/profile")}><img src={crossiconBlack}/></button>
+            <button className="CloseButton" onClick={() => navigate("/profile")}><img src={crossiconBlack} alt="cross icon"/></button>
             <div className="CreateOfferEtape"><p className="t6">3/3</p></div>
-            <button className="GoBackButton"><img src={arrowLeft}/><p className="t6">précédent</p></button>
+            <button className="GoBackButton"><img src={arrowLeft} alt="arrow left"/><p className="t6">précédent</p></button>
             <div className="TopDivOpacity"></div>
             <div className="CreateOfferPage5">    
                 <div className="TemplateOffer">
@@ -289,7 +289,7 @@ export default function CreateOfferInformations(){
                     <div className="OptionSearch">
                                             <div className="PointOpenButton" onClick={() => setOpenPointImportant(prev => !prev)}>
                                               <p className="t5">Points importants</p>
-                                              <img src={arrowdownicon} />
+                                              <img src={arrowdownicon} alt="arrow down icon"/>
                                             </div>
                                             { 
                                               openPointImportant ? 
@@ -311,7 +311,7 @@ export default function CreateOfferInformations(){
                                                 }
                                                 
                                                 <button 
-                                                    className={`AddPointButton ${pointImportant[-1] == "" ? "deasable" : ""}`}  
+                                                    className={`AddPointButton ${pointImportant[-1] === "" ? "deasable" : ""}`}  
                                                     disabled={pointImportant[pointImportant.length - 1] === ""}
                                                     onClick={() => setPointImportant(prev => [...prev, ""])}>Ajouter</button>
                                               </>
@@ -331,7 +331,7 @@ export default function CreateOfferInformations(){
                      
 
 
-                    <button type="submit" className="NavigateButton" ref={refNavigateButton}>{isLoading ? <Spinner /> : "Créer mon offre"}</button>
+                    <button type="submit" className="NavigateButton" ref={refNavigateButton}>{isLoading ? <Spinner /> : "Ajouter mes informations"}</button>
 
                 </form>
 

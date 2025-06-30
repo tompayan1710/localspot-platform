@@ -2,8 +2,6 @@ import "./CreateOffer.css"
 
 import crossiconBlack from "../../assets/images/crossiconBlack.png"
 import arrowLeft from "../../assets/images/arrowLeft.png"
-import jetSkieIcon from "../../assets/images/jetSkieIcon.png"
-import foodIcon from "../../assets/images/foodIcon.png"
 import plusicon from "../../assets/images/plusicon.png"
 import trashicon from "../../assets/images/trashicon.png"
 import galleryPhotosIcon from "../../assets/images/galleryPhotosIcon.png"
@@ -14,9 +12,6 @@ import { useContext } from "react";
 
 import Map2D from "../../components/Maps/Map2D"
 
-import { useJsApiLoader } from "@react-google-maps/api";
-
-
 import Sortable from "sortablejs";
 
 
@@ -26,7 +21,7 @@ import Spinner from "../../components/Spinner/Spinner"
 // import Spinner from "../../components/Spinner/Spinner"
 
 export default function CreateOfferAddress(){
-  const { authState, logout } = useContext(AuthContext);
+  const { authState } = useContext(AuthContext);
   const navigate = useNavigate();
 
   const location = useLocation();
@@ -55,8 +50,6 @@ export default function CreateOfferAddress(){
     longitude: 7.2620,
     isOk: false,
   });
-
-    const [errorMessage, setErrorMessage] = useState();
 
   // Charger l'autocomplete Google Maps
   useEffect(() => {
@@ -237,7 +230,9 @@ export default function CreateOfferAddress(){
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
-          id_hote: authState.user.id, // à récupérer dynamiquement si possible
+          // id_hote: authState.user.id, // à récupérer dynamiquement si possible
+          user_id: authState.user.id,
+          id_hote: 2,//Arbitraire pour l'instant
           latitude: formData.latitude,
           longitude: formData.longitude,
           adresse: formData.adresse,
@@ -332,10 +327,10 @@ export default function CreateOfferAddress(){
 
     return (
         <div className="CreateOfferContainerAll" ref={refContainerAll}>
-            <button className="CloseButton" onClick={() => navigate("/profile")}><img src={crossiconBlack}/></button>
+            <button className="CloseButton" onClick={() => navigate("/profile")}><img src={crossiconBlack} alt="cross icon"/></button>
             <div className="CreateOfferEtape"><p className="t6"> {etapeNum}</p></div>
-            <button className="GoBackButton"><img src={arrowLeft}/><p className="t6">précédent</p></button>
-            <button className="NavigateButton" ref={refNavigateButton} onClick={() =>textInButton == "Ajouter l'adresse" ? goToPage3() : uploadImages()}>{isLoading ? <Spinner /> : textInButton}</button>
+            <button className="GoBackButton"><img src={arrowLeft} alt="arrow left icon"/><p className="t6">précédent</p></button>
+            <button className="NavigateButton" ref={refNavigateButton} onClick={() =>textInButton === "Ajouter l'adresse" ? goToPage3() : uploadImages()}>{isLoading ? <Spinner /> : textInButton}</button>
             <div className="TopDivOpacity"></div>
             <div className="CreateOfferPage2" ref={refCreateOfferPage2}>
                 <p className="t32">Saisisez l'adresse de votre offre&nbsp;!</p>
@@ -368,7 +363,7 @@ export default function CreateOfferAddress(){
                 Les photos doivent correspondre à l’offre réelle et respecter notre <a onClick={() => navigate("/content-policy")}>politique de contenu</a>. 
               </p>
               <label className="CreateOfferAddPhotos">
-                <img src={galleryPhotosIcon} />
+                <img src={galleryPhotosIcon} alt="gallery photos icon"/>
                 <p className="t5">Ajouter des photos</p>
                 <input
                   type="file"
@@ -392,7 +387,7 @@ export default function CreateOfferAddress(){
               
               <div className="TemplateOffer">
                 <div className="TemplaetOfferImg">
-                  <img src={URL.createObjectURL(selectedFiles[0])}/>
+                  <img src={URL.createObjectURL(selectedFiles[0])} alt="files icon"/>
                 </div>
                 <div className="TemplateOfferInfo">
                   <div className="TemplateOfferTopDiv">
@@ -408,7 +403,7 @@ export default function CreateOfferAddress(){
               <div className="RowAddImage">
                 <p className="t4">Ordre des phtotos :</p>
                 <label className="CreateOfferAddPhotos">
-                  <img src={plusicon} />
+                  <img src={plusicon} alt="plus icon"/>
                   <input
                     type="file"
                     accept="image/*"

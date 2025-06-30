@@ -8,7 +8,6 @@ import Spinner from "../../components/Spinner/Spinner";
 
 import arrowLeft from "../../assets/images/arrowLeft.png"
 import crossiconBlack from "../../assets/images/crossiconBlack.png"
-import galleryPhotosIcon from "../../assets/images/galleryPhotosIcon.png"
 
 import 'react-phone-number-input/style.css'
 import PhoneInput from 'react-phone-number-input'
@@ -17,11 +16,11 @@ import PhoneInput from 'react-phone-number-input'
 
 export default function BecomeProviderAddContact() {
   const navigate = useNavigate();
-  const { authState, logout } = useContext(AuthContext);
+  const { authState } = useContext(AuthContext);
   const location = useLocation();
   const {type, sizes, name, bio, logo_url} = location.state || {};
   
-  const [etapeNum, setEtapeNum] = useState("1/3");
+  const etapeNum = "1/3";
   const [value, setValue] = useState()
 
   const refNavigateButton = useRef(null);
@@ -112,9 +111,9 @@ export default function BecomeProviderAddContact() {
     <>
       {authState.loading ? <Spinner centerPage={true}/> :        
       <div className="BecomeProviderAll">
-        <button className="CloseButton" onClick={() => navigate("/profile")}><img src={crossiconBlack}/></button>
+        <button className="CloseButton" onClick={() => navigate("/profile")}><img src={crossiconBlack} alt="cross icon"/></button>
         <div className="BecomeProviderEtape"><p className="t6"> {etapeNum}</p></div>
-        <button className="GoBackButton" style={{opacity: "1"}} onClick={() => {console.log("BACK")}}><img src={arrowLeft}/><p className="t6">précédent</p></button>
+        <button className="GoBackButton" style={{opacity: "1"}} onClick={() => {console.log("BACK")}}><img src={arrowLeft} alt="arrow left"/><p className="t6">précédent</p></button>
         <div className="TopDivOpacity"></div>
         <div className="BecomeProviderPage2 And 3">
           <div className="titleContainer">
@@ -189,7 +188,7 @@ export default function BecomeProviderAddContact() {
               rows={8}
               maxLength={1000}
             />
-            <p className={`${form.moredetails.length==1000 ? "error" : ""} RightInfo t6`}>{form.moredetails ? form.moredetails.length : "0"}/1000</p>
+            <p className={`${form.moredetails.length === 1000 ? "error" : ""} RightInfo t6`}>{form.moredetails ? form.moredetails.length : "0"}/1000</p>
             <button type="submit" className="ContinueButton">{isLoading ? <Spinner /> :  "Envoyer ma demande"}</button>
           </form>
         </div>

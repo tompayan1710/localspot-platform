@@ -1,8 +1,7 @@
 // src/components/Map2D/Map2D.jsx
-import React, { memo, useEffect, useRef } from "react";
-import { GoogleMap, Marker,  DirectionsRenderer, DirectionsService } from "@react-google-maps/api";
+import { memo, useEffect, useRef } from "react";
+import { GoogleMap, Marker,  DirectionsRenderer } from "@react-google-maps/api";
 import { useState } from "react";
-import HotelIcon from "../../assets/images/HotelIcon.png";
 import Map2DPoint from "../../assets/images/Map2DPoint.png";
 import Map2DPin from "../../assets/images/Map2DPin.png";
 import MapLabel from "./MapLabel";
@@ -279,7 +278,7 @@ const mapOptions = {
             /> */}
 
             {
-              center.lat == destination.lat && center.lng == destination.lng ?
+              center.lat === destination.lat && center.lng === destination.lng ?
               <></>
               :
               <Marker

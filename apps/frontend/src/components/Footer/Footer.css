@@ -8,7 +8,10 @@
     width: 30px;
     align-self: center;
 }
-.FooterContainer p,a{
+.FooterContainer p{
+    color: white;
+}
+.FooterContainer a{
     color: white;
 }
 .FooterContainer>p{

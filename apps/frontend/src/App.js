@@ -26,6 +26,7 @@ import PrivacyPolicy from "./pages/DocumentOfficiel/PrivacyPolicy/PrivacyPolicy"
 import LegalNotice from "./pages/DocumentOfficiel/LegalNotice/LegalNotice";
 import TermsAndConditionsOfSale from "./pages/DocumentOfficiel/TermsAndConditionsOfSal/TermsAndConditionsOfSal";
 import TermsOfService from "./pages/DocumentOfficiel/TermsOfService/TermsOfService";
+import AvailabilityEditor from "./pages/AnnoncePage/AvailabilityEditor/AvailabilityEditor";
 
 
 //Pour sauvegarder : pg_dump "postgresql://postgres:TomPayan-1710@localhost:5432/localspot" -f viarte_backup.sql
@@ -70,6 +71,9 @@ export default function App() {
             <Route path="/offer-page/:slug" element={<OfferPage />} />
             <Route path="/offer-page/:sulg/availibility" element={<Availability />} />
             <Route path="/offer-page/:sulg/payement" element={<PayementPage />} />
+
+
+            <Route path="/annonce/:slug/availability-editor" element={<AvailabilityEditor />} />
 
 
             <Route path="/create-offer" element={<CreateOffer />} />

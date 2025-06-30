@@ -1,5 +1,5 @@
 import "./PopUpBottom.css"
-import { useState, forwardRef, useEffect } from "react";
+import { forwardRef } from "react";
 import crossiconBlack from "../../assets/images/crossiconBlack.png"
 
 const PopUpBottom = forwardRef(({ children, title, onClose , isHeader}, ref) => {
@@ -11,7 +11,7 @@ const PopUpBottom = forwardRef(({ children, title, onClose , isHeader}, ref) => 
           :
           <>
             <button className="closeButton" onClick={onClose}>
-                <img src={crossiconBlack}/>
+                <img src={crossiconBlack} alt="cross icon"/>
             </button>
             {
                 title

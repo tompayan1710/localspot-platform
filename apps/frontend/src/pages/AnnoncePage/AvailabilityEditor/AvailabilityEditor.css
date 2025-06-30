@@ -1,0 +1,409 @@
+
+.AvailabilityEditor{
+    width: 100%;
+    padding-bottom: 40px;
+}
+
+.AvailabilityEditor .TitleContainer {
+    margin: 0 6%;
+    padding-top: 60px;
+}
+
+
+
+
+
+
+
+/*////////////////////////////////////DISPONNIBILITY*/
+
+.AvailabilityEditor .DayCreneaux{
+    padding: 0 6%;
+    margin: 30px 0;
+}
+.AvailabilityEditor .DayCreneaux>.DayContainer{
+    background-color: var(--greylight);
+    margin-bottom: 10px;
+    border-radius: 12px;
+    padding: 8px 12px;
+    border: 1px solid white;
+    transition: all 0.2s ease-in-out;
+}
+.AvailabilityEditor .DayCreneaux>.DayContainer>.row{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+}
+.AvailabilityEditor .DayCreneaux>.DayContainer>.row>p{
+    height: 1.5rem;
+    align-content: center;
+}
+
+.AvailabilityEditor .DayContainer>.row>.switch{
+    background-color: var(--greysemidark);
+    padding: 4px;
+    width: 40px;
+    border-radius: 100px;
+    border: none;
+    transition: background-color 0.2s ease-in-out;
+    cursor: pointer;
+}
+.AvailabilityEditor .DayContainer>.row>.switch>div{
+    background-color: white;
+    height: 20px;
+    width: 20px;
+    border-radius: 100px;
+    transition: all 0.2s ease-in-out;
+}
+
+
+
+.AvailabilityEditor .DayContainer.open>.row>.switch{
+    background-color: var(--greydark);
+}
+.AvailabilityEditor .DayContainer.open>.row>.switch>div{
+    margin-left: 12px;
+}
+.AvailabilityEditor .DayContainer.open{
+    background-color: white;
+    border: 1px solid var(--greysemidark);
+}
+
+
+
+.AvailabilityEditor .DayContainer .column {
+    max-height: 0;
+    overflow: hidden;
+    opacity: 0;
+    transition: all 0.3s ease-in-out;
+}
+
+.AvailabilityEditor .DayContainer.open .column {
+    opacity: 1;
+}
+
+
+
+
+
+
+
+
+
+
+.AvailabilityEditor .DayContainer .column>.row{
+    margin-top: 10px;
+}
+
+
+.AvailabilityEditor .DayContainer .column>.row>p{
+    margin-right: 5px;
+    margin-left: 10px;
+}
+.AvailabilityEditor .DayContainer .column>.row>p:first-of-type{
+    margin-left: 0;
+}
+.AvailabilityEditor .removecreneau{
+    padding: 8px;
+    display: flex;
+    align-items: center;
+    background-color: var(--greylight);
+    border: none;
+    border-radius: 5px;
+    margin-left: auto;
+}
+.AvailabilityEditor .removecreneau>img{
+    height: 13px;
+    width: 13px;
+    opacity: 0.7;
+}
+
+.AvailabilityEditor input{
+    background-color: white;
+    border-radius: 10px;
+    font-size: 1rem;
+    width: 80px;
+    padding: 8px 12px;
+    align-content: center;
+    justify-content: center;
+    /* border: 1px solid var(--greysemidark); */
+    border: none;
+    outline: 1px solid var(--greysemidark);
+    overflow: auto;
+    margin-top: 1px;
+    transition: outline 0.2s ease-in-out;
+    /* pointer-events: none; */
+    /* width: 40px; */
+}
+.AvailabilityEditor input:focus{
+    /* background-color: red; */
+    outline: 1px solid var(--greydark);
+    border: none;
+    /* width: 40px; */
+}
+
+
+
+/*////////Add More*/
+.AvailabilityEditor .addOne{
+    border: 1px solid var(--greylight);
+    background-color: var(--greylight);
+    border-radius: 6px;
+    padding: 0 14px;
+    margin-top: 15px;
+    margin-bottom: 4px;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+}
+
+.AvailabilityEditor .addOne>p{
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+
+.AvailabilityEditor .addOne>p>strong{
+    font-family: "Cookie";
+    font-size: 2rem;
+    font-weight: 100;
+    position: relative;
+    top: 0; /* ← retire ce que tu avais ici */
+    margin-left: 5px;
+}
+
+
+/*/////////////////////////////////////////////*/
+
+
+
+
+
+
+
+.AvailabilityEditor .addExceptionnal{
+    width: 88%;
+    margin: 0 6%;
+    margin-top: 10px;
+    margin-bottom: 10px;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    cursor: pointer;
+}
+.AvailabilityEditor .addExceptionnal>button{
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    width: fit-content;
+    padding: 8px 12px;
+    border: none;
+    border-radius: 8px;
+    background: linear-gradient(180deg, #ececec, #f2f2f2);
+}
+
+
+.AvailabilityEditor .hlineExceptionnal{
+    width: 88%;
+    margin: 0 auto;
+    height: 1px;
+    background-color: var(--greysemidark);
+}
+
+
+/*/////////////////////////Exceptionnal */
+
+
+.AvailabilityEditor .DayPickerContainer{
+  --borderRadius : 20px;
+  border: 1px solid var(--greysemidark);
+  border-radius: var(--borderRadius);
+  width: 88%;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  background-color: var(--greylight);
+}
+
+
+.AvailabilityEditor .DayPickerContainer{
+  margin-top: 30px;
+}
+.AvailabilityEditor .DayPickerContainer>.CalendarContainer{
+  background-color: white;
+  border-radius: var(--borderRadius);
+  border-bottom: 1px solid var(--greysemidark);
+}
+.AvailabilityEditor .DayPickerContainer>.CalendarContainer>p{
+  font-weight: 100;
+  text-align: center;
+  margin-top: 15px;
+}
+
+.AvailabilityEditor .rdp-root{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    --rdp-accent-color: red;
+    --rdp-today-color: var(--greennormal);
+    --rdp-selected-border: none;/*Bordure du jour selectionné*/
+    --rdp-day_button-height: 37px;
+    --rdp-day_button-width: 37px;
+    /* background-color: var(--greylight); */
+   
+    width: fit-content;
+    padding: 10px;
+    background-color: white;
+    border-radius: var(--borderRadius);
+}
+/* .AvailabilityEditor .rdp-months{
+    min-width: 100%;
+}
+.AvailabilityEditor .rdp-weekday{
+    width: 100%;
+} */
+.AvailabilityEditor .rdp-today{
+  position: relative;
+}
+.AvailabilityEditor .rdp-today::before {
+  content: "Aujourd'hui";
+  position: absolute;
+  top: 1.8rem;
+  left: calc(50% - 0px);
+  /* transform: translateX(-50%) scale(1); ordre important */
+  transform: translateX(-50%)  scale(1); /* ordre important */
+  font-size: 0.7rem;
+  font-weight: 400;
+  text-align: center;
+  transition: all 0.3s ease-out;
+}
+.AvailabilityEditor .rdp-today.rdp-selected::before {
+  top: 2.5rem;
+  /* transform: translateX(-50%) scale(0.8); */
+  transform: translateX(-50%)  scale(0.8);
+  color: var(--blacknormal);
+}
+
+
+.AvailabilityEditor .rdp-day_button{
+    font-size: 0.825rem;
+    transform: scale(1);
+    transition: transform 0.2s ease;
+}
+
+.AvailabilityEditor .rdp-day {
+  text-align: center; /* centre le contenu dans la cellule */
+}
+
+.AvailabilityEditor .rdp-day_button {
+  display: block;
+  margin: 0 auto; /* centre horizontalement le bouton */
+}
+
+.AvailabilityEditor .rdp-selected>.rdp-day_button{
+    border-radius: 100px;
+    background: linear-gradient(180deg, #696969, #373737);
+    /* background-color: white; */
+    color: white;
+    font-weight: 100;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+    transform: scale(1.1);
+    display: block;
+    margin: 0 auto;
+}
+
+
+.AvailabilityEditor .rdp-disabled{
+    opacity: 0.3;
+}
+
+/* Cache les chevrons par défaut */
+.AvailabilityEditor .rdp-nav svg {
+  display: none;
+}
+
+/* Applique tes propres flèches */
+.AvailabilityEditor .rdp-button_previous::before {
+  content: '';
+  display: inline-block;
+  background-image: url('../../../assets/images/arrowLeft.png');
+  background-size: contain;
+  width: 13px;
+  height: 13px;
+}
+
+.AvailabilityEditor .rdp-button_next::before {
+  content: '';
+  display: inline-block;
+  background-image: url('../../../assets/images/arrowRight.png');
+  background-size: contain;
+  width: 13px;
+  height: 13px;
+}
+
+
+.AvailabilityEditor .rdp-caption_label{
+  font-weight: 500;
+  margin-left: 10px;
+}
+
+/* Forcer chaque colonne à se répartir également */
+.AvailabilityEditor .rdp-month_grid {
+  table-layout: fixed; /* important pour que les colonnes aient une largeur fixe uniforme */
+  width: 100%;         /* ← prend toute la largeur dispo */
+}
+
+.AvailabilityEditor .rdp-weekdays th,
+.AvailabilityEditor .rdp-day {
+  width: auto; /* 100% ÷ 7 jours = ~14.29% */
+  /*width: 14.285%; 100% ÷ 7 jours = ~14.29% */
+  text-align: center;
+  /* display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center; */
+}
+
+
+.AvailabilityEditor .CreneauPicker{
+  /* width: 88%; */
+  margin: 0 auto;
+  padding: 10px;
+  width: 100%;
+  /* background-color: red; */
+}
+
+.AvailabilityEditor .CreneauPicker>p{
+  margin-top: 10px;
+}
+.AvailabilityEditor .CreneauPicker .column>.row>p{
+    margin-right: 5px;
+    margin-left: 10px;
+}
+.AvailabilityEditor .CreneauPicker .column>.row>p:first-of-type{
+    margin-left: 0;
+}
+
+.AvailabilityEditor .CreneauPicker .column{
+    margin-top: 10px;
+    background-color: white;
+    margin-bottom: 10px;
+    border-radius: 12px;
+    padding: 12px;
+    /* padding-top: 15px; */
+    border: 1px solid var(--greysemidark);
+}
+.AvailabilityEditor .CreneauPicker .addOne{
+    margin: 0%;
+}
+
+.AvailabilityEditor .CreneauPicker #spacing{
+    height: 15px;
+}

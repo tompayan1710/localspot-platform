@@ -11,7 +11,7 @@ import { AuthContext } from "../../components/Auth/authContext/authContext"
 import { useRef, useState } from "react"
 import Spinner from "../../components/Spinner/Spinner"
 export default function CreateOffer(){
-    const { authState, logout } = useContext(AuthContext);
+    const { authState } = useContext(AuthContext);
     const navigate = useNavigate();
     
     useEffect(() => {
@@ -159,11 +159,11 @@ export default function CreateOffer(){
                     type: typeSelected,
                     categories: selectedCategorie
                 }
-            })}><img src={crossiconBlack}/></button>
-            <button className="GoBackButton" onClick={() => {goBack(typeSelected)}} ref={refGoBackButton}><img src={arrowLeft}/><p className="t6">précédent</p></button>
+            })}><img src={crossiconBlack} alt="cross icon"/></button>
+            <button className="GoBackButton" onClick={() => {goBack(typeSelected)}} ref={refGoBackButton}><img src={arrowLeft} alt="arrow left"/><p className="t6">précédent</p></button>
             <button className="NavigateButton" ref={refNavigateButton} 
                 onClick={() => {
-                    if(selectedCategorie.length==0){
+                    if(selectedCategorie.length === 0){
                     setErrorSelected("Vous devez choisir au moins une catégorie !")
                     }else{
                         navigate("/create-offer-address", {state: {
@@ -178,11 +178,11 @@ export default function CreateOffer(){
             <div className="CreateOfferPage1" ref={refCreateOfferPage1}>
                 <p ref={refTitleType} className="t32">Quel type d'offre proposez-vous&nbsp;?</p>
                 <div ref={refActivityType} className="OfferTypeContainer" onClick={(e) => show(e, "Activite")}>
-                    <img src={jetSkieIcon}/>
+                    <img src={jetSkieIcon} alt="activity icon"/>
                     <p>Activité / Service</p>
                 </div>
                 <div ref={refFoodType} className="OfferTypeContainer" onClick={(e) => show(e, "Food")}>
-                    <img src={foodIcon}/>
+                    <img src={foodIcon} alt="restauration icon"/>
                     <p>Fast Food / Restauration</p>
                 </div>
                 <ul className="ListCategorieType" ref={refListCategorie}>

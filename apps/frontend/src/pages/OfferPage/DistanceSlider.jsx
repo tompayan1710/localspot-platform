@@ -25,15 +25,15 @@ export default function DistanceSlider() {
             <button  className={transport === "walk" ? "selected" : ""} onClick={(e) => {
               e.preventDefault();
               setTransport("walk");
-            }}><img src={footIcon} /></button>
+            }}><img src={footIcon} alt="walking icon"/></button>
             <button  className={transport === "bike" ? "selected" : ""}  onClick={(e) => {
               e.preventDefault();
               setTransport("bike");
-            }}><img src={bycicle} /></button>
+            }}><img src={bycicle} alt="bycicle icon"/></button>
             <button  className={transport === "car" ? "selected" : ""}   onClick={(e) => {
               e.preventDefault();
               setTransport("car");
-            }}><img src={carIcon} /></button>
+            }}><img src={carIcon} alt="car icon"/></button>
         </div>
 
       <div className="track-wrapper">

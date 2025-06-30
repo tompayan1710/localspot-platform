@@ -1,7 +1,7 @@
 import "./SettingsPage.css"
 import GoBack from '../../../GoBack/GoBack';
 import { useNavigate } from "react-router-dom";
-import { useRef, useState } from "react";
+import { useState } from "react";
 import arrowRight from "../../../../assets/images/arrowRight.png"
 import NotificationLine from "../../../../assets/images/NotificationLine.png"
 import trashBlack from "../../../../assets/images/trashBlack.png"

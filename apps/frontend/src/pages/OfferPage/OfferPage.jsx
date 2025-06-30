@@ -1,10 +1,8 @@
 import copieIcon from "../../assets/images/copieIcon.png";
-import arrowLeft from "../../assets/images/arrowLeft.png"
 import walkIcon from "../../assets/images/walkIcon.png"
 import bycicleIcon from "../../assets/images/bycicleIcon.png"
 import carRedIcon from "../../assets/images/carRedIcon.png"
 import validateIcon from "../../assets/images/validateIcon.png"
-import clockIcon from "../../assets/images/clockIcon.png"
 import dureeIcon from "../../assets/images/dureeIcon.png"
 import starIcon from "../../assets/images/starIcon.png"
 import Lorier from "../../assets/images/Lorier.png" 
@@ -12,7 +10,6 @@ import customerKing from "../../assets/images/customerKing.png"
 import arrowRight from "../../assets/images/arrowRight.png" 
 import extendMap from "../../assets/images/extendMap.png" 
 import crossiconBlack from "../../assets/images/crossiconBlack.png" 
-import userIconBlackline from "../../assets/images/userIconBlackline.png"
 import BottomNavBar from "../../components/BottomNavBar/BottomNavBar";
 import Map2D from "../../components/Maps/Map2D";
 import { getOfferBySlug } from "../../services/offers"
@@ -24,14 +21,13 @@ import { getDurations } from "../../services/map2D";
 
 import "./OfferPage.css";
 import { useEffect, useRef, useState } from "react";
-import { Navigate, useParams } from "react-router-dom";
+import { useParams } from "react-router-dom";
 import Carrousel from "../../components/Carrousel/Carrousel";
 import Footer from "../../components/Footer/Footer";
 import GoBack from "../../components/GoBack/GoBack";
 import ReviewItem from "./ReviewItem";
 import { useNavigate, useLocation } from "react-router-dom";
 import PopUpBottom from "../../components/PopUpBottom/PopUpBottom";
-import TopDivOpacity from "../../components/GoBack/TopDivOpacity";
 
 export default function OfferPage() {
   const { slug } = useParams();
@@ -58,8 +54,6 @@ export default function OfferPage() {
   const [navigationSelected, setNavigationSelected] = useState(0);
   const [scrollSyncEnabled, setScrollSyncEnabled] = useState(true);
   const [readMoreIsEnable, setReadMoreIsEnable] = useState({});
-  const [openCancelPolity, setOpenCancelPolity] = useState(false);
-  const [openParticipant, setOpenParticipant] = useState(false);
   const [isOccultView, setIsOccultView] = useState(false);
   const [participantAdult, setParticipantAdult] = useState(4);
   const [participantReduced, setParticipantReduced] = useState(0);      
@@ -241,7 +235,6 @@ function allRefsReady() {
           <button className="AllImages" onClick={() => {console.log("Appuie")}}>
             <img src={copieIcon} alt="copie Icon"/>
           </button>
-          {/* <button className="goBackButton" onClick={() => {}}><img src={arrowLeft}/><p className="t6">précédent</p></button> */}
           <Carrousel isLoading={isLoading}  photos={offer.image_urls}  setNavigationSelected={setNavigationSelected} ref={CarrouselRef} scrollSyncEnabled={scrollSyncEnabled}/>
           <div className="pointNavigationContainer">
             {
@@ -249,7 +242,7 @@ function allRefsReady() {
                 offer.image_urls.map((_, index) => (
                   <button
                     key={index}
-                    className={`pointNavigation ${navigationSelected == index ? "selected" : ""}`}
+                    className={`pointNavigation ${navigationSelected === index ? "selected" : ""}`}
                     onClick={() => {
                       setNavigationSelected(index);
                       
@@ -405,13 +398,7 @@ function allRefsReady() {
                 <p className="t6">×2 adult</p>
               </div>
               
-              <img src={arrowRight}/>
-              {/* <div className="row">
-
-                <img src={userIconBlackline}/>
-                <p>x2 : </p>
-                <p className="t6">X2 adult</p>
-              </div> */}
+              <img src={arrowRight} alt="arrow right icon"/>
             </div>
 
             <div className="ClientReviewContainer">
@@ -436,7 +423,7 @@ function allRefsReady() {
               </div>
               <div className="validateReview">
                 <div className="row">
-                  <img src={Lorier}/>
+                  <img src={Lorier} alt="lorier illustration"/>
                 </div>
                 <div className="column">
                   {/* <p>Seul Les personnes ayant acheter "participer" on la possibilité de commenter</p> */}
@@ -599,7 +586,7 @@ function allRefsReady() {
               PopUpBottomRef.current.style.bottom = "-150px";
               setIsOccultView(false);
             }}>
-              <img src={crossiconBlack}/>
+              <img src={crossiconBlack} alt="cross icon"/>
             </button>
             <div className="row">      
               <img src={customerKing} alt="customer is king"/>

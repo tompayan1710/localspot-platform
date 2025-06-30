@@ -18,7 +18,7 @@ export default function PayementPage() {
                 <p className="t32">Sélectionnez un moyen de payement</p>
             </div>
             <div className="MethodesContainer">
-                <div className={`MethodeItem ${selectedMethode == 1 ? "selected" : ""}`} onClick={() => {
+                <div className={`MethodeItem ${selectedMethode === 1 ? "selected" : ""}`} onClick={() => {
                     setSelectedMethode(1);
                 }}>
                     <div className="row">
@@ -26,10 +26,10 @@ export default function PayementPage() {
                         <p className="t4">PayPal</p>
                     </div>
                     <div className={`round`}>
-                        <div className={`${selectedMethode == 1 ? "underRound" : ""}`}></div>
+                        <div className={`${selectedMethode === 1 ? "underRound" : ""}`}></div>
                     </div>
                 </div>
-                <div className={`MethodeItem ${selectedMethode == 2 ? "selected" : ""}`} onClick={() => {
+                <div className={`MethodeItem ${selectedMethode === 2 ? "selected" : ""}`} onClick={() => {
                     setSelectedMethode(2);
                 }}>
                     <div className="row">
@@ -37,7 +37,7 @@ export default function PayementPage() {
                         <p className="t4">Carte bancaire</p>
                     </div>
                     <div className={`round`}>
-                        <div className={`${selectedMethode == 2 ? "underRound" : ""}`}></div>
+                        <div className={`${selectedMethode === 2 ? "underRound" : ""}`}></div>
                     </div>
                 </div>
             </div>

@@ -58,7 +58,7 @@ const BottomNavBar = forwardRef((props, ref) => {
           <button className="NavBarButton" onClick={() => setActiveTab("restauration")}>
             <div className={`IconWrapper ${activeTab === "restauration" ? "active" : ""}`}>
               <img src={foodIcon} alt="offers icon"/>
-              <p className="t6">Mes offres</p>
+              <p className="t6">Annonces</p>
             </div>
           </button>
           <button className="NavBarButton" onClick={() => navigate("/")}>

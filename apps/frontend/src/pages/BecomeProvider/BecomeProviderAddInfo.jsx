@@ -11,18 +11,16 @@ import userIconRelief from "../../assets/images/userIconRelief.png"
 import trashicon from "../../assets/images/trashicon.png"
  
 import 'react-phone-number-input/style.css'
-import PhoneInput from 'react-phone-number-input'
 
 
 
 export default function BecomeProviderAddInfo() {
   const navigate = useNavigate();
-  const { authState, logout } = useContext(AuthContext);
+  const { authState } = useContext(AuthContext);
   const location = useLocation();
   const { type, sizes } = location.state || {};
   
-  const [etapeNum, setEtapeNum] = useState("1/3");
-  const [value, setValue] = useState()
+  const etapeNum = "1/3";
 
   const refNavigateButton = useRef(null);
   const previewRef = useRef(null);
@@ -62,9 +60,7 @@ export default function BecomeProviderAddInfo() {
     },600)
   }, [authState.loading, authState.isAuth, navigate]); // ✅ Suivre loading et isAuth
   
-
-  const [SelectedFiles, setSelectedFiles] = useState([]);
-
+  
   const handleFileChange = (e) => {
     const file = e.target.files[0];
     if (file) {
@@ -89,7 +85,6 @@ export default function BecomeProviderAddInfo() {
         ...prev,
         logo: ""
       }))
-      setSelectedFiles(null);
     };
 
 
@@ -99,12 +94,12 @@ const uploadImage = async (e) => {
   e.preventDefault(); 
   setIsLoading(true);
 
-  if(form.name.length==0){
+  if(form.name.length === 0){
     setIsLoading(false);
     alert("Veuillez fournir un nom de prestaaire.");
     return;
   }
-  if(form.bio.length==0){
+  if(form.bio.length === 0){
     setIsLoading(false);
     alert("Veuillez fournir une courte biographie de votre(vos) prestation(s).");
     return;
@@ -163,9 +158,9 @@ const uploadImage = async (e) => {
     <>
       {authState.loading ? <Spinner centerPage={true}/> :        
       <div className="BecomeProviderAll">
-        <button className="CloseButton" onClick={() => navigate("/profile")}><img src={crossiconBlack}/></button>
+        <button className="CloseButton" onClick={() => navigate("/profile")}><img src={crossiconBlack} alt="cross icon"/></button>
         <div className="BecomeProviderEtape"><p className="t6"> {etapeNum}</p></div>
-        <button className="GoBackButton" style={{opacity: "1"}} onClick={() => {console.log("BACK")}}><img src={arrowLeft}/><p className="t6">précédent</p></button>
+        <button className="GoBackButton" style={{opacity: "1"}} onClick={() => {console.log("BACK")}}><img src={arrowLeft} alt="arrow left"/><p className="t6">précédent</p></button>
         <div className="TopDivOpacity"></div>
         <div className="BecomeProviderPage2">
             <div className="titleContainer">
@@ -243,7 +238,7 @@ const uploadImage = async (e) => {
 
                 <div className="row" style={{marginTop: "15px"}}><label className="t4">Importer un logo</label><label className="t6">(facultatif)</label></div>
                 <label className="CreateOfferAddPhotos">
-                    <img src={galleryPhotosIcon} />
+                    <img src={galleryPhotosIcon} alt="gallery photos icon"/>
                     <p className="t5">Ajouter une photo</p>
                     <input
                         type="file"

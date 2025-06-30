@@ -1,13 +1,13 @@
 const db = require("../index");
 
 // 🔹 Crée un nouveau QR code
-async function createQRCode(slug, id_hote, latitude, longitude, adresse, image_url) {
+async function createQRCode(slug, user_id, id_hote, latitude, longitude, adresse, image_url) {
   const query = `
-    INSERT INTO qr_codes (slug, user_id, latitude, longitude, adresse, image_url)
-    VALUES ($1, $2, $3, $4, $5, $6)
+    INSERT INTO qr_codes (slug, user_id, id_hote, latitude, longitude, adresse, image_url)
+    VALUES ($1, $2, $3, $4, $5, $6, $7)
     RETURNING *;
   `;
-  const values = [slug, id_hote, latitude, longitude, adresse, image_url];
+  const values = [slug, user_id, id_hote, latitude, longitude, adresse, image_url];
   const result = await db.query(query, values);
   return result.rows[0];
 }

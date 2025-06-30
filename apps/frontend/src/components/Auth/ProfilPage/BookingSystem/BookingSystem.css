@@ -1,5 +1,5 @@
-.BookingSystemContainer>p{
-    margin-top: 40px;
+.BookingSystemContainer{
+    padding-top: 100px;
 }
 
 
@@ -118,6 +118,7 @@
     overflow: auto;
     margin-top: 1px;
     transition: outline 0.2s ease-in-out;
+    /* pointer-events: none; */
     /* width: 40px; */
 }
 .BookingSystemContainer .DayContainer input:focus{

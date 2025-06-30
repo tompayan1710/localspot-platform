@@ -1,28 +1,22 @@
-  import SearchBar from "../components/SearchBar/SearchBar";
-  import BottomNavBar from "../components/BottomNavBar/BottomNavBar"
-  import { getOffersToday } from "../services/offers"
+import SearchBar from "../components/SearchBar/SearchBar";
+import BottomNavBar from "../components/BottomNavBar/BottomNavBar"
+import { getOffersToday } from "../services/offers"
 
-  import "./Home.css"
-  import Nice from "../assets/images/Nice.avif"
-  import footIcon from "../assets/images/footIcon.png"
-  import carIcon from "../assets/images/carIcon.png"
-  import starIcon from "../assets/images/starIcon.png"
-  import StartIconMiddle from "../assets/images/StartIconMiddle.png"
-  import extendIcon from "../assets/images/extendIcon.png"
-  import yoga2 from "../assets/images/yoga2.jpg"
-  import NiceIntro from "../assets/images/NiceIntro.jpg"
-  import NiceIntro1 from "../assets/images/NiceIntro1.png"
-  import NiceIntro2 from "../assets/images/NiceIntro2.png"
-  import NiceIntro3 from "../assets/images/NiceIntro3.png"
-  import arrowRight from "../assets/images/arrowRight.png"
-  import ViarteLogo from "../assets/images/ViarteLogo.png"
-  import Terms from "../assets/images/Terms.png"
-  import { useEffect, useRef, useState } from "react";
-  import { useNavigate } from "react-router-dom";
-  import BottomNavBarNotAnimate from "../components/BottomNavBar/BottomNavBarNotAnimate";
-  import { useTranslation } from "react-i18next";
-  import Footer from "../components/Footer/Footer";
-  import { useLocation } from 'react-router-dom';
+import "./Home.css"
+import starIcon from "../assets/images/starIcon.png"
+import StartIconMiddle from "../assets/images/StartIconMiddle.png"
+import extendIcon from "../assets/images/extendIcon.png"
+import NiceIntro1 from "../assets/images/NiceIntro1.png"
+import NiceIntro2 from "../assets/images/NiceIntro2.png"
+import NiceIntro3 from "../assets/images/NiceIntro3.png"
+import arrowRight from "../assets/images/arrowRight.png"
+import ViarteLogo from "../assets/images/ViarteLogo.png"
+import Terms from "../assets/images/Terms.png"
+import { useEffect, useRef, useState } from "react";
+import { useNavigate } from "react-router-dom";
+import { useTranslation } from "react-i18next";
+import Footer from "../components/Footer/Footer";
+import { useLocation } from 'react-router-dom';
 import PopUpBottom from "../components/PopUpBottom/PopUpBottom";
 
 
@@ -84,7 +78,6 @@ function FadeInImage({ src, alt, className }) {
 
 
     const searchBarRef = useRef(null);
-    const [firstRender, setfirstRender] = useState(true);
 
 
     const [HomeOffers, setHomeOffers] = useState([]);
@@ -187,9 +180,9 @@ function FadeInImage({ src, alt, className }) {
               <p className="t5">Discover the best of</p>
               <p className="t1">Nice</p>
               <div className="ContainerCenter">
-                <img src={NiceIntro2} alt="Intro Image illustration"/>
-                <img src={NiceIntro1} alt="Intro Image illustration"/>
-                <img src={NiceIntro3} alt="Intro Image illustration"/>
+                <img src={NiceIntro2} alt="Intro Image parachute"/>
+                <img src={NiceIntro1} alt="Intro Image class"/>
+                <img src={NiceIntro3} alt="Intro Image chateau"/>
                 <div className="Shadow"></div>
               </div>
             </div>
@@ -221,7 +214,6 @@ function FadeInImage({ src, alt, className }) {
                       <div className={`${index === HomeOffers.length - 1 ? "flou-interne" : ""}`}>
                         <div className="ImageContainer">
                           <FadeInImage src={offer.image_urls[0]} alt="Offer Image" />
-                          {/* <img src={offer.image_urls[0]}/> */}
                           <div className="shine"></div> {/* Effet de lueur ici */}
                           {/* <div></div> */}
                           <button>
@@ -239,7 +231,7 @@ function FadeInImage({ src, alt, className }) {
                               {Array.from({ length: 4 }).map((_, i) => (
                                 <img key={i} src={starIcon} alt="star icon"/>
                               ))}
-                              <img src={StartIconMiddle}/>
+                              <img src={StartIconMiddle} alt="middle star"/>
                               <p className="t6">4.5/5</p>
                             </div>
                           </div>
@@ -288,7 +280,7 @@ function FadeInImage({ src, alt, className }) {
                       }
                       <div className={`${index === HomeOffers.length - 1 ? "flou-interne" : ""}`}>
                         <div className="ImageContainer">
-                          <img src={offer.image_urls[0]}/>
+                          <img src={offer.image_urls[0]} alt="Image Offer"/>
                           <div className="shine"></div> {/* Effet de lueur ici */}
                           {/* <div></div> */}
                           <button>
@@ -306,7 +298,7 @@ function FadeInImage({ src, alt, className }) {
                               {Array.from({ length: 4 }).map((_, i) => (
                                 <img key={i} src={starIcon} alt="star icon"/>
                               ))}
-                              <img src={StartIconMiddle}/>
+                              <img src={StartIconMiddle} alt="middle star"/>
                               <p className="t6">4.5/5</p>
                             </div>
                           </div>
@@ -344,7 +336,7 @@ function FadeInImage({ src, alt, className }) {
                       }
                       <div className={`${index === HomeOffers.length - 1 ? "flou-interne" : ""}`}>
                         <div className="ImageContainer">
-                          <img src={offer.image_urls[0]}/>
+                          <img src={offer.image_urls[0]} alt="Image Offer"/>
                           <div className="shine"></div> {/* Effet de lueur ici */}
                           {/* <div></div> */}
                           <button>
@@ -362,7 +354,7 @@ function FadeInImage({ src, alt, className }) {
                               {Array.from({ length: 4 }).map((_, i) => (
                                 <img key={i} src={starIcon} alt="star icon"/>
                               ))}
-                              <img src={StartIconMiddle}/>
+                              <img src={StartIconMiddle} alt="middle star"/>
                               <p className="t6">4.5/5</p>
                             </div>
                           </div>
@@ -400,7 +392,7 @@ function FadeInImage({ src, alt, className }) {
                       }
                       <div className={`${index === HomeOffers.length - 1 ? "flou-interne" : ""}`}>
                         <div className="ImageContainer">
-                          <img src={offer.image_urls[0]}/>
+                          <img src={offer.image_urls[0]} alt="Image Offer"/>
                           <div className="shine"></div> {/* Effet de lueur ici */}
                           {/* <div></div> */}
                           <button>
@@ -418,7 +410,7 @@ function FadeInImage({ src, alt, className }) {
                               {Array.from({ length: 4 }).map((_, i) => (
                                 <img key={i} src={starIcon} alt="star icon"/>
                               ))}
-                              <img src={StartIconMiddle}/>
+                              <img src={StartIconMiddle} alt="middle star"/>
                               <p className="t6">4.5/5</p>
                             </div>
                           </div>

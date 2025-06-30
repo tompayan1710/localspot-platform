@@ -1,6 +1,5 @@
 import "./Carrousel.css";
 import { useEffect, forwardRef } from "react";
-import extendIcon from "../../assets/images/extendIcon.png"
 
 const Carrousel = forwardRef(function Carrousel({ isLoading, setNavigationSelected, photos, scrollSyncEnabled  }, ref) {
   useEffect(() => {
