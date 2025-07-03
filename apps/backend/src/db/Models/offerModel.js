@@ -68,7 +68,7 @@ async function createOffer({
 // 🔹 Récupère une offre par son ID
 async function getOfferBySlug(slug) {
   const result = await db.query(`SELECT * FROM offers WHERE slug = $1`, [slug]);
-  return result.rows[0];
+  return result;
 }
 
 // 🔹 Récupère toutes les offres

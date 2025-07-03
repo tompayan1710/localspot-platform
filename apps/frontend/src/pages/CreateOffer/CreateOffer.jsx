@@ -162,7 +162,7 @@ export default function CreateOffer(){
             //     }
             // })}
             onClick={() =>{
-                navigate(-1)
+                navigate("/profile")
             }}
             ><img src={crossiconBlack} alt="cross icon"/></button>
             <button className="GoBackButton" onClick={() => {goBack(typeSelected)}} ref={refGoBackButton}><img src={arrowLeft} alt="arrow left"/><p className="t6">précédent</p></button>

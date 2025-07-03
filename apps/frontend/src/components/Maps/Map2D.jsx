@@ -427,15 +427,18 @@ console.log("Directions générées :", allDirections);
         </>
       )}
 
-      <MapLabel map={mapRef.current} position={center}>
-        <div className="MapAdresseContainer">
-          <div>
-            <p className="t4">{duration ? duration[0] : ""}</p>
-            <p className="t6">{duration ? duration[1] : ""}</p>
+      { adresseTexte ?
+        <MapLabel map={mapRef.current} position={center}>
+          <div className="MapAdresseContainer">
+            <div>
+              <p className="t4">{duration ? duration[0] : ""}</p>
+              <p className="t6">{duration ? duration[1] : ""}</p>
+            </div>
+            <p className="t6">{adresseTexte}</p>
           </div>
-          <p className="t6">{adresseTexte}</p>
-        </div>
-      </MapLabel>
+        </MapLabel>
+        : <></>
+      }
 
 
       {mapRef.current && hotes.length>0 ? (

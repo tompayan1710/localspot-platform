@@ -112,7 +112,7 @@ async function getProviderIdBySlug(slug_offer){
     return res.status(404).json({ success: false, error: "Offre non trouvée" });
   }
 
-  return offer.provider_id;
+  return offer.rows[0].provider_id;
 }
 
 async function getAccessToken(provider_id) {

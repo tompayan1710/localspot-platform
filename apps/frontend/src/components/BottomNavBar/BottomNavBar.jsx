@@ -1,0 +1,94 @@
+import "./BottomNavBar.css";
+import { useNavigate } from "react-router-dom"; // 👈 pour naviguer
+import { forwardRef, useContext, useState } from "react"
+import jetSkieIcon from "../../assets/images/jetSkieIcon.png"
+import foodIcon from "../../assets/images/foodIcon.png"
+import userIconBlack from "../../assets/images/userIconBlack.png"
+import mapIcon from "../../assets/images/mapIcon.webp"
+import { AuthContext } from "../Auth/authContext/authContext"
+import Calendar from "../../assets/images/Calendar.png"
+import Explore from "../../assets/images/Explore.png"
+
+const BottomNavBar = forwardRef((props, ref) => {
+  const navigate = useNavigate(); // 👈 hook de navigation
+  const { authState } = useContext(AuthContext);
+  const [activeTab, setActiveTab] = useState("explorer");
+
+
+  return (
+    <div ref={ref} className={`BottomNavBar`}>
+      {
+        props.isMap?
+        <button className="MapButton" onClick={() =>console.log("Clique on map")}>
+          <img src={mapIcon} alt="map icon"/>
+        </button>
+        :
+        <></>
+      } 
+
+        
+        {!authState.user?.provider_id && !authState.user?.provider?.is_validated && (
+          <>
+          <button className="NavBarButton" onClick={() => setActiveTab("explorer")}>
+                      <div className={`IconWrapper ${activeTab === "explorer" ? "active" : ""}`}>
+                        <img src={Explore} alt="explore icon"/>
+                        <p className="t6">Explorer</p>
+                      </div>
+                                   
+                    </button>
+                     <button className="NavBarButton" onClick={() =>  setActiveTab("activity")}> 
+                      <div className={`IconWrapper ${activeTab === "activity" ? "active" : ""}`}>
+                        <img src={jetSkieIcon} alt="activity icon"/>
+                        <p className="t6">Activité</p>
+                      </div>
+                      </button>
+                      <button className="NavBarButton" onClick={() => setActiveTab("restauration")}>
+                        <div className={`IconWrapper ${activeTab === "restauration" ? "active" : ""}`}>
+                          <img src={foodIcon} alt="restauration icon"/>
+                          <p className="t6">Restauration</p>
+                        </div>
+                      </button>
+                    </>
+        )}
+
+
+        {authState.user?.provider_id ? (
+        authState.user?.provider?.is_validated ? (
+          <>
+          <button className="NavBarButton" onClick={() => setActiveTab("restauration")}>
+            <div className={`IconWrapper ${activeTab === "restauration" ? "active" : ""}`}>
+              <img src={foodIcon} alt="offers icon"/>
+              <p className="t6">Annonces</p>
+            </div>
+          </button>
+          <button className="NavBarButton" onClick={() => navigate("/")}>
+            <div className={`IconWrapper ${activeTab === "calendar" ? "active" : ""}`}>
+              <img src={Calendar} alt="calendar icon"/>
+              <p className="t6">Calendar</p>
+            </div>
+          </button>
+          </>
+        ):<>
+          <button className="NavBarButton" onClick={() => setActiveTab("restauration")}>
+            <div className={`IconWrapper ${activeTab === "restauration" ? "active" : ""}`}>
+              <img src={foodIcon} alt="offers icon"/>
+              <p className="t6">DemanderMaisNotAccepter</p>
+            </div>
+          </button>
+          </>)
+        :<></>}
+        
+        {/* <button className="NavBarButton" onClick={() => setActiveTab("profile")}>  */}
+        <button className="NavBarButton" onClick={() => navigate("/profile")}> 
+          <div className={`IconWrapper ${activeTab === "profile" ? "active" : ""}`}>
+              <img src={userIconBlack} alt="profile icon"/>
+              <p className="t6">Profile</p>
+          </div>
+        </button>
+    </div>
+  );
+}
+) 
+
+export default BottomNavBar
+

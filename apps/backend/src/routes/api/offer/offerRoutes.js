@@ -142,7 +142,7 @@ router.get("/get", async (req, res) => {
     if (!offer) {
       return res.status(404).json({ success: false, error: "Offre non trouvée" });
     }
-    res.json({ success: true, offer });
+    res.json({ success: true, offer: offer.rows[0]});
   } catch (err) {
     res.status(500).json({ success: false, error: "Erreur serveur" });
   }

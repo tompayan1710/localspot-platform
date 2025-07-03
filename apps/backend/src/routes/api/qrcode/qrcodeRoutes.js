@@ -4,6 +4,7 @@ const QRCode = require("qrcode");
 const { createClient } = require("@supabase/supabase-js");
 const { v4: uuidv4 } = require("uuid");
 const { getQRCodeById, createQRCode, UpdateQRCode} = require("../../../db/Models/qrCodeModel");
+const { getOfferBySlug } = require("../../../db/Models/offerModel");
 
 // Supabase config
 const supabase = createClient(
@@ -21,7 +22,7 @@ router.post("/create", async (req, res) => {
 
   try {
     let slug = uuidv4(); // identifiant unique pour ce QR code
-    while((await getQRCodeBySlug(slug)).rowCount > 0){
+    while((await getOfferBySlug(slug)).rowCount > 0){
         slug = uuidv4();
     }
 
