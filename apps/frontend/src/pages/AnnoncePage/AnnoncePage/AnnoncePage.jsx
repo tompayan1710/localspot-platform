@@ -1,5 +1,5 @@
 import "./AnnoncePage.css"
-import { useState, useContext, useEffect } from "react";
+import React, { useState, useContext, useEffect } from "react";
 import { AuthContext } from "../../../components/Auth/authContext/authContext";
 import { getOfferBySlug } from "../../../services/offers";
 import { useNavigate, useParams } from "react-router-dom";
@@ -173,14 +173,14 @@ export default function AnnoncePage(){
                 <div className="MapContainer">
                     {offer != undefined && offer.latitude && offer.longitude ? (
                         <>
-                    <Map2D
-                        center={{ lat: offer.latitude, lng: offer.longitude }}
-                        hotes={hotes}
-                        zoom={17}
-                        adresseTexte={offer.adresse || ""}
-                        borderRadius={isExtendMap ? 0 : 35}
+                        <Map2D
+                            center={{ lat: offer.latitude, lng: offer.longitude }}
+                            hotes={hotes}
+                            zoom={17}
+                            adresseTexte={offer.adresse || ""}
+                            borderRadius={isExtendMap ? 0 : 35}
                         />
-                    </>
+                        </>
                     ) : (
                         <div className="SquelletteMap shimmer">
                         </div>
@@ -214,8 +214,8 @@ export default function AnnoncePage(){
                 <div className="vertBar"></div>
                 <div className="vertBar second"></div>
             {allDays.map((day, index) => (
-                <>
-                <div className="day-row" key={day}>
+                <React.Fragment key={`${day}-${index}`}>
+                <div className="day-row">
                     <p className="t5">{day}</p>
                     <div className="slots">
                         {(availability[day] || []).map((slot, index) => (
@@ -230,7 +230,7 @@ export default function AnnoncePage(){
                     <div className="hline"></div>
                     : <></>
                 }
-                </>
+                </React.Fragment>
             ))}
             </div>
 

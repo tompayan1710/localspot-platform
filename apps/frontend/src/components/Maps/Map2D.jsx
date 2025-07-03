@@ -18,7 +18,8 @@ function Map2D({
   onMarkerClick = () => {},     // callback quand on clique sur un marker
   borderRadius = 40,
   adresseTexte,
-  hotes=[]
+  hotes=[],
+  duration
 }) {
 
 
@@ -46,8 +47,6 @@ function Map2D({
   
   useEffect(() => {
     if (center && destination) {
-      console.error("JE RENTRE")
-
       if (
         destination &&
         (center.lat === destination.lat && center.lng === destination.lng)
@@ -170,9 +169,6 @@ useEffect(() => {
 
 }, [mapLoaded, center, hotes, destination]);
 
-useEffect(() => {
-  console.warn(allDirections)
-}, [ allDirections ])
 
 // src/components/Map2D/Map2D.jsx (mapOptions uniquement)
 const mapOptions = {
@@ -320,9 +316,9 @@ console.log("Directions générées :", allDirections);
           position={center}
           title="Activité"
           icon={{
-            url: Map2DPoint,
+            url: Map2DPin,
             scaledSize: new window.google.maps.Size(30, 30),
-            anchor: new window.google.maps.Point(15,15),
+            anchor: new window.google.maps.Point(15,27),
           }}
         />
         {directions && (
@@ -356,12 +352,12 @@ console.log("Directions générées :", allDirections);
               :
               <Marker
                 position={destination} // activité
-                icon={{
-                  url: Map2DPin,
-                  scaledSize: new window.google.maps.Size(30, 30),
-                  anchor: new window.google.maps.Point(15,27),
-                }}
-                title="Activité"
+                 icon={{
+                    url: Map2DPoint,
+                    scaledSize: new window.google.maps.Size(30, 30),
+                    anchor: new window.google.maps.Point(15,15),
+                  }}
+                title="Hotel"
               />
 
             }
@@ -410,35 +406,47 @@ console.log("Directions générées :", allDirections);
         }
         
         
-      </GoogleMap>
+      </GoogleMap> 
       {mapRef.current && destination && (
         <>
-          <MapLabel map={mapRef.current} position={center}>
+          <MapLabel map={mapRef.current} position={destination}>
             <div className="MapHotelContainer">
               <p className="t32">my </p>
               <p className="t4">Hotel</p>
             </div>
           </MapLabel>
-          <MapLabel map={mapRef.current} position={destination}>
+          {/* <MapLabel map={mapRef.current} position={center}>
             <div className="MapAdresseContainer">
               <div>
-                <p className="t4">9</p>
-                <p className="t6">min</p>
+                <p className="t4">{duration[0]}</p>
+                <p className="t6">{duration[1]}</p>
               </div>
               <p className="t6">{adresseTexte}</p>
             </div>
-          </MapLabel>
+          </MapLabel> */}
         </>
       )}
 
+      <MapLabel map={mapRef.current} position={center}>
+        <div className="MapAdresseContainer">
+          <div>
+            <p className="t4">{duration ? duration[0] : ""}</p>
+            <p className="t6">{duration ? duration[1] : ""}</p>
+          </div>
+          <p className="t6">{adresseTexte}</p>
+        </div>
+      </MapLabel>
 
 
       {mapRef.current && hotes.length>0 ? (
         <>
         <MapLabel map={mapRef.current} position={center} index={1000}>
-            <div className="MapHotelContainer annonce-label">
-              <p className="t32">my </p>
-              <p className="t4">Annonce</p>
+            <div className="MapAdresseContainer my-annonces">
+              <div>
+                <p className="t4"></p>
+                <p className="t6"></p>
+              </div>
+              <p className="t6">My Annonce</p>
             </div>
           </MapLabel>
           {

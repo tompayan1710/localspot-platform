@@ -1,10 +1,10 @@
 // src/services/qrService.js
 
-async function getQRCodeBySlug(slug) {
+async function getQRCodeById(id_qrcode) {
    console.log("Récupération de l'offre");
     try {
         // ✅ Requête pour obtenir un nouveau token (Refresh Token doit être dans les cookies)
-        const response = await fetch(`${process.env.REACT_APP_API_URL}/api/qrcode/get?slug=${slug}`, {
+        const response = await fetch(`${process.env.REACT_APP_API_URL}/api/qrcode/get?id_qrcode=${id_qrcode}`, {
             method: "GET",
         });
 
@@ -24,4 +24,4 @@ async function getQRCodeBySlug(slug) {
 }
 
 
-export {getQRCodeBySlug};
+export {getQRCodeById};

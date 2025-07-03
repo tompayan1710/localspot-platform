@@ -111,6 +111,7 @@
   background-color: #eaeaea; 
   border: none;
   transition: all 0.3s ease-in-out;
+  cursor: pointer;
 }
 .pointNavigation.selected{
   transform: scale(1.2);
@@ -408,11 +409,13 @@ justify-content: center;
     padding: 10px;
     background-color: white;
     box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
+    cursor: pointer;
 }
 .ContainerOfferPageAll .OfferMapContainer.extendMap>button{
   top: 15px;
   right: 15px;
   padding: 12.5px;
+  cursor: pointer;
 }
 .ContainerOfferPageAll .OfferMapContainer.extendMap>button>img{
   height: 15px;

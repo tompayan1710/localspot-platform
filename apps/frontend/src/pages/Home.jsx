@@ -120,7 +120,7 @@ function FadeInImage({ src, alt, className }) {
 
         setTimeout(() =>{
           setLoading(false);
-        }, 1000)
+        }, 2000)
         // setLoading(false);
         // setTimeout(() => OfferAnimationShow(), 200);
         // AnnimationWhitoutLogo();

@@ -23,7 +23,7 @@
     height: 60px;
     width: 100%;
     max-width: 500px;
-    z-index: 2;
+    z-index: 4;
     background-color: white;
     border-top: 1px solid var(--greylight);
     display: flex;

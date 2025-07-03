@@ -18,7 +18,7 @@ export default function Availability() {
   const { slug } = useParams();
   const location = useLocation();
   const price = location.state?.price;
-
+  const OfferIsCancellable = location.state?.OfferIsCancellable;
 
   const [participantAdult, setParticipantAdult] = useState(location.state?.participantAdult || 2);
   const [participantReduced, setParticipantReduced] = useState(location.state?.participantReduced || 1); 
@@ -237,6 +237,7 @@ export default function Availability() {
 
   useEffect(() => {
     getSlotsOfByDate();
+    setSelectedCreneau({index: "no-selected"})
   }, [selectedDate]);
 
   // 1️⃣ Quand la date change → comme tu fais déjà
@@ -329,12 +330,12 @@ useEffect(() => {
           {
             slots.length > 0 ?
             slots.map((slot,index) => (
-              <div key={index} className={`CreneauItem ${selectedCreneau.index === index ? "selected" : ""} ${slot.cancallable ? "Full" : ""}`} 
+              <div key={index} className={`CreneauItem ${selectedCreneau.index === `${selectedDate}-${index}` ? "selected" : ""} ${slot.cancallable ? "Full" : ""}`} 
                     onClick={() => {
                       if(slot.cancallable){
-                        setSelectedCreneau(undefined)
+                        setSelectedCreneau({index: "no-selected"})
                       }else{
-                        setSelectedCreneau({index : index, slot: slot})
+                        setSelectedCreneau({index : `${selectedDate}-${index}`, slot: slot})
                       }}}>
                 {
                   slot.cancallable ?
@@ -358,9 +359,11 @@ useEffect(() => {
             </div>
           }
           
-          <div className={`CancelContainer ${selectedCreneau ? "selected" : ""}`}>
+          <div className={`CancelContainer ${selectedCreneau.index!=="no-selected" && OfferIsCancellable ? "selected" : ""}`}>
             <img src={VerifyIcon} alt="verify icon"/>
-            <p className="t6">Date limite d’annulation gratuite : 26 juin à 16:45.</p>
+            <p className="t6">
+              Date limite d’annulation gratuite : {new Date(new Date(selectedDate).setDate(new Date(selectedDate).getDate() + 1)).toLocaleDateString('fr-FR', { day: '2-digit', month: 'long' })} {selectedCreneau.slot ? ` à ${selectedCreneau.slot.from}` : "00:00"}.
+            </p>
           </div>
         </div>
       </div>

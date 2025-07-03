@@ -7,7 +7,14 @@
     overflow: hidden;
     max-width: var(--maxsize);
 }
+.CreateOfferContainerAll {
+  scrollbar-width: none; /* Firefox */
+  -ms-overflow-style: none;  /* IE & Edge */
+}
 
+.CreateOfferContainerAll::-webkit-scrollbar {
+  display: none;  /* Chrome, Safari, Edge */
+}
 .CreateOfferContainerAll:has(.CreateOfferPage5){
     overflow: scroll;
 }
@@ -595,6 +602,7 @@
   padding-bottom: 110px;
   max-width: var(--maxsize);
 }
+
 
 .CreateOfferPage4>.RowAddImage{
   display: flex;

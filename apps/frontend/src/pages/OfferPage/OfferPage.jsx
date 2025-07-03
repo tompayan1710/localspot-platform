@@ -12,7 +12,7 @@ import extendMap from "../../assets/images/extendMap.png"
 import crossiconBlack from "../../assets/images/crossiconBlack.png" 
 import Map2D from "../../components/Maps/Map2D";
 import { getOfferBySlug } from "../../services/offers"
-import { getQRCodeBySlug } from "../../services/QRCodeService"
+import { getQRCodeById } from "../../services/QRCodeService"
 import { getHoteById } from "../../services/hotes"
 import "../../components/GoBack/GoBack.css"
 import React from "react";
@@ -32,6 +32,9 @@ export default function OfferPage() {
   const { slug } = useParams();
   const location = useLocation();
   const isAnimation = location.state?.isAnimation || false;
+
+  const queryParams = new URLSearchParams(location.search);
+  const id_qrcode = queryParams.get('id');
 
 
   const navigate = useNavigate();
@@ -111,7 +114,7 @@ function allRefsReady() {
 
   
   const OfferWithoutAnimation = () => {
-    console.error("Voici mon isAnimation OfferWithoutAnimation : ", isAnimation);
+    console.warn("Voici mon isAnimation OfferWithoutAnimation : ", isAnimation);
 
     // OfferPageAnimationRef.current.style.display = "none";
       OfferPageRef.current.style.top = "0";
@@ -144,20 +147,30 @@ function allRefsReady() {
         const offerData = await getOfferBySlug(slug);
         if (!offerData.success) return;
         setOffer(offerData.offer);
-
         console.log(offerData.offer);
-        const qrcodeData = await getQRCodeBySlug(slug);
-        if (!qrcodeData.success) return;
-        setQRCode(qrcodeData.qrcode);
 
-        const hoteData = await getHoteById(qrcodeData.qrcode.id_hote);
-        if (!hoteData.success) return;
-        setHote(hoteData.hote);
+         if(id_qrcode){
+          console.log("Mon id est :", id_qrcode);
+          const qrcodeData = await getQRCodeById(id_qrcode);
+          if (!qrcodeData.success) return;
+          setQRCode(qrcodeData.qrcode);
+
+          const hoteData = await getHoteById(qrcodeData.qrcode.id_hote);
+          if (!hoteData.success) return;
+          setHote(hoteData.hote);
+          await fetchDurations(offerData.offer, hoteData.hote);
+
+          setTimeout(() => {
+            getShortestDuration(durations)
+          },1000)
+        }else{
+          console.log("C'est nulllLLLLLL id", id_qrcode);
+        }
+
 
         setIsLoading(false);
 
-        await fetchDurations(offerData.offer, hoteData.hote);
-
+        
         } catch (error) {
           console.error("Erreur dans loadData :", error);
       }
@@ -165,6 +178,7 @@ function allRefsReady() {
 
     if (slug) {
       console.log("Mon SLUG est : ", slug);
+
       loadData(slug);
       if(isAnimation){
         setTimeout(() => {
@@ -190,6 +204,39 @@ function allRefsReady() {
       .replace(" hour", "h")
       .replace(" mins", "m")
       .replace(" min", "m");
+    }
+
+    function getShortestDuration(durations) {
+      const durationValues = Object.values(durations)
+        .map(duration => {
+          if (!duration) return Infinity; // Si duration est undefined/null
+          const hoursMatch = duration.match(/(\d+)\s*hour/);
+          const minsMatch = duration.match(/(\d+)\s*min/);
+
+          let totalMinutes = 0;
+          if (hoursMatch) totalMinutes += parseInt(hoursMatch[1], 10) * 60;
+          if (minsMatch) totalMinutes += parseInt(minsMatch[1], 10);
+
+          return totalMinutes > 0 ? totalMinutes : Infinity;
+        });
+
+      const shortestMinutes = Math.min(...durationValues);
+
+      if (shortestMinutes === Infinity) return "...";
+
+      const hours = Math.floor(shortestMinutes / 60);
+      const minutes = shortestMinutes % 60;
+
+      console.log(hours, minutes)
+      // if (hours > 0 && minutes > 0) return `${hours}h${minutes}m`;
+      // if (hours > 0) return [hours, "hours"]`${hours}h`;
+      if(hours>0){
+        console.log("JE TESTE LES HEURES")
+        const formattedHours = (hours + Math.round(0.6 / minutes * 10)/10).toFixed(1);
+        return [formattedHours, "hours"];
+      }else {
+        return [minutes, "min"];
+      }
     }
 
 
@@ -278,36 +325,44 @@ function allRefsReady() {
 
             <div className="Offerhline"></div>     
 
-            <p className="t32 DistanceText">Distance depuis votre Hotel :</p>
-            <div className="OfferDistanceContainer">
-              <div className="OfferDistanceColumn">
-                {
-                  isLoading ?
-                    <div className="skeletonType shimmer"></div>
-                  :
-                    <img src={walkIcon} alt="walk icon"/>
-                }
-                <p className="t3">{formatDuration(durations.walking) || "..."}</p>
-              </div>
-              <div className="OfferDistanceColumn">
-                {
-                  isLoading ?
-                    <div className="skeletonType shimmer"></div>
-                  :
-                    <img src={bycicleIcon} alt="bycicle icon"/>
-                }
-                <p className="t3">{formatDuration(durations.bicycling) || "..."}</p>
-              </div>
-              <div className="OfferDistanceColumn">
-                {
-                  isLoading ?
-                    <div className="skeletonType shimmer"></div>
-                  :
-                    <img src={carRedIcon} alt="car icon"/>
-                }
-                <p className="t3">{formatDuration(durations.driving) || "..."}</p>
-              </div>
-            </div>
+            {
+              id_qrcode ?
+              <>
+                <p className="t32 DistanceText">Distance depuis votre Hotel :</p>
+                <div className="OfferDistanceContainer">
+                  <div className="OfferDistanceColumn">
+                    {
+                      isLoading ?
+                        <div className="skeletonType shimmer"></div>
+                      :
+                        <img src={walkIcon} alt="walk icon"/>
+                    }
+                    <p className="t3">{formatDuration(durations.walking) || "..."}</p>
+                  </div>
+                  <div className="OfferDistanceColumn">
+                    {
+                      isLoading ?
+                        <div className="skeletonType shimmer"></div>
+                      :
+                        <img src={bycicleIcon} alt="bycicle icon"/>
+                    }
+                    <p className="t3">{formatDuration(durations.bicycling) || "..."}</p>
+                  </div>
+                  <div className="OfferDistanceColumn">
+                    {
+                      isLoading ?
+                        <div className="skeletonType shimmer"></div>
+                      :
+                        <img src={carRedIcon} alt="car icon"/>
+                    }
+                    <p className="t3">{formatDuration(durations.driving) || "..."}</p>
+                  </div>
+                </div>
+              </>
+              :
+              <></>
+            }
+            
 
             <div className={`OfferMapContainer ${isExtendMap ? "extendMap" : ""}`} ref={refOfferMapContainer}>
               <button onClick={() => {
@@ -318,16 +373,26 @@ function allRefsReady() {
                   : <img src={extendMap} alt="extend icon"/>
                 }
               </button>
-              {offer.latitude && offer.longitude && hote.latitude && hote.longitude ? (
-                <>
-                  <Map2D
-                    center={{ lat: hote.latitude, lng: hote.longitude }}
-                    destination={{ lat: offer.latitude, lng: offer.longitude }}
-                    zoom={17}
-                    adresseTexte ={offer.adresse ? offer.adresse : ""}
-                    borderRadius={isExtendMap ? 0 : 35}
-
-                  />
+              {offer.latitude && offer.longitude ? (
+                  <>
+                {
+                  hote.latitude && hote.longitude ? (
+                    <Map2D
+                      center={{ lat: offer.latitude, lng: offer.longitude }}
+                      destination={{ lat: hote.latitude, lng: hote.longitude }}
+                      zoom={17}
+                      adresseTexte ={offer.adresse ? offer.adresse : ""}
+                      borderRadius={isExtendMap ? 0 : 35}
+                      duration={getShortestDuration(durations)}
+                    />
+                  ) : 
+                    <Map2D
+                      center={{ lat: offer.latitude, lng: offer.longitude }}
+                      zoom={17}
+                      adresseTexte ={offer.adresse ? offer.adresse : ""}
+                      borderRadius={isExtendMap ? 0 : 35}
+                    />
+                }
                   <a 
                   href={`https://www.google.com/maps/dir/?api=1&origin=${hote.latitude},${hote.longitude}&destination=${offer.latitude},${offer.longitude}&travelmode=driving`}
                   target="_blank"
@@ -471,6 +536,7 @@ function allRefsReady() {
                   price: offer.price,
                   participantAdult: participantAdult,
                   participantReduced: participantReduced,
+                  OfferIsCancellable: offer.cancellable
                 }
               })
             }}>Voir les<br></br>disponnibilités</button>
