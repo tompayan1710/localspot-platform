@@ -278,6 +278,7 @@
   justify-content: space-between;
   align-items: center;
   margin-bottom: 10px;
+  cursor: pointer;
 }
 .profile-container .ProfileEditContainer>div{
   display: flex;
@@ -368,6 +369,7 @@
   display: flex;
   flex-direction: column;
   margin-top: 50px;
+  gap: 10px;
 }
 .profile-container .OfferListItem{
   display: flex;
@@ -391,6 +393,7 @@
   width: 100px;
   height: 100px;
   border-radius: 15px;
+  object-fit: cover;
 }
 .profile-container .OfferListItem .columnInfoOffer{
   display: flex;

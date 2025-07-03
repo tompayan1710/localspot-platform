@@ -1,6 +1,6 @@
 import arrowLeft from "../../assets/images/arrowLeft.png"; // Replace with your mp4 video path
 import arrowdownicon from "../../assets/images/arrowdownicon.png";
-
+ 
 import "./SearchBar.css";
 import { useState, forwardRef, useEffect } from "react";
 import DurationSlider from "../../pages/OfferPage/DurationSlider";

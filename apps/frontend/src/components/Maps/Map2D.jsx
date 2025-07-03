@@ -17,22 +17,15 @@ function Map2D({
   markers = [],                 // [{ id, latitude, longitude, position_description, ... }]
   onMarkerClick = () => {},     // callback quand on clique sur un marker
   borderRadius = 40,
-  adresseTexte 
+  adresseTexte,
+  hotes=[]
 }) {
-
-
-
-
-
-
-
-
-
-
 
 
   const mapRef = useRef(null);
   const [directions, setDirections] = useState(null);
+  const [allDirections, setAllDirections] = useState([]);
+  const [mapLoaded, setMapLoaded] = useState(false);
 
 
  /* 
@@ -44,7 +37,8 @@ function Map2D({
   }, [center, zoom]);*/
 
   const handleLoad = (map) => {
-    mapRef.current = map;
+    mapRef.current = map; 
+    setMapLoaded(true);
   };
 
 
@@ -52,8 +46,17 @@ function Map2D({
   
   useEffect(() => {
     if (center && destination) {
-      const directionsService = new window.google.maps.DirectionsService();
+      console.error("JE RENTRE")
 
+      if (
+        destination &&
+        (center.lat === destination.lat && center.lng === destination.lng)
+      ) {
+        return;
+      }
+
+      const directionsService = new window.google.maps.DirectionsService();
+      
       directionsService.route(
         {
           origin: center,
@@ -95,11 +98,81 @@ function Map2D({
   }, [center, destination, zoom]);
 
 
-  // → Log clair pour chaque changement de markers
+  // === TRAJETS MULTIPLES SI PAS DE DESTINATION ===
   useEffect(() => {
-    // console.log("Map2D: markers prop =", markers);
-    // console.log("MAP -> : ", center, destination);
-  }, [markers]);
+    if (!center || destination || !Array.isArray(hotes) || hotes.length === 0) return;
+
+    const directionsService = new window.google.maps.DirectionsService();
+
+    const promises = hotes.map((hote) => {
+      if (
+        !hote || 
+        typeof hote.latitude !== "number" || 
+        typeof hote.longitude !== "number"
+      ) {
+        return Promise.resolve(null);
+      }
+
+
+      console.log(hote)
+      return new Promise((resolve) => {
+        directionsService.route(
+          {
+            origin: { lat: hote.latitude, lng: hote.longitude },
+            destination: center,
+            travelMode: "DRIVING",
+          },
+          (result, status) => {
+            if (status === "OK") {
+              resolve(result);
+            } else {
+              console.warn("Erreur route hote :", hote.id, status);
+              resolve(null);
+            }
+          }
+        );
+      });
+    });
+
+    Promise.all(promises).then((results) => {
+      const valid = results.filter((r) => r !== null);
+      setAllDirections(valid);
+    });
+  }, [mapLoaded, center, hotes, destination]);
+
+
+  // Auto-fit la carte pour englober tous les hotes et le center, si pas de destination unique
+useEffect(() => {
+  if (!mapRef.current || !center || hotes.length === 0 || destination) return;
+
+  const bounds = new window.google.maps.LatLngBounds();
+
+  // Inclure le center
+  bounds.extend(center);
+
+  // Ajouter chaque hôte si coordonnées valides
+  hotes.forEach((hote) => {
+    if (hote.latitude && hote.longitude) {
+      bounds.extend({ lat: hote.latitude, lng: hote.longitude });
+    }
+  });
+
+  // Adapter la carte aux limites calculées
+  mapRef.current.fitBounds(bounds);
+
+  // Optionnel : limiter le zoom s’il est trop proche
+  const listener = window.google.maps.event.addListenerOnce(mapRef.current, "bounds_changed", () => {
+    const currentZoom = mapRef.current.getZoom();
+    if (currentZoom > 17) {
+      mapRef.current.setZoom(17); // limite max du zoom
+    }
+  });
+
+}, [mapLoaded, center, hotes, destination]);
+
+useEffect(() => {
+  console.warn(allDirections)
+}, [ allDirections ])
 
 // src/components/Map2D/Map2D.jsx (mapOptions uniquement)
 const mapOptions = {
@@ -218,6 +291,7 @@ const mapOptions = {
   ],
 };
 
+console.log("Directions générées :", allDirections);
 
   return (
 
@@ -242,6 +316,15 @@ const mapOptions = {
 
       >
 
+        <Marker
+          position={center}
+          title="Activité"
+          icon={{
+            url: Map2DPoint,
+            scaledSize: new window.google.maps.Size(30, 30),
+            anchor: new window.google.maps.Point(15,15),
+          }}
+        />
         {directions && (
           <>
             <DirectionsRenderer
@@ -256,16 +339,6 @@ const mapOptions = {
               }}
             />
 
-
-              <Marker
-                position={center}
-                title="Activité"
-                icon={{
-                  url: Map2DPoint,
-                  scaledSize: new window.google.maps.Size(30, 30),
-                  anchor: new window.google.maps.Point(15,15),
-                }}
-              />
             {/* <Marker
               position={center}
               label={{
@@ -317,6 +390,26 @@ const mapOptions = {
             />
           );
         })}
+
+        {
+          hotes.length>0 ?
+          allDirections.map((dir, i) => (
+            <DirectionsRenderer
+              key={i}
+              directions={dir}
+              options={{
+                suppressMarkers: true,
+                preserveViewport: true,
+                polylineOptions: {
+                  strokeColor: "#000000",
+                  strokeWeight: 3,
+                },
+              }}
+            />
+          )) : <></>
+        }
+        
+        
       </GoogleMap>
       {mapRef.current && destination && (
         <>
@@ -338,9 +431,77 @@ const mapOptions = {
         </>
       )}
 
+
+
+      {mapRef.current && hotes.length>0 ? (
+        <>
+        <MapLabel map={mapRef.current} position={center} index={1000}>
+            <div className="MapHotelContainer annonce-label">
+              <p className="t32">my </p>
+              <p className="t4">Annonce</p>
+            </div>
+          </MapLabel>
+          {
+            hotes.map((hote) => {
+              const destination = { lat: hote.latitude, lng: hote.longitude };
+              return (
+                <MapLabel key={hote.name} map={mapRef.current} position={destination} index={10}>
+                  <div className="MapHotelInfoContainer">
+                    <div className="ContainerImage">
+                      {
+                        hote.img ? <img src={hote.img}/>
+                        : <></>
+                      }
+                      
+                    </div>
+                    <div className="info">
+                      <p className="t6">{hote.name}</p>
+                    </div>
+                  </div>
+                </MapLabel>
+              )
+            })
+          }
+
+        </>
+      ) : <></>}  
+      
+
+{/* 
+{mapRef.current && hotes.length>0 ? 
+            hotes.map((hote) => {
+              const destination = { lat: hote.latitude, lng: hote.longitude };
+              return (
+                <>
+          <MapLabel key={hote.name} map={mapRef.current} position={destination}>
+                  <div className="MapHotelInfoContainer">
+                    <div className="ContainerImage">
+                      {
+                        hote.img ? <img src={hote.img}/>
+                        : <></>
+                      }
+                      
+                    </div>
+                    <div className="info">
+                      <p className="t6">{hote.name}</p>
+                    </div>
+                  </div>
+                </MapLabel>
+        </>
+              )
+            }
+
+      ) : <></>}  */}
+
+
       </div>
   );
 
 }
 
 export default memo(Map2D);
+
+
+
+
+

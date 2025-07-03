@@ -1,32 +1,9 @@
 // import React, { createContext } from "react";
-import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
-import Home from "./pages/Home";
-
-import NotFound from "./pages/NotFound";
-import Signup from "./components/Auth/Signup";
-import Login from "./components/Auth/Login";
-import Profile from "./components/Auth/Profile";
+import { BrowserRouter } from "react-router-dom";
+import BrowserRouterAll from "./BrowserRouterAll";
 import AuthProvider from "./components/Auth/authContext/authProvider";
 import { LoadScript } from "@react-google-maps/api";
-import OfferPage from "./pages/OfferPage/OfferPage";
-import CreateOffer from "./pages/CreateOffer/CreateOffer";
-import CreateOfferAddress from "./pages/CreateOffer/CreateOfferAddress";
-import ContentPolicy from "./pages/DocumentOfficiel/ContentPolicy/ContentPolicy";
-import CreateOfferInformations from "./pages/CreateOffer/CreateOfferInformation";
-import BecomeProvider from "./pages/BecomeProvider/BecomeProvider";
-import BecomeProviderAddInfo from "./pages/BecomeProvider/BecomeProviderAddInfo";
-import BecomeProviderAddContact from "./pages/BecomeProvider/BecomeProviderContact";
-import EditProfile from "./components/Auth/ProfilPage/EditProfile";
-import EditLanguage from "./components/Auth/ProfilPage/EditLanguage";
-import SettingsPage from "./components/Auth/ProfilPage/SettingsPage/SettingsPage";
-import Availability from "./pages/OfferPage/Availibility/Availability";
-import PayementPage from "./pages/OfferPage/Payement/PayementPage";
-import BookingSystem from "./components/Auth/ProfilPage/BookingSystem/BookingSystem";
-import PrivacyPolicy from "./pages/DocumentOfficiel/PrivacyPolicy/PrivacyPolicy";
-import LegalNotice from "./pages/DocumentOfficiel/LegalNotice/LegalNotice";
-import TermsAndConditionsOfSale from "./pages/DocumentOfficiel/TermsAndConditionsOfSal/TermsAndConditionsOfSal";
-import TermsOfService from "./pages/DocumentOfficiel/TermsOfService/TermsOfService";
-import AvailabilityEditor from "./pages/AnnoncePage/AvailabilityEditor/AvailabilityEditor";
+
 
 
 //Pour sauvegarder : pg_dump "postgresql://postgres:TomPayan-1710@localhost:5432/localspot" -f viarte_backup.sql
@@ -55,7 +32,6 @@ const LIBRARIES = ["places"];
 
 
 export default function App() {
-
   return (
     <div id="AppWrapper">
     <LoadScript googleMapsApiKey={process.env.REACT_APP_GOOGLE_MAPS_KEY}   
@@ -64,48 +40,9 @@ export default function App() {
               >
       <AuthProvider>
         <BrowserRouter>
-          <Routes>
-            {/* Page principale */}
-            
-            <Route path="/" element={<Home />} />
-            <Route path="/offer-page/:slug" element={<OfferPage />} />
-            <Route path="/offer-page/:sulg/availibility" element={<Availability />} />
-            <Route path="/offer-page/:sulg/payement" element={<PayementPage />} />
-
-
-            <Route path="/annonce/:slug/availability-editor" element={<AvailabilityEditor />} />
-
-
-            <Route path="/create-offer" element={<CreateOffer />} />
-            <Route path="/create-offer-address" element={<CreateOfferAddress />} />
-            <Route path="/create-offer-informations" element={<CreateOfferInformations />} />
-
-            {/* Redirection ou 404 */}
-            <Route path="/home" element={<Navigate to="/" replace />} />
-
-            <Route path="/signup" element={<Signup />} />
-            <Route path="/login" element={<Login />} />
-            <Route path="/profile" element={<Profile />} />
-            <Route path="/edit-profile" element={<EditProfile />} />
-            <Route path="/edit-language" element={<EditLanguage />} />
-            <Route path="/booking-system" element={<BookingSystem />} />
-            <Route path="/settings" element={<SettingsPage />} />
-    
-            <Route path="/become-provider" element={<BecomeProvider />} />
-            <Route path="/become-provider/add-info" element={<BecomeProviderAddInfo/>} />
-            <Route path="/become-provider/add-contact" element={<BecomeProviderAddContact/>} />
-
-
-            <Route path="/content-policy" element={<ContentPolicy />} />
-            <Route path="/legal-notice" element={<LegalNotice />} />
-            <Route path="/privacy-policy" element={<PrivacyPolicy />} />
-            <Route path="/terms-and-conditions-of-sal" element={<TermsAndConditionsOfSale />} />
-            <Route path="/terms-of-service" element={<TermsOfService />} />
-
-            {/* FIN : catch-all pour tout le reste → 404 client-side */}
-            <Route path="*" element={<NotFound />} />
-          </Routes>
+          <BrowserRouterAll />
         </BrowserRouter>
+
       </AuthProvider>
     </LoadScript>
     </div>

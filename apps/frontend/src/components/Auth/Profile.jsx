@@ -4,7 +4,6 @@ import { useNavigate } from "react-router-dom";
 import "./styles.css";
 import { AuthContext } from "./authContext/authContext"
 import Spinner from "../Spinner/Spinner";
-import BottomNavBarNotAnimate from "../BottomNavBar/BottomNavBarNotAnimate";
 import userIconRelief from "../../assets/images/userIconRelief.png"
 import arrowRight from "../../assets/images/arrowRight.png"
 import logOutIcon from "../../assets/images/logOutIcon.png"
@@ -16,6 +15,7 @@ import Calendar from "../../assets/images/Calendar.png"
 import crossWhite from "../../assets/images/crossWhite.png"
 import yoga3 from "../../assets/images/yoga3.jpg"
 import Cuisto from "../../assets/images/Cuisto.jpg"
+import CalendarBorder from "../../assets/images/CalendarBorder.png"
 import { useTranslation } from "react-i18next";
 
 import { getOffersProvider } from "../../services/offers"
@@ -24,7 +24,7 @@ export default function Profile() {
   const navigate = useNavigate();
   const { t } = useTranslation();
 
-
+ 
   const { authState, logout } = useContext(AuthContext);
    
   const [providerOffers, setProviderOffers] = useState([]);
@@ -47,7 +47,12 @@ export default function Profile() {
     console.warn("ACTUELLEMENT mon loading est :", authState.loading, " IsAuth :", authState.isAuth)
     if (!authState.loading && !authState.isAuth) {
       console.log("🔄 Redirection car non authentifié");
-      navigate("/login");
+      navigate("/login", {
+        state: {
+          origin: "/",
+          scrollTo: ""
+        }
+      });
     }
 
     if (authState.user?.provider_id && authState.user?.provider?.is_validated) {
@@ -76,7 +81,7 @@ export default function Profile() {
     <>
       {authState.loading ? <Spinner centerPage={true}/> : 
       <div className="profile-container">
-        <BottomNavBarNotAnimate/>
+        {/* <BottomNavBarNotAnimate key="annonces" activeTab={"profile"}/> */}
         <div className="principalcolumn">  
         {
         authState.user && (
@@ -90,7 +95,7 @@ export default function Profile() {
           )
         )}
 
-        
+         
         
         <div className="ProfileEditContainer" onClick={() => navigate("/edit-profile")}>
         <div>
@@ -170,18 +175,19 @@ export default function Profile() {
               </div>
               <div className="hline"></div>
             </div>
-            <div className="SettingsListItem" onClick={() => navigate("/edit-language")}>
+            <div className="SettingsListItem" onClick={() => navigate("/edit-language", {
+              state: {
+                origin: "/profile", 
+                scrollTo: ""
+              }
+            })}>
               <div className="SettingsRow">
                 <div className="RowFirst"><img src={global} alt="global icon"/><p className="t4">Languages</p></div>
                 <img src={arrowRight} alt="arrow right"/>
               </div>
               <div className="hline"></div>
             </div>
-            <div className="SettingsListItem" onClick={() => navigate("/edit-language",{
-              state : {
-                origin : "/profile"
-              }
-            })}>
+            <div className="SettingsListItem" onClick={() => console.log("pressed")}>
               <div className="SettingsRow">
                 <div className="RowFirst"><img src={EuroIcon} alt="currenncy icon"/><p className="t4">Currency</p></div>
                 <img src={arrowRight} alt="arrow right"/>
@@ -190,12 +196,12 @@ export default function Profile() {
             </div>
             <div className="SettingsListItem" onClick={() => navigate("/booking-system")}>
               <div className="SettingsRow">
-                <div className="RowFirst"><img src={Calendar} alt="currenncy icon"/><p className="t4">Booking system</p></div>
+                <div className="RowFirst"><img src={CalendarBorder} alt="currenncy icon"/><p className="t4">Booking system</p></div>
                 <img src={arrowRight} alt="arrow right"/>
               </div>
               <div className="hline"></div>
             </div>
-            <div className="SettingsListItem" onClick={() => navigate("/edit-language")}>
+            <div className="SettingsListItem" onClick={() => navigate("/payement-methode")}>
               <div className="SettingsRow">
                 <div className="RowFirst"><img src={CreditCard} alt="credit card icon"/><p className="t4">Payement methods</p></div>
                 <img src={arrowRight} alt="arrow right"/>

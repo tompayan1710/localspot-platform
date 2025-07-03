@@ -1,7 +1,7 @@
 // Login.jsx
 import { useState, useContext, useEffect } from "react";
 import { login } from "../../services/auth";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 import "./styles.css";
 import { AuthContext } from '../Auth/authContext/authContext';
 import ViarteLogo from "../../assets/images/ViarteLogo.png";
@@ -15,6 +15,11 @@ export default function Login() {
   const [message, setMessage] = useState("");
   const [loading, setLoading] = useState(false);
   const [isSuccess, setIsSuccess] = useState(false);
+
+  const location = useLocation();
+  const scrollTo = location.state?.scrollTo || undefined;
+  const origin = location.state?.origin || "/"; 
+  const options = scrollTo ? { state: { scrollTo } } : undefined;
 
   const { checkAuth } = useContext(AuthContext);
 
@@ -66,7 +71,7 @@ export default function Login() {
       checkAuth();
 
       // ✅ Redirige l'utilisateur là où il était
-      navigate("/profile");
+      navigate(`/profile`);
     }
   }, [navigate, checkAuth]);//Just to no have the warning, not necessari
 
@@ -75,7 +80,7 @@ export default function Login() {
 
   return (
     <div className="AuthPage">
-      <GoBack nagigation={"/"} scrollTo={""} text={"revefsnir"}/>
+      <GoBack nagigation={`${origin}`} scrollTo={`${options}`} text={"revenir"}/>
       <div className="authcomponentcontainer">
         <div className="form-container">
           <img src={ViarteLogo} alt="localspot logo"/>

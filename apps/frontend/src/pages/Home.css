@@ -5,7 +5,7 @@
   max-width: 100%;
   /* background-color: red; */
   /* margin-bottom: 50px; */
-  overflow: hidden;
+  overflow: scroll;
   position: relative;
   /* background-color: rebeccapurple; */
 }
@@ -96,12 +96,15 @@
 .HomeContainer{
   min-height: 100vh;
   width: 100%;
-  /* background-color: orange; */
+  
   position: relative;
-  top: 10vh;
-  /* padding-bottom: 20px; */
+  /* top: 5vh;
   opacity: 0;
-  transition: top 1s ease-in-out, opacity 1s ease-in-out;
+  background-color: orange; */
+
+  opacity: 1;
+  top: 0;
+  transition: top 0.5s ease-in-out, opacity 0.5s ease-in-out;
 }
 .HomeContainer.visible{
   opacity: 1;
@@ -153,6 +156,7 @@ animation: slideUpHome 0.8s ease forwards;
   padding: 10px;
   position: absolute;
   right: 0;
+  cursor: pointer;
 }
 .HomeSectionContainer>.row>button>img{
   height: 15px;
@@ -177,7 +181,7 @@ animation: slideUpHome 0.8s ease forwards;
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  margin-top: 60px;
+  margin-top: 40px;
   margin-bottom: 20px;
 }
 .HomeSectionContainer .IntroImage>.t6{
@@ -194,52 +198,118 @@ animation: slideUpHome 0.8s ease forwards;
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  height: 210px;
+  /* height: 210px; */
+  aspect-ratio: 9/6;
   overflow: hidden;
   top: -10px;
 }
 .HomeSectionContainer .IntroImage .ContainerCenter>img{
-  width: 140px;
-  height: 180px;
+  width: 40%;
+  /* height: 180px; */
+  aspect-ratio: 9/12;
+  border-top-left-radius: 15px;
+  border-top-right-radius: 15px;
+  object-fit: cover;
+  bottom: 0;
+  position: absolute;
+  z-index: 4;
+  box-shadow: 0 4px 30px rgba(0, 0, 0, 0.3);
+  /* border: 3px solid white; */
+  border-bottom: none;
+  background-color: var(--greylight);
+}
+.HomeSectionContainer .IntroImage .ContainerCenter>img:first-of-type{
+  box-shadow: 0 -2px 30px rgba(0, 0, 0, 0.1);
+  width: 30%;
+  aspect-ratio: 9/12;
+  left: 50%;
+  transform: translateX(30%);
+  z-index: 1;
+}
+.HomeSectionContainer .IntroImage .ContainerCenter>img:last-of-type{
+  width: 30%;
+  aspect-ratio: 9/12;
+  right: 50%;
+  transform: translateX(-30%);
+  z-index: 1;
+  box-shadow: 0 -2px 30px rgba(0, 0, 0, 0.1);
+}
+.HomeListPrestationItem .ImageContainer>img.loading{
+  opacity: 0;
+  transition: opacity 0.4s ease;
+} 
+.HomeListPrestationItem .ImageContainer>img.loaded{
+  opacity: 1;
+  transition: opacity 0.4s ease;
+} 
+
+
+.HomeSectionContainer .IntroImage .ContainerCenter>.SkeletonImage{
+  width: 40%;
+  /* height: 180px; */
+  aspect-ratio: 9/12;
   border-top-left-radius: 15px;
   border-top-right-radius: 15px;
   object-fit: cover;
   bottom: 0;
   position: absolute;
   z-index: 3;
-  box-shadow: 0 4px 30px rgba(0, 0, 0, 0.3);
-  /* border: 3px solid white; */
+  /* box-shadow: 0 4px 40px rgba(255, 255, 255, 0.6); */
+  box-shadow: 0 4px 40px rgba(0, 0, 0, 0.05);
+  border: 1px solid var(--greysemidark);
+  /* background-color: var(--greylight); */
+  background-color: #f7f8fa;
   border-bottom: none;
 }
-.HomeSectionContainer .IntroImage .ContainerCenter>img:first-of-type{
-  width: 100px;
-  height: 155px;
-  left: calc(50% + 30px);
-  box-shadow: 0 -2px 30px rgba(0, 0, 0, 0.1);
-}
-.HomeSectionContainer .IntroImage .ContainerCenter>img:last-of-type{
-  width: 100px;
-  height: 135px;
-  right: calc(50% + 30px);
+.HomeSectionContainer .IntroImage .ContainerCenter>.SkeletonLeft{
+  box-shadow: 0 0px 30px rgba(0, 0, 0, 0.03);
+  width: 30%;
+  aspect-ratio: 9/12;
+  left: 50%;
+  transform: translateX(30%);
   z-index: 1;
-  box-shadow: 0 -2px 30px rgba(0, 0, 0, 0.1);
 }
+.HomeSectionContainer .IntroImage .ContainerCenter>.SkeletonRight{
+  width: 30%;
+  aspect-ratio: 9/12;
+  right: 50%;
+  transform: translateX(-30%);
+  z-index: 1;
+  box-shadow: 0 0px 30px rgba(0, 0, 0, 0.03);
+}
+
+
+
+
 .HomeSectionContainer .IntroImage .ContainerCenter>.Shadow{
-  width: 340px;
+  width: 90%;
   height: 50px;
   border-radius: 100%;
   bottom: -80px;
   position: absolute;
-  background-color: red;
-  z-index: 2;
-  box-shadow: 0 -40px 15px rgba(0, 0, 0, 0.1);
+  z-index: 4;
+  box-shadow: 0 -40px 15px rgba(0, 0, 0, 0.3);
+}
+.HomeSectionContainer .IntroImage .ContainerCenter>.Shadow.loading{
+  box-shadow: 0 -40px 15px rgba(0, 0, 0, 0.03);
 }
 
 
 
-
-
-
+.HomeSectionContainer .IntroImage .SkeletonCity{
+  width: 100px;
+  height: 2.4rem;
+  background-color: var(--greylight);
+  border-radius: 10px;
+  position: relative;
+}
+.HomeSectionContainer .IntroImage .ContainerSkeleton{
+  height: 3.4rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
 
 
 
@@ -307,6 +377,7 @@ animation: slideUpHome 0.8s ease forwards;
   border-radius: 28px; 
   border-bottom-left-radius: 20px;
   border-bottom-right-radius: 20px;
+  background-color: var(--greylight);
 } 
 .HomeListPrestationItem .ImageContainer>img{
   height: 120px;
@@ -315,6 +386,7 @@ animation: slideUpHome 0.8s ease forwards;
   border-bottom-left-radius: 16px;
   border-bottom-right-radius: 16px;
   object-fit: cover;
+  background-color: var(--greylight);
 } 
 .HomeListPrestationItem .ImageContainer>img.loading{
   opacity: 0;
@@ -336,6 +408,7 @@ animation: slideUpHome 0.8s ease forwards;
   display: flex;
   flex-direction: column;
   padding: 4px;
+  cursor: pointer;
 }
 .HomeListPrestationItem .ImageContainer>button>img{
   height: 20px;

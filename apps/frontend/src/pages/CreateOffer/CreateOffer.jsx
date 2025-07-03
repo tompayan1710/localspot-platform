@@ -51,7 +51,7 @@ export default function CreateOffer(){
                 refListCategorie.current.style.transform = `translateY(-${13}vh)`;
                 refListCategorie.current.style.marginTop = `400px`;
                 RefErrorContainer.current.style.transform = `translateY(-${13}vh)`;
-                setListCategorie(["JetSki", "Parachute", "Plongée", "Kayak", "Surf", "Paddle", "Bouée", "Ski nautique", "KiteSurf"]);
+                setListCategorie(["Nautiques", "Bien-être", "Nature & Aventure", "Culture & Patrimoine", "Loisirs & Divertissement", "Sports & Sensations Fortes", "En Famille"]);
             } else {
                 offset=15;
                 refActivityType.current.style.opacity = "0"; // on cache l'autre
@@ -154,12 +154,17 @@ export default function CreateOffer(){
     
     return (
         <div className="CreateOfferContainerAll">
-            <button className="CloseButton" onClick={() => navigate("/profile", {
-                state: {
-                    type: typeSelected,
-                    categories: selectedCategorie
-                }
-            })}><img src={crossiconBlack} alt="cross icon"/></button>
+            <button className="CloseButton"
+            // onClick={() => navigate("/profile", {
+            //     state: {
+            //         type: typeSelected,
+            //         categories: selectedCategorie
+            //     }
+            // })}
+            onClick={() =>{
+                navigate(-1)
+            }}
+            ><img src={crossiconBlack} alt="cross icon"/></button>
             <button className="GoBackButton" onClick={() => {goBack(typeSelected)}} ref={refGoBackButton}><img src={arrowLeft} alt="arrow left"/><p className="t6">précédent</p></button>
             <button className="NavigateButton" ref={refNavigateButton} 
                 onClick={() => {

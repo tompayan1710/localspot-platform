@@ -1,3 +1,6 @@
+.SettingsPageContianer{
+  min-height: 100vh;
+}
 .SettingsPageContianer>.t2{
     padding-top: 60px;
     padding-left: 10px;

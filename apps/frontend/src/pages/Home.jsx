@@ -1,5 +1,4 @@
 import SearchBar from "../components/SearchBar/SearchBar";
-import BottomNavBar from "../components/BottomNavBar/BottomNavBar"
 import { getOffersToday } from "../services/offers"
 
 import "./Home.css"
@@ -47,13 +46,12 @@ function FadeInImage({ src, alt, className }) {
   }
 
 
-  export default function Home() {
+  export default function Home({navBarRef}) {
     const [isOccultView, setIsOccultView] = useState(false);
 
     const offerContainerRef = useRef(null);
     const LogoContainerAnimationRef = useRef(null); 
     const HomePageRef = useRef(null); 
-    const BottomNavBarRef = useRef(null);
     const generalTerms = useRef(null);
 
 
@@ -67,6 +65,7 @@ function FadeInImage({ src, alt, className }) {
         if (el) {
           setTimeout(() => {
             el.scrollIntoView({ behavior: "smooth" });
+            window.history.replaceState({}, document.title); // ⬅️ Vide le state après scroll
           }, 100); // ⚠️ attendre un peu pour que le DOM soit prêt
         }
       }
@@ -112,20 +111,44 @@ function FadeInImage({ src, alt, className }) {
           console.warn(offers);
           setHomeOffers(offers);
         }
-        setLoading(false);
       }
 
       useEffect(() => {
+        setLoading(true);
+
         getHomeOffers();
 
-        setTimeout(() => OfferAnimationShow(), 200);
+        setTimeout(() =>{
+          setLoading(false);
+        }, 1000)
+        // setLoading(false);
+        // setTimeout(() => OfferAnimationShow(), 200);
+        // AnnimationWhitoutLogo();
 
-        setTimeout(() => {
-           generalTerms.current.classList.add("open");
-            setIsOccultView(true);
-        },5000)
+        // setTimeout(() => {
+        //    generalTerms.current.classList.add("open");
+        //     setIsOccultView(true);
+        // },20000)
+
       }, [i18n.language])
 
+      const AnnimationWhitoutLogo = () => {
+        setTimeout(() => {
+          HomePageRef.current.style.top = "0";
+          HomePageRef.current.style.opacity = "1";
+          HomePageRef.current.style.overflowY = "auto";
+        }, 500);
+
+        setTimeout(() => {
+          navBarRef.current.classList.add("sliderInBottomNav");
+          searchBarRef.current.classList.add("slideInSearch")
+          // searchBarRef.current.style.top = "0";
+          setTimeout(() => {
+            offerContainerRef.current.style.overflowY = "scroll";
+          }, 0)
+
+        }, 1000)
+      }
 
       const OfferAnimationShow = () => {
         // LogoContainerAnimationRef.current.style.top = "-100vh";
@@ -151,7 +174,7 @@ function FadeInImage({ src, alt, className }) {
         
         
         setTimeout(() => {
-          BottomNavBarRef.current.classList.add("sliderInBottomNav");
+          navBarRef.current.classList.add("sliderInBottomNav");
           searchBarRef.current.classList.add("slideInSearch")
           // searchBarRef.current.style.top = "0";
           setTimeout(() => {
@@ -164,27 +187,40 @@ function FadeInImage({ src, alt, className }) {
 
     return (
       <div className="HomeContainerPrincipal" ref={offerContainerRef}>
-        <div ref={LogoContainerAnimationRef} className={`${true ? "" : ""} LogoContainerAnimation`}>
+        {/* <div ref={LogoContainerAnimationRef} className={`${true ? "" : ""} LogoContainerAnimation`}>
           <div className="LogoContainer">
             <img src={ViarteLogo} alt="Viarte Logo" 
             onLoad={(e) => {
               e.currentTarget.classList.add("loaded");
             }}/>
           </div>
-        </div>
+        </div> */}
         <SearchBar ref={searchBarRef}/>
-        <BottomNavBar isMap={false}  ref={BottomNavBarRef}/>
         <div ref={HomePageRef} className="HomeContainer">
           <div className="HomeSectionContainer">
             <div className="IntroImage">
               <p className="t5">Discover the best of</p>
-              <p className="t1">Nice</p>
+              {
+                loading ? <div className="ContainerSkeleton"><div className="SkeletonCity shimmer"></div></div>
+                : <p className="t1">Nice</p>
+              }
               <div className="ContainerCenter">
-                <img src={NiceIntro2} alt="Intro Image parachute"/>
-                <img src={NiceIntro1} alt="Intro Image class"/>
-                <img src={NiceIntro3} alt="Intro Image chateau"/>
-                <div className="Shadow"></div>
+                {loading ? (
+                  <>
+                    <div className="SkeletonImage shimmer SkeletonLeft"></div>
+                    <div className="SkeletonImage shimmer"></div>
+                    <div className="SkeletonImage shimmer SkeletonRight"></div>
+                  </>
+                ) : (
+                  <>
+                    <FadeInImage src={NiceIntro2} alt="Intro Image parachute" />
+                    <FadeInImage src={NiceIntro1} alt="Intro Image class" />
+                    <FadeInImage src={NiceIntro3} alt="Intro Image chateau" />
+                  </>
+                )}
+                <div className={`Shadow ${loading ? "loading" : ""}`}></div>
               </div>
+
             </div>
             <p className="t6">Parfait pour l'été</p>
             {/* <p className="t6">Populaire sur Viarte</p> */}

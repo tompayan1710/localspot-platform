@@ -1,0 +1,306 @@
+#AnnoncePage{
+    padding-top: 40px;
+    min-height: 100vh;
+    width: 100%;
+}
+
+#AnnonceStatistique{
+    width: 88%;
+    margin: 0 auto;
+    background-color: var(--greylight);
+    border: 1px solid var(--greysemidark);
+    height: 300px;
+    border-radius: 20px;
+}
+
+#AnnoncePage .InfoContainer{
+    width: 88%;
+    margin: 0 auto;
+    margin-top: 10px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    margin-bottom: 20px;
+}
+#AnnoncePage .InfoContainer>.row{
+  align-items: start;
+}
+#AnnoncePage .InfoContainer>.row:first-of-type>p:first-of-type{
+  /* width: 25%; */
+  margin-top: 2px;
+  margin-right: 8px;
+}
+#AnnoncePage .InfoContainer > .row:first-of-type > p:last-of-type {
+  word-break: break-word;
+  overflow-wrap: break-word;
+  white-space: normal;
+  max-width: 100%;
+}
+
+#AnnoncePage .InfoContainer>.row>p:first-of-type{
+  /* width: 25%; */
+  margin-right: 5px;
+  margin-top: 1.5px;
+  /* font-weight: bold; */
+}
+#AnnoncePage .InfoContainer .loading{
+  /* height: 1.8rem; */
+  height: 1rem;
+  background-color: var(--greylight);
+  border-radius: 8px;
+}
+#AnnoncePage .InfoContainer .OfferTitle.loading{
+  width: 100%;
+}
+#AnnoncePage .InfoContainer .OfferDescription.loading{
+  height: 1rem;
+  width: 70%;
+}
+#AnnoncePage .InfoContainer .OfferType.loading{
+  height: 1rem;
+  width: 60px;
+}
+#AnnoncePage .InfoContainer .OfferDuree.loading{
+  height: 1rem;
+  width: 60px;
+}
+
+
+/*ANNULATION GRATUITE  /;;;;;;;;;*/
+#AnnoncePage .CancellableContainer {
+    width: 88%;
+    margin: 0 auto;
+    margin-top: 18px;
+    margin-bottom: 22px;
+}
+
+#AnnoncePage .CancellableContainer > p:first-child {
+    font-weight: bold;
+    margin-bottom: 5px;
+}
+
+#AnnoncePage .CancellableContainer .toggle-button-group{
+    margin-top: 10px;
+    /* background-color: var(--greylight); */
+    width: fit-content;
+    border-radius: 8px;
+    border: 1px solid var(--greysemidark);
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+}
+#AnnoncePage .CancellableContainer .toggle-button-group>button{
+    border: none;
+    /* background-color: red; */
+    padding: 5px 40px;
+    background-color: transparent;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+}
+#AnnoncePage .CancellableContainer .toggle-button-group>button.active{
+
+    /* background-color: white; */
+    background: var(--lineargradientgreen);
+    border-radius: 8px;
+    box-shadow: 0 4px 5px rgba(0, 0, 0, 0.03);
+    transform: scale(1.15);
+}
+#AnnoncePage .CancellableContainer .toggle-button-group>button.active.non{
+    background: var(--lineargradientred );
+}
+#AnnoncePage .CancellableContainer .toggle-button-group>button.active>p{
+    color: white;
+}
+
+
+#AnnoncePage .CancellableContainer .toggle-button-group.loading{
+    height: 25px;
+    width: 200px;
+    border-radius: 8px;
+    border: none;
+    background-color: var(--greylight);
+}
+
+
+#AnnoncePage>.row:has(button){
+  justify-content: space-between;
+  width: 88%;
+  margin: 0 auto;
+  margin-top: 20px;
+}
+#AnnoncePage>.row>button{
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    width: fit-content;
+    padding: 8px 12px;
+    border: none;
+    border-radius: 8px;
+    background-color: var(--greylight);
+    transition: all 0.3s ease-in-out;
+    /* transition-delay: 0.3s; */
+    border: 1px solid white;
+    cursor: pointer;
+}
+#AnnoncePage>.row>button.selected {
+    border-color: var(--greysemidark);
+    background-color: white;
+    /* background-color: var(--greydark); */
+    margin-bottom: 10px;
+}
+
+/*:::::::::::Shimer*/
+.shimmer {
+  position: relative;
+  overflow: hidden;
+}
+
+.shimmer::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: -200%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(
+    110deg,
+    transparent 10%,
+    rgb(255, 255, 255) 50%,
+    transparent 90%
+  );
+  animation: shimmer 1s infinite ease-in;
+  z-index: 1;
+}
+
+@keyframes shimmer {
+  0% {
+    left: -200%;
+  }
+  100% {
+    left: 200%;
+  }
+}
+
+
+/*MapContainer µ//////////////////*/
+#AnnoncePage .MapContainer{
+    height: 60vh;
+    width: 88%;
+    margin: 0 auto;
+    margin-top: 10px;
+}
+
+#AnnoncePage .SquelletteMap{
+  width: 100%;
+  height: 100%;
+  position: relative;
+  overflow: hidden;
+  background-color: var(--greylight); /* ou un gris très clair */
+  border-radius: 40px;
+}
+
+#AnnoncePage .MapSection{
+  background-color: var(--greyverylight);
+  padding-top: 30px;
+  padding-bottom: 30px;
+}
+#AnnoncePage .MapSection>p{
+    /* padding-top: 10px; */
+    width: 88%;
+    margin: 0 auto;
+    margin-bottom: 3px;
+}
+
+#AnnoncePage .PhotosContainer{
+  display: flex;
+  flex-direction: row;
+  gap: 10px;
+  width: 100%;
+  padding-top: 10px;
+  padding-right: 10px;
+  overflow-x: scroll;
+}
+#AnnoncePage .PhotosContainer>.photoItem{
+  width: 35%;
+  min-width: 35%;
+  aspect-ratio: 12/9;
+}
+#AnnoncePage .PhotosContainer>.photoItem:first-of-type{
+  margin-left: 6%;
+}
+#AnnoncePage .PhotosContainer>.photoItem>img{
+  height: 100%;
+  width: 100%;
+  object-fit: cover;
+  border-radius: 15px;
+}
+#AnnoncePage .PhotosContainer {
+  scrollbar-width: none; /* Firefox */
+  -ms-overflow-style: none; /* IE 10+ */
+}
+
+#AnnoncePage .PhotosContainer::-webkit-scrollbar {
+  display: none; /* Chrome, Safari, Edge */
+}
+
+
+#AnnoncePage .PlanningRecurent {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  background-color: white;
+  width: 88%;
+  margin: 0 auto;
+  padding: 14px 14px;
+  border-radius: 20px;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+  margin-top: 10px;
+  margin-bottom: 30px;
+}
+#AnnoncePage .PlanningRecurent>.vertBar{
+  position: absolute;
+  height: 100%;
+  width: 1px;
+  background-color: var(--rednormal);
+  top: 0;
+  left: 25%;
+}
+#AnnoncePage .PlanningRecurent>.vertBar.second{
+  transform: translateX(5px);
+}
+#AnnoncePage .PlanningRecurent .day-row {
+  display: flex;
+  align-items: start;
+  width: 100%;
+}
+#AnnoncePage .PlanningRecurent .day-row>p {
+  width: 25%;
+  min-width: 25%;
+}
+#AnnoncePage .PlanningRecurent .day-label {
+  width: 120px;
+  font-weight: bold;
+  text-transform: capitalize;
+}
+
+#AnnoncePage .PlanningRecurent .slots {
+  margin-left: 10px;
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+#AnnoncePage .PlanningRecurent .slot {
+  background-color: var(--greylight);
+  border-radius: 5px;
+  padding: 4px 8px;
+  font-size: 14px;
+  white-space: nowrap;
+}
+
+.AnnonceGrapheContainer{
+  width: 88%;
+  margin: 0 auto;
+}

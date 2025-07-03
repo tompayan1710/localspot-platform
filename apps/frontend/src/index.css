@@ -91,12 +91,15 @@ body{
   --violetlight: #F3EDFE;
   --violetnormal: #9C5DEE;
   --greenlight: #DFF0D8;
-  --greennormal: #5ab054;
+  --greennormal: #50b849;
   --yellownormal: #FFD85C;
   --yellowlight: #FFF4C1;
+  --beigelight: #ecead94b;
 
   --lineargradientblack: linear-gradient(180deg, #545454, #373737);
-  --lineargradientgreen: linear-gradient(to bottom, #b5edb1, var(--greenlight));
+  --lineargradientgreen: linear-gradient(to bottom, #c4f5c1, #7de276);
+  --lineargradientgreenRight: linear-gradient(to right, #b5edb1, var(--greennormal));
+  --lineargradientred: linear-gradient(180deg, #fcb3b3, var(--rednormal));
   --maxsize: 500px;
 }
 
@@ -135,5 +138,22 @@ a{
   width: 100%;
   height: 1px;
   min-width: 100%;
+}
+
+.hline88{
+  background-color: var(--greysemidark);
+  width: 88%;
+  height: 1px;
+  margin: 0 auto;
+}
+
+.TopDivOpacity{
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  background: linear-gradient(to bottom, rgb(255, 255, 255) 0%, rgb(255, 255, 255) 60%, rgba(255, 255, 255, 0) 100%);
+  height: 60px;
+  z-index: 2;
 }
 

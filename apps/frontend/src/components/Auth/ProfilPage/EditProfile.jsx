@@ -10,6 +10,7 @@ import Spinner from "../../Spinner/Spinner";
 
 import arrowLeft from "../../../assets/images/arrowLeft.png"
 import Nice from "../../../assets/images/Nice.avif"
+import userIconRelief from "../../../assets/images/userIconRelief.png"
 import editPenIcon from "../../../assets/images/editPenIcon.png"
 import SaveIconFillWhite from "../../../assets/images/SaveIconFillWhite.png"
 import GoBack from "../../GoBack/GoBack";
@@ -61,7 +62,7 @@ export default function EditProfil() {
         <button className="GoBackButton" style={{opacity: "1"}} onClick={() => navigate("/profile")}><img src={arrowLeft}/><p className="t6">revenir</p></button>
         <p className="t2">{t('editprofil')}</p> 
         <div className="ImageContainer">
-            <img src={Nice} alt="profil picture"/>
+            <img src={userIconRelief} alt="profil picture"/>
             <button><img src={editPenIcon}/></button>
         </div>
         <div className="ListInformation">

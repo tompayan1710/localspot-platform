@@ -10,7 +10,6 @@ import customerKing from "../../assets/images/customerKing.png"
 import arrowRight from "../../assets/images/arrowRight.png" 
 import extendMap from "../../assets/images/extendMap.png" 
 import crossiconBlack from "../../assets/images/crossiconBlack.png" 
-import BottomNavBar from "../../components/BottomNavBar/BottomNavBar";
 import Map2D from "../../components/Maps/Map2D";
 import { getOfferBySlug } from "../../services/offers"
 import { getQRCodeBySlug } from "../../services/QRCodeService"
@@ -40,7 +39,6 @@ export default function OfferPage() {
   const OfferPageAnimationRef = useRef(null); 
   const OfferPageRef = useRef(null); 
   const ReserveButtonRef = useRef(null); 
-  const BottomNavBarRef = useRef(null);
   const CarrouselRef = useRef(null);
   const PopUpBottomRef = useRef(null);
   const CancelBottomRef = useRef(null);
@@ -55,10 +53,13 @@ export default function OfferPage() {
   const [scrollSyncEnabled, setScrollSyncEnabled] = useState(true);
   const [readMoreIsEnable, setReadMoreIsEnable] = useState({});
   const [isOccultView, setIsOccultView] = useState(false);
-  const [participantAdult, setParticipantAdult] = useState(4);
-  const [participantReduced, setParticipantReduced] = useState(0);      
+  const [participantAdult, setParticipantAdult] = useState(2);
+  const [participantReduced, setParticipantReduced] = useState(1);      
   const [isLoading, setIsLoading] = useState(true);      
-  const [isExtendMap, setIsExtendMap] = useState(false);      
+  const [isExtendMap, setIsExtendMap] = useState(false);  
+  
+  
+
       /*
       const getQRCodesAndHote = async (slug) => {
         const qrcodeData = await getQRCodeBySlug(slug);
@@ -85,7 +86,6 @@ function allRefsReady() {
     OfferPageAnimationRef.current &&
     OfferPageRef.current &&
     ReserveButtonRef.current &&
-    BottomNavBarRef.current &&
     offerContainerRef.current
   );
 }
@@ -98,15 +98,9 @@ function allRefsReady() {
       OfferPageRef.current.style.overflowY = "auto";
             
       setTimeout(() => {
-        // if (ReserveButtonRef.current && BottomNavBarRef.current) {
-        if(ReserveButtonRef.current && BottomNavBarRef.current){
+        if(ReserveButtonRef.current){
           ReserveButtonRef.current.classList.add("pupUp");
-          BottomNavBarRef.current.classList.add("sliderInBottomNav");
         }
-  // }
-
-        // ReserveButtonRef.current.classList.add("pupUp");
-        // BottomNavBarRef.current.classList.add("sliderInBottomNav");
 
         // setTimeout(() => {
           offerContainerRef.current.style.overflowY = "scroll";
@@ -124,25 +118,9 @@ function allRefsReady() {
       OfferPageRef.current.style.overflowY = "auto";
             
       offerContainerRef.current.style.overflowY = "scroll";
-      /*setTimeout(() => {
-        // if (ReserveButtonRef.current && BottomNavBarRef.current) {
-        if(ReserveButtonRef.current && BottomNavBarRef.current){
-          ReserveButtonRef.current.classList.add("pupUp");
-          BottomNavBarRef.current.classList.add("sliderInBottomNav");
-        }
-  // }
-
   
-        // ReserveButtonRef.current.classList.add("pupUp");
-        // BottomNavBarRef.current.classList.add("sliderInBottomNav");
-
-        offerContainerRef.current.style.overflowY = "scroll";
-
-      }, 1000)    */
-
-      if(ReserveButtonRef.current && BottomNavBarRef.current){
+      if(ReserveButtonRef.current){
           ReserveButtonRef.current.classList.add("pupUp");
-          BottomNavBarRef.current.classList.add("sliderInBottomNav");
         }
   }
       
@@ -176,9 +154,10 @@ function allRefsReady() {
         if (!hoteData.success) return;
         setHote(hoteData.hote);
 
-        await fetchDurations(offerData.offer, hoteData.hote);
         setIsLoading(false);
-        
+
+        await fetchDurations(offerData.offer, hoteData.hote);
+
         } catch (error) {
           console.error("Erreur dans loadData :", error);
       }
@@ -342,8 +321,8 @@ function allRefsReady() {
               {offer.latitude && offer.longitude && hote.latitude && hote.longitude ? (
                 <>
                   <Map2D
-                    center={{ lat: offer.latitude, lng: offer.longitude }}
-                    destination={{ lat: hote.latitude, lng: hote.longitude }}
+                    center={{ lat: hote.latitude, lng: hote.longitude }}
+                    destination={{ lat: offer.latitude, lng: offer.longitude }}
                     zoom={17}
                     adresseTexte ={offer.adresse ? offer.adresse : ""}
                     borderRadius={isExtendMap ? 0 : 35}
@@ -393,9 +372,12 @@ function allRefsReady() {
                 <p className="t4">Select participants</p>
                 <div className="row">
                   <p className="t5">Participants :</p> 
-                  <p className="t5">2</p>
+                  <p className="t5">{ participantAdult + participantReduced}</p>
                 </div>
-                <p className="t6">×2 adult</p>
+                <p className="t6">
+                  ×{participantAdult} adult
+                  {participantReduced > 0 && `\u00A0\u00A0×${participantReduced} reduced`}
+                </p>
               </div>
               
               <img src={arrowRight} alt="arrow right icon"/>
@@ -484,11 +466,16 @@ function allRefsReady() {
               <p className="t6">par {offer.priceper}</p>
             </div>
             <button className="ReserveButton" onClick={() => {
-              navigate(`/offer-page/${slug}/availibility`)
+              navigate(`/offer-page/${slug}/availibility`, {
+                state: {
+                  price: offer.price,
+                  participantAdult: participantAdult,
+                  participantReduced: participantReduced,
+                }
+              })
             }}>Voir les<br></br>disponnibilités</button>
           </div>
 
-          <BottomNavBar isMap={false}  ref={BottomNavBarRef}/>  
 
           <PopUpBottom 
             onClose={() => {
@@ -522,7 +509,7 @@ function allRefsReady() {
               </div>
               <div className="rowTotal">
                 <p className="t5">Participants :</p> 
-                <p className="t5">2</p>
+                <p className="t5">{participantAdult + participantReduced}</p>
               </div>
               <div className="rowAddParticipant">
                 <div className="column">
@@ -530,13 +517,13 @@ function allRefsReady() {
                   <p className="t6">18 - 99 ans</p>
                 </div>
                 <div className="row">
-                  <button className="buttonParticipant" onClick={() => {
+                  <button className="buttonParticipant" disabled={participantAdult === 1} onClick={() => {
                     setParticipantAdult((prev) => prev - 1)
                     }}>
                     <p className="t3">-</p>
                   </button>
                   <p className="t4">{participantAdult}</p>
-                  <button className="buttonParticipant" onClick={() => {
+                  <button className="buttonParticipant" disabled={participantAdult === 10} onClick={() => {
                     setParticipantAdult((prev) => prev + 1)
                     }}>
                     <p className="t3">+</p>
@@ -549,13 +536,13 @@ function allRefsReady() {
                   <p className="t6">-18 ans</p>
                 </div>
                 <div className="row">
-                  <button className="buttonParticipant" onClick={() => {
+                  <button className="buttonParticipant" disabled={participantReduced === 0} onClick={() => {
                     setParticipantReduced((prev) => prev - 1)
                     }}>
                     <p className="t3">-</p>
                   </button>
                   <p className="t4">{participantReduced}</p>
-                  <button className="buttonParticipant" onClick={() => {setParticipantReduced((prev) => prev + 1)}}>
+                  <button className="buttonParticipant" disabled={participantReduced === 10} onClick={() => {setParticipantReduced((prev) => prev + 1)}}>
                     <p className="t3">+</p>
                   </button>
                 </div>

@@ -2,7 +2,7 @@ import "./Availability.css";
 import { useEffect, useState, useRef, useContext } from "react";
 import { DayPicker } from "react-day-picker";
 import "react-day-picker/dist/style.css";
-import { useParams, useNavigate } from "react-router-dom";
+import { useParams, useNavigate, useLocation } from "react-router-dom";
 import { AuthContext } from '../../../components/Auth/authContext/authContext';
 import { GoogleAuthButton } from "../../../components/Auth/GoogleAuthButton"
 import Map2DPin from "../../../assets/images/Map2DPin.png";
@@ -14,14 +14,18 @@ import PopUpBottom from "../../../components/PopUpBottom/PopUpBottom";
 import Spinner from "../../../components/Spinner/Spinner";
 
 export default function Availability() {
-  const [selectedDate, setSelectedDate] = useState();
+  const [selectedDate, setSelectedDate] = useState(new Date);
   const { slug } = useParams();
+  const location = useLocation();
+  const price = location.state?.price;
 
+
+  const [participantAdult, setParticipantAdult] = useState(location.state?.participantAdult || 2);
+  const [participantReduced, setParticipantReduced] = useState(location.state?.participantReduced || 1); 
+                  
   const creneauRef = useRef(null); // ← Étape 1
   const [barStyle, setBarStyle] = useState({ width: 0, angle: 0 });
   const [isOccultView, setIsOccultView] = useState(false);
-  const [participantAdult, setParticipantAdult] = useState(4);
-  const [participantReduced, setParticipantReduced] = useState(0); 
   const [selectedCreneau, setSelectedCreneau] = useState(0);
 
   const ParticipantBottomRef = useRef(null); 
@@ -38,14 +42,12 @@ export default function Availability() {
       console.log("Largeur de CreneauPicker:", width);
       console.log("Hauteur de CreneauPicker:", height);
     }
+
+    // setSelectedDate(new Date);
   }, []); // ✅ vide = déclenché au premier rendu
 
   // 2. Un autre pour la date sélectionnée
-  useEffect(() => {
-    if (selectedDate) {
-      console.log("Date sélectionnée :", selectedDate);
-    }
-  }, [selectedDate]);
+
 
 
 
@@ -73,6 +75,21 @@ export default function Availability() {
   const [loading, setLoading] = useState(false);
   const [isSuccess, setIsSuccess] = useState(false);
 
+  const [exceptionalAvailable, setExceptionalAvailable] = useState({});
+  const [unavailable, setUnavailable] = useState({});
+
+  const [availability, setAvailability] = useState({
+    monday: [],
+    tuesday: [],
+    wednesday: [],
+    thursday: [],
+    friday: [],
+    saturday: [],
+    sunday: []
+  });
+
+  const [slots, setSlots] = useState([]);
+
   const navigate = useNavigate();
 
   // const { checkAuth } = useContext(AuthContext);
@@ -90,10 +107,182 @@ export default function Availability() {
     }
   }
 
+  const isToday = (selectedDate) => {
+    if (!selectedDate) return false;
+
+    const today = new Date();
+    return (
+      selectedDate.getFullYear() === today.getFullYear() &&
+      selectedDate.getMonth() === today.getMonth() &&
+      selectedDate.getDate() === today.getDate()
+    );
+  };
+
+  const getDisponnibility = async (slug) => {
+    try {
+      const response = await fetch(`${process.env.REACT_APP_API_URL}/api/availibility/getall?slug=${slug}`, {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json"
+        },
+      });
+      const {status, recurring, exceptionalAvailable, exceptionalUnavailable } = await response.json();
+      console.warn("✅LES DONNES");
+      console.warn(recurring);
+      console.warn(exceptionalAvailable);
+      console.warn(exceptionalUnavailable);
+      setAvailability((prev) => {
+        const newAvailability = {...prev};
+
+        for (const day of Object.keys(recurring)) {
+          const newSlots = recurring[day].map(slot => ({
+            ...slot,
+            id: Date.now() + Math.random() // 👈 unique id généré
+          }));
+          newAvailability[day] = newSlots;
+          }
+          return newAvailability;
+        })
+
+        setExceptionalAvailable((prev) => {
+          const newExceptionalAvailable = {...prev};
+
+          for (const day of Object.keys(exceptionalAvailable)) {
+            const newSlots = exceptionalAvailable[day].map(slot => ({
+              ...slot,
+              id: Date.now() + Math.random() // 👈 unique id généré
+            }));
+            newExceptionalAvailable[day] = newSlots;
+          }
+          return newExceptionalAvailable;
+        })
+
+        setUnavailable(exceptionalUnavailable);
+
+        console.log("Réponse API :", status, recurring, exceptionalAvailable, exceptionalUnavailable);
+        } catch (error) {
+          console.error("Erreur lors de l’envoi :", error);
+      }
+        // const response = await fetch(`${process.env.REACT_APP_API_URL}/`);
+    }
+
+
+  
+
+  useEffect(() => {
+    if (!location.state || !location.state.price) {
+      console.warn("❌ Aucun state ou price reçu !");
+      navigate(`/offer-page/${slug}`);
+    }
+    getDisponnibility(slug);
+  }, [])
+
+
+
+  const getSlotsOfByDate = () => {
+    console.log("Premier rendue")
+    if (selectedDate) {
+      const formattedDate = selectedDate.toLocaleDateString('fr-CA'); // → "2025-07-25"
+      const days = ["sunday", "monday", "tuesday", "wednesday", "thursday", "friday", "saturday"];
+      const dayOfWeek = days[selectedDate.getDay()];
+
+      console.log("✅ Date sélectionnée :", formattedDate);
+      console.log("🕐 Jour de la semaine :", dayOfWeek);
+
+      const recurring = availability[dayOfWeek] || [];
+      const exceptional = exceptionalAvailable[formattedDate] || [];
+      const cancellable = unavailable[formattedDate] || [];
+
+      console.log(recurring);
+      console.log(exceptional);
+      console.log(cancellable);
+      // 🔄 Fusion dans un objet (clé = from-to)
+      const slotsObject = {};
+      // D'abord les exceptionnels
+      for (const slot of recurring) {
+        const key = `${slot.from}-${slot.to}`;
+        if (!slotsObject[key]) {
+          slotsObject[key] = slot;
+        }
+      }
+
+      for (const slot of exceptional) {
+        const key = `${slot.from}-${slot.to}`;
+        slotsObject[key] = slot;
+      }
+
+      for (const slot of cancellable) {
+        const key = `${slot.from}-${slot.to}`;
+        if (slotsObject[key]) {
+          slot.cancallable = true;
+          slotsObject[key] = slot;
+        }
+      }
+      
+
+      console.log("📦 Objet des créneaux fusionnés :", slotsObject);
+
+      setSlots(() => {
+        const slotstemp = []
+        Object.entries(slotsObject).map(([_, slot]) => {
+          slotstemp.push(slot);
+        })
+        return slotstemp;
+      })
+      
+      // setSlots
+    }
+  }
+
+
+  useEffect(() => {
+    getSlotsOfByDate();
+  }, [selectedDate]);
+
+  // 1️⃣ Quand la date change → comme tu fais déjà
+
+
+// 2️⃣ Quand les données changent → pour relancer le calcul une fois les créneaux chargés
+  useEffect(() => {
+    getSlotsOfByDate();
+  }, [availability, exceptionalAvailable, unavailable]);
+
+
+  useEffect(() => {
+    console.log("SLOTS !")
+    console.log(slots);
+  }, [slots])
+
+  const [datesWithSlot, setDatesWithSlot] = useState([]);
+
+useEffect(() => {
+  const daysOfWeek = ["sunday", "monday", "tuesday", "wednesday", "thursday", "friday", "saturday"];
+
+  const result = [];
+
+  for (let i = 0; i < 30; i++) {
+    const date = new Date(); // aujourd'hui
+    date.setDate(date.getDate() + i); // +i jours
+
+    const formatted = date.toLocaleDateString('fr-CA'); // "YYYY-MM-DD"
+    const dayName = daysOfWeek[date.getDay()];
+
+    const recurring = availability[dayName] || [];
+    const exceptional = exceptionalAvailable[formatted] || [];
+
+    // S'il y a au moins un créneau dans l'un ou l'autre
+    if ((recurring && recurring.length > 0) || (exceptional && exceptional.length > 0)) {
+      result.push(date);
+    }
+  }
+
+  setDatesWithSlot(result);
+}, [availability, exceptionalAvailable]);
+
   return (
     <div className="AvailabilityContainer">
       <div className="TopDivOpacity"></div>
-      <GoBack nagigation={`/offer-page/${slug}/availibility`} scrollTo={""} text={"revenir"}/>
+      <GoBack nagigation={`/offer-page/${slug}`} scrollTo={""} text={"revenir"}/>
       <div className="TitleContainer">
         <p className="t32">Sélectionnez une date et un créneaux</p>
         <p className="t6">Indiquez quand vous souhaitez participer à cette activité. Les créneaux disponibles s’adapteront automatiquement.</p>
@@ -126,40 +315,49 @@ export default function Availability() {
                 />
               ),
             }}
+            modifiers={{
+              hasSlots: datesWithSlot,
+            }}
+            modifiersClassNames={{
+              hasSlots: `day-has-slots green`,
+            }}
           />
         </div>
         
         <div className="CreneauPicker" ref={creneauRef}>
           <p className="t5">Creneaux disponnibles : </p>
-          <div className="CreneauItem Full"  onClick={() => {
-            setSelectedCreneau(undefined)
-          }}>
-            <div className="NoCreneau" 
-            style={{
-              '--bar-width': `${barStyle.width}px`,
-              '--bar-angle': `${barStyle.angle}deg`
-            }}></div>
-            <div>
-              <p className="t6">Il reste actuellement :</p>
-              <p className="t6">5 places</p>
+          {
+            slots.length > 0 ?
+            slots.map((slot,index) => (
+              <div key={index} className={`CreneauItem ${selectedCreneau.index === index ? "selected" : ""} ${slot.cancallable ? "Full" : ""}`} 
+                    onClick={() => {
+                      if(slot.cancallable){
+                        setSelectedCreneau(undefined)
+                      }else{
+                        setSelectedCreneau({index : index, slot: slot})
+                      }}}>
+                {
+                  slot.cancallable ?
+                    <div className="NoCreneau" 
+                    style={{
+                      '--bar-width': `${barStyle.width}px`,
+                      '--bar-angle': `${barStyle.angle}deg`
+                    }}></div>
+                    : <></>
+                }
+                <div>
+                  <p className="t6">Il reste actuellement :</p>
+                  <p className="t6">5 places</p>
+                </div>
+                <p className="t5">{slot.from} - {slot.to}</p>
+              </div>
+            ))
+             :
+            <div className="NoneSlote">
+              <p className="t5">Aucun créneau n'est disponible pour ce jour.</p>
             </div>
-            <p className="t5">10:30 - 12:30</p>
-          </div>
-          <div  className={`CreneauItem ${selectedCreneau === 1 ? "selected" : ""}`} onClick={() => {setSelectedCreneau(1)}}>
-            <div>
-              <p className="t6">Il reste actuellement :</p>
-              <p className="t6">5 places</p>
-            </div>
-            <p className="t5">10:30 - 12:30</p>
-          </div>
-          <div 
-          className={`CreneauItem ${selectedCreneau === 2 ? "selected" : ""}`} onClick={() => {setSelectedCreneau(2)}}>
-            <div>
-              <p className="t6">Il reste actuellement :</p>
-              <p className="t6">5 places</p>
-            </div>
-            <p className="t5">10:30 - 12:30</p>
-          </div>
+          }
+          
           <div className={`CancelContainer ${selectedCreneau ? "selected" : ""}`}>
             <img src={VerifyIcon} alt="verify icon"/>
             <p className="t6">Date limite d’annulation gratuite : 26 juin à 16:45.</p>
@@ -179,9 +377,12 @@ export default function Availability() {
         <div>
           <div className="row">
             <p className="t5">Participants :</p> 
-            <p className="t5">2</p>
+            <p className="t5">{participantAdult + participantReduced}</p>
           </div>
-          <p className="t6">×2 adult</p>
+          <p className="t6">
+            ×{participantAdult} adult
+            {participantReduced > 0 && `\u00A0\u00A0×${participantReduced} reduced`}
+          </p>
         </div>
         <button>
           <p className="t6">Modifier</p>
@@ -201,17 +402,47 @@ export default function Availability() {
       </div>
       <div className="payementInfoContainer">
         <div className="row">
-          <p className="t6">×2&nbsp;&nbsp;&nbsp;&nbsp;adult</p>
-          <p className="t6">145.00 €</p>
-        </div>
-         <div className="row">
-          <p className="t6">×2&nbsp;&nbsp;&nbsp;&nbsp;réduit</p>
-          <p className="t6">145.00 €</p>
+          <p className="t6">{selectedDate.toDateString()}</p>
+          {/* <p className="t6">{selectedCreneau.slot.from} - {selectedCreneau.slot.to}</p> */}
         </div>
         <div className="payementSeparation"></div>
         <div className="row">
+          <p className="t6">×{participantAdult}&nbsp;&nbsp;&nbsp;&nbsp;adult</p>
+          <p className="t6">
+            {new Intl.NumberFormat('fr-FR', {
+              style: 'currency',
+              currency: 'EUR',
+              minimumFractionDigits: 2,
+              maximumFractionDigits: 2
+            }).format(price * participantAdult)}
+          </p>
+
+        </div>
+        {
+          participantReduced>0 ?
+          <div className="row">
+            <p className="t6">×{participantReduced}&nbsp;&nbsp;&nbsp;&nbsp;reduced</p>
+          <p className="t6">
+            {new Intl.NumberFormat('fr-FR', {
+              style: 'currency',
+              currency: 'EUR',
+              minimumFractionDigits: 2,
+              maximumFractionDigits: 2
+            }).format(price * participantReduced)}
+          </p>
+          </div> 
+          : <></>
+        }
+        <div className="payementSeparation"></div>
+        <div className="row">
           <p>TOTAL</p>
-          <p className="t32">350€</p>
+          <p className="t32">{new Intl.NumberFormat('fr-FR', {
+              style: 'currency',
+              currency: 'EUR',
+              minimumFractionDigits: 2,
+              maximumFractionDigits: 2
+            }).format(price * (participantReduced + participantAdult))}
+          </p>
         </div>  
         <div className="payementSeparation"></div>
         <p className="t6">Toutes taxes comprises</p>
@@ -237,7 +468,7 @@ export default function Availability() {
           </div>
           <div className="rowTotal">
             <p className="t5">Participants :</p> 
-            <p className="t5">2</p>
+            <p className="t5">{participantAdult + participantReduced}</p>
           </div>
           <div className="rowAddParticipant">
             <div className="column">
@@ -245,13 +476,13 @@ export default function Availability() {
               <p className="t6">18 ans et plus</p>
             </div>
             <div className="row">
-              <button className="buttonParticipant" onClick={() => {
+              <button className="buttonParticipant" disabled={participantAdult === 1} onClick={() => {
                 setParticipantAdult((prev) => prev - 1)
               }}>
                 <p className="t3">-</p>
               </button>
               <p className="t4">{participantAdult}</p>
-              <button className="buttonParticipant" onClick={() => {
+              <button className="buttonParticipant" disabled={participantAdult === 10} onClick={() => {
                 setParticipantAdult((prev) => prev + 1)
               }}>
                 <p className="t3">+</p>
@@ -264,13 +495,13 @@ export default function Availability() {
               <p className="t6">Moins de 18 ans</p>
             </div>
             <div className="row">
-              <button className="buttonParticipant" onClick={() => {
+              <button className="buttonParticipant" disabled={participantReduced === 0} onClick={() => {
                 setParticipantReduced((prev) => prev - 1)
                 }}>
                 <p className="t3">-</p>
               </button>
               <p className="t4">{participantReduced}</p>
-              <button className="buttonParticipant" onClick={() => {setParticipantReduced((prev) => prev + 1)}}>
+              <button className="buttonParticipant" disabled={participantReduced === 10} onClick={() => {setParticipantReduced((prev) => prev + 1)}}>
                 <p className="t3">+</p>
               </button>
             </div>

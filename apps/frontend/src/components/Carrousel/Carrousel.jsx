@@ -49,7 +49,7 @@ const Carrousel = forwardRef(function Carrousel({ isLoading, setNavigationSelect
           ? photos.map((photo, index) => (
               <div key={index} className="CarouselPhotoItem">
                 <div className="SkeletonOverlay"></div>
-                <img
+                <img 
                   src={photo}
                   alt={`CarrouselPhoto n°${index}`}
                   onLoad={(e) => {

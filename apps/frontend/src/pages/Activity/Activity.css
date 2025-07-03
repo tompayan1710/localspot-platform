@@ -1,0 +1,7 @@
+.Activity{
+    min-height: 100vh;
+}
+.Activity>p{
+    text-align: center;
+    padding-top: 40px;
+}

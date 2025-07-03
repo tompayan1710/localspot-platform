@@ -1,0 +1,7 @@
+.PayementMethode{
+    min-height: 100vh;
+}
+.PayementMethode>p{
+    text-align: center;
+    padding-top: 40px;
+}

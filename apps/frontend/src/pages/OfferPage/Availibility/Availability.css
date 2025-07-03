@@ -59,7 +59,8 @@
     padding: 8px 12px;
     border: none;
     border-radius: 8px;
-    background: linear-gradient(180deg, #ececec, #f2f2f2)
+    background: linear-gradient(180deg, #ececec, #f2f2f2);
+    cursor: pointer;
 }
 .AvailabilityContainer .ParticipantContainer button>p {
     margin: 0;
@@ -191,6 +192,9 @@
   transform: translateX(-50%)  scale(0.8);
   color: var(--blacknormal);
 }
+.AvailabilityContainer .rdp-today.day-has-slots::after {
+  display: none;
+}
 
 
 .AvailabilityContainer .rdp-day_button{
@@ -201,8 +205,11 @@
 
 .AvailabilityContainer .rdp-day {
   text-align: center; /* centre le contenu dans la cellule */
+  color: var(--greydark)!important;
 }
-
+.AvailabilityContainer .rdp-day.day-has-slots {
+  color: var(--greennormal)!important;
+}
 .AvailabilityContainer .rdp-day_button {
   display: block;
   margin: 0 auto; /* centre horizontalement le bouton */
@@ -220,6 +227,9 @@
     margin: 0 auto;
 }
 
+.AvailabilityContainer .rdp-selected.day-has-slots::after{
+    display: none;
+}
 
 .AvailabilityContainer .rdp-disabled{
     opacity: 0.3;
@@ -364,7 +374,7 @@
 
 
 
-.SuivantButton{
+.AvailabilityContainer .SuivantButton{
   background: linear-gradient(180deg, #545454, #373737);
   font-weight: lighter;
   border: none;
@@ -378,4 +388,15 @@
   /* margin-right: 6%; */
   margin-top: 30px;
   margin-bottom: 40px;
+}
+
+.AvailabilityContainer .NoneSlote{
+  margin-top: 10px;
+  background-color: white;
+  border-radius: 12px;
+  padding: 12px;
+  border: 1px solid var(--greysemidark);
+}
+.AvailabilityContainer .NoneSlote>p{
+  color: orange;
 }

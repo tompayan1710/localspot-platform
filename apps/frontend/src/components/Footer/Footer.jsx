@@ -19,7 +19,7 @@ export default function Footer({paddingBottom}) {
 
 
   return (
-    <div className="FooterContainer" style={{ paddingBottom: paddingBottom || "70px" }}>
+    <div id={"Footer"} className="FooterContainer" style={{ paddingBottom: paddingBottom || "70px" }}>
       <img src={ViarteV} alt="ViarteV"/>
       <p className="t6">
         Les offres affichées ont fait l'objet d'une sélection rigoureuse et d’un contrôle qualité strict, dans le but de vous proposer des prestations de grande qualité. 
@@ -28,9 +28,14 @@ export default function Footer({paddingBottom}) {
       <div className="BottomContainer">
         <p className="t5">Language</p>
         <button id="language" className="LanguageButton" onClick={() => {
-          navigate("/edit-language")
+          navigate("/edit-language", {
+            state: {
+              origin: "/",
+              scrollTo: "Footer"
+            }
+          })
         }}>
-          <p className="t6">francais</p>
+          <p className="t6">francais</p> 
           <img src={arrowRight} alt="arrowRight"/>
         </button>
         <p className="t5">Contact</p>

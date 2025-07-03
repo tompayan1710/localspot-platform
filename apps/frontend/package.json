@@ -25,6 +25,7 @@
     "react-router-dom": "^7.5.2",
     "react-scripts": "5.0.1",
     "react-time-picker": "^7.0.0",
+    "recharts": "^3.0.2",
     "replace-color": "^2.3.0",
     "sass": "^1.89.1",
     "serve": "^14.2.4",

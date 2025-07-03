@@ -58,10 +58,14 @@ export default function CreateOfferAddress(){
       console.log("Offre sélectionnée :", type, categories);
     if (!window.google) return;
 
+    // const autocomplete = new window.google.maps.places.Autocomplete(adresseRef.current, {
+    //   types: ["geocode"],
+    //   componentRestrictions: { country: "fr" },
+    // });
     const autocomplete = new window.google.maps.places.Autocomplete(adresseRef.current, {
-      types: ["geocode"],
       componentRestrictions: { country: "fr" },
     });
+
 
     autocomplete.addListener("place_changed", () => {
       const place = autocomplete.getPlace();
@@ -77,12 +81,18 @@ export default function CreateOfferAddress(){
       };
 
       const ville = getComponent(["locality"]) || getComponent(["postal_town"]);
-      const departement = getComponent(["administrative_area_level_2"]);
+      var departement = getComponent(["administrative_area_level_2"]) || getComponent(["administrative_area_level_1"]);;
       //const region = getComponent(["administrative_area_level_1"]); // souvent la région
       //const pays = getComponent(["country"]);
 
       console.log("Ville :", ville);
       console.log("Département :", departement);
+      if(!departement){
+        departement= "default";
+      }
+      const codePostal = getComponent(["postal_code"]) || "";
+
+      console.log("codePostal :", codePostal);
       //console.log("Région :", region);
       //console.log("Pays :", pays);
 

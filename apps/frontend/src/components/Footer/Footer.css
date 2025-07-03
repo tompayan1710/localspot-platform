@@ -57,6 +57,7 @@
     background: linear-gradient(180deg, #e0e0e0, #ffffff);
     margin-left: 15px;
     margin-bottom: 15px;
+    cursor: pointer;
 }
 .FooterContainer .BottomContainer .LanguageButton>p{
     margin: 0;
@@ -86,6 +87,7 @@
 }
 .FooterContainer .BottomContainer .CopyButton>img{
     width: 15px;
+    cursor: pointer;
 }
 .FooterContainer .BottomContainer .CopyButton>.CopiedFeedback{
     position: absolute;

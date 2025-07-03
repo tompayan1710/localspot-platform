@@ -1,8 +1,8 @@
 // src/components/Map2D/MapLabel.jsx
 import { useEffect, useRef } from "react";
 
-export default function MapLabel({ map, position, children }) {
-  const divRef = useRef(document.createElement("div"));
+export default function MapLabel({ map, position, index, children }) {
+  const divRef = useRef();
 
   useEffect(() => {
     if (!map || !position) return;
@@ -24,7 +24,10 @@ export default function MapLabel({ map, position, children }) {
       el.style.position = "absolute";
       el.style.left = `${point.x}px`;
       el.style.top = `${point.y}px`;
-       el.style.transform = "translate(-0%, -100%)";
+      el.style.transform = "translate(-0%, -100%)";
+      if(index !== undefined ){
+        el.style.zIndex = index
+      }
     };
 
     overlay.onRemove = function () {
@@ -36,11 +39,12 @@ export default function MapLabel({ map, position, children }) {
     overlay.setMap(map);
 
     return () => overlay.setMap(null);
-  }, [map, position]);
+  }, [map, position, index]);
 
   return (
     <div
       ref={divRef}
+      // className={`${index > 10 ? "indexElever" : ""} TESTIBIG`}
     >
       {children}
     </div>

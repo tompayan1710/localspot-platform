@@ -13,9 +13,10 @@ const PopUpBottom = forwardRef(({ children, title, onClose , isHeader}, ref) => 
             <button className="closeButton" onClick={onClose}>
                 <img src={crossiconBlack} alt="cross icon"/>
             </button>
-            {
+            <div className="centerBar"></div>
+            {/* {
                 title
-            }
+            } */}
             <div className="PopUpLine"></div>
           </>
         } 

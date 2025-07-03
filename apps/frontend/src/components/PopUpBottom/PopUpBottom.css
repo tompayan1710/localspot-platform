@@ -28,6 +28,14 @@
   flex-direction: column;
   background-color: transparent;
   border: none;
+  cursor: pointer;
+}
+.PopUpBottom>.centerBar{
+  height: 5px;
+  width: 50px;
+  border-radius: 100px;
+  background-color: var(--greysemidark);
+  margin: 25px auto;
 }
 .PopUpBottom>p{
   padding: 0 50px;
@@ -134,10 +142,16 @@
   height: 1.8rem;
   width: 1.8rem;
   border: 1px solid var(--greysemidark);
+  cursor: pointer;
 }
 .PopUpBottom .bodyPopUpBottom>.rowAddParticipant>.row>.buttonParticipant>p{
   font-family: "cookie";
 }
+.PopUpBottom .bodyPopUpBottom>.rowAddParticipant>.row>.buttonParticipant:disabled{
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
 .PopUpBottom .bodyPopUpBottom>.rowAddParticipant>.row>p{
   min-width: 0.8rem;
   text-align: center;

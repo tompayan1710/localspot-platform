@@ -1,0 +1,63 @@
+#CahierTexte{
+    width: 88%;
+    margin: 0 auto;
+    /* box-shadow: 0 10px 10px rgba(0, 0, 0, 0.03); */
+    border-radius: 10px;
+    position: fixed;
+    top: 20px;
+    max-width: 350px;
+    left: 50%;
+    transform: translateX(-50%);
+}
+#CahierTexte .feuille1{
+    background-color: white;
+    border: 1px solid var(--greysemidark);
+    border-radius: 10px;
+    /* box-shadow: 0 0px 20px rgba(0, 0, 0, 0.08); */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.08), inset 0 1px 0 rgba(255,255,255,0.6);
+
+}
+#CahierTexte .feuille2,.feuille3{
+    background-color: white;
+    border-bottom: 1px solid var(--greysemidark);
+    padding-bottom: 2px;
+    border-radius: 10px;
+}
+#CahierTexte .encochesContainer{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+    position: relative;
+    top: -6px;
+}
+#CahierTexte .encochesContainer>.encochesTwo{
+    display: flex;
+    flex-direction: row;
+    gap: 3px;
+}
+#CahierTexte .encoche{
+    height: 12px;
+    width: 3px;
+    /* background-color: var(--greydark); */
+    border-radius: 10px;
+    background: linear-gradient(120deg, var(--greydark), #a3a4a8);
+}
+#CahierTexte .feuille1>.row{
+    padding: 10px 15px;
+    justify-content: space-between;
+    gap: 20px;
+}
+#CahierTexte .feuille1>.row>.row.left>img{
+    width: 60px;
+}
+#CahierTexte .feuille1>.row>.row.left{
+    gap: 20px;
+}
+#CahierTexte .feuille1>.row>.row.left>div{
+    width: 2px;
+    height: 60px;
+    border-right: 1px dashed var(--greydark);
+}
+#CahierTexte .feuille1>.row>.column>p:first-of-type{
+    font-weight: bold;
+}

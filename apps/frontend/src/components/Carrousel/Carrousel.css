@@ -78,6 +78,8 @@
 .carouselContainerPrincipal .CarouselListPhoto .CarouselPhotoItem img.loaded {
   opacity: 1;
   border: 1px solid var(--greymiddledark);
+  user-drag: none;
+  -webkit-user-drag: none;
 }
 
 

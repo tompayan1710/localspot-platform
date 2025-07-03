@@ -11,7 +11,7 @@
   z-index: 10;
   /* box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05); */
   transition: top 0.8s ease-out;
-  opacity: 0;
+  opacity: 1;
   /* background: linear-gradient(to bottom, rgb(255, 255, 255) 0%, rgb(255, 255, 255) 60%, rgba(255, 255, 255, 0) 100%); */
 
 /* 
@@ -41,7 +41,7 @@
     0%{
         top: 0;
         transform: scale(0.9);
-        opacity: 0;
+        opacity: 1;
     }
     50% {
       transform: scale(1.04);
@@ -60,7 +60,18 @@
   opacity: 1!important;
   position: fixed;
   overflow: scroll;
+  max-width: 500px;
+  left: 50%;
+  transform: translateX(-50%)!important; 
+  overflow: scroll;
+  scrollbar-width: none;       /* Firefox */
+  -ms-overflow-style: none;    /* IE 10+ */
 }
+
+.SearchContainer.searchOpen::-webkit-scrollbar {
+  display: none;             /* Chrome, Safari, Opera */
+}
+
 
   .StartSearch {
     display: flex;

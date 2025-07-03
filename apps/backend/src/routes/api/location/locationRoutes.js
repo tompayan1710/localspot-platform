@@ -4,10 +4,10 @@ const router = express.Router();
 const { findOrCreateCityByName } = require("../../../db/Models/AdresseModel");
 
 router.post("/get-or-create-city", async (req, res) => {
-  const { ville, departement } = req.body;
+  let { ville, departement } = req.body;
 
   if (!ville || !departement) {
-    return res.status(400).json({ success: false, message: "Ville ou département manquant." });
+    return res.status(400).json({ success: false, message: "Ville ou départemant manquant !" });
   }
 
   try {

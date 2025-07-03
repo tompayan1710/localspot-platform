@@ -21,5 +21,27 @@ async function getHoteById(id_hote) {
     }
 }
 
+async function getAllHoteBySlug(slug) {
+   console.log("Récupération des hotes pour le slug");
+    try {
+        // ✅ Requête pour obtenir un nouveau token (Refresh Token doit être dans les cookies)
+        const response = await fetch(`${process.env.REACT_APP_API_URL}/api/hote/getall?slug=${slug}`, {
+            method: "GET",
+        });
 
-export {getHoteById};
+        if (response.ok) {
+            const data = await response.json();
+            console.log(data);
+            return data;
+        } else {
+            console.error("❌ Échec Récupération des hotes");
+            return { success: false };
+        }
+    } catch (error) {
+        console.error("❌ Erreur Récupération des hotes : ", error);
+        return { success: false };
+    }
+}
+
+
+export {getHoteById, getAllHoteBySlug};

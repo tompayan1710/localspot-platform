@@ -98,3 +98,27 @@
   font-family: "Playfair Display";
   font-weight: lighter;
 }
+
+
+.MapHotelInfoContainer>.ContainerImage{
+  width: 120px;
+  height: 80px;
+  /* background-color: var(--greylight); */
+  border-radius: 10px;
+}
+.MapHotelInfoContainer>.ContainerImage>img{
+  width: 120px;
+  height: 80px;
+  border-radius: 10px;
+  object-fit: cover;
+}
+.MapHotelInfoContainer>.info{
+  margin-top: 5px;
+  padding: 0 7px;
+  padding-bottom: 5px;
+}
+.MapHotelInfoContainer{
+  width: 120px;
+  background-color: white;
+  border-radius: 10px;
+}

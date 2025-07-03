@@ -1,7 +1,8 @@
 .EditProfilContainer{
     /* background-color: red; */
-    height: 100vh;
+    min-height: 100vh;
     width: 100vw;
+    padding-bottom: 30px;
 }
 
 .EditProfilContainer>.GoBackButton{
@@ -32,12 +33,19 @@
 .EditProfilContainer .ImageContainer{
     position: relative;
     margin: 0 auto;
-    width: 150px;
     margin-top: 50px;
+    width: fit-content;
+    border-radius: 200px;
+    padding: 15px;
+    background-color: var(--beigelight);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
 }
 .EditProfilContainer .ImageContainer>img{
-    width: 150px;
-    height: 150px;
+    width: 100px;
+    height: 100px;
     border-radius: 200px;
 }
 .EditProfilContainer .ImageContainer>button{
@@ -65,7 +73,7 @@
     display: flex;
     flex-direction: column;
     padding: 0 15px;
-    margin-top: 50px;
+    padding-top: 50px;
 }
 .EditProfilContainer form .InputText{
   border: 1px solid #ddd;

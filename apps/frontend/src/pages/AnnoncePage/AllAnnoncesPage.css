@@ -1,0 +1,77 @@
+
+#AnnoncesPage{
+    width: 100%;
+    min-height: 100vh;
+    padding-top: 30px;
+    padding-bottom: 80px;
+}
+
+#AnnoncesPage .StatistiqueAnnonces{
+    width: 88%;
+    height: 300px;
+    margin: 0 auto;
+    background-color: var(--greyverylight);
+    border: 1px solid var(--greysemidark);
+    border-radius: 20px;
+}
+#AnnoncesPage>.row{
+    justify-content: space-between;
+    padding: 0 6%;
+    margin-top: 20px;
+    margin-bottom: 20px;
+}
+#AnnoncesPage>.row>button{
+    padding: 6px;
+    background-color: var(--greylight);
+    border-radius: 100px;
+    border: none;
+    display: flex;
+    flex-direction: column;
+    cursor: pointer;
+}
+#AnnoncesPage>.row>button>img{
+    height: 15px;
+    width: 15px;
+}
+
+#AnnoncesPage>.allAnnonces{
+    width: 100%;
+    padding: 0 6%;
+    display: flex;
+    flex-direction: column;
+    margin-top: 10px;
+    gap: 10px;
+}
+
+#AnnoncesPage>.allAnnonces .AnnonceItem{
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  padding: 8px;
+  border: 1px solid var(--greysemidark);
+  border-radius: 20px;
+  /* box-shadow: 0 0px 20px rgba(0, 0, 0, 0.08); */
+  gap: 10px;
+  background-color: transparent;
+  cursor: pointer;
+}
+#AnnoncesPage>.allAnnonces .AnnonceItem>img{
+  width: 100px;
+  height: 100px; 
+  min-width: 100px;
+  border-radius: 15px;
+  object-fit: cover;
+}
+.p#AnnoncesPage .AnnonceItem .columnAnnonceOffer{
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  margin-left: 10px;
+}
+#AnnoncesPage .AnnonceItem .columnAnnonceOffer>p{
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
