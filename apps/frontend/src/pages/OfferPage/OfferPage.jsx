@@ -4,6 +4,7 @@ import bycicleIcon from "../../assets/images/bycicleIcon.png"
 import carRedIcon from "../../assets/images/carRedIcon.png"
 import validateIcon from "../../assets/images/validateIcon.png"
 import dureeIcon from "../../assets/images/dureeIcon.png"
+import Map2DPin from "../../assets/images/Map2DPin.png"
 import starIcon from "../../assets/images/starIcon.png"
 import Lorier from "../../assets/images/Lorier.png" 
 import customerKing from "../../assets/images/customerKing.png" 
@@ -167,8 +168,9 @@ function allRefsReady() {
           console.log("C'est nulllLLLLLL id", id_qrcode);
         }
 
-
-        setIsLoading(false);
+        setTimeout(() => {
+          setIsLoading(false);
+        }, 1000)
 
         
         } catch (error) {
@@ -321,6 +323,16 @@ function allRefsReady() {
                     </>
                   }
                 </div>
+                <div className={`row adresseText ${isLoading ? "loading shimmer" : ""}`}>
+                  {isLoading ?
+                    <></>
+                    : 
+                    <>
+                      <img src={Map2DPin} alt="map pin icon"/>
+                      <p className="t6">{offer.adresse}</p>
+                    </>
+                  }
+                </div>
               </div>
 
             <div className="Offerhline"></div>     
@@ -377,6 +389,7 @@ function allRefsReady() {
                   <>
                 {
                   hote.latitude && hote.longitude ? (
+                    <>
                     <Map2D
                       center={{ lat: offer.latitude, lng: offer.longitude }}
                       destination={{ lat: hote.latitude, lng: hote.longitude }}
@@ -385,22 +398,34 @@ function allRefsReady() {
                       borderRadius={isExtendMap ? 0 : 35}
                       duration={getShortestDuration(durations)}
                     />
+                    <a 
+                      href={`https://www.google.com/maps/dir/?api=1&origin=${hote.latitude},${hote.longitude}&destination=${offer.latitude},${offer.longitude}&travelmode=driving`}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="OpenInMapsBtn t6"
+                    >
+                      Ouvrir dans Google Maps
+                    </a>
+                    </>
                   ) : 
+                    <>
                     <Map2D
                       center={{ lat: offer.latitude, lng: offer.longitude }}
                       zoom={17}
                       adresseTexte ={offer.adresse ? offer.adresse : ""}
                       borderRadius={isExtendMap ? 0 : 35}
                     />
+                    <a 
+                      href={`https://www.google.com/maps/search/?api=1&query=${offer.latitude},${offer.longitude}`}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="OpenInMapsBtn t6"
+                    >
+                      Voir sur Google Maps
+                    </a>
+                    </>
                 }
-                  <a 
-                  href={`https://www.google.com/maps/dir/?api=1&origin=${hote.latitude},${hote.longitude}&destination=${offer.latitude},${offer.longitude}&travelmode=driving`}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="OpenInMapsBtn t6"
-                >
-                  Ouvrir dans Google Maps
-                </a>
+                  
                 
               </>
               ) : (

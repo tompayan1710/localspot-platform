@@ -293,6 +293,7 @@
   margin-top: 20px;
 }
 
+
 .ContainerOfferPageAll .Offerhline{
   width: 88%;
   height: 1px;
@@ -330,6 +331,9 @@ justify-content: center;
   margin-right: 5px;
 }
 
+.ContainerOfferPageAll .row.adresseText.loading{
+  width: 170px;
+}
 
 
 
