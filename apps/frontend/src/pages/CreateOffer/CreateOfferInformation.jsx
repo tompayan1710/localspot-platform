@@ -146,9 +146,9 @@ export default function CreateOfferInformations(){
 
             const data = await response.json();
 
-            if (response.ok) {
+            if (response.ok) { 
                 console.log("✅ Offre créée :", data);
-                navigate("/profile");
+                navigate(`/annonces/${slug}/availability-editor`);
             } else {
                 console.error("❌ Erreur côté API :", data.error);
                 alert("Erreur lors de la création de l'offre.");
