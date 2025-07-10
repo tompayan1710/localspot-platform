@@ -557,7 +557,7 @@
 }
 
 
-.AvailabilityEditor .rdp-day.today-red > .rdp-day_button {
+.AvailabilityEditor .rdp-day.today-red > .rdp-day_button { 
   color: var(--rednormal);
 }
 

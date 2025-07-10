@@ -2,14 +2,15 @@ import { useNavigate } from "react-router-dom";
 import "./GoBack.css";
 import arrowLeft from "../../assets/images/arrowLeft.png"
 
-export default function GoBack({nagigation, scrollTo, text}){
+export default function GoBack({nagigation, scrollTo, text, state = {}}){
     const navigate = useNavigate();
 
     const handleClick = () => {
-    // Construire l'objet state uniquement si scrollTo est défini
-        const options = scrollTo
-        ? { state: { scrollTo } }
-        : undefined;
+        const options = { state: { ...state } };  // ← on copie tout le state donné
+
+        if (scrollTo) {
+            options.state.scrollTo = scrollTo;  // ← on ajoute scrollTo s’il y en a un
+        }
 
         navigate(nagigation, options);
     };

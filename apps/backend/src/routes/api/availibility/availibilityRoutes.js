@@ -218,10 +218,13 @@ router.get("/getall", async (req, res) => {
   console.log("✅ IN /get !");
   const { slug } = req.query;
 
+   if (!slug) return res.status(400).json({ error: "Paramètre manquant" });
+
   try {
     //RECURING/////////////////////
     const result_reccuring = await pool.query(
-      "SELECT * FROM offer_recurring_slots WHERE slug_offer=$1",
+      `SELECT * FROM offer_recurring_slots 
+      WHERE slug_offer=$1`,
       [slug]
     );
    
@@ -243,6 +246,8 @@ router.get("/getall", async (req, res) => {
         slots
       FROM offer_exceptional_slots
       WHERE slug_offer = $1
+        AND date >= CURRENT_DATE
+        AND date <= CURRENT_DATE + INTERVAL '30 days'
     `, [slug]);
 
     let exceptionalAvailable = {};
@@ -259,7 +264,9 @@ router.get("/getall", async (req, res) => {
       `SELECT to_char(date, 'YYYY-MM-DD') AS date_str,
         slots
       FROM offer_cancel_slots 
-      WHERE slug_offer = $1`,
+      WHERE slug_offer = $1
+        AND date >= CURRENT_DATE
+        AND date <= CURRENT_DATE + INTERVAL '30 days'`,
       [slug]
     );
    

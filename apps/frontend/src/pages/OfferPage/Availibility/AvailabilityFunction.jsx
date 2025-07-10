@@ -14,9 +14,7 @@ import PopUpBottom from "../../../components/PopUpBottom/PopUpBottom";
 import Spinner from "../../../components/Spinner/Spinner";
 
 export default function Availability() {
-  const today = new Date().toLocaleDateString('fr-CA');
-  const [selectedDate, setSelectedDate] = useState(today);
-
+  const [selectedDate, setSelectedDate] = useState(new Date);
   const { slug } = useParams();
   const location = useLocation();
   const price = location.state?.price;
@@ -33,7 +31,6 @@ export default function Availability() {
   const [barStyle, setBarStyle] = useState({ width: 0, angle: 0 });
   const [isOccultView, setIsOccultView] = useState(false);
   const [selectedCreneau, setSelectedCreneau] = useState({index: "no-selected"});
-  const [datesWithSlots, setDatesWithSlots] = useState({});
 
   const ParticipantBottomRef = useRef(null); 
   const LoginBottomRef = useRef(null); 
@@ -53,6 +50,11 @@ export default function Availability() {
     // setSelectedDate(new Date);
   }, []); // ✅ vide = déclenché au premier rendu
 
+  // 2. Un autre pour la date sélectionnée
+
+
+
+  
 
   /*Login*/
   const { authState } = useContext(AuthContext);
@@ -94,6 +96,21 @@ export default function Availability() {
   const [loading, setLoading] = useState(false);
   const [isSuccess, setIsSuccess] = useState(false);
 
+  const [exceptionalAvailable, setExceptionalAvailable] = useState({});
+  const [unavailable, setUnavailable] = useState({});
+
+  const [availability, setAvailability] = useState({
+    monday: [],
+    tuesday: [],
+    wednesday: [],
+    thursday: [],
+    friday: [],
+    saturday: [],
+    sunday: []
+  });
+
+  const [slots, setSlots] = useState([]);
+
   const navigate = useNavigate();
 
   // const { checkAuth } = useContext(AuthContext);
@@ -111,10 +128,16 @@ export default function Availability() {
     }
   }
 
+  const isToday = (selectedDate) => {
+    if (!selectedDate) return false;
 
-
-
-  const [disponnibility, setDisponnibility] = useState({});
+    const today = new Date();
+    return (
+      selectedDate.getFullYear() === today.getFullYear() &&
+      selectedDate.getMonth() === today.getMonth() &&
+      selectedDate.getDate() === today.getDate()
+    );
+  };
 
   const getDisponnibility = async (slug) => {
     try {
@@ -129,140 +152,67 @@ export default function Availability() {
       console.warn(recurring);
       console.warn(exceptionalAvailable);
       console.warn(exceptionalUnavailable);
-  
-      console.log("Réponse API :", status, recurring, exceptionalAvailable, exceptionalUnavailable);
+      setAvailability((prev) => {
+        const newAvailability = {...prev};
 
-
-      const DataReservation= await getCreneauReserved(slug);
-
-      if(!DataReservation.success){
-        console.error("❌: Erreur pendant la récupération des réservations");
-        return;
-      }
-      const allcreneau =  DataReservation.data
-      console.log(allcreneau);
-
-      setDisponnibility(() => {
-        const NewDisponnibility = {};
-        for (let i = 0; i < 30; i++) {
-          const date = new Date(); // aujourd'hui
-          date.setDate(date.getDate() + i); // +i jours
-
-          const formattedDate = date.toLocaleDateString('fr-CA'); // "YYYY-MM-DD"
-          console.log("✅ ", i , " : ", formattedDate);
-
-          const days = ["sunday", "monday", "tuesday", "wednesday", "thursday", "friday", "saturday"];
-          const dayOfWeek = days[date.getDay()];
-
-          const recurringSlots = recurring[dayOfWeek] || [];
-          const exceptional = exceptionalAvailable[formattedDate] || [];
-          const cancellable = exceptionalUnavailable[formattedDate] || []
-          // 🔄 Fusion dans un objet (clé = from-to)
-          const slotsObject = {};
-          for (const slot of recurringSlots) {
-            const key = `${slot.from}-${slot.to}`;
-            if (!slotsObject[key]) {
-              // reservedData.data
-              // const res = await getTotalReserved(slug, formattedDate, slot.from, slot.to);
-              // console.log(res)
-              // slot.total_reserved = res.found ? res.slot.total_reserved : 0;
-              // slot.total_reserved = 
-              slotsObject[key] =  { ...slot};//Pour avoir une ref mémoir différente pour chaque slot de chaque date
-            }
+        for (const day of Object.keys(recurring)) {
+          const newSlots = recurring[day].map(slot => ({
+            ...slot,
+            id: Date.now() + Math.random() // 👈 unique id généré
+          }));
+          newAvailability[day] = newSlots;
           }
+          return newAvailability;
+        })
 
-          for (const slot of exceptional) {
-            const key = `${slot.from}-${slot.to}`;
-            slotsObject[key] = slot;
+        setExceptionalAvailable((prev) => {
+          const newExceptionalAvailable = {...prev};
+
+          for (const day of Object.keys(exceptionalAvailable)) {
+            const newSlots = exceptionalAvailable[day].map(slot => ({
+              ...slot,
+              id: Date.now() + Math.random() // 👈 unique id généré
+            }));
+            newExceptionalAvailable[day] = newSlots;
           }
+          return newExceptionalAvailable;
+        })
 
-          for (const slot of cancellable) {
-            const key = `${slot.from}-${slot.to}`;
-            if (slotsObject[key]) {
-              // slot.cancallable = true;
-              // slotsObject[key] = slot;
-              delete slotsObject[key];
-            }
-          }
-        
-          
-          NewDisponnibility[formattedDate] = slotsObject;
-          // setSlots(() => {
-          //   const slotstemp = []
-          //   Object.entries(slotsObject).map(([_, slot]) => {
-          //     slotstemp.push(slot);
-          //   })
-          //   return slotstemp;
-          // })
-        }
+        setUnavailable(exceptionalUnavailable);
 
-
-
-        // reservedData
-        for(const creneau of allcreneau){
-          const creneauDate = new Date(creneau.date)
-          const formatedDateCreneau = creneauDate.toLocaleDateString('fr-CA');
-        
-          NewDisponnibility[formatedDateCreneau][`${creneau.start_hour}-${creneau.end_hour}`].total_reserved = creneau.total_reserved;
-        }
-
-
-        getValidDates(NewDisponnibility);
-
-
-        // console.log(NewDisponnibility)
-        return NewDisponnibility
-      })
-      } catch (error) {
+        console.log("Réponse API :", status, recurring, exceptionalAvailable, exceptionalUnavailable);
+        } catch (error) {
           console.error("Erreur lors de l’envoi :", error);
       }
         // const response = await fetch(`${process.env.REACT_APP_API_URL}/`);
     }
 
 
-  const getValidDates = (NewDisponnibility) => {
-    const validDates = {};
-
-    Object.entries(NewDisponnibility).forEach(([dateStr, slotsObj]) => {
-      const slots = Object.values(slotsObj);
-      const notCancallableSlots = slots.filter(slot => !slot.cancallable);
-
-      const nb_participants = participantAdult + participantReduced;
-      const validSlots = notCancallableSlots.filter(slot => {
-        const places_disponnibles = total_capacity - (slot.total_reserved || 0);
-        return places_disponnibles >= nb_participants;
-      });
-
-      if (validSlots.length > 0) {
-        validDates[dateStr] = 'green'; // point vert si au moins un slot valide
-      } else if (slots.length > 0) {
-        validDates[dateStr] = 'red'; // point rouge si créneaux mais tous cancellables
-      }
-    });
-
-    setDatesWithSlots(validDates);
-  }
   
+
   useEffect(() => {
-    getValidDates(disponnibility);
-    if(selectedCreneau.index==="no-selected"){
-      return;
-    }else{
-      const creneauSlot = selectedCreneau.slot
-      const slot = disponnibility[selectedDate][`${creneauSlot.from}-${creneauSlot.to}`]
-      if(slot.total_reserved) {
-        if(slot.total_reserved + participantAdult + participantReduced > total_capacity) setSelectedCreneau({index: "no-selected"});
-      } else if(participantAdult+participantReduced > total_capacity){
-        setSelectedCreneau({index: "no-selected"});
-      }
+    console.log(location.state);
+    if (!location.state || !location.state.price) {
+      console.warn("❌ Aucun state ou price reçu !");
+      navigate(`/offer-page/${slug}`);
     }
-  }, [participantAdult, participantReduced])
+    getDisponnibility(slug);
+  }, [])
 
 
-  const getCreneauReserved = async (slug) => {
+  const getTotalReserved = async (slug, date, start_hour, end_hour) => {
     try {
-      const response = await fetch(`${process.env.REACT_APP_API_URL}/api/reservations/getall?offer_slug=${slug}`, {
-        method: "GET",
+      const response = await fetch(`${process.env.REACT_APP_API_URL}/api/reservations/get`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify({
+          offer_slug: slug,
+          date: date,
+          start_hour,
+          end_hour
+        })
       });
 
       const data = await response.json();
@@ -271,34 +221,117 @@ export default function Availability() {
       return data; // ✅ OBLIGATOIRE !
     } catch (error) {
       console.error("❌ Erreur getTotalReserved front :", error);
-      return {}; // ✅ Toujours retourner un objet même en cas d'erreur
+      return { found: false }; // ✅ Toujours retourner un objet même en cas d'erreur
     }
   };
 
 
+  const getSlotsOfByDate = async () => {
+    console.log("Premier rendue")
+    if (selectedDate) {
+      const formattedDate = selectedDate.toLocaleDateString('fr-CA'); // → "2025-07-25"
+      const days = ["sunday", "monday", "tuesday", "wednesday", "thursday", "friday", "saturday"];
+      const dayOfWeek = days[selectedDate.getDay()];
+
+      console.log("✅ Date sélectionnée :", formattedDate);
+      console.log("🕐 Jour de la semaine :", dayOfWeek);
+
+      const recurring = availability[dayOfWeek] || [];
+      const exceptional = exceptionalAvailable[formattedDate] || [];
+      const cancellable = unavailable[formattedDate] || [];
+
+      console.log(recurring);
+      console.log(exceptional);
+      console.log(cancellable);
+      // 🔄 Fusion dans un objet (clé = from-to)
+      const slotsObject = {};
+      for (const slot of recurring) {
+        const key = `${slot.from}-${slot.to}`;
+        if (!slotsObject[key]) {
+          const res = await getTotalReserved(slug, formattedDate, slot.from, slot.to);
+          console.log(res)
+          slot.total_reserved = res.found ? res.slot.total_reserved : 0;
+          // slot.total_reserved = 
+          slotsObject[key] = slot;
+        }
+      }
+
+      for (const slot of exceptional) {
+        const key = `${slot.from}-${slot.to}`;
+        slotsObject[key] = slot;
+      }
+
+      for (const slot of cancellable) {
+        const key = `${slot.from}-${slot.to}`;
+        if (slotsObject[key]) {
+          slot.cancallable = true;
+          slotsObject[key] = slot;
+        }
+      }
+      
+
+      console.log("📦 Objet des créneaux fusionnés :", slotsObject);
+
+      setSlots(() => {
+        const slotstemp = []
+        Object.entries(slotsObject).map(([_, slot]) => {
+          slotstemp.push(slot);
+        })
+        return slotstemp;
+      })
+      
+      // setSlots
+    }
+  }
 
   useEffect(() => {
-    console.log(location.state);
-    if (!location.state || !location.state.price) {
-      console.warn("❌ Aucun state ou price reçu !");
-      navigate(`/offer-page/${slug}`);
-    }
-    const fetchData = async () => {
-      await getDisponnibility(slug);
-    }
-    fetchData();
-  }, [])
+    const fetchSlots = async () => {
+      setSelectedCreneau({ index: "no-selected" });
+      await getSlotsOfByDate();
+    };
+    fetchSlots();
+  }, [selectedDate]);
+
+
+  // 1️⃣ Quand la date change → comme tu fais déjà
+
+
+// 2️⃣ Quand les données changent → pour relancer le calcul une fois les créneaux chargés
+  useEffect(() => {
+    getSlotsOfByDate();
+  }, [availability, exceptionalAvailable, unavailable]);
 
 
   useEffect(() => {
-    console.warn(disponnibility);
-  }, [disponnibility])
-  
+    console.log("SLOTS !")
+    console.log(slots);
+  }, [slots])
 
-  const lastDate = new Date();
-  lastDate.setDate(new Date().getDate() + 31);
-  const dateToCompare = new Date(selectedDate);
-  const isTooFar = dateToCompare > lastDate;
+  const [datesWithSlot, setDatesWithSlot] = useState([]);
+
+useEffect(() => {
+  const daysOfWeek = ["sunday", "monday", "tuesday", "wednesday", "thursday", "friday", "saturday"];
+
+  const result = [];
+
+  for (let i = 0; i < 30; i++) {
+    const date = new Date(); // aujourd'hui
+    date.setDate(date.getDate() + i); // +i jours
+
+    const formatted = date.toLocaleDateString('fr-CA'); // "YYYY-MM-DD"
+    const dayName = daysOfWeek[date.getDay()];
+
+    const recurring = availability[dayName] || [];
+    const exceptional = exceptionalAvailable[formatted] || [];
+
+    // S'il y a au moins un créneau dans l'un ou l'autre
+    if ((recurring && recurring.length > 0) || (exceptional && exceptional.length > 0)) {
+      result.push(date);
+    }
+  }
+
+  setDatesWithSlot(result);
+}, [availability, exceptionalAvailable]);
 
   return (
     <div className="AvailabilityContainer">
@@ -314,11 +347,8 @@ export default function Availability() {
           {/* <p className="t5">Choisissez une date</p> */}
           <DayPicker
             mode="single"
-            selected={new Date(selectedDate)}
-            onSelect={(date) => {
-              setSelectedDate(date ? date.toLocaleDateString('fr-CA') : today)
-              setSelectedCreneau({index: "no-selected"})
-            }}
+            selected={selectedDate}
+            onSelect={setSelectedDate}
             disabled={[{ before: new Date() }]}
             weekStartsOn={1}
             required
@@ -340,99 +370,54 @@ export default function Availability() {
               ),
             }}
             modifiers={{
-              hasGreenSlot: Object.keys(datesWithSlots).filter(dateStr => datesWithSlots[dateStr] === 'green').map(dateStr => new Date(dateStr)),
-              hasRedSlot: Object.keys(datesWithSlots).filter(dateStr => datesWithSlots[dateStr] === 'red').map(dateStr => new Date(dateStr)),
+              hasSlots: datesWithSlot,
             }}
             modifiersClassNames={{
-              hasGreenSlot: 'day-has-slots green',
-              hasRedSlot: 'day-has-slots red',
-            }}         
+              hasSlots: `day-has-slots green`,
+            }}
           />
         </div>
         
         <div className="CreneauPicker" ref={creneauRef}>
           <p className="t5">Creneaux disponnibles : </p>
           {
-            isTooFar ? <div className="NoneSlote">
-              <p className="t5">Clara ma copine d'amour</p>
-            </div>
-            :
-            disponnibility[selectedDate] && Object.keys(disponnibility[selectedDate]).length > 0 ? (
-              Object.values(disponnibility[selectedDate]).map((slot, index) => {
-
-                const places_disponnibles = total_capacity - (slot.total_reserved || 0);
-                const nb_participants = participantAdult + participantReduced;
-                const isReservable = places_disponnibles >= nb_participants;
-
-                return (
-                <div key={index} 
-                  className={`CreneauItem ${selectedCreneau.index === `${selectedDate}-${index}` ? "selected" : ""} 
-                              ${places_disponnibles === 0 && "complete"} ${!isReservable && "notReservable" }`} 
-                      onClick={() => {
-                        if(isReservable){
-                          setSelectedCreneau({index : `${selectedDate}-${index}`, slot: slot})
-                        }else{
-                          setSelectedCreneau({index: "no-selected"})
-                        }}}>
-                  {
-                    places_disponnibles === 0 &&
-                    <>
-                    <div className="CompleteOverlay">
-                      <p className="t5">COMPLET</p>
-                    </div>
-                    <div className={`NoCreneau`}  
-                      style={{
-                        '--bar-width': `${barStyle.width}px`,
-                        '--bar-angle': `${barStyle.angle}deg`,
+            slots.length > 0 ?
+            slots.map((slot,index) => (
+              <div key={index} className={`CreneauItem ${selectedCreneau.index === `${selectedDate}-${index}` ? "selected" : ""} ${slot.cancallable ? "Full" : ""}`} 
+                    onClick={() => {
+                      if(slot.cancallable){
+                        setSelectedCreneau({index: "no-selected"})
+                      }else{
+                        setSelectedCreneau({index : `${selectedDate}-${index}`, slot: slot})
+                      }}}>
+                {
+                  slot.cancallable ?
+                    <div className="NoCreneau" 
+                    style={{
+                      '--bar-width': `${barStyle.width}px`,
+                      '--bar-angle': `${barStyle.angle}deg`
                     }}></div>
-                    </>
-                    
-                  }
-                  <div className="CreneauContent">
-                    { 
-                      isReservable ?
-                        <>
-                        <div>
-                          <p className="t6">Il reste actuellement :</p>
-                          <p className={`greenColor t6`}>{places_disponnibles} places</p>
-                        </div>
-                        </>
-                        : 
-                        <>
-                        {
-                          places_disponnibles!==0 &&
-                          <div className={`NoCreneau`}  
-                          style={{
-                            '--bar-width': `${barStyle.width}px`,
-                            '--bar-angle': `${barStyle.angle}deg`,
-                        }}></div>
-                        }
-                      
-                        <div>
-                          <p className="t6">Il reste actuellement :</p>
-                          <p className={`redColor t6`}>{places_disponnibles} places</p>
-                          <p className={`redColor t6`}> Vous êtes trop nombreux.</p>
-                        </div>
-                        </>
-                    }
-                    <p className="t5">{slot.from} - {slot.to}</p>
-                  </div>
+                    : <></>
+                }
+                <div>
+                  <p className="t6">Il reste actuellement :</p>
+                  <p className={`${total_capacity - slot.total_reserved > 4 ? "greenColor" : "orangeColor"} t6`}>{total_capacity - slot.total_reserved} places</p>
                 </div>
-                )
-              }))
-              :
-              <div className="NoneSlote">
-                <p className="t5">Aucun créneau n'est disponible pour ce jour.</p>
+                <p className="t5">{slot.from} - {slot.to}</p>
               </div>
-            }
-
-            <div className={`CancelContainer ${selectedCreneau.index!=="no-selected" && OfferIsCancellable ? "selected" : ""}`}>
-              <img src={VerifyIcon} alt="verify icon"/>
-              <p className="t6">
-                Date limite d’annulation gratuite : {new Date(new Date(selectedDate).setDate(new Date(selectedDate).getDate() + 1)).toLocaleDateString('fr-FR', { day: '2-digit', month: 'long' })} {selectedCreneau.slot ? ` à ${selectedCreneau.slot.from}` : "00:00"}.
-              </p>
+            ))
+             :
+            <div className="NoneSlote">
+              <p className="t5">Aucun créneau n'est disponible pour ce jour.</p>
             </div>
-            
+          }
+          
+          <div className={`CancelContainer ${selectedCreneau.index!=="no-selected" && OfferIsCancellable ? "selected" : ""}`}>
+            <img src={VerifyIcon} alt="verify icon"/>
+            <p className="t6">
+              Date limite d’annulation gratuite : {new Date(new Date(selectedDate).setDate(new Date(selectedDate).getDate() + 1)).toLocaleDateString('fr-FR', { day: '2-digit', month: 'long' })} {selectedCreneau.slot ? ` à ${selectedCreneau.slot.from}` : "00:00"}.
+            </p>
+          </div>
         </div>
       </div>
       {/* {selectedDate && (
@@ -473,7 +458,7 @@ export default function Availability() {
       </div>
       <div className="payementInfoContainer">
         <div className="row">
-          <p className="t6">{selectedDate}</p>
+          <p className="t6">{selectedDate.toDateString()}</p>
           {/* <p className="t6">{selectedCreneau.slot.from} - {selectedCreneau.slot.to}</p> */}
         </div>
         <div className="payementSeparation"></div>
@@ -533,7 +518,8 @@ export default function Availability() {
         ref={ParticipantBottomRef}
       >
         <>
-          <p className="t5">En tout il y a <strong>{total_capacity} places</strong></p>
+          <p className="t6">En tout il y a <strong>{total_capacity} places</strong></p>
+          <p className="t6">il reste actuellement <strong className={`${10<3 ? "short" : ""}`}>10 places</strong></p>
           <div className="AnimationHuman">
 
           </div>
@@ -548,13 +534,13 @@ export default function Availability() {
             </div>
             <div className="row">
               <button className="buttonParticipant" disabled={participantAdult === 1} onClick={() => {
-                setParticipantAdult((prev) => prev - 1);
+                setParticipantAdult((prev) => prev - 1)
               }}>
                 <p className="t3">-</p>
               </button>
               <p className="t4">{participantAdult}</p>
               <button className="buttonParticipant" disabled={participantAdult === 10} onClick={() => {
-                setParticipantAdult((prev) => prev + 1);
+                setParticipantAdult((prev) => prev + 1)
               }}>
                 <p className="t3">+</p>
               </button>
@@ -567,14 +553,12 @@ export default function Availability() {
             </div>
             <div className="row">
               <button className="buttonParticipant" disabled={participantReduced === 0} onClick={() => {
-                setParticipantReduced((prev) => prev - 1);
+                setParticipantReduced((prev) => prev - 1)
                 }}>
                 <p className="t3">-</p>
               </button>
               <p className="t4">{participantReduced}</p>
-              <button className="buttonParticipant" disabled={participantReduced === 10} onClick={() => {
-                setParticipantReduced((prev) => prev + 1);
-                }}>
+              <button className="buttonParticipant" disabled={participantReduced === 10} onClick={() => {setParticipantReduced((prev) => prev + 1)}}>
                 <p className="t3">+</p>
               </button>
             </div>

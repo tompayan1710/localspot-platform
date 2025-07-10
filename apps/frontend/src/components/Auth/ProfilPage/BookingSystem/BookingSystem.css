@@ -159,3 +159,16 @@
     top: 0; /* ← retire ce que tu avais ici */
     margin-left: 5px;
 }
+
+
+
+.saveBtn {
+  padding: 10px 16px;
+  background-color: #007BFF;
+  border: none;
+  border-radius: 8px;
+  color: white;
+  font-weight: bold;
+  cursor: pointer;
+  margin-top: 15px;
+}

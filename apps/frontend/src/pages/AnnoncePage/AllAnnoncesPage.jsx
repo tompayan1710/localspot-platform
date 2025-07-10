@@ -67,7 +67,7 @@ export default function AllAnnoncesPage(){
                     </button>
                     )) : 
                     <div className="noOffer"></div>
-                }
+                } 
             </div>
         </div>
     )

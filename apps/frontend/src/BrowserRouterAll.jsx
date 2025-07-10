@@ -93,6 +93,7 @@ export default function BrowserRouterAll(){
             <Route path="/today" element={<Today />} />
 
             <Route path="/calendar" element={<Calendar />} />
+ 
 
             <Route path="/annonces" element={<AllAnnoncesPage />} />
             <Route path="/annonces/:slug" element={<AnnoncePage />} />

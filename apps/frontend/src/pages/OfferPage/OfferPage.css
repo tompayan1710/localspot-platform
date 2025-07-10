@@ -331,10 +331,6 @@ justify-content: center;
   margin-right: 5px;
 }
 
-.ContainerOfferPageAll .row.adresseText.loading{
-  width: 170px;
-}
-
 
 
 
@@ -381,7 +377,7 @@ justify-content: center;
   padding: 0 6%; 
   padding-top: 30px;
   height: 60vh;
-  padding-bottom: 60px;
+  padding-bottom: 65px;
   min-height: 450px;
   position: relative;
 }
@@ -397,8 +393,10 @@ justify-content: center;
 .ContainerOfferPageAll .OfferMapContainer .OpenInMapsBtn{
   color: var(--greydark);
   margin-top: 10px;
+  padding-bottom: 10px;
   display: block;
   width: fit-content;
+  color: blue;
 }
 .offerContainer .OfferMapContainer>button {
     position: absolute;
@@ -463,6 +461,25 @@ justify-content: center;
   }
 }
 
+.ContainerOfferPageAll .adresseContainer{
+  width: 100%;
+  margin-top: 15px;
+  align-self: flex-start;
+}
+.ContainerOfferPageAll .adresseContainer.loading{
+  width: 80%;
+  margin: 10px 0;
+}
+.ContainerOfferPageAll .adresseContainer img{
+  height: 18px;
+  margin-right: 5px;
+}
+
+.ContainerOfferPageAll .adresseText {
+  max-width: 100%;
+  word-break: break-word;
+  width: fit-content;
+}
 
 
 

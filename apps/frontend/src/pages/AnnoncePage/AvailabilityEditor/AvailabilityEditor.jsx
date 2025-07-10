@@ -314,7 +314,7 @@ export default function AvailabilityEditor(){
                             setIsOpen((prev) => ({
                                 ...prev,
                                 [day]: !prev[day],
-                            }))
+                            })) 
 
                             if(availability[day].length===0){
                                 setAvailability((prev) => ({

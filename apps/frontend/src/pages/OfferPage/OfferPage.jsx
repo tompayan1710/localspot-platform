@@ -48,6 +48,7 @@ export default function OfferPage() {
   const CancelBottomRef = useRef(null);
   const ParticipantBottomRef = useRef(null);
   const refOfferMapContainer = useRef(null);
+  const refAdresse = useRef(null);
 
   const [offer, setOffer] = useState({});
   const [qrcode, setQRCode] = useState({});
@@ -139,7 +140,9 @@ function allRefsReady() {
   };
 
 
-
+  const getMaximumParticipants = async () => {
+    
+  }
     
   useEffect(() => {
     async function loadData(slug) {
@@ -150,15 +153,19 @@ function allRefsReady() {
         setOffer(offerData.offer);
         console.log(offerData.offer);
 
+        
+
          if(id_qrcode){
           console.log("Mon id est :", id_qrcode);
           const qrcodeData = await getQRCodeById(id_qrcode);
           if (!qrcodeData.success) return;
           setQRCode(qrcodeData.qrcode);
 
+
           const hoteData = await getHoteById(qrcodeData.qrcode.id_hote);
           if (!hoteData.success) return;
           setHote(hoteData.hote);
+
           await fetchDurations(offerData.offer, hoteData.hote);
 
           setTimeout(() => {
@@ -242,6 +249,16 @@ function allRefsReady() {
     }
 
 
+  useEffect(() => {
+    if (offer.latitude && offer.longitude && !isLoading && refAdresse.current) {
+      const hauteur = refAdresse.current.offsetHeight;
+      console.log("Hauteur du P :", hauteur, "px");
+
+      refOfferMapContainer.current.style.paddingBottom=`calc(${hauteur}px + 45px)`
+    }
+  }, [isLoading]);
+
+
     return (
       <div className="offerContainer" ref={offerContainerRef}>
         <div className={`OfferPageAnimation ${!isAnimation ? "Without" : ""}`} ref={OfferPageAnimationRef}>
@@ -323,16 +340,7 @@ function allRefsReady() {
                     </>
                   }
                 </div>
-                <div className={`row adresseText ${isLoading ? "loading shimmer" : ""}`}>
-                  {isLoading ?
-                    <></>
-                    : 
-                    <>
-                      <img src={Map2DPin} alt="map pin icon"/>
-                      <p className="t6">{offer.adresse}</p>
-                    </>
-                  }
-                </div>
+                
               </div>
 
             <div className="Offerhline"></div>     
@@ -398,6 +406,14 @@ function allRefsReady() {
                       borderRadius={isExtendMap ? 0 : 35}
                       duration={getShortestDuration(durations)}
                     />
+                    <div className={`row adresseContainer ${isLoading ? "loading shimmer" : ""}`}>
+                      {!isLoading && (
+                        <>
+                          <img src={Map2DPin} alt="map pin icon" />
+                          <p ref={refAdresse} className="adresseText">{offer.adresse}</p>
+                        </>
+                      )}
+                    </div>
                     <a 
                       href={`https://www.google.com/maps/dir/?api=1&origin=${hote.latitude},${hote.longitude}&destination=${offer.latitude},${offer.longitude}&travelmode=driving`}
                       target="_blank"
@@ -415,6 +431,14 @@ function allRefsReady() {
                       adresseTexte ={offer.adresse ? offer.adresse : ""}
                       borderRadius={isExtendMap ? 0 : 35}
                     />
+                    <div className={`row adresseContainer ${isLoading ? "loading shimmer" : ""}`}>
+                    {!isLoading && (
+                      <>
+                        <img src={Map2DPin} alt="map pin icon" />
+                        <p ref={refAdresse} className="t6 adresseText">{offer.adresse}</p>
+                      </>
+                    )}
+                  </div>
                     <a 
                       href={`https://www.google.com/maps/search/?api=1&query=${offer.latitude},${offer.longitude}`}
                       target="_blank"
@@ -519,7 +543,7 @@ function allRefsReady() {
                       <div className="rankGoldProgression"></div>
                     </div>
                     <p key={`number${myindex}`} className="t6 starEnd">{myindex*25}</p>
-</React.Fragment>
+                </React.Fragment>
                   )
                 })
               }
@@ -558,10 +582,13 @@ function allRefsReady() {
             <button className="ReserveButton" onClick={() => {
               navigate(`/offer-page/${slug}/availibility`, {
                 state: {
+                  title: offer.title,
+                  adresse: offer.adresse,
                   price: offer.price,
                   participantAdult: participantAdult,
                   participantReduced: participantReduced,
-                  OfferIsCancellable: offer.cancellable
+                  OfferIsCancellable: offer.cancellable,
+                  total_capacity: offer.total_capacity,
                 }
               })
             }}>Voir les<br></br>disponnibilités</button>

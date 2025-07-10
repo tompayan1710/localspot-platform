@@ -100,6 +100,7 @@ body{
   --lineargradientgreen: linear-gradient(to bottom, #c4f5c1, #7de276);
   --lineargradientgreenRight: linear-gradient(to right, #b5edb1, var(--greennormal));
   --lineargradientred: linear-gradient(180deg, #fcb3b3, var(--rednormal));
+  --lineargradienyellow: linear-gradient(180deg, #f0fcb3, var(--yellownormal));
   --maxsize: 500px;
 }
 
@@ -121,6 +122,16 @@ a{
 .t4{ font-size: 1rem; }
 .t5{ font-size: 0.825rem; }
 .t6{ font-size: 0.7rem; }
+
+.greenColor{
+  color: var(--greennormal);
+}
+.orangeColor{
+  color: orange;
+}
+.redColor{
+  color: var(--rednormal);
+}
 
 .row{
   display: flex;

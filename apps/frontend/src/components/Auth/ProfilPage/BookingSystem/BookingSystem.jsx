@@ -88,6 +88,54 @@ export default function BookingSystem() {
   };
 
 
+
+
+async function saveCreneau({
+  provider_id,
+  offerSlug,
+  date,
+  start_hour,
+  end_hour,
+  location,
+  participants,
+  totalPrice
+}) {
+  try {
+    const response = await fetch(`${process.env.REACT_APP_API_URL}/api/google/save-creaneau`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        provider_id,
+        offerSlug,
+        date,
+        start_hour,
+        end_hour,
+        location,
+        participants,
+        totalPrice
+      })
+    });
+
+    const data = await response.json();
+
+    if (data.success) {
+      if (data.action === "created") {
+        alert("✅ Créneau ajouté au Google Calendar !");
+      } else if (data.action === "updated") {
+        alert("✅ Créneau mis à jour dans Google Calendar !");
+      }
+    } else {
+      alert("❌ Erreur lors de l’enregistrement du créneau");
+    }
+
+    return data;
+  } catch (error) {
+    console.error("❌ Erreur lors de la sauvegarde :", error);
+    alert("❌ Problème de connexion ou de serveur");
+    return null;
+  }
+}
+
   /*///////////////////////////*/
 
   return (
@@ -96,6 +144,24 @@ export default function BookingSystem() {
 
       <button onClick={connectGoogle} className="connectBtn">Connecter Google Calendar</button>
       <button onClick={getEvents} className="connectBtn">Voir événements</button>
+      <button
+        className="saveButton"
+        onClick={() => {
+          saveCreneau({
+            provider_id: authState.user?.provider_id,
+            offerSlug: "BIG TOM",
+            date: "2025-07-04",
+            start_hour: "10:00",
+            end_hour: "12:00",
+            location: "Enden",
+            participants: 7,
+            totalPrice: 200
+          });
+        }}
+      >
+        Enregistrer ou modifier le créneau
+      </button>
+
       {/* <button onClick={addEvent} className="connectBtn">Ajouter événement</button> */}
 
       <div className="DayCreneaux">
@@ -120,7 +186,7 @@ export default function BookingSystem() {
                 >
                   <div></div>
                 </button>
-              </div>
+              </div> 
               <div className="column"
                 style={{
                   maxHeight: `${heights[day] || 0}px`,

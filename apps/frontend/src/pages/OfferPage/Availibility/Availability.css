@@ -154,7 +154,7 @@
     align-items: center;
     justify-content: center;
     --rdp-accent-color: red;
-    --rdp-today-color: var(--greennormal);
+    --rdp-today-color: var(--greydark);
     --rdp-selected-border: none;/*Bordure du jour selectionné*/
     --rdp-day_button-height: 37px;
     --rdp-day_button-width: 37px;
@@ -205,11 +205,16 @@
 
 .AvailabilityContainer .rdp-day {
   text-align: center; /* centre le contenu dans la cellule */
-  color: var(--greydark)!important;
+  color: var(--greydark);
 }
 .AvailabilityContainer .rdp-day.day-has-slots {
-  color: var(--greennormal)!important;
+  color: var(--greennormal);
 }
+.AvailabilityContainer .rdp-day.day-has-slots.red {
+  color: var(--rednormal);
+}
+
+
 .AvailabilityContainer .rdp-day_button {
   display: block;
   margin: 0 auto; /* centre horizontalement le bouton */
@@ -319,14 +324,48 @@
   box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
   background: linear-gradient(to bottom, #b5edb1, var(--greenlight));;
 }
-.AvailabilityContainer .CreneauPicker>.CreneauItem.Full{
-  opacity: 0.6;
+
+.AvailabilityContainer .CreneauPicker>.CreneauItem.notReservable{
+  background-color: var(--greyverylight);
 }
 
+.AvailabilityContainer .CreneauPicker>.CreneauItem>.CreneauContent{
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+}
 
+/* .CreneauItem.Full::after { 
+  content: "COMPLET";
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  filter: blur(2px);
+} */
 
+.CreneauItem.complete .CreneauContent {
+  filter: blur(2px);
+}
 
-.AvailabilityContainer .CreneauPicker > .CreneauItem > .NoCreneau {
+.CompleteOverlay {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  color: white;
+  pointer-events: none;
+  z-index: 2;
+}
+.CompleteOverlay p{
+  color: var(--greydark);
+  font-weight: bold;
+  text-shadow: 0px 2px 15px rgba(0,0,0,0.2);
+}
+
+.AvailabilityContainer .CreneauPicker > .CreneauItem .NoCreneau {
   position: absolute;
   top: 0;
   left: 0;
@@ -359,7 +398,8 @@
   max-height: 0;
   overflow: hidden;
   transition: all 0.4s ease-in-out;
-  padding: 0px 18px;
+  padding: 0px 0px;
+  margin-top: 0px;
 }
 .AvailabilityContainer .CreneauPicker>.CancelContainer>img{
   height: 13px;
@@ -367,7 +407,7 @@
 }
 .AvailabilityContainer .CreneauPicker>.CancelContainer.selected {
   opacity: 1;
-  max-height: 200px; /* suffisamment grand pour son contenu */
+  max-height: 46px; /* suffisamment grand pour son contenu */
   margin-top: 20px;
   padding: 15px 18px;
 }
@@ -401,3 +441,4 @@
 .AvailabilityContainer .NoneSlote>p{
   color: orange;
 }
+
