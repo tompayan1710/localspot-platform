@@ -295,11 +295,18 @@ animation: slideUpHome 0.8s ease forwards;
 .HomeContainer .ConnectYourSelf{
   width: 80%;
   margin: 0 auto;
-  margin-top: 30px;
-  margin-bottom: 30px;
+  margin-top: 40px;
+  margin-bottom: 50px;
   display: flex;
   flex-direction: column;
   justify-content: center;
+}
+.HomeContainer .ConnectYourSelf>p{
+  text-align: center;
+  margin-bottom: 10px;
+}
+.HomeContainer .ConnectYourSelf>p:first-of-type{
+  margin-bottom: 20px;
 }
 .HomeContainer .ConnectYourSelf button {
     background: linear-gradient(180deg, #545454, #373737);
@@ -313,10 +320,6 @@ animation: slideUpHome 0.8s ease forwards;
 
 .HomeContainer .ConnectYourSelf button>p {
   color: white;
-}
-
-.HomeContainer .ConnectYourSelf>p{
-  text-align: center;
 }
 
 .ConnectYourSelf .row{
@@ -345,7 +348,7 @@ animation: slideUpHome 0.8s ease forwards;
   margin: 0 auto;
   margin-top: 30px;
   margin-bottom: 30px;
-  gap: 3px;
+  gap: 15px;
   box-shadow: 0 2px 20px rgba(0, 0, 0, 0.07);
 }
 .freeConcelation>.hline:first-of-type{

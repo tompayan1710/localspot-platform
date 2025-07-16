@@ -358,7 +358,8 @@ import TopSearchBar from "../components/SearchBar/TopSearchBar";
             </div>
 
             <div className="ConnectYourSelf">
-              <p className="t4">Accédez à toutes les fonctionnalités en vous connectant ou en créant un compte</p>
+              <p className="t3">Rejoingnez-nous !</p>
+              <p className="t5">Accédez à toutes les fonctionnalités en vous connectant ou en créant un compte</p>
               <button>
                 <p className="t5">S'inscrire</p>
               </button>
