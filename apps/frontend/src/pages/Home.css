@@ -97,7 +97,7 @@
 .HomeContainerPrincipal .IntroUIContainer{
   --marginP: min(100vw, 500px);
   width: 100%;
-  margin-top: calc(var(--marginP)/10);
+  margin-top: calc(var(--marginP)/8);
   margin-bottom: 40px;
 }
 .HomeContainerPrincipal .IntroUIContainer>.Images{
@@ -106,19 +106,32 @@
   flex-direction: row;
   justify-content: center;
 }
-.HomeContainerPrincipal .IntroUIContainer>.Images>img{
+.HomeContainerPrincipal .IntroUIContainer>.Images>.ImageWrapper{
   width: 40%;
   aspect-ratio: 0.75;
-
   position: relative;
   border-radius: 20px;
-  object-fit: cover;
-  box-shadow: 0px 0px 30px rgba(0, 0, 0, 0.3);
+  box-shadow: 0px 0px 30px rgba(0, 0, 0, 0.2);
+  /* box-shadow: 0 2px 20px rgba(0, 0, 0, 0.07); */
+  display: flex;
+  flex-direction: column;
+  background-color: var(--greylight);
+  transition: box-shadow 0.6s ease-in-out;
 }
-.HomeContainerPrincipal .IntroUIContainer>.Images>img:first-of-type{
+.HomeContainerPrincipal .IntroUIContainer>.Images>.ImageWrapper.loading{
+  box-shadow: 0px 0px 20px rgba(0, 0, 0, 0.1);
+  outline: 1px solid var(--greysemidark);
+}
+.HomeContainerPrincipal .IntroUIContainer>.Images>.ImageWrapper>img{
+  width: 100%;
+  height: 100%;
+  border-radius: 20px;
+  object-fit: cover;
+}
+.HomeContainerPrincipal .IntroUIContainer>.Images>.ImageWrapper:first-of-type{
   transform: rotate(-4deg) translateX(80%) ;
 }
-.HomeContainerPrincipal .IntroUIContainer>.Images>img:last-of-type{
+.HomeContainerPrincipal .IntroUIContainer>.Images>.ImageWrapper:last-of-type{
   transform: rotate(7deg) translateX(-80%) translateY(40%);
 }
 
@@ -172,19 +185,33 @@ animation: slideUpHome 0.8s ease forwards;
   height: fit-content;
   margin: 0 auto;
   border-radius: 38px;
-  box-shadow: 0 2px 20px rgba(0, 0, 0, 0.07);
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
   margin-bottom: 30px;
   position: relative;
-  background-color: green;
   display: flex;
   flex-direction: column;
+  aspect-ratio: 1;
+  background-color: var(--greylight);
+  transition: box-shadow 0.6s ease-in-out;
+}
+.HomeContainer .SelectingToday.loading{
+  box-shadow: 0px 0px 20px rgba(0, 0, 0, 0.1);
+  outline: 1px solid var(--greysemidark);
 }
 .HomeContainer .SelectingToday>img{
   width: 100%;
-  aspect-ratio: 1;
+  height: 100%;
   object-fit: cover;
   border-radius: 38px;
 }
+.HomeContainer .SelectingToday>img.loading{
+  opacity: 0;
+  transition: opacity 0.4s ease;
+} 
+.HomeContainer .SelectingToday>img.loaded{
+  opacity: 1;
+  transition: opacity 0.4s ease;
+} 
 .HomeContainer .SelectingToday>button {
     position: absolute;
     top: 15px;
@@ -253,6 +280,15 @@ animation: slideUpHome 0.8s ease forwards;
   width: 13px;
   filter: invert(1);
 }
+.HomeContainer .SelectingToday .Squelleton {
+  width: 100%;
+  aspect-ratio: 1;
+  background-color: var(--greylight);
+  border-radius: 36px;
+  border: 1px solid var(--greysemidark);
+}
+
+
 
 
 
@@ -297,41 +333,41 @@ animation: slideUpHome 0.8s ease forwards;
   text-align: center;
 }
 
+
+
+
 .freeConcelation{
   display: flex;
   flex-direction: column;
-  justify-content: center;
+  justify-content: space-between;
   align-items: center;
-  width: 88%;
+  width: 100%;
   margin: 0 auto;
   margin-top: 30px;
   margin-bottom: 30px;
-  border: 1px solid var(--greysemidark);
-  border-radius: 38px;
-  gap: 10px;
-  /* background: linear-gradient(to bottom, #c4f5c1, #7de276); */
+  gap: 3px;
+  box-shadow: 0 2px 20px rgba(0, 0, 0, 0.07);
 }
+.freeConcelation>.hline:first-of-type{
+  margin-bottom: 20px;
+}
+.freeConcelation>.hline:last-of-type{
+  margin-top: 20px;
+}
+
 .freeConcelation p{
   text-align: center;
 }
-.freeConcelation>p{
-  /* color: var(--greennormal); */
-}
 .freeConcelation button{
   background: var(--lineargradientgreen);
-  border-radius: 100px;
-  box-shadow: 0 4px 5px rgba(0, 0, 0, 0.03);
+  border-radius: 8px;
+  padding: 7px 14px;
   border: none;
-  height: 2.5rem;
-  padding: 10px 15px;
-  width: calc(100% - 2*15px);
-  margin-bottom: 15px;
+  margin-top: 10px;
 }
 .freeConcelation button>p{
   color: white;
 }
-
-
 
 
 .HomeSectionContainer{

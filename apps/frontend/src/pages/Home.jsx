@@ -61,7 +61,7 @@ import TopSearchBar from "../components/SearchBar/TopSearchBar";
     const searchBarRef = useRef(null);
     const [HomeOffers, setHomeOffers] = useState([]);
     const [loading, setLoading] = useState(true);
-
+    const [selectingOfferToday, setSelectingOfferToday] = useState({})
 
     useEffect(() => {
       if (scrollTo) {
@@ -105,6 +105,7 @@ import TopSearchBar from "../components/SearchBar/TopSearchBar";
           console.warn(offers);
           setHomeOffers(offers);
 
+          setSelectingOfferToday(offers[0]);
 
           const classified = classifyOffers(offers, null); // si tu as la localisation
           //                                        userLocation
@@ -220,29 +221,42 @@ import TopSearchBar from "../components/SearchBar/TopSearchBar";
         </div> */}
         <div className="IntroUIContainer">
           <div className="Images">
-            <img src={NiceIntro2} alt="Intro ui images"/>
-            <img src={NiceIntro1} alt="Intro ui images"/>
+            <div className={`ImageWrapper ${loading && "loading shimmer"}`}>
+              {
+                !loading && <FadeInImage src={NiceIntro2} alt="Intro ui images"/>
+              }
+            </div>
+            <div className={`ImageWrapper ${loading && "loading shimmer"}`}>
+              {
+                !loading && <FadeInImage src={NiceIntro1} alt="Intro ui images"/>
+              }
+            </div>
           </div>
           <p className="t32">Because <strong>memories</strong><br></br> deserve to be more than<br></br>just words!</p>
         </div>
         <div ref={HomePageRef} className="HomeContainer">
-          <div className="SelectingToday">
-            <img src={yogo1} alt="selecting activity"/>
-            <button>
-              <img src={extendIcon} alt="extend Icon"/>
-            </button>
-            <div className="InfoOffer row">
-              <div className="column">
-                <p className="t5 maxLine">Cours de yoga en pleine aire avec tom</p>
-                <div className="row adresse">
-                  <img src={Map2dPinWhite} alt="map 2d pin white"/>
-                  <p className="t6 maxLine">04 place Godeau</p>
+          <div  className={`SelectingToday ${loading && "loading shimmer"}`}>
+            {
+              !loading &&
+              <>
+              <FadeInImage src={yogo1} alt="selecting activity"/>
+              <button>
+                <img src={extendIcon} alt="extend Icon"/>
+              </button>
+              <div className="InfoOffer row">
+                <div className="column">
+                  <p className="t5 maxLine">Cours de yoga en pleine aire avec tom</p>
+                  <div className="row adresse">
+                    <img src={Map2dPinWhite} alt="map 2d pin white"/>
+                    <p className="t6 maxLine">04 place Godeau</p>
+                  </div>
+                </div>
+                <div className="GoTo">
+                  <img src={ArrowTopRight}/>
                 </div>
               </div>
-              <div className="GoTo">
-                <img src={ArrowTopRight}/>
-              </div>
-            </div>
+              </>
+            }
           </div>
           <div className="HomeSectionContainer">
             {/* <div className="IntroImage">
@@ -466,13 +480,15 @@ import TopSearchBar from "../components/SearchBar/TopSearchBar";
 
             {/* <p className="t6">disponnible aujourd'huit</p> */}
             <div className="freeConcelation">
+              <div className="hline"></div>
               <p className="t3">Annulation Gratuite</p>
-              <p className="t4">
-                Les prestataires peuvent activer l’annulation gratuite et définir le délai minimal avant lequel un client peut annuler sa réservation.
+              <p className="t5">
+                  Les prestataires peuvent activer l’annulation gratuite avec un délai minimum.
               </p>
               <button>
-                <p className="t5">Voir la politique d’annulation</p>
+                <p className="t6">Politique d'annulation</p>
               </button>
+              <div className="hline"></div>
             </div>
 
 
