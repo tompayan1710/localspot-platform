@@ -13,10 +13,18 @@ const AuthProvider = ({ children }) => {
     });
 
     
+
     useEffect(() => {
-        console.log("AuthProvider : Je vérifie avec un checkAuth");
-        checkAuth();
-    }, [])
+        const token = localStorage.getItem("jwtToken");
+        if (token) {
+            console.log("AuthProvider : Je vérifie avec un checkAuth");
+            checkAuth();
+        } else {
+            console.log("AuthProvider : Pas de token je ne fait pas un checkAuth");
+            setAuthState({ user: null, isAuth: false, message: "", loading: false });
+        }
+    }, []);
+
 
     const checkAuth = async () => {
         setAuthState(prevState => ({ ...prevState, loading: true }));

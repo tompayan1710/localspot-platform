@@ -60,6 +60,7 @@ export default function Login() {
   };
 
   useEffect(() => {
+    console.warn("Je suis dans LOGIN")
     const queryParams = new URLSearchParams(window.location.search);
     const token = queryParams.get("token");
 
@@ -89,7 +90,7 @@ export default function Login() {
           <p>{myauthContext.message}</p> */}
           <p className="t32">Connectez-vous</p>
           <p className="t6">Bienvenue ! Veuillez compléter les informations pour continuer.</p>
-          <GoogleAuthButton />
+          <GoogleAuthButton redirectRoute={`/profile`}/>
           <div className="orcontainer">
             <div className="orhline"></div><p className="t6">ou</p><div className="orhline"></div>
           </div>

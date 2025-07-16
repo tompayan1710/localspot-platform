@@ -96,7 +96,7 @@ router.get('/googleoauth2', googleOAuth2);
 router.get('/google/callback', googleCallback);
 
 
-router.get('/refresh-token',async (req, res) => {
+router.get('/refresh-token',async (req, res ) => {
 const response = await refreshToken(req);
 
   if (!response.success) {

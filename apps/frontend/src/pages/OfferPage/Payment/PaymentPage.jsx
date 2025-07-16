@@ -10,25 +10,30 @@ import CheckoutForm from "./CheckoutForm"
 import { Elements } from "@stripe/react-stripe-js";
 import Spinner from "../../../components/Spinner/Spinner";
 
+
 export default function PaymentPage() {
     const { slug } = useParams();
     const { authState } = useContext(AuthContext);
     const location = useLocation();
     const navigate = useNavigate();
+    const { checkAuth } = useContext(AuthContext);
 
     const [ stripePromise, setStripePromise ]= useState(null);
     const [clientSecret, setClientSecret] = useState("");
 
-    const title = location.state?.title;
-    const price = location.state?.price;
-    const OfferIsCancellable = location.state?.OfferIsCancellable;
-    const participantAdult = location.state?.participantAdult;
-    const participantReduced = location.state?.participantReduced; 
-    const start_hour = location.state?.start_hour; 
-    const end_hour = location.state?.end_hour; 
-    const date = location.state?.date; 
-    const adresse = location.state?.adresse;
-    const total_capacity = location.state?.total_capacity;
+    const locationParams = location.state;
+    const fallbackParams = JSON.parse(sessionStorage.getItem("paymentParams") || "{}");
+
+    const title = locationParams?.title ?? fallbackParams.title;
+    const price = locationParams?.price ?? fallbackParams.price;
+    const OfferIsCancellable = locationParams?.OfferIsCancellable ?? fallbackParams.OfferIsCancellable;
+    const participantAdult = locationParams?.participantAdult ?? fallbackParams.participantAdult;
+    const participantReduced = locationParams?.participantReduced ?? fallbackParams.participantReduced;
+    const start_hour = locationParams?.start_hour ?? fallbackParams.start_hour;
+    const end_hour = locationParams?.end_hour ?? fallbackParams.end_hour;
+    const date = locationParams?.date ?? fallbackParams.date;
+    const adresse = locationParams?.adresse ?? fallbackParams.adresse;
+    const total_capacity = locationParams?.total_capacity ?? fallbackParams.total_capacity;
 
     const [isFetching, setIsFetching] = useState(true);
     const [isStripeReady, setIsStripeReady] = useState(false);
@@ -36,8 +41,11 @@ export default function PaymentPage() {
     const [ selectedMethode, setSelectedMethode ] = useState(0);
 
     useEffect(() =>{
+
+        
+        console.error("JE SUIS DANS PAYEMEMT PAGE")
         console.log(location.state);
-        if(!location.state ||  
+        if(
             price == null ||
             OfferIsCancellable == null ||
             participantAdult == null ||
@@ -92,6 +100,24 @@ export default function PaymentPage() {
 
         getPublishableKey();
     }, [])
+
+    useEffect(() => {
+        const queryParams = new URLSearchParams(window.location.search);
+        const token = queryParams.get("token");
+
+
+        if (token) {
+        // ✅ Stocke le JWT dans localStorage
+        console.warn("Il y a un token de : ", token);
+        localStorage.setItem("jwtToken", token);
+
+        // ✅ Met à jour le contexte d'authentification
+        checkAuth();
+
+        // ✅ Redirige l'utilisateur là où il était
+        // navigate(`/profile`);
+        }
+    }, []);//Just to no have the warning, not necessari
 
     const getEvents = async () => {
         const providerId = authState.user?.provider_id;

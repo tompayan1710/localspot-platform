@@ -600,7 +600,20 @@ export default function Availability() {
         ref={LoginBottomRef}
       >
         <div className="LoginContainer">
-          <GoogleAuthButton />
+          <GoogleAuthButton state={{
+            title: title,
+            adresse: adresse,
+            price: price,
+            OfferIsCancellable: OfferIsCancellable,
+            participantAdult: participantAdult,
+            participantReduced: participantReduced,
+            start_hour: selectedCreneau.slot?.from || "",
+            end_hour: selectedCreneau.slot?.to || "",
+            date: selectedDate,
+            total_capacity: total_capacity,
+          }}
+          redirectRoute={`/offer-page/${slug}/payment`}
+          />
           <div className="orcontainer">
             <div className="orhline"></div>
             <p className="t6">ou</p>

@@ -25,7 +25,7 @@ export default function Profile() {
   const { t } = useTranslation();
 
  
-  const { authState, logout } = useContext(AuthContext);
+  const { authState, logout, checkAuth } = useContext(AuthContext);
    
   const [providerOffers, setProviderOffers] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -40,7 +40,23 @@ export default function Profile() {
     setLoading(false);
   }
   
+  useEffect(() => {
+        const queryParams = new URLSearchParams(window.location.search);
+        const token = queryParams.get("token");
 
+
+        if (token) {
+        // ✅ Stocke le JWT dans localStorage
+        console.warn("Il y a un token de : ", token);
+        localStorage.setItem("jwtToken", token);
+
+        // ✅ Met à jour le contexte d'authentification
+        checkAuth();
+
+        // ✅ Redirige l'utilisateur là où il était
+        // navigate(`/profile`);
+        }
+    }, []);//Just to no have the warning, not necessari
     
   useEffect(() => {
     // ✅ Redirection uniquement lorsque loading est terminé

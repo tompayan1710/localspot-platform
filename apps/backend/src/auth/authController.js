@@ -214,7 +214,13 @@ const FRONTEND_URL = process.env.FRONTEND_URL
 
 // ✅ Démarrer l'authentification Google (Origine JavaScript)
 function googleOAuth2(req, res) {
-  const googleLoginUrl = `https://accounts.google.com/o/oauth2/v2/auth?client_id=${CLIENT_ID}&redirect_uri=${REDIRECT_URI}&response_type=code&scope=email profile`;
+  const clientRedirect = req.query.redirect || "/";
+
+  // ⚠️ Important : encode l'URL dans l'état (state)
+  const state = encodeURIComponent(clientRedirect);
+
+  const googleLoginUrl = `https://accounts.google.com/o/oauth2/v2/auth?client_id=${CLIENT_ID}&redirect_uri=${REDIRECT_URI}&response_type=code&scope=email profile&state=${state}`;
+
   res.redirect(googleLoginUrl);
 };
 
@@ -222,6 +228,8 @@ function googleOAuth2(req, res) {
 // ✅ Gérer la redirection de Google (callback)
 async function googleCallback(req, res) {
   const { code } = req.query;
+  const state = req.query.state; // 👉 contient ton redirect personnalisé
+  const redirectAfterLogin = `${FRONTEND_URL}${state ? decodeURIComponent(state) : "/login"}`;
   // console.log("Je suis dans la redirection ....");
   // console.log("Voici le code : ", code);
   try {
@@ -321,7 +329,16 @@ async function googleCallback(req, res) {
       maxAge: 180 * 24 * 60 * 60 * 1000 // 6 mois
     });
 
-    return res.redirect(`${FRONTEND_URL}/login?token=${loginResponse.token}`);
+
+
+    // ✅ Option 1 — Rediriger avec le JWT en **fragment**
+    // Cela évite qu’il soit loggé par les serveurs/proxies car il n’est pas envoyé en requête
+    return res.redirect(`${redirectAfterLogin}?token=${loginResponse.token}`);
+
+
+    // return res.redirect(`${FRONTEND_URL}/login?token=${loginResponse.token}`);
+
+    // return res.redirect(`${process.env.FRONTEND_URL}${redirectAfterLogin}`);
 
   } catch (error) {
     console.error("Erreur lors de l'authentification Google :", error.message);
