@@ -20,7 +20,7 @@ const PopUpBottom = forwardRef(({ children, title, onClose , isHeader}, ref) => 
             <div className="PopUpLine"></div>
           </>
         } 
-        <div className="bodyPopUpBottom">
+        <div className="bodyPopUpBottom noScroll">
             {children}
         </div>
     </div>

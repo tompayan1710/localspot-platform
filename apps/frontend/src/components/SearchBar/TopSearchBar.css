@@ -1,8 +1,9 @@
 .TopSearchBar{
     /* height: 100px; */
-    width: 88%;
+    width: 100%;
     margin: 0 auto;
-    margin-top: 25px;
+    margin-left: 4%;
+    /* margin-bottom: 10px; */
     /* border: 1px solid #ddd; */
     border: 1px solid var(--greysemidark);
     border-radius: 50px;

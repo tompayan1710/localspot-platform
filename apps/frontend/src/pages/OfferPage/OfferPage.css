@@ -974,39 +974,42 @@ justify-content: center;
 
 
 
-
-
-
-
-
-/*///////////////////shimmer*/
-.shimmer {
-  position: relative;
-  overflow: hidden;
+.offerContainer .bodyPopUpBottom>.rowAddParticipant{
+  margin-top: 10px;
+  justify-content: space-between;
+  display: flex;
+  flex-direction: row;
 }
 
-.shimmer::after {
-  content: "";
-  position: absolute;
-  top: 0;
-  left: -200%;
-  width: 100%;
-  height: 100%;
-  background: linear-gradient(
-    110deg,
-    transparent 10%,
-    rgb(255, 255, 255) 50%,
-    transparent 90%
-  );
-  animation: shimmer 1s infinite ease-in;
-  z-index: 1;
+.offerContainer .bodyPopUpBottom>.rowAddParticipant>.row>.buttonParticipant{
+  border-radius: 100px;
+  /* background: linear-gradient(to bottom, #b5edb1, var(--greenlight)); */
+  background-color: transparent;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  border: none;
+  height: 1.8rem;
+  width: 1.8rem;
+  border: 1px solid var(--greysemidark);
+  cursor: pointer;
+}
+.offerContainer .bodyPopUpBottom>.rowAddParticipant>.row>.buttonParticipant>p{
+  font-family: "cookie";
+}
+.offerContainer .bodyPopUpBottom>.rowAddParticipant>.row>.buttonParticipant:disabled{
+  opacity: 0.5;
+  cursor: not-allowed;
 }
 
-@keyframes shimmer {
-  0% {
-    left: -200%;
-  }
-  100% {
-    left: 200%;
-  }
+.offerContainer .bodyPopUpBottom>.rowAddParticipant>.row>p{
+  min-width: 0.8rem;
+  text-align: center;
 }
+.offerContainer .bodyPopUpBottom>.rowAddParticipant>.row{
+  gap: 8px;
+
+}
+
+

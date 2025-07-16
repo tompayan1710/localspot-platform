@@ -655,7 +655,7 @@ function allRefsReady() {
                     <p className="t3">-</p>
                   </button>
                   <p className="t4">{participantAdult}</p>
-                  <button className="buttonParticipant" disabled={participantAdult === 10} onClick={() => {
+                  <button className="buttonParticipant" disabled={participantAdult === 20} onClick={() => {
                     setParticipantAdult((prev) => prev + 1)
                     }}>
                     <p className="t3">+</p>
@@ -674,7 +674,7 @@ function allRefsReady() {
                     <p className="t3">-</p>
                   </button>
                   <p className="t4">{participantReduced}</p>
-                  <button className="buttonParticipant" disabled={participantReduced === 10} onClick={() => {setParticipantReduced((prev) => prev + 1)}}>
+                  <button className="buttonParticipant" disabled={participantReduced === 20} onClick={() => {setParticipantReduced((prev) => prev + 1)}}>
                     <p className="t3">+</p>
                   </button>
                 </div>

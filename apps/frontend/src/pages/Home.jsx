@@ -11,8 +11,12 @@ import NiceIntro3 from "../assets/images/NiceIntro3.png"
 import yogo1 from "../assets/images/yogo1.jpg"
 import arrowRight from "../assets/images/arrowRight.png"
 import ViarteLogo from "../assets/images/ViarteLogo.png"
+import ViarteV from "../assets/images/ViarteV.png"
+import ViarteFont from "../assets/images/ViarteFont.png"
 import Map2dPinWhite from "../assets/images/Map2dPinWhite.png"
 import ArrowTopRight from "../assets/images/ArrowTopRight.png"
+import FiltersSearch from "../assets/images/FiltersSearch.png"
+
 import Terms from "../assets/images/Terms.png"
 import { useEffect, useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
@@ -23,6 +27,7 @@ import PopUpBottom from "../components/PopUpBottom/PopUpBottom";
 import FadeInImage from "../components/Utils/FadeInImage";
 import { classifyOffers } from "../services/offerFilters";
 import TopSearchBar from "../components/SearchBar/TopSearchBar";
+import FilterElement from "../components/SearchBar/FilterElement/FilterElement";
 
 
 
@@ -210,7 +215,25 @@ import TopSearchBar from "../components/SearchBar/TopSearchBar";
           </div>
         </div> */}
         {/* <SearchBar ref={searchBarRef}/> */}
-        <TopSearchBar />
+        <div className="ViarteIntro">
+          <img src={ViarteV} alt="Viarte Logo"/>
+          <div className="row">
+            <div className="vline"></div>
+            <img src={ViarteFont} alt="Viarte font"/>
+          </div>
+        </div>
+        <div className="TopContainer">
+          <div className="row">
+            <TopSearchBar ref={searchBarRef} setIsOccultView={setIsOccultView}/>
+            <button className="FilterButton" onClick={() =>{
+              searchBarRef.current.classList.add("open")
+              setIsOccultView(true);
+            }}>
+              <img src={FiltersSearch} alt="filter search icon"/>
+            </button>
+          </div>
+          <div className="hline"></div>
+        </div>
 
         {/* <div className="ParticipantSelectContainer" onClick={() => {
           // ParticipantBottomRef.current.style.bottom = "0px";
@@ -606,7 +629,7 @@ import TopSearchBar from "../components/SearchBar/TopSearchBar";
         )}
         ref={searchBarRef}
       >
-        <p className="t5">JE SUIS LE GROS BIG BOSS TOM</p>
+        <FilterElement setIsOccultView={setIsOccultView} searchBarRef={searchBarRef}/>
       </PopUpBottom>
 
       {/* <div className={`occultView ${isOccultView ? "open" : ""}`} onClick={() => {
