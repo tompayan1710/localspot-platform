@@ -92,9 +92,11 @@ body{
   --violetnormal: #9C5DEE;
   --greenlight: #DFF0D8;
   --greennormal: #50b849;
+  --greenflash: #1fd112;
   --yellownormal: #FFD85C;
   --yellowlight: #FFF4C1;
   --beigelight: #ecead94b;
+  --beigeverylight: #FCF9F4;
 
   --lineargradientblack: linear-gradient(180deg, #545454, #373737);
   --lineargradientgreen: linear-gradient(to bottom, #c4f5c1, #7de276);
@@ -133,10 +135,21 @@ a{
   color: var(--rednormal);
 }
 
+.bold{
+  font-weight: bold;
+}
 .row{
   display: flex;
   flex-direction: row;
   align-items: center;
+}
+
+.maxLine {
+  display: -webkit-box;
+  -webkit-line-clamp: 2;   /* Nombre de lignes max */
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 .column{
@@ -167,4 +180,5 @@ a{
   height: 60px;
   z-index: 2;
 }
+
 

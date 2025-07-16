@@ -203,7 +203,7 @@ router.post("/save", async (req, res) => {
         await DeleteUnavaillable(slug, row.date); // 👈 IMPORTANT : il faut await ici
       }
     }
-
+    res.status(200).json({succes: "Les Disponnibilité on bien était enregistré !"})
   } catch (err) {
     console.error("❌ Erreur serveur :", err);
     res.status(500).json({ error: err.message });

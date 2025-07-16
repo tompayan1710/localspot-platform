@@ -3,6 +3,8 @@ import GoBack from "../../../GoBack/GoBack";
 import "./BookingSystem.css";
 import TimeOnlyPicker from "./TimeOnlyPicker";
 import crossiconBlack from "../../../../assets/images/crossiconBlack.png"
+import ViarteLogo from "../../../../assets/images/ViarteLogo.png"
+import GoogleCalendarIcon from "../../../../assets/images/GoogleCalendarIcon.png"
 import { AuthContext } from "../../authContext/authContext";
 
 export default function BookingSystem() {
@@ -141,8 +143,29 @@ async function saveCreneau({
   return (
     <div className="BookingSystemContainer">
       <GoBack nagigation={`/profile`} scrollTo={``} text={"revenir"} />
+      <div className="ContentContainer">
+        <div className="row">
+          <img src={ViarteLogo} alt="Viarte Logo"/>
+          <div className="horizontalLine"></div>
+          <img src={GoogleCalendarIcon} alt="Google Calendar Logo"/>
+        </div>
+        <p className="t5">Connectez votre agenda Viarte à Google Agenda</p>
+        {/* <p className="t6">
+          Une fois connecté, toutes vos réservations Viarte seront synchronisées dans un agenda Google, avec les détails essentiels.
+        </p> */}
 
-      <button onClick={connectGoogle} className="connectBtn">Connecter Google Calendar</button>
+        <p className="t6">
+          Les réservations seront ajoutées dans un agenda séparé, exclusivement dédié à Viarte, pour ne pas interférer avec votre agenda personnel.
+        </p>
+        
+        <button onClick={connectGoogle}>
+          <p className="t6">Connecter mon Agenda</p>
+        </button>
+        <p className="t6">
+          En vous connectant, vous autorisez Viarte à créer et modifier des événements dans votre Google Agenda dédié, incluant les horaires, adresses et détails des participants.
+        </p>
+      </div>
+      {/* <button onClick={connectGoogle} className="connectBtn">Connecter Google Calendar</button>
       <button onClick={getEvents} className="connectBtn">Voir événements</button>
       <button
         className="saveButton"
@@ -162,7 +185,6 @@ async function saveCreneau({
         Enregistrer ou modifier le créneau
       </button>
 
-      {/* <button onClick={addEvent} className="connectBtn">Ajouter événement</button> */}
 
       <div className="DayCreneaux">
         {
@@ -253,14 +275,12 @@ async function saveCreneau({
                   })
                 }}>
                   <p className="t5"><strong>+</strong> Ajouter</p>
-                  {/* Add More */}
                 </button>
               </div>
             </div>
           ))
         }
 
-        {/* <TimeOnlyPicker /> */}
         <button id="LOGINFO" onClick={() => {
           Object.entries(availability).forEach(([day, slots]) => {
             console.log(day);
@@ -271,7 +291,7 @@ async function saveCreneau({
         }}>
           LOGINFO
         </button>
-      </div>
+      </div> */}
     </div>
   );
 }

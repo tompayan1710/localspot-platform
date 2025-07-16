@@ -398,7 +398,7 @@
   max-height: 0;
   overflow: hidden;
   transition: all 0.4s ease-in-out;
-  padding: 0px 0px;
+  padding: 0px 18px;
   margin-top: 0px;
 }
 .AvailabilityContainer .CreneauPicker>.CancelContainer>img{
@@ -407,7 +407,7 @@
 }
 .AvailabilityContainer .CreneauPicker>.CancelContainer.selected {
   opacity: 1;
-  max-height: 46px; /* suffisamment grand pour son contenu */
+  max-height: 56px; /* suffisamment grand pour son contenu */
   margin-top: 20px;
   padding: 15px 18px;
 }

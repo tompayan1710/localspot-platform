@@ -1,13 +1,13 @@
 .duration-slider {
   width: 100%;
   padding-bottom: 10px;
-  margin-bottom: 10px;
+  padding-top: 10px;
 }
 
 .duration-slider>.t4{
     padding-bottom: 2px;
 }
-
+/* 
 .durationType{
     display: flex;
     flex-direction: row;
@@ -41,16 +41,21 @@
     width: 40px;
     cursor: pointer;
     align-self: center;
-}
+} */
 
-.track-wrapper {
+
+
+.duration-slider .track-wrapper {
   position: relative;
   width: 100%;
-  margin-top: 10px;
+  margin-top: 5px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
 
 
-.duration-slider .slider {
+/* .duration-slider .slider {
   -webkit-appearance: none;
   width: 100%;
   height: 10px;
@@ -59,17 +64,34 @@
   position: relative;
   z-index: 2;
   padding: 8px 16px;
-    font-size: 14px;
-    border: 1px solid #ddd;
-    border-radius: 30px;
-    background-color: var(--greyverylight);
-    outline: none;
-    transition: border 0.3s, box-shadow 0.3s;
-    margin-bottom: 0%;
+  font-size: 14px;
+  border: 1px solid #ddd;
+  border-radius: 30px;
+  background-color: var(--greyverylight);
+  outline: none;
+  transition: border 0.3s, box-shadow 0.3s;
+  margin-bottom: 0%;
+} */
+.duration-slider .slider {
+  -webkit-appearance: none;
+  width: 100%;
+  height: 4px;
+  border-radius: 3px;
+  outline: none;
+  position: relative;
+  z-index: 2;
+  /* padding: 1px 16px; */
+  font-size: 14px;
+  /* border: 1px solid #ddd; */
+  border-radius: 30px;
+  background-color: var(--greydark);
+  outline: none;
+  transition: border 0.3s, box-shadow 0.3s;
+  margin-bottom: 0%;
 }
 
 /* THUMB aligné au centre verticalement */
-.slider::-webkit-slider-thumb {
+/* .slider::-webkit-slider-thumb {
   -webkit-appearance: none;
   height: 24px;
   width: 24px;
@@ -79,9 +101,20 @@
   box-shadow: 0 2px 5px rgba(0,0,0,0.15);
   cursor: pointer;
   position: relative;
+} */
+.duration-slider .slider::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  height: 24px;
+  width: 24px;
+  border-radius: 50%;
+  background: var(--lineargradientblack);
+  /* border: 1px solid #ccc; */
+  box-shadow: 0 2px 5px rgba(0,0,0,0.15);
+  cursor: pointer;
+  position: relative;
 }
 
-.slider::-moz-range-thumb {
+.duration-slider .slider::-moz-range-thumb {
   height: 24px;
   width: 24px;
   border-radius: 50%;
@@ -91,11 +124,16 @@
     position: relative;
 }
 
-.labels {
-  padding: 0 15px;
+.duration-slider .labels {
   display: flex;
   justify-content: space-between;
   font-size: 12px;
   color: #555;
+  margin-top: 10px;
+  width: 100%;
+}
+.duration-slider .labels>p {
+  white-space: nowrap;
+  display: inline;
   margin-top: 5px;
 }

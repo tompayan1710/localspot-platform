@@ -65,7 +65,7 @@ export default function Availability() {
     // ✅ Redirection uniquement lorsque loading est terminé
     console.warn("ACTUELLEMENT mon loading est :", authState.loading, " IsAuth :", authState.isAuth)
     if (!authState.loading && authState.isAuth) {
-      navigate(`/offer-page/${slug}/payement`, {
+      navigate(`/offer-page/${slug}/payment`, {
         state: {
           title: title,
           adresse: adresse,
@@ -200,10 +200,19 @@ export default function Availability() {
 
         // reservedData
         for(const creneau of allcreneau){
+          console.log(creneau)
           const creneauDate = new Date(creneau.date)
           const formatedDateCreneau = creneauDate.toLocaleDateString('fr-CA');
-        
-          NewDisponnibility[formatedDateCreneau][`${creneau.start_hour}-${creneau.end_hour}`].total_reserved = creneau.total_reserved;
+          const key = `${creneau.start_hour}-${creneau.end_hour}`;
+
+          if (
+            NewDisponnibility[formatedDateCreneau] &&
+            NewDisponnibility[formatedDateCreneau][key]
+          ) {
+            NewDisponnibility[formatedDateCreneau][key].total_reserved = creneau.total_reserved;
+          } else {
+            console.warn("❌ Créneau non trouvé dans disponibilités : ", formatedDateCreneau, key);
+          }
         }
 
 

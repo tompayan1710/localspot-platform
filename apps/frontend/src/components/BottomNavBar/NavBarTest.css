@@ -29,7 +29,7 @@
     display: flex;
     flex-direction: row;
     justify-content: space-around;
-    box-shadow: 0 -4px 10px rgba(0, 0, 0, 0.05);
+    box-shadow: 0 -4px 30px rgba(0, 0, 0, 0.05);
     bottom: 0px;
 }
 .BottomNavBarNotAnimate.Test{
@@ -60,6 +60,7 @@
     justify-content: center;
     align-items: center;
     gap: 4px;
+    width: 20%;
     /* padding-bottom: 6px; */
 }
  

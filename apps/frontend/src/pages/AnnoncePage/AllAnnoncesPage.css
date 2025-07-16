@@ -2,7 +2,7 @@
 #AnnoncesPage{
     width: 100%;
     min-height: 100vh;
-    padding-top: 30px;
+    padding-top: 10px;
     padding-bottom: 80px;
 }
 
@@ -16,9 +16,7 @@
 }
 #AnnoncesPage>.row{
     justify-content: space-between;
-    padding: 0 6%;
-    margin-top: 20px;
-    margin-bottom: 20px;
+    padding: 20px 6%;
 }
 #AnnoncesPage>.row>button{
     padding: 6px;
@@ -62,7 +60,7 @@
   border-radius: 15px;
   object-fit: cover;
 }
-.p#AnnoncesPage .AnnonceItem .columnAnnonceOffer{
+#AnnoncesPage .AnnonceItem .columnAnnonceOffer{
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -74,4 +72,49 @@
   -webkit-box-orient: vertical;
   overflow: hidden;
   text-overflow: ellipsis;
+}
+
+#AnnoncesPage .noOffer{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    width: 80%;
+    max-width: 350px;
+    height: calc(100vh - 180px);
+    top: 40px;
+    margin: 0 auto;
+}
+#AnnoncesPage .noOffer>p{
+    text-align: center;
+    margin-bottom: 15px;
+}
+#AnnoncesPage .noOffer>p:first-of-type{
+    font-weight: bold;
+    margin-bottom: 5px;
+}
+#AnnoncesPage .blackButton{
+    background: linear-gradient(180deg, #545454, #373737);
+    color: #ffffff;
+    padding: 7px 16px;
+    font-size: 1rem;
+    font-weight: lighter;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: background 1s, transform 0.2s;
+    display: flex
+;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    margin-top: 15px;
+    width: fit-content;
+    align-self: center;
+    font-size: 0.8rem;
+    margin-bottom: 50px;
+    font-weight: 500;
+}
+#AnnoncesPage .blackButton>p{
+  color: white;
 }

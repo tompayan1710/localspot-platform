@@ -129,15 +129,28 @@ function allRefsReady() {
         }
   }
       
-  const fetchDurations = async (offer, hote) => {
-    if (!offer.latitude || !hote.latitude) return;
-    const res = await getDurations({
-      origin: { lat: hote.latitude, lng: hote.longitude },
-      destination: { lat: offer.latitude, lng: offer.longitude },
-      apiKey: process.env.REACT_APP_GOOGLE_MAPS_KEY
-    });
-    setDurations(res);
-  };
+  // const fetchDurations = async (offer, hote) => {////////////////////////////////////A remetre
+  //   if (!offer.latitude || !hote.latitude) return;
+  //   const res = await getDurations({
+  //     origin: { lat: hote.latitude, lng: hote.longitude },
+  //     destination: { lat: offer.latitude, lng: offer.longitude },
+  //     apiKey: process.env.REACT_APP_GOOGLE_MAPS_KEY
+  //   });
+  //   setDurations(res);
+  // };
+
+  function getDistanceInKm(lat1, lon1, lat2, lon2) {
+  const R = 6371; // rayon de la Terre en km
+  const dLat = (lat2 - lat1) * Math.PI / 180;
+  const dLon = (lon2 - lon1) * Math.PI / 180;
+  const a =
+    Math.sin(dLat/2) * Math.sin(dLat/2) +
+    Math.cos(lat1 * Math.PI / 180) * Math.cos(lat2 * Math.PI / 180) *
+    Math.sin(dLon/2) * Math.sin(dLon/2);
+  const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a));
+  return R * c;
+}
+
 
 
   const getMaximumParticipants = async () => {
@@ -166,7 +179,7 @@ function allRefsReady() {
           if (!hoteData.success) return;
           setHote(hoteData.hote);
 
-          await fetchDurations(offerData.offer, hoteData.hote);
+          // await fetchDurations(offerData.offer, hoteData.hote); ////////////////////////////////////A remetre
 
           setTimeout(() => {
             getShortestDuration(durations)
@@ -404,7 +417,8 @@ function allRefsReady() {
                       zoom={17}
                       adresseTexte ={offer.adresse ? offer.adresse : ""}
                       borderRadius={isExtendMap ? 0 : 35}
-                      duration={getShortestDuration(durations)}
+                      // duration={getShortestDuration(durations)} ////////////////////////////////////A remetre
+                      duration={10}
                     />
                     <div className={`row adresseContainer ${isLoading ? "loading shimmer" : ""}`}>
                       {!isLoading && (

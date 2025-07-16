@@ -5,11 +5,13 @@ import React, { useEffect, useRef, useState } from "react";
 import crossiconBlack from "../../../assets/images/crossiconBlack.png"
 import Exceptionnal from "./ExceptionnalDate";
 import SaveIconFillWhite from "../../../assets/images/SaveIconFillWhite.png";
-import { useParams } from "react-router-dom";
+import { useLocation, useNavigate, useParams } from "react-router-dom";
 import CancelDate from "./CancelDate";
 
 export default function AvailabilityEditor(){
     const { slug } = useParams();
+    const navigate = useNavigate()
+    const location = useLocation();
 
     const [cancelOpen, setCancelOpen] = useState(false);
     const [disponnibilitiOpen, setDisponnibilitiOpen] = useState(false);
@@ -120,15 +122,7 @@ export default function AvailabilityEditor(){
 
 
 
-
-
-    /*::::::::::::::::::::::::::::::::SAVING DATA:::::::::::::*/
-    const SaveData = async () => {
-        console.log("✅ SAVING DATA");
-        console.log(availability);
-        console.log(exceptionalAvailable);
-        console.log(Unavailable);
-
+    const isRecurentEmpty = () => {
         let isRecurentEmpty = true;
         for (const slots of Object.values(availability)) {
             if (slots.length > 0) {
@@ -139,9 +133,33 @@ export default function AvailabilityEditor(){
 
         if(isRecurentEmpty){
             alert("Veuillez avoir au moins un créneaux récurent");
+        }
+        return isRecurentEmpty;
+    }
+
+    const getValidCreneauOpen = () => {
+        let newAvailability = {};
+
+        for (const [day, slots] of Object.entries(availability)) {
+            if (slots.length > 0 && isOpen[day]) {
+                newAvailability[day] = slots;
+            }
+        }
+        
+        return newAvailability;
+    }
+
+    /*::::::::::::::::::::::::::::::::SAVING DATA:::::::::::::*/
+    const SaveData = async () => {
+        console.log("✅ SAVING DATA");
+        console.log(availability);
+        console.log(exceptionalAvailable);
+        console.log(Unavailable);
+
+        const isEmpty = isRecurentEmpty();
+        if (isEmpty) {
             return;
         }
-
 
         /*
         {
@@ -166,13 +184,13 @@ export default function AvailabilityEditor(){
         */
 
         //Prendre en compte seulement ceux qui sont ouvert
-        let newAvailability = {};
-
-        for (const [day, slots] of Object.entries(availability)) {
-            if (slots.length > 0 && isOpen[day]) {
-                newAvailability[day] = slots;
-            }
+        let newAvailability = getValidCreneauOpen();
+        if (Object.keys(newAvailability).length === 0) {
+            alert("Veuillez avoir au moins un créneau récurrent");
+            return;
         }
+
+
         const cleanedExceptionalAvailable = Object.fromEntries(
             Object.entries(exceptionalAvailable).filter(([_, slots]) => slots.length > 0)
         );
@@ -199,14 +217,17 @@ export default function AvailabilityEditor(){
 
             const result = await response.json();
             console.log("Réponse API :", result);
+
+            navigate(`/annonces/${slug}`);
         } catch (error) {
             console.error("Erreur lors de l’envoi :", error);
         }
+
         // const response = await fetch(`${process.env.REACT_APP_API_URL}/`);
     }
 
     const GetData = async () => {
-        console.log("✅ SAVING DATA");
+        console.log("✅ GETTING DATA");
         console.log(availability);
         console.log(exceptionalAvailable);
         console.log(Unavailable);
@@ -277,11 +298,26 @@ export default function AvailabilityEditor(){
         }, 1000)
     },[]);
 
-
     return (
         <div className="AvailabilityEditor">
             <div className="TopDivOpacity"></div>
-            <GoBack nagigation={`/annonces/${slug}`} scrollTo={"PlanningRecurent"} text={"mon annonce"} />
+            <GoBack 
+                nagigation={`/annonces/${slug}`} 
+                conditionFn={() => {
+                    if(location.state?.origin === "confirm-creation"){
+                        if(isRecurentEmpty()){
+                            return false;
+                        }
+                        let newAvailability = getValidCreneauOpen();
+                        if (Object.keys(newAvailability).length === 0) {
+                            alert("Veuillez avoir au moins un créneau récurrent");
+                            return false;
+                        }
+                    }
+                    return true
+                }}
+                scrollTo={"PlanningRecurent"} text={"mon annonce"} 
+            />
             <button className="SaveButton" onClick={SaveData}>
                 <img src={SaveIconFillWhite} alt="save icon"/>
                 <p className="t5">Enregistrer</p>
@@ -294,7 +330,7 @@ export default function AvailabilityEditor(){
                 <p className="t32">Gérez vos disponibilités</p>
                 <p className="t6">Ajoutez, modifiez ou supprimez vos heures de disponibilité pour permettre aux utilisateurs de réserver vos services facilement.</p>
             </div>
-            <div className="addExceptionnal">
+            {/* <div className="addExceptionnal">
                 <div className="row">
                     <p className="t5">Créneaux récurents</p>
                     <button className={`${recurentOpen ? "selected" : ""}`} onClick={() => {
@@ -303,7 +339,7 @@ export default function AvailabilityEditor(){
                         <p className="t6">{recurentOpen ? "Annuler" : "Ajouter"}</p>
                     </button>
                 </div>
-            
+             */}
                 <div className="DayCreneaux" ref={recurentRef}>
                     {
                     Object.entries(availability).map(([day, slots]) => (
@@ -372,7 +408,14 @@ export default function AvailabilityEditor(){
                             <button className="addOne" onClick={() => {
                             setAvailability((prev) => {
                                 const lastSlot = prev[day][prev[day].length - 1];
-
+                                
+                                if(!lastSlot){
+                                    console.warn("Il est pas bon");
+                                    return {
+                                        ...prev,
+                                        [day]: [{id: Date.now(), from: "08:00", to: "09:00"}],
+                                    }
+                                }
                                 const [lastHour, lastMinute] = lastSlot.to.split(":").map(Number);
 
                                 if(lastHour>=23){
@@ -400,7 +443,7 @@ export default function AvailabilityEditor(){
                     ))
                     }
                 </div>
-            </div>
+            {/* </div> */}
             <div className="hlineExceptionnal"></div>
             <div className="addExceptionnal">
                 <div className="row">

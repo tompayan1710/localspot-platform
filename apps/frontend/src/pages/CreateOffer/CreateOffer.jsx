@@ -4,7 +4,7 @@ import crossiconBlack from "../../assets/images/crossiconBlack.png"
 import arrowLeft from "../../assets/images/arrowLeft.png"
 import jetSkieIcon from "../../assets/images/jetSkieIcon.png"
 import foodIcon from "../../assets/images/foodIcon.png"
-import { useNavigate } from "react-router-dom"
+import { useLocation, useNavigate } from "react-router-dom"
 import { useEffect, useContext } from "react";
 import { AuthContext } from "../../components/Auth/authContext/authContext"
 
@@ -13,7 +13,8 @@ import Spinner from "../../components/Spinner/Spinner"
 export default function CreateOffer(){
     const { authState } = useContext(AuthContext);
     const navigate = useNavigate();
-    
+    const location = useLocation();
+
     useEffect(() => {
         if (!authState.loading && !authState.isAuth) {
         console.log("🔄 Redirection car non authentifié");
@@ -162,7 +163,8 @@ export default function CreateOffer(){
             //     }
             // })}
             onClick={() =>{
-                navigate("/profile")
+                // console.log(location)
+                navigate(-1)
             }}
             ><img src={crossiconBlack} alt="cross icon"/></button>
             <button className="GoBackButton" onClick={() => {goBack(typeSelected)}} ref={refGoBackButton}><img src={arrowLeft} alt="arrow left"/><p className="t6">précédent</p></button>
@@ -174,10 +176,12 @@ export default function CreateOffer(){
                         navigate("/create-offer-address", {state: {
                             type: typeSelected,
                             categories: selectedCategorie,
+                            origin: location?.state?.origin && location.state.origin,
                         }})
                     }
                 }}>
-                Créer mon offre</button>
+                <p className="t6">Créer mon offre</p>
+            </button>
             <div className="TopDivOpacity"></div>
             {/* <button onClick={show} style={{padding: "40px"}}>Mon button</button> */}
             <div className="CreateOfferPage1" ref={refCreateOfferPage1}>

@@ -1,6 +1,6 @@
 
 // ✅ Fonction pour rafraîchir l'Access Token (version simplifiée)
-export const getOffersToday = async () => {
+export const getAllOffers = async () => {
     console.log("Récupération des Offres Today");
 
     try {

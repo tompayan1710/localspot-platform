@@ -161,11 +161,13 @@
 
 .Calendar .AllReservationList{
     background-color: white;
-    height: 1000px;
+    /* height: 1000px; */
     border-top-left-radius: 35px;
     border-top-right-radius: 35px;
     border-top: 1px solid var(--greysemidark);
     position: relative;
+    overflow: hidden;
+    width: 100%;
     top: -30px;
 }
 
@@ -183,14 +185,17 @@
     margin: 0 4%;
     font-family: "Playfaire Display";
 }
+.Calendar .AllReservationList>.row{
+    gap: 15px;
+    margin-top: 5px;
+    padding: 0 6%;
+}
+.Calendar .AllReservationList>.row>p{
+  white-space: nowrap;
+}
 .Calendar .AllReservationList>.AllReservationItem{
     width: 100%;
     padding: 10px 6%;
-    overflow: hidden;
-}
-.Calendar .AllReservationList>.AllReservationItem>.row{
-    gap: 30px;
-    margin-bottom: 10px;
 }
 .Calendar .AllReservationItem>.Creneau{
     border: 1px solid var(--greysemidark);
@@ -211,19 +216,27 @@
     width: 130px;
     min-width: 130px;
 }
-.Calendar .AllReservationItem .ImagesOffers>img{
+.Calendar .AllReservationItem .ImagesOffers>.ImageWrapper{
     position: absolute;
-    border-radius: 10px;
     height: 80px;
     width: 80px;
-    object-fit: cover;
+    border-radius: 10px;
     border: 3px solid white;
     box-shadow: 0px 2px 10px rgba(0, 0, 0, 0.08);
+    box-shadow: 0px 2px 10px rgba(0, 0, 0, 0.08);
+    background-color: var(--greylight);
 }
-.Calendar .AllReservationItem .ImagesOffers>img:first-of-type{
+.Calendar .AllReservationItem .ImagesOffers>.ImageWrapper>img{
+    object-fit: cover;
+    height: 100%;
+    width: 100%;
+    border-radius: 7px;
+    background-color: var(--greylight);
+}
+.Calendar .AllReservationItem .ImagesOffers>.ImageWrapper:first-of-type{
     transform: rotate(4deg) translateX(20px) translateY(5px);
 }
-.Calendar .AllReservationItem .ImagesOffers>img:last-of-type{
+.Calendar .AllReservationItem .ImagesOffers>.ImageWrapper:last-of-type{
     transform: rotate(-4deg);
 }
 .Calendar .AllReservationItem .column{
@@ -299,4 +312,59 @@
     border-image: repeating-linear-gradient(to right, var(--greysemidark) 0, var(--greysemidark) 5px, transparent 5px, transparent 10px);
     border-image-slice: 1;
     margin: 10px 0;
+}
+
+
+.Calendar .SpinnerContainer{
+    width: 100%;
+    max-width: 500px;
+    height:  calc(100vh - 350px);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: fixed;
+    top: 300px;
+}
+
+.Calendar .NoCreneau{
+    position: fixed;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    width: 80%;
+    max-width: 350px;
+    left: 50%;
+    transform: translate(-50%);
+    height:  calc(100vh - 350px);
+    top: 350px;
+}
+.Calendar .NoCreneau>p{
+    text-align: center;
+    margin-bottom: 15px;
+}
+.Calendar .NoCreneau>p:first-of-type{
+    font-weight: bold;
+    margin-bottom: 5px;
+}
+.Calendar .whiteButton{
+    width: fit-content;
+    padding: 8px 15px;
+    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.05);
+    border: 1px solid var(--greysemidark);
+    border-radius: 8px;
+    background-color: white;
+    cursor: pointer;
+    box-shadow:
+        0 4px 6px rgba(0, 0, 0, 0.05),
+        inset 0 -3px 1px rgba(0, 0, 0, 0.04);
+}
+
+
+.rdp-today.day-has-slots.green::after {
+    background-color: transparent;
+    transition: all 1s ease-in-out;
+}
+.Calendar .rdp-selected.day-has-slots.green::after{
+  background-color: transparent;
 }

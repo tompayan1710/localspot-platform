@@ -95,7 +95,7 @@ router.post("/create", async (req, res) => {
       pricePer,
       qrcode_url,
       slug,
-      cancellable
+      cancellable 
     });
 
     res.status(201).json({ success: true, offer: newOffer });

@@ -2,7 +2,7 @@ import { useNavigate } from "react-router-dom";
 import "./GoBack.css";
 import arrowLeft from "../../assets/images/arrowLeft.png"
 
-export default function GoBack({nagigation, scrollTo, text, state = {}}){
+export default function GoBack({nagigation, scrollTo, text, state = {}, conditionFn = () => true}){
     const navigate = useNavigate();
 
     const handleClick = () => {
@@ -12,7 +12,9 @@ export default function GoBack({nagigation, scrollTo, text, state = {}}){
             options.state.scrollTo = scrollTo;  // ← on ajoute scrollTo s’il y en a un
         }
 
-        navigate(nagigation, options);
+        if(conditionFn()){
+            navigate(nagigation, options);
+        }
     };
 
     return (

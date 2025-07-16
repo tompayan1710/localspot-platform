@@ -1,5 +1,5 @@
 import SearchBar from "../components/SearchBar/SearchBar";
-import { getOffersToday } from "../services/offers"
+import { getAllOffers } from "../services/offers"
 
 import "./Home.css"
 import starIcon from "../assets/images/starIcon.png"
@@ -8,8 +8,11 @@ import extendIcon from "../assets/images/extendIcon.png"
 import NiceIntro1 from "../assets/images/NiceIntro1.png"
 import NiceIntro2 from "../assets/images/NiceIntro2.png"
 import NiceIntro3 from "../assets/images/NiceIntro3.png"
+import yogo1 from "../assets/images/yogo1.jpg"
 import arrowRight from "../assets/images/arrowRight.png"
 import ViarteLogo from "../assets/images/ViarteLogo.png"
+import Map2dPinWhite from "../assets/images/Map2dPinWhite.png"
+import ArrowTopRight from "../assets/images/ArrowTopRight.png"
 import Terms from "../assets/images/Terms.png"
 import { useEffect, useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
@@ -17,20 +20,11 @@ import { useTranslation } from "react-i18next";
 import Footer from "../components/Footer/Footer";
 import { useLocation } from 'react-router-dom';
 import PopUpBottom from "../components/PopUpBottom/PopUpBottom";
+import FadeInImage from "../components/Utils/FadeInImage";
+import { classifyOffers } from "../services/offerFilters";
+import TopSearchBar from "../components/SearchBar/TopSearchBar";
 
 
-function FadeInImage({ src, alt, className }) {
-  const [loaded, setLoaded] = useState(false);
-
-  return (
-    <img
-      src={src}
-      alt={alt}
-      className={`${className || ""} ${loaded ? "loaded" : "loading"}`}
-      onLoad={() => setLoaded(true)}
-    />
-  );
-}
 
 
 
@@ -53,11 +47,21 @@ function FadeInImage({ src, alt, className }) {
     const LogoContainerAnimationRef = useRef(null); 
     const HomePageRef = useRef(null); 
     const generalTerms = useRef(null);
-
-
-
+    const [homeOffersByCategory, setHomeOffersByCategory] = useState({
+      thisAfternoon: [],
+      tonight: [],
+      popular: [],
+      nearby: [],
+    });
     const location = useLocation();
     const { scrollTo } = location.state || {};
+    const navigate = useNavigate();
+    const { i18n } = useTranslation();
+    const currentLang = i18n.language;
+    const searchBarRef = useRef(null);
+    const [HomeOffers, setHomeOffers] = useState([]);
+    const [loading, setLoading] = useState(true);
+
 
     useEffect(() => {
       if (scrollTo) {
@@ -70,20 +74,10 @@ function FadeInImage({ src, alt, className }) {
         }
       }
     }, [scrollTo]);
-    const navigate = useNavigate();
 
-    const { i18n } = useTranslation();
-    const currentLang = i18n.language;
-
-
-    const searchBarRef = useRef(null);
-
-
-    const [HomeOffers, setHomeOffers] = useState([]);
-    const [loading, setLoading] = useState(true);
 
       const getHomeOffers = async () => {
-        const data = await getOffersToday();
+        const data = await getAllOffers();
         if(data.success){
 
           let offers = data.offers;
@@ -110,6 +104,12 @@ function FadeInImage({ src, alt, className }) {
         
           console.warn(offers);
           setHomeOffers(offers);
+
+
+          const classified = classifyOffers(offers, null); // si tu as la localisation
+          //                                        userLocation
+          setHomeOffersByCategory(classified);
+
         }
       }
 
@@ -185,6 +185,19 @@ function FadeInImage({ src, alt, className }) {
     }
     
 
+    function getDistanceInKm(lat1, lon1, lat2, lon2) {
+      const R = 6371; // rayon de la Terre en km
+      const dLat = (lat2 - lat1) * Math.PI / 180;
+      const dLon = (lon2 - lon1) * Math.PI / 180;
+      const a =
+        Math.sin(dLat/2) * Math.sin(dLat/2) +
+        Math.cos(lat1 * Math.PI / 180) * Math.cos(lat2 * Math.PI / 180) *
+        Math.sin(dLon/2) * Math.sin(dLon/2);
+      const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a));
+      return R * c;
+    }
+
+
     return (
       <div className="HomeContainerPrincipal" ref={offerContainerRef}>
         {/* <div ref={LogoContainerAnimationRef} className={`${true ? "" : ""} LogoContainerAnimation`}>
@@ -195,38 +208,76 @@ function FadeInImage({ src, alt, className }) {
             }}/>
           </div>
         </div> */}
-        <SearchBar ref={searchBarRef}/>
+        {/* <SearchBar ref={searchBarRef}/> */}
+        <TopSearchBar />
+
+        {/* <div className="ParticipantSelectContainer" onClick={() => {
+          // ParticipantBottomRef.current.style.bottom = "0px";
+          searchBarRef.current.classList.add("open")
+          setIsOccultView(true);
+        }}>
+          <p>BIG BOSS TOM</p>
+        </div> */}
+        <div className="IntroUIContainer">
+          <div className="Images">
+            <img src={NiceIntro2} alt="Intro ui images"/>
+            <img src={NiceIntro1} alt="Intro ui images"/>
+          </div>
+          <p className="t32">Because <strong>memories</strong><br></br> deserve to be more than<br></br>just words!</p>
+        </div>
         <div ref={HomePageRef} className="HomeContainer">
+          <div className="SelectingToday">
+            <img src={yogo1} alt="selecting activity"/>
+            <button>
+              <img src={extendIcon} alt="extend Icon"/>
+            </button>
+            <div className="InfoOffer row">
+              <div className="column">
+                <p className="t5 maxLine">Cours de yoga en pleine aire avec tom</p>
+                <div className="row adresse">
+                  <img src={Map2dPinWhite} alt="map 2d pin white"/>
+                  <p className="t6 maxLine">04 place Godeau</p>
+                </div>
+              </div>
+              <div className="GoTo">
+                <img src={ArrowTopRight}/>
+              </div>
+            </div>
+          </div>
           <div className="HomeSectionContainer">
-            <div className="IntroImage">
+            {/* <div className="IntroImage">
               <p className="t5">Discover the best of</p>
               {
                 loading ? <div className="ContainerSkeleton"><div className="SkeletonCity shimmer"></div></div>
                 : <p className="t1">Nice</p>
               }
               <div className="ContainerCenter">
-                {loading ? (
-                  <>
-                    <div className="SkeletonImage shimmer SkeletonLeft"></div>
+                <div className="SkeletonImage shimmer SkeletonLeft"></div>
                     <div className="SkeletonImage shimmer"></div>
                     <div className="SkeletonImage shimmer SkeletonRight"></div>
+                    <>
+                    
+                  </>
+                {loading ? (
+                  <>
+                    
                   </>
                 ) : (
                   <>
-                    <FadeInImage src={NiceIntro2} alt="Intro Image parachute" />
+                  <FadeInImage src={NiceIntro2} alt="Intro Image parachute" />
                     <FadeInImage src={NiceIntro1} alt="Intro Image class" />
                     <FadeInImage src={NiceIntro3} alt="Intro Image chateau" />
-                  </>
+                    </>
                 )}
                 <div className={`Shadow ${loading ? "loading" : ""}`}></div>
               </div>
 
-            </div>
-            <p className="t6">Parfait pour l'été</p>
+            </div> */}
+            {/* <p className="t6">Parfait pour l'été</p> */}
             {/* <p className="t6">Populaire sur Viarte</p> */}
             <div className="row">
               {/* <p className="t4">Les activité d'été</p>  */}
-              <p className="t4">disponibles cet après-midi</p>
+              <p className="t32">Cet après-midi</p>
               <button>
                 <img src={arrowRight} alt="arrow right icon"/>
               </button>
@@ -234,9 +285,11 @@ function FadeInImage({ src, alt, className }) {
             <div className="HomeListPrestation">
               {
                 !loading ?
-                HomeOffers.map((offer, index) => {
+                homeOffersByCategory.thisAfternoon.map((offer, index) => {
+                  // const km = getDistanceInKm(hote.lat, hote.lng, offer.lat, offer.lng);
+                  // const estimatedWalkTimeMinutes = km * 15; // 4 km/h ≈ 15 min/km
                   return(
-                    <div key={index} className={`HomeListPrestationItem ${index === HomeOffers.length - 1 ? "flou" : ""}`} 
+                    <div key={index} className={`HomeListPrestationItem ${index === HomeOffers.length - 1 ? "flou" : ""}  ${offer.isToday && "Today1"}`} 
                     onClick={() => {
                         navigate(`/offer-page/${offer.slug}`, {
                         state: {
@@ -290,11 +343,21 @@ function FadeInImage({ src, alt, className }) {
               }
             </div>
 
+            <div className="ConnectYourSelf">
+              <p className="t4">Accédez à toutes les fonctionnalités en vous connectant ou en créant un compte</p>
+              <button>
+                <p className="t5">S'inscrire</p>
+              </button>
+              <div className="row">
+                <div className="line"></div>
+                <p className="t5">ou</p>
+                <div className="line"></div>
+              </div>
+              <a className="t5">Se connecter</a>
+            </div>
 
-
-            <p className="t6">Autour de vous</p>
             <div className="row">
-              <p className="t4"> À moins de 5 min à pied</p> 
+              <p className="t32"> À moins de 5 mim</p> 
               <button>
                 <img src={arrowRight} alt="arrow right icon"/>
               </button>
@@ -348,9 +411,8 @@ function FadeInImage({ src, alt, className }) {
 
             
             {/* <p className="t6">Sorties de dernière minute</p> */}
-            <p className="t6">Réservez une sortie de dernière minute</p>
             <div className="row">
-              <p className="t4">À faire ce soir</p> 
+              <p className="t4">Sortir ce soir</p> 
               <button>
                 <img src={arrowRight} alt="arrow right icon"/>
               </button>
@@ -403,10 +465,20 @@ function FadeInImage({ src, alt, className }) {
             </div>
 
             {/* <p className="t6">disponnible aujourd'huit</p> */}
+            <div className="freeConcelation">
+              <p className="t3">Annulation Gratuite</p>
+              <p className="t4">
+                Les prestataires peuvent activer l’annulation gratuite et définir le délai minimal avant lequel un client peut annuler sa réservation.
+              </p>
+              <button>
+                <p className="t5">Voir la politique d’annulation</p>
+              </button>
+            </div>
+
 
             <p className="t6">Populaire cet été</p>
             <div className="row">
-              <p className="t4">Activités les plus aimées de la saison</p> 
+              <p className="t4">Les plus aimées</p> 
               <button>
                 <img src={arrowRight} alt="arrow right icon"/>
               </button>
@@ -507,10 +579,32 @@ function FadeInImage({ src, alt, className }) {
         </div>
       </PopUpBottom>
 
-      <div className={`occultView ${isOccultView ? "open" : ""}`} onClick={() => {
+      <PopUpBottom 
+        onClose={() => {
+          searchBarRef.current.classList.remove("open");
+          setIsOccultView(false);
+        }}
+        title={(
+          <p className="t5">TitreBOSS TOM</p>
+        )}
+        ref={searchBarRef}
+      >
+        <p className="t5">JE SUIS LE GROS BIG BOSS TOM</p>
+      </PopUpBottom>
+
+      {/* <div className={`occultView ${isOccultView ? "open" : ""}`} onClick={() => {
         // generalTerms.current.classList.remove("open");
         // setIsOccultView(false);
-      }}></div>
+      }}></div> */}
+
+          <div className={`occultView ${isOccultView ? "open" : ""}`} onClick={() => {
+            searchBarRef.current.classList.remove("open");
+
+            // PopUpBottomRef.current.style.bottom = "-100%";
+            // CancelBottomRef.current.style.bottom = "-100%";
+            // ParticipantBottomRef.current.style.bottom = "-100%";
+            setIsOccultView(false);
+          }}></div>
       </div>
     );
   }

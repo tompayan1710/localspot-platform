@@ -67,7 +67,6 @@
   .CreateOfferContainerAll .NavigateButton {
     background: linear-gradient(180deg, #545454, #373737);
     color: #ffffff;
-    padding: 10px 16px;
     font-size: 1rem;
     font-weight: lighter;
     border: none;
@@ -93,7 +92,11 @@
     z-index: 2;
     max-width: calc(var(--maxsize) - 200px);
   }
-  
+.CreateOfferContainerAll .NavigateButton>p{
+  margin: 10px 16px;
+  color: white;
+}
+
   .CreateOfferContainerAll .NavigateButton:hover {
     background: linear-gradient(180deg, #373737, #545454);
   }
@@ -393,6 +396,7 @@
     width: 80%;
     margin-top: 15px;
     margin-bottom: 30px;
+    transition: all 1s ease-in-out;
   }
   
   .CreateOfferPage2 input::placeholder {
@@ -629,7 +633,7 @@
 
 
 .TemplateOffer{
-  border-radius: 10px;
+  border-radius: 30px;
   border: 1px solid var(--greysemidark);
   /* background-color: red; */
   
@@ -641,7 +645,7 @@
   cursor: pointer;
 }
 .TemplateOffer>.TemplaetOfferImg{
-  border-radius: 9px;
+  border-radius: 30px;
   border-bottom-right-radius: 0;
   border-bottom-left-radius: 0;
   width: 100%;
@@ -653,8 +657,8 @@
 .TemplateOffer>.TemplaetOfferImg>img{
   height: 100%;
   width: 100%;
-  border-top-left-radius: 9px;
-  border-top-right-radius: 9px;
+  border-top-left-radius: 30px;
+  border-top-right-radius: 30px;
   object-fit: cover;
 }
 .TemplateOffer>.TemplateOfferInfo{
@@ -684,12 +688,14 @@
   height: 15px;
   margin-right: 4px;
   background-color: var(--greylight);
+  border-radius: 4px;
 }
 .TemplateOffer>.TemplateOfferInfo>.TemplateOfferTopDiv>.TemplateOfferTitle{
   margin-right: 20px;
   background-color: var(--greylight);
   height: 25px;
   margin-bottom: 5px;
+  border-radius: 6px;
 }
 
 .TemplateOffer>.TemplateOfferInfo>.TemplateOfferBottomDiv{
@@ -708,6 +714,8 @@
   width: 80%;
   height: 15px;
   background-color: var(--greylight);
+  border-radius: 4px;
+  border-bottom-left-radius: 40%;
 }
 
 
@@ -820,7 +828,7 @@
   position: absolute;
   top: 0;
   left: 0;
-  padding-top: 80px;
+  padding-top: 40px;
   padding-bottom: 110px;
   max-width: var(--maxsize);
 }
@@ -847,6 +855,7 @@
   color: var(--greydark);
   border-radius: 10px;
   margin-top: 8px;
+  transition: all 0.2s ease-in-out;
 }
 .CreateOfferPage5>form .InputText:focus {
   outline: none;
@@ -854,7 +863,6 @@
   border-color: var(--greymiddledark);
   padding: 12px 10px;
   box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-
 }
 
 .CreateOfferPage5>form>.DescriptionInput{
@@ -867,6 +875,7 @@
   padding: 12px 10px;
   border-radius: 10px;
   font-family: 'Inter', sans-serif;
+  transition: all 0.2s ease-in-out;
 }
 .CreateOfferPage5>form>.DescriptionInput:focus {
   outline: none;
@@ -875,6 +884,19 @@
   padding: 12px 10px;
   box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
 }
+
+
+/* Pour Chrome, Safari, Edge */
+input[type=number]::-webkit-inner-spin-button, 
+input[type=number]::-webkit-outer-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+}
+/* Pour Firefox */
+input[type=number] {
+    -moz-appearance: textfield;
+}
+
 
 .CreateOfferPage5>form>.RightInfo {
   text-align: right;/* facultatif ici, redéfini juste au cas où */
@@ -886,7 +908,7 @@
   position: relative;
   width: 100%;
   margin-top: 5px;
-  margin-bottom: 15px;
+  margin-bottom: 25px;
 }
 .CreateOfferPage5 .PriceContainer>input{
   width: 80px;
@@ -920,7 +942,7 @@
 }
 
 .CreateOfferPage5 .duration-slider{
-  margin-bottom: 10px;
+  margin-bottom: 0px;
 }
 
 .CreateOfferPage5 .CheckboxLabel{
@@ -947,6 +969,10 @@
   align-self: auto;
   opacity: 1;
 }
+.NavigateButton>div{
+  margin: 5px 0px;
+}
+
 
 .CreateOfferPage5 .RowDuration{
   display: flex;
@@ -1052,6 +1078,79 @@
   padding-right: 20px; /* espace pour l'icône */
 }
 
+
+
+
+
+.CreateOfferPage5 .CancellableContainer > p {
+    /* font-weight: bold; */
+    margin-top: 3px;
+}
+
+.CreateOfferPage5 .CancellableContainer .toggle-button-group{
+    margin-top: 10px;
+    /* background-color: var(--greylight); */
+    width: fit-content;
+    border-radius: 8px;
+    border: 1px solid var(--greysemidark);
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    margin-left: 7px;
+}
+.CreateOfferPage5 .CancellableContainer .toggle-button-group>button{
+    border: none;
+    /* background-color: red; */
+    padding: 5px 40px;
+    background-color: transparent;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    cursor: pointer;
+}
+.CreateOfferPage5 .CancellableContainer .toggle-button-group>button.active{
+
+    /* background-color: white; */
+    background: var(--lineargradientgreen);
+    border-radius: 8px;
+    box-shadow: 0 4px 5px rgba(0, 0, 0, 0.03);
+    transform: scale(1.15);
+}
+.CreateOfferPage5 .CancellableContainer .toggle-button-group>button.active.non{
+    background: var(--lineargradientred );
+}
+.CreateOfferPage5 .CancellableContainer .toggle-button-group>button.active>p{
+    color: white;
+}
+
+
+#AnnoncePage .CancellableContainer .toggle-button-group.loading{
+    height: 25px;
+    width: 200px;
+    border-radius: 8px;
+    border: none;
+    background-color: var(--greylight);
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 .PriceInputWrapper select::after {
   content: "";
   position: absolute;
@@ -1075,4 +1174,61 @@
   background-position: right 4px top 10px;
   background-size: 10px;
   padding-right: 20px;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+/*///////////////////////::ConfirmCreation*/
+.ConfirmCreation{
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+.ConfirmCreation>p:first-of-type{
+  /* font-family: "Cookie"; */
+  font-family: "Playfaire Display";
+  font-weight: 100;
+  margin-top: 30px;
+  margin-bottom: 10px;
+}
+.ConfirmCreation .SuccesOreol{
+  /* height: 100px;
+  width: 100px; */
+  padding: 30px;
+  background: linear-gradient(to bottom, #c4f5c14d, #7de27600);;
+  border-radius: 100%;
+  display: flex;
+  flex-direction: column;
+}
+.ConfirmCreation .SuccesIcon{
+  /* height: 100px;
+  width: 100px; */
+  padding: 30px;
+  background: var(--lineargradientgreen);
+  border-radius: 100%;
+  box-shadow: 0 10px 40px rgb(80, 184, 73, 0.4);
+  display: flex;
+  flex-direction: column;
+}
+.ConfirmCreation .SuccesIcon>img{
+  height: 40px;
+  width: 40px;
+}
+
+.ConfirmCreation>p{
+  /* font-weight: bold; */
+  max-width: 300px;
+  width: 90%;
+  text-align: center;
 }

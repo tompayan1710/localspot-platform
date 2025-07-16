@@ -16,7 +16,7 @@ import crossWhite from "../../assets/images/crossWhite.png"
 import yoga3 from "../../assets/images/yoga3.jpg"
 import Cuisto from "../../assets/images/Cuisto.jpg"
 import CalendarBorder from "../../assets/images/CalendarBorder.png"
-import { useTranslation } from "react-i18next";
+import { useTranslation } from "react-i18next"; 
 
 import { getOffersProvider } from "../../services/offers"
 
@@ -49,7 +49,7 @@ export default function Profile() {
       console.log("🔄 Redirection car non authentifié");
       navigate("/login", {
         state: {
-          origin: "/",
+          origin: "/", 
           scrollTo: ""
         }
       });
@@ -201,9 +201,9 @@ export default function Profile() {
               </div>
               <div className="hline"></div>
             </div>
-            <div className="SettingsListItem" onClick={() => navigate("/payement-methode")}>
+            <div className="SettingsListItem" onClick={() => navigate("/payment-methode")}>
               <div className="SettingsRow">
-                <div className="RowFirst"><img src={CreditCard} alt="credit card icon"/><p className="t4">Payement methods</p></div>
+                <div className="RowFirst"><img src={CreditCard} alt="credit card icon"/><p className="t4">Payment methods</p></div>
                 <img src={arrowRight} alt="arrow right"/>
               </div>
               <div className="hline"></div>

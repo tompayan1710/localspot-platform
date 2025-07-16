@@ -1,5 +1,5 @@
 import "./NavBarTest.css";
-import { useNavigate } from "react-router-dom"; // 👈 pour naviguer
+import { useNavigate, useLocation } from "react-router-dom"; // 👈 pour naviguer
 import { forwardRef, useContext, useEffect, useState } from "react"
 import jetSkieIcon from "../../assets/images/jetSkieIcon.png"
 import foodIcon from "../../assets/images/foodIcon.png"
@@ -8,38 +8,62 @@ import mapIcon from "../../assets/images/mapIcon.webp"
 import Calendar from "../../assets/images/Calendar.png"
 import Explore from "../../assets/images/Explore.png"
 import OffersNav from "../../assets/images/OffersNav.png"
+import EuroNav from "../../assets/images/EuroNav.png"
+import ReservationsIcon from "../../assets/images/ReservationsIcon.png"
 import Today from "../../assets/images/Today.png"
 import { AuthContext } from "../Auth/authContext/authContext"
 
 const NavBarTest = forwardRef(({ isMap }, ref) => {
   const navigate = useNavigate(); // 👈 hook de navigation
+  const location = useLocation();  // 👈
+
   const { authState } = useContext(AuthContext);
 
   const [hidden, setHidden] = useState(false); // état pour cacher / montrer la navbar
   const [lastScrollY, setLastScrollY] = useState(0);
 
 
-    const [activeTab, setActiveTab] = useState("explorer");
+  const [activeTab, setActiveTab] = useState("explorer");
+
+
+  const currentPath = location.pathname;
+
+  const getActiveTab = () => {
+    if (currentPath.startsWith("/annonces")) return "annonces";
+    if (currentPath.startsWith("/today")) return "today";
+    if (currentPath.startsWith("/calendar")) return "calendar";
+    if (currentPath.startsWith("/activity")) return "activity";
+    if (currentPath.startsWith("/restauration")) return "restauration";
+    if (currentPath.startsWith("/profile")) return "profile";
+    if (currentPath.startsWith("/my-earnings")) return "my-earnings";
+    if (currentPath.startsWith("/reservation")) return "reservations";
+    return "explorer";
+  };
 
     // const [activeTab, setActiveTab] = useState(props.activeTab || "explorer");
 
 
-   useEffect(() => {
-    const handleScroll = () => {
-      const currentScrollY = window.scrollY;
+  //  useEffect(() => {
+  //   const handleScroll = () => {
+  //     const currentScrollY = window.scrollY;
 
-      if (currentScrollY > lastScrollY && currentScrollY > 100) {
-        setHidden(true); // scroll vers le bas ⇒ cacher
-      } else {
-        setHidden(false); // scroll vers le haut ⇒ montrer
-      }
+  //     if (currentScrollY > lastScrollY && currentScrollY > 100) {
+  //       setHidden(true); // scroll vers le bas ⇒ cacher
+  //     } else {
+  //       setHidden(false); // scroll vers le haut ⇒ montrer
+  //     }
 
-      setLastScrollY(currentScrollY);
-    };
+  //     setLastScrollY(currentScrollY);
+  //   };
 
-    window.addEventListener("scroll", handleScroll);
-    return () => window.removeEventListener("scroll", handleScroll);
-  }, [lastScrollY]);
+  //   window.addEventListener("scroll", handleScroll);
+  //   return () => window.removeEventListener("scroll", handleScroll);
+  // }, [lastScrollY]);
+
+  useEffect(() => {
+    setActiveTab(getActiveTab());
+  }, [location.pathname]);
+
 
   useEffect(() => {
     console.log("activeTab a changé :", activeTab);
@@ -64,7 +88,7 @@ const NavBarTest = forwardRef(({ isMap }, ref) => {
           {/* <button className="NavBarButton" onClick={() => setActiveTab("explorer")}> */}
           <button className="NavBarButton" 
             onClick={() => {
-              setActiveTab("explorer");
+              // setActiveTab("explorer");
               navigate("/");
             }}
           >
@@ -77,7 +101,7 @@ const NavBarTest = forwardRef(({ isMap }, ref) => {
            {/* <button className="NavBarButton" onClick={() =>  setActiveTab("activity")}>  */}
            <button className="NavBarButton" 
               onClick={() => {
-                setActiveTab("activity");
+                // setActiveTab("activity");
                 navigate("/activity");
               }}
            > 
@@ -87,15 +111,27 @@ const NavBarTest = forwardRef(({ isMap }, ref) => {
             </div>
             </button>
             {/* <button className="NavBarButton" onClick={() => setActiveTab("restauration")}> */}
-            <button className="NavBarButton"
+            {/* <button className="NavBarButton"
               onClick={() => {
-                setActiveTab("restauration");
+                // setActiveTab("restauration");
                 navigate("/restauration");
               }}
             >
               <div className={`IconWrapper ${activeTab === "restauration" ? "active" : ""}`}>
                 <img src={foodIcon} alt="restauration icon"/>
                 <p className="t6">Restauration</p>
+              </div>
+            </button> */}
+
+            <button className="NavBarButton"
+              onClick={() => {
+                // setActiveTab("restauration");
+                navigate("/reservations");
+              }}
+            >
+              <div className={`IconWrapper ${activeTab === "reservations" ? "active" : ""}`}>
+                <img src={ReservationsIcon} alt="reservations icon"/>
+                <p className="t6">Reservations</p>
               </div>
             </button>
           </>
@@ -106,7 +142,7 @@ const NavBarTest = forwardRef(({ isMap }, ref) => {
           authState.user?.provider?.is_validated ? (
             <>
             <button className="NavBarButton" onClick={() => {
-              setActiveTab("today");
+              // setActiveTab("today");
               navigate("/today");
             }}>
               <div className={`IconWrapper ${activeTab === "today" ? "active" : ""}`}>
@@ -115,7 +151,7 @@ const NavBarTest = forwardRef(({ isMap }, ref) => {
               </div>
             </button>
             <button className="NavBarButton" onClick={() => {
-              setActiveTab("calendar");
+              // setActiveTab("calendar");
               navigate("/calendar");
             }}>
               <div className={`IconWrapper ${activeTab === "calendar" ? "active" : ""}`}>
@@ -124,8 +160,19 @@ const NavBarTest = forwardRef(({ isMap }, ref) => {
               </div>
             </button>
             {/* <button className="NavBarButton" onClick={() => setActiveTab("myoffers")}> */}
+            
             <button className="NavBarButton" onClick={() => {
-              setActiveTab("annonces");
+              // setActiveTab("annonces");
+              navigate("/my-earnings");
+            }}>
+              <div className={`IconWrapper ${activeTab === "my-earnings" ? "active" : ""}`}>
+                <img src={EuroNav} alt="My Earnings icon"/>
+                {/* My Earnings */}
+                <p className="t6">Mes&nbsp;Revenus</p>
+              </div>
+            </button>
+            <button className="NavBarButton" onClick={() => {
+              // setActiveTab("annonces");
               navigate("/annonces");
             }}>
               <div className={`IconWrapper ${activeTab === "annonces" ? "active" : ""}`}>
@@ -138,7 +185,7 @@ const NavBarTest = forwardRef(({ isMap }, ref) => {
         :<></>}
         {/* <button className="NavBarButton" onClick={() => setActiveTab("profile")}>  */}
         <button className="NavBarButton" onClick={() => {
-              setActiveTab("profile");
+              // setActiveTab("profile");
               navigate("/profile");
             }}> 
           <div className={`IconWrapper ${activeTab === "profile" ? "active" : ""}`}>

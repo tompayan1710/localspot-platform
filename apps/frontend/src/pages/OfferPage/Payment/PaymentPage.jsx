@@ -1,17 +1,23 @@
 import react, { useState, useContext, useEffect } from "react";
-import "./PayementPage.css"
+import "./PaymentPage.css"
 import GoBack from "../../../components/GoBack/GoBack";
 import { useParams, useLocation, useNavigate } from "react-router-dom";
 import PayPalLogo from "../../../assets/images/PayPalLogo.png";
 import logoCB from "../../../assets/images/logoCB.png";
 import { AuthContext } from "../../../components/Auth/authContext/authContext";
+import { loadStripe } from "@stripe/stripe-js"
+import CheckoutForm from "./CheckoutForm"
+import { Elements } from "@stripe/react-stripe-js";
+import Spinner from "../../../components/Spinner/Spinner";
 
-
-export default function PayementPage() {
+export default function PaymentPage() {
     const { slug } = useParams();
     const { authState } = useContext(AuthContext);
     const location = useLocation();
     const navigate = useNavigate();
+
+    const [ stripePromise, setStripePromise ]= useState(null);
+    const [clientSecret, setClientSecret] = useState("");
 
     const title = location.state?.title;
     const price = location.state?.price;
@@ -23,6 +29,9 @@ export default function PayementPage() {
     const date = location.state?.date; 
     const adresse = location.state?.adresse;
     const total_capacity = location.state?.total_capacity;
+
+    const [isFetching, setIsFetching] = useState(true);
+    const [isStripeReady, setIsStripeReady] = useState(false);
 
     const [ selectedMethode, setSelectedMethode ] = useState(0);
 
@@ -47,7 +56,42 @@ export default function PayementPage() {
                 }
             })
         }
-    })
+
+        const getPublishableKey = async () => {
+            try {
+                const response = await fetch(`${process.env.REACT_APP_API_URL}/api/payment/clients/config`, {
+                    method: "GET",
+                });
+                const { publishableKey } = await response.json();
+                console.log(publishableKey);
+                setStripePromise(loadStripe(publishableKey));
+
+
+                const amount = 51;
+                const responseClient = await fetch(`${process.env.REACT_APP_API_URL}/api/payment/clients/create-payment-intent`, {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json",  // ← OBLIGATOIRE
+                    },
+                    body: JSON.stringify({ amount }),
+                });
+
+                if(responseClient.status === 400) {
+                    console.error("❌ Could not paid under 0.50 euro");
+                    navigate("/");
+                } else{
+                    const { clientSecret } = await responseClient.json();         
+                    setClientSecret(clientSecret)
+                }
+            } catch (err) {
+                console.error("❌ Erreur paiement", err);
+            } finally {
+                setIsFetching(false);   // ← terminé de charger
+            }
+        }
+
+        getPublishableKey();
+    }, [])
 
     const getEvents = async () => {
         const providerId = authState.user?.provider_id;
@@ -110,88 +154,71 @@ export default function PayementPage() {
     ];
 
     return (
-        <div className="PayementPageContainer">
-            <GoBack
-            nagigation={`/offer-page/${slug}/availibility`}
-            scrollTo={""}
-            text={"revenir"}
-            state={{
-                title: title,
-                adresse: adresse,
-                price: price,
-                participantAdult: participantAdult,
-                participantReduced: participantReduced,
-                OfferIsCancellable: OfferIsCancellable,
-            }}
-            />
-            <div className="TopDivOpacity"></div>
-            <div className="TitleContainer">
-                <p className="t32">Sélectionnez un moyen de payement</p>
+    <div className="PayementPageContainer">
+      <GoBack
+        nagigation={`/offer-page/${slug}/availibility`}
+        scrollTo={""}
+        text={"revenir"}
+        state={{
+          title,
+          adresse,
+          price,
+          participantAdult,
+          participantReduced,
+          OfferIsCancellable,
+        }}
+      />
+
+      <div className="TopDivOpacity"></div>
+
+      <div className="TitleContainer">
+        <p className="t32">Sélectionnez un moyen de payement</p>
+      </div>
+
+      <div className="MethodesContainer">
+
+        {isFetching ? (
+            <div className="loaderContainer">
+                <Spinner />
+                {/* <p className="loader">Chargement du paiement...</p> */}
             </div>
-            <div className="MethodesContainer">
-                <div className={`MethodeItem ${selectedMethode === 1 ? "selected" : ""}`} onClick={() => {
-                    setSelectedMethode(1);
-                }}>
-                    <div className="row">
-                        <img src={PayPalLogo} alt="paypal logo"/>
-                        <p className="t4">PayPal</p>
-                    </div>
-                    <div className={`round`}>
-                        <div className={`${selectedMethode === 1 ? "underRound" : ""}`}></div>
-                    </div>
-                </div>
-                <div className={`MethodeItem ${selectedMethode === 2 ? "selected" : ""}`} onClick={() => {
-                    setSelectedMethode(2);
-                }}>
-                    <div className="row">
-                        <img src={logoCB} alt="carte bancaire logo"/>
-                        <p className="t4">Carte bancaire</p>
-                    </div>
-                    <div className={`round`}>
-                        <div className={`${selectedMethode === 2 ? "underRound" : ""}`}></div>
-                    </div>
-                </div>
+        ) : (
+        <>
+            {/* <div className={`MethodeItem ${selectedMethode === 1 ? "selected" : ""}`} onClick={() => setSelectedMethode(1)}>
+            <div className="row">
+                <img src={PayPalLogo} alt="paypal logo" />
+                <p className="t4">PayPal</p>
             </div>
-            <div className={`CBContainer ${selectedMethode === 2 ? "show" : "desapear"}`}>
-                <div className="hline"></div>
-                <form className="CBForm">
-                    <label className="t6">
-                    Nom du titulaire de la carte
-                    <input type="text" placeholder="Entrez votre nom" required />
-                    </label>
-
-                    <label className="t6">
-                    Numéro de carte
-                    <input type="text" placeholder="0000 0000 0000 0000" maxLength="19" required />
-                    </label>
-
-                    <div className="rowInput">
-                    <label className="t6">
-                        Date d’expiration
-                        <input type="text" placeholder="MM/AA" maxLength="5" required />
-                    </label>
-
-                    <label className="t6">
-                        CVV
-                        <input type="text" placeholder="•••" maxLength="4" required />
-                    </label>
-                    </div>
-
-                    <label className="checkboxContainer t6">
-                    <input type="checkbox" />
-                    Enregistrer la carte pour de futurs paiements
-                    </label>
-                </form>
+            <div className="round">
+                <div className={`${selectedMethode === 1 ? "underRound" : ""}`}></div>
             </div>
-            <button onClick={getEvents} className="connectBtn">Voir événements</button>
-            <button
-                className="saveButton"
-                onClick={() => {
-                saveCreneau();
+            </div> */}
+
+            {stripePromise && clientSecret && (
+            <div className="full-width-stripe-container" style={{ opacity: isStripeReady ? 1 : 0, transition: "opacity 0.3s ease" }}>
+                <Elements
+                stripe={stripePromise}
+                options={{
+                    clientSecret,
+                    appearance: {
+                    theme: 'stripe',
+                    variables: {
+                        colorPrimary: '#008cdd',
+                        colorText: '#333',
+                        fontFamily: 'Poppins, Arial, sans-serif',
+                        borderRadius: '15px',
+                    },
+                    },
                 }}
-            >
-                Enregistrer ou modifier le créneau
-            </button>
-        </div>
-    )
+                >
+                <CheckoutForm isStripeReady={isStripeReady} onReady={() => setIsStripeReady(true)} />
+                </Elements>
+            </div>
+            )}
+        </>
+        )}
+        <button onClick={() => {saveCreneau()}}>SaveCreneau</button>
+      </div>
+    </div>
+  );
 }

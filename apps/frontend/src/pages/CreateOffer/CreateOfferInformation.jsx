@@ -51,7 +51,6 @@ export default function CreateOfferInformations(){
     const [openPointImportant, setOpenPointImportant] = useState(false);
 
 
-    const durations = ["15 min", "30 min", "1 h", "2 h", "4 h", "+ 6 h"];
     const [pointImportant, setPointImportant] = useState([""]);
 
     const limitTitle = 60;
@@ -64,6 +63,7 @@ export default function CreateOfferInformations(){
 
 
     const handleCancellable = () => {
+        console.log("Cliqué")
         setIsCancellable((prev) => {
             const newValue = !prev;
             setForm((formprev) => ({
@@ -126,7 +126,7 @@ export default function CreateOfferInformations(){
             type: type,  // idem
             city_id: city_id,
             price: form.price,
-            duration: durations[duration === -1 ? 0 : duration],
+            duration: duration,
             image_urls: images_urls, // ou [images[0]] si c'est une seule
             provider_id: authState.user.provider.id, // à récupérer dynamiquement si possible
             pricePer: form.pricePer,
@@ -148,7 +148,7 @@ export default function CreateOfferInformations(){
 
             if (response.ok) { 
                 console.log("✅ Offre créée :", data);
-                navigate(`/annonces/${slug}/availability-editor`);
+                navigate(`/annonces/${slug}/confirm-creation`);
             } else {
                 console.error("❌ Erreur côté API :", data.error);
                 alert("Erreur lors de la création de l'offre.");
@@ -163,12 +163,12 @@ export default function CreateOfferInformations(){
 
     return (
         <div className="CreateOfferContainerAll">
-            <button className="CloseButton" onClick={() => navigate("/profile")}><img src={crossiconBlack} alt="cross icon"/></button>
+            <button className="CloseButton" onClick={() => navigate(-3)}><img src={crossiconBlack} alt="cross icon"/></button>
             <div className="CreateOfferEtape"><p className="t6">3/3</p></div>
             <button className="GoBackButton"><img src={arrowLeft} alt="arrow left"/><p className="t6">précédent</p></button>
             <div className="TopDivOpacity"></div>
             <div className="CreateOfferPage5">    
-                <div className="TemplateOffer">
+                {/* <div className="TemplateOffer">
                 <div className="TemplaetOfferImg">
                     {images_urls?.length > 0 && (
                         <img src={images_urls[0]} alt="Preview de l’offre" />
@@ -211,7 +211,7 @@ export default function CreateOfferInformations(){
                         }
                     </div>
                     </div>
-                </div>
+                </div> */}
  
 
                 <form onSubmit={createOffer} className="CreateOfferForm">
@@ -260,6 +260,8 @@ export default function CreateOfferInformations(){
                         <option value="groupe">groupe</option>
                     </select>
                     </div> */}
+                    <label className="t4">Durée de l'activité</label>
+                    <DurationSlider setValue={setDuration} durations={["15 min", "30 min", "1 h", "2 h", "4 h", "+ 6 h"]}/>
                     <label className="t4">Prix</label>
                     <div className="PriceContainer">
                         <input
@@ -283,10 +285,32 @@ export default function CreateOfferInformations(){
                             <option value="groupe">groupe</option>
                         </select>
                     </div>
-                    <label className="t4">Durée de l'activité</label>
-                    <DurationSlider setValue={setDuration} value={duration}/>
+                    
+                    <div className="CancellableContainer">
+                        <label className="t4">Annulation gratuite</label>
+                        <p className="t6">Choisissez si vos clients peuvent annuler gratuitement leur réservation</p>
 
-                    <div className="OptionSearch">
+                        <div className="toggle-button-group">
+                            <button
+                                type="button"
+                                className={isCancellable ? "active" : ""}
+                                onClick={handleCancellable}
+
+                            >
+                                <p className="t6">Oui</p>
+                            </button>
+                            <button
+                                type="button"
+                                className={!isCancellable ? "non active" : ""}
+                                onClick={handleCancellable}
+                            >
+                                <p className="t6">Non</p>
+                            </button>
+                        </div> 
+                    </div>
+                    
+
+                    {/* <div className="OptionSearch">
                                             <div className="PointOpenButton" onClick={() => setOpenPointImportant(prev => !prev)}>
                                               <p className="t5">Points importants</p>
                                               <img src={arrowdownicon} alt="arrow down icon"/>
@@ -317,21 +341,25 @@ export default function CreateOfferInformations(){
                                               </>
                                               : <></>
                                             }
-                                          </div>
+                                          </div> */}
 
 
                                           
-                    <label className="CheckboxLabel">
+                    {/* <label className="CheckboxLabel">
                         <label className="t4">Annulation gratuite</label>
                         <ButtonLevier toogleInput={handleCancellable} isSelected={isCancellable}/>
-                    </label>
-                    <p className="t6">L'annulation gratuite est un avantage est favorise la conversion.</p>
+                    </label> */}
 
+
+                    
+            
  
                      
 
 
-                    <button type="submit" className="NavigateButton" ref={refNavigateButton}>{isLoading ? <Spinner /> : "Ajouter mes informations"}</button>
+                    <button type="submit" className="NavigateButton" ref={refNavigateButton}>
+                        {isLoading ? <Spinner /> : <p className="t6">Ajouter mes informations</p>}
+                    </button>
 
                 </form>
 

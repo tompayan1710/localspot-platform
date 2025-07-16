@@ -40,7 +40,7 @@ export default function AllAnnoncesPage(){
 
     return (
         <div id="AnnoncesPage">
-            <div className="StatistiqueAnnonces"></div>
+            {/* <div className="StatistiqueAnnonces"></div> */}
             {/* <CahierTexte /> */}
             <div className="row">
                 <p className="t3">Mes annonces :</p>
@@ -55,7 +55,7 @@ export default function AllAnnoncesPage(){
                 </button>
             </div>
             <div className="allAnnonces">
-                { providerOffers ? providerOffers.map((offer) => (
+                { providerOffers && providerOffers.length > 0 ? providerOffers.map((offer) => (
                     <button key={offer.id} className="AnnonceItem" onClick={() => {
                         navigate(`${offer.slug}`);
                     }}>
@@ -66,7 +66,20 @@ export default function AllAnnoncesPage(){
                         </div> 
                     </button>
                     )) : 
-                    <div className="noOffer"></div>
+                    <div className="noOffer">
+                        <p className="t32">Actuellement aucune réservations</p>
+                        <p className="t6">Aucune offre actuellement</p>
+                        <button className="blackButton" onClick={() => {
+                            navigate("/annonces", {
+                                state: {
+                                    activeTab: "annonces"
+                                }
+                            })
+                        }}>
+                        {/* <p className="t5">Mettre en avant mes offres</p> */}
+                        <p className="t5">Ajouter une annonces</p>
+                        </button>
+                    </div>
                 } 
             </div>
         </div>

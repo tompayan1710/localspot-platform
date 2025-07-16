@@ -1,0 +1,107 @@
+.PayementPageContainer{
+  min-height: 100vh;
+}
+.PayementPageContainer .TopDivOpacity {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    background: linear-gradient(to bottom, rgb(255, 255, 255) 0%, rgb(255, 255, 255) 60%, rgba(255, 255, 255, 0) 100%);
+    height: 60px;
+    z-index: 2;
+} 
+
+
+.PayementPageContainer .TitleContainer{
+  margin: 0 6%;
+  padding-top: 60px;
+}
+.PayementPageContainer .TitleContainer>p:first-of-type{
+  margin-bottom: 5px;
+}
+
+
+.PayementPageContainer .MethodesContainer{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-top: 30px;
+    padding: 0 6%;
+}
+
+
+
+.PayementPageContainer .loaderContainer{
+    position: fixed;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    top: 0;
+}
+
+/*//////////////////*/
+.PayementPageContainer .MethodesContainer>.MethodeItem{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+    border-radius: 15px;
+    border: 1px solid var(--greysemidark);
+    padding: 15px 15px;
+    margin-bottom: 8px;
+    cursor: pointer;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.03);
+    transition: all 0.3s ease-in-out;
+}
+/* .PayementPageContainer .MethodesContainer>.MethodeItem.selected{
+    border: 1px solid var(--greymiddledark);
+    box-shadow: 0 0px 10px rgba(0, 0, 0, 0.08);
+    background-color: var(--greylight);
+} */
+.PayementPageContainer .MethodesContainer>.MethodeItem>.row{
+    gap: 25px;
+}
+.PayementPageContainer .MethodesContainer>.MethodeItem>.row>img{
+    height: 18px;
+}
+.PayementPageContainer .MethodesContainer>.MethodeItem>.row>p{
+   font-weight: bold;
+}
+
+.stripe-form-container {
+  width: 100%;
+  max-width: 100%;
+  /* padding-left: 10px; */
+}
+
+
+
+.full-width-stripe-container {
+  width: 100%;
+}
+
+
+.stripe-pay-button {
+  width: 100%;
+  padding: 12px 16px;
+  background-color: #008cdd;
+  color: white;
+  border-radius: 8px;
+  border: none;
+  margin-top: 20px;
+  cursor: pointer;
+  opacity: 0;
+  transition: all 0.5s ease-in-out;
+}
+.stripe-pay-button.loaded {
+    opacity: 1;
+}
+
+#payment-message{
+    margin-top: 30px;
+    width: 100%;
+    text-align: center;
+}

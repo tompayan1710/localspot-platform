@@ -19,7 +19,7 @@ import EditProfile from "./components/Auth/ProfilPage/EditProfile";
 import EditLanguage from "./components/Auth/ProfilPage/EditLanguage";
 import SettingsPage from "./components/Auth/ProfilPage/SettingsPage/SettingsPage";
 import Availability from "./pages/OfferPage/Availibility/Availability";
-import PayementPage from "./pages/OfferPage/Payement/PayementPage";
+import PaymentPage from "./pages/OfferPage/Payment/PaymentPage";
 import BookingSystem from "./components/Auth/ProfilPage/BookingSystem/BookingSystem";
 import PrivacyPolicy from "./pages/DocumentOfficiel/PrivacyPolicy/PrivacyPolicy";
 import LegalNotice from "./pages/DocumentOfficiel/LegalNotice/LegalNotice";
@@ -29,11 +29,16 @@ import AvailabilityEditor from "./pages/AnnoncePage/AvailabilityEditor/Availabil
 import AllAnnoncesPage from "./pages/AnnoncePage/AllAnnoncesPage";
 import AnnoncePage from "./pages/AnnoncePage/AnnoncePage/AnnoncePage";
 import NavBarTest from "./components/BottomNavBar/NavBarTest";
-import PayementMethode from "./components/Auth/ProfilPage/PayementMethode/PayementMethode";
+import PaymentMethode from "./components/Auth/ProfilPage/PaymentMethode/PaymentMethode";
 import Today from "./pages/Today/Today";
 import Calendar from "./pages/Calendar/Calendar";
 import Activity from "./pages/Activity/Activity";
 import Restauration from "./pages/Restauration/Restauration";
+import ConfirmPaymentPage from "./pages/OfferPage/Payment/ConfirmPaymentPage";
+import MyEarnings from "./pages/MyEarnings/MyEarnings";
+import ConfirmCreation from "./pages/CreateOffer/ConfirmCreation";
+import Reservations from "./pages/Reservations/Reservations";
+import ReservationsElement from "./pages/Reservations/ReservationElement/ReservationElement";
 
 export default function BrowserRouterAll(){
     const location = useLocation();
@@ -48,7 +53,7 @@ export default function BrowserRouterAll(){
         "/edit-language",
         "/edit-profile",
         "/become-provider",
-        "/payement-methode",
+        "/payment-methode",
         "/become-provider/add-info",
         "/become-provider/add-contact",
         "/create-offer",
@@ -58,15 +63,16 @@ export default function BrowserRouterAll(){
         "/privacy-policy",
         "/terms-of-service",
         "/terms-and-conditions-of-sal",
-        "/content-policy"
+        "/content-policy",
     ];
     
     //offer-page/b2f3a4ae-6cc4-4353-824e-65de72035d68/availibility
     const hideNavBarPatterns = [
     /^\/offer-page\/[^\/]+\/availibility$/,  // regex pour offer-page/:slug/availibility
-    /^\/offer-page\/[^\/]+\/payement$/, 
-    /^\/annonces\/[^\/]+\/availability-editor$/,     // si tu veux aussi cacher sur payement
-    // Ajoute d'autres si besoin
+    /^\/offer-page\/[^\/]+\/payment$/, 
+    /^\/annonces\/[^\/]+\/availability-editor$/, 
+    /^\/annonces\/[^\/]+\/confirm-creation$/,
+    /^\/reservations\/[^\/]+$/,
     ];
 
     return(
@@ -81,12 +87,16 @@ export default function BrowserRouterAll(){
             <Route path="/" element={<Home navBarRef={navBarRef}/>} />
             <Route path="/offer-page/:slug" element={<OfferPage />} />
             <Route path="/offer-page/:slug/availibility" element={<Availability />} />
-            <Route path="/offer-page/:slug/payement" element={<PayementPage />} />
+            <Route path="/offer-page/:slug/payment" element={<PaymentPage />} />
+            <Route path="/confirm-payment" element={<ConfirmPaymentPage />} />
 
 
             <Route path="/activity" element={<Activity />} />
 
             <Route path="/restauration" element={<Restauration />} />
+
+            <Route path="/reservations" element={<Reservations />} />
+            <Route path="/reservations/:reservation_id" element={<ReservationsElement />} />
 
 
 
@@ -94,10 +104,12 @@ export default function BrowserRouterAll(){
 
             <Route path="/calendar" element={<Calendar />} />
  
+            <Route path="/my-earnings" element={<MyEarnings />} />
 
             <Route path="/annonces" element={<AllAnnoncesPage />} />
             <Route path="/annonces/:slug" element={<AnnoncePage />} />
             <Route path="/annonces/:slug/availability-editor" element={<AvailabilityEditor />} />
+            <Route path="/annonces/:slug/confirm-creation" element={<ConfirmCreation />} />
 
 
             <Route path="/create-offer" element={<CreateOffer />} />
@@ -113,7 +125,7 @@ export default function BrowserRouterAll(){
             <Route path="/profile" element={<Profile />} />
             <Route path="/edit-profile" element={<EditProfile />} />
             <Route path="/edit-language" element={<EditLanguage />} />
-            <Route path="/payement-methode" element={<PayementMethode />} />
+            <Route path="/payment-methode" element={<PaymentMethode />} />
             <Route path="/booking-system" element={<BookingSystem />} />
             <Route path="/settings" element={<SettingsPage />} />
     

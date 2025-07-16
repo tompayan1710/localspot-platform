@@ -25,7 +25,7 @@ export default function CreateOfferAddress(){
   const navigate = useNavigate();
 
   const location = useLocation();
-  const { type, categories } = location.state || {};
+  const { type, categories, origin } = location.state || {};
 
   useEffect(() => {
     const missingData = !type || !categories;
@@ -337,10 +337,12 @@ export default function CreateOfferAddress(){
 
     return (
         <div className="CreateOfferContainerAll" ref={refContainerAll}>
-            <button className="CloseButton" onClick={() => navigate("/profile")}><img src={crossiconBlack} alt="cross icon"/></button>
+            <button className="CloseButton" onClick={() => navigate(-2)}><img src={crossiconBlack} alt="cross icon"/></button>
             <div className="CreateOfferEtape"><p className="t6"> {etapeNum}</p></div>
             <button className="GoBackButton"><img src={arrowLeft} alt="arrow left icon"/><p className="t6">précédent</p></button>
-            <button className="NavigateButton" ref={refNavigateButton} onClick={() =>textInButton === "Ajouter l'adresse" ? goToPage3() : uploadImages()}>{isLoading ? <Spinner /> : textInButton}</button>
+            <button className="NavigateButton" ref={refNavigateButton} onClick={() =>textInButton === "Ajouter l'adresse" ? goToPage3() : uploadImages()}>
+              {isLoading ? <Spinner /> : <p className="t6">{textInButton}</p>}
+            </button>
             <div className="TopDivOpacity"></div>
             <div className="CreateOfferPage2" ref={refCreateOfferPage2}>
                 <p className="t32">Saisisez l'adresse de votre offre&nbsp;!</p>
@@ -406,7 +408,7 @@ export default function CreateOfferAddress(){
                   </div>
                   <div className="TemplateOfferBottomDiv">
                     <div className="TemplateOfferStarList"></div>
-                    <div className="TemplateOfferPrice"></div>
+                    {/* <div className="TemplateOfferPrice"></div> */}
                   </div>
                 </div>
               </div>
