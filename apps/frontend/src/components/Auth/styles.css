@@ -82,10 +82,15 @@
     align-items: center;
     transition: height 1s ease;
   }
-
-  .form-container>img{
-
+  .form-container>.ImageWrapper{
+    height: 45px;
     width: 45px;
+    background-color: var(--greylight);
+  }
+  .form-container>.ImageWrapper>.LogoImage{
+    height: 100%;
+    width: 100%;
+    background-color: var(--greylight);
   }
   
   .form-container>.t32{
@@ -122,15 +127,18 @@
   background-color: #f9f9f9;
 }
 
-.GoogleAuthButton img {
+.GoogleAuthButton .ImageWrapper{
   width: 20px;
+  height: 20px;
+  background-color: var(--greylight);
+  border-radius: 4px;
+}
+.GoogleAuthButton .ImageWrapper>img {
+  width: 100%;
+  height: 100%;
+  background-color: var(--greylight);
 }
 
-.GoogleAuthButton p {
-  margin: 0;
-  font-weight: 500;
-  font-size: 14px;
-}
 
 
   .orcontainer{
@@ -196,7 +204,7 @@
   /* Style des champs de saisie */
   .emailPasswordForm input {
     padding: 8px 16px;
-    font-size: 14px;
+    font-size: 16px;
     border: 1px solid #ddd;
     border-radius: var(--borderradius);
     background-color: var(--greyverylight);
@@ -234,7 +242,10 @@
   .emailPasswordForm button:hover {
     background: linear-gradient(180deg, #373737, #545454);
   }
-  
+  .emailPasswordForm button>p{
+    color: white;
+    padding: 4px 0;
+  }
 
 
 

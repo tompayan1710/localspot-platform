@@ -6,13 +6,19 @@ body {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   padding: 0;
-  width: 100vw;
+  /* width: 100vw; */
   overflow-x: hidden;
+  overflow-y: auto;
+
 }
 
+:root{
+  --vh: 100%
+}
 html, body {
   scrollbar-width: none;         /* Firefox */
   -ms-overflow-style: none;      /* IE */
+  height: var(--vh);
 }
 
 body::-webkit-scrollbar {

@@ -15,7 +15,7 @@ export default function LegalNotice() {
         <p className="t6">
           Siège social : 16 Bd Albert 1er, 06600 Antibes<br />
           Téléphone : +33 07 65 59 40 97<br />
-          Adresse e-mail : <a href="mailto:contact@viarte.com" className="t6">testi@viarte.com</a>
+          Adresse e-mail : <a href="mailto:tom.payan@viarte.eu" className="t6">tom.payan@viarte.eu</a>
         </p>
       </section>
 

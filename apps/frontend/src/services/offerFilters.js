@@ -17,12 +17,28 @@ function isTonight(offer) {
     return true;
 }
 
-// function isPopular(offer) {
-//   return offer.reservations_count >= 10 || offer.review_average >= 4.5;
-// }
-function isPopular(offer) {
-    return true;
+
+export function classifyOffers(offers, userLocation = null) {
+  // 🔽 TRI par nombre de réservation individuelles
+  const sortedOffers = [...offers].sort((a, b) => {
+  const aCount = parseInt(a.nb_reservation) || 0;
+  const bCount = parseInt(b.nb_reservation) || 0;
+
+  return bCount - aCount; // tri décroissant
+  });
+
+  return {
+    thisAfternoon: sortedOffers.filter(isThisAfternoon),
+    tonight: sortedOffers.filter(isTonight),
+    popular: sortedOffers, // tout est trié par popularité ici
+    nearby: userLocation
+      ? sortedOffers.filter(offer =>
+          isNearby(offer, userLocation.lat, userLocation.lon)
+        )
+      : [],
+  };
 }
+
 
 
 // Utilitaire de distance Haversine
@@ -52,18 +68,4 @@ function getDistance(lat1, lon1, lat2, lon2) {
 // }
 function isNearby(offer, userLat, userLon, maxDistanceMeters = 500) {
     return true;
-}
-
-// Point d'entrée pour tout découper
-export function classifyOffers(offers, userLocation = null) {
-  return {
-    thisAfternoon: offers.filter(isThisAfternoon),
-    tonight: offers.filter(isTonight),
-    popular: offers.filter(isPopular),
-    nearby: userLocation
-      ? offers.filter(offer =>
-          isNearby(offer, userLocation.lat, userLocation.lon)
-        )
-      : [],
-  };
 }

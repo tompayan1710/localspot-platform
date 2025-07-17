@@ -40,7 +40,7 @@ export default function Footer({paddingBottom}) {
         </button>
         <p className="t5">Contact</p>
         <button onClick={handleCopy} className="CopyButton">
-          <p className="t6">tompayan1710@gmail.com</p>
+          <p className="t6">tom.payan@viarte.eu</p>
           <img src={copieIconWhite} alt="Copier l’email" />
           <span className={`${copied ? "copied" : ""} CopiedFeedback t6`}>Copié</span>
         </button>

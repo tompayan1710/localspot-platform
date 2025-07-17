@@ -8,6 +8,7 @@ import { AuthContext } from '../Auth/authContext/authContext';
 import { GoogleAuthButton } from "./GoogleAuthButton"
 import Spinner from "../Spinner/Spinner"
 import GoBack from "../GoBack/GoBack";
+import FadeInImage from "../Utils/FadeInImage";
 
 
 export default function Signup() {
@@ -57,7 +58,9 @@ export default function Signup() {
       <GoBack nagigation={`/`} scrollTo={""} text={"revenir"}/>
       <div className="authcomponentcontainer">
         <div className="form-container">
-          <img src={ViarteLogo} alt="localspot logo"/>
+          <div className="ImageWrapper">
+            <FadeInImage className="LogoImage" src={ViarteLogo} alt="localspot logo"/>
+          </div>
           <p className="t32">Créer votre compte</p>
           <p className="t6">Bienvenue ! Veuillez compléter les informations pour continuer.</p>
           <GoogleAuthButton />

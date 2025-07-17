@@ -1,9 +1,15 @@
-import { useState } from "react"
+import { useRef, useState } from "react"
 import SliderPrice from "../../Slider/SliderPrice"
 import "./FilterElement.css"
 import Morning from "../../../assets/images/Morning.png"
 import Sun from "../../../assets/images/Sun.png"
 import Moon from "../../../assets/images/Moon.png"
+import CalendarNotFill from "../../../assets/images/CalendarNotFill.png"
+import arrowRight from "../../../assets/images/arrowRight.png"
+import arrowLeft from "../../../assets/images/arrowLeft.png"
+import { DayPicker } from "react-day-picker";
+import PopUpBottom from "../../PopUpBottom/PopUpBottom"
+
 
 export default function FilterElement({ setIsOccultView, searchBarRef }){
     const [minValue, setMinValue] = useState(30)
@@ -12,6 +18,10 @@ export default function FilterElement({ setIsOccultView, searchBarRef }){
     const [selectedCategories, setSelectedCategories] = useState([])
     const [participantAdult, setParticipantAdult] = useState(0);
     const [participantReduced, setParticipantReduced] = useState(0);  
+    const dayPickerRef = useRef(null);
+    const [seccondOccultView, setSeccondOccultView] = useState(false);
+    const today = new Date().toLocaleDateString('fr-CA');
+    const [selectedDate, setSelectedDate] = useState();
     const moments = [
         {
             text: "Matin",
@@ -60,6 +70,74 @@ export default function FilterElement({ setIsOccultView, searchBarRef }){
             <div className="column">
                 <p className="t32">Tranche de prix :</p>
                 <SliderPrice minValue={minValue} setMinValue={setMinValue} maxValue={maxValue} setMaxValue={setMaxValue}/>
+            </div>
+            <div className="column">
+                <p className="t32">Date</p>
+                <div className="ColumnCalendar">
+                    <button className="OpenCalendar" onClick={() => {
+                        dayPickerRef.current.classList.add("open");
+                        setSeccondOccultView(true)
+                    }}>
+                        <p className="t5">{selectedDate || "Aucun date spécifié"}</p>
+                        <img src={CalendarNotFill} alt="Calendar icon"/>
+                    </button>
+                    <PopUpBottom 
+                        onClose={() => {
+                            dayPickerRef.current.classList.remove("open");
+                            setSeccondOccultView(false);
+                            setSelectedDate(null)
+                        }}
+                        title={(
+                        <p className="t5">TitreBOSS TOM</p>
+                        )}
+                        ref={dayPickerRef}
+                        duration={0.4}
+                        fullHeight={true}
+                        zIndex={14}
+                    >   
+                        <> 
+                            <DayPicker
+                                mode="single"
+                                selected={new Date(selectedDate)}
+                                onSelect={(date) => {
+                                setSelectedDate(date ? date.toLocaleDateString('fr-CA') : today)
+                                }}
+                                disabled={[{ before: new Date() }]}
+                                weekStartsOn={1}
+                                required
+                                captionLayout="buttons" // <-- OBLIGATOIRE pour voir les boutons flèches
+                                components={{
+                                IconLeft: () => (
+                                    <img
+                                    src={arrowLeft}
+                                    alt="Précédent"
+                                    style={{ width: 18, height: 18, objectFit: "contain" }}
+                                    />
+                                ),
+                                IconRight: () => (
+                                    <img
+                                    src={arrowRight}
+                                    alt="Suivant"
+                                    style={{ width: 18, height: 18, objectFit: "contain" }}
+                                    />
+                                ),
+                                }}        
+                            />
+                            <div className="ApplieContainer">
+                                <div className="hline"></div>
+                                <button 
+                                    className="Applie"
+                                    onClick={() => {
+                                        dayPickerRef.current.classList.remove("open");
+                                        setSeccondOccultView(false);
+                                    }}
+                                >
+                                    <p className="t5">Ajouter</p>
+                                </button>
+                            </div>
+                        </>
+                    </PopUpBottom>
+                </div>
             </div>
             <div className="column">
                 <p className="t32">Catégories</p>
@@ -119,15 +197,26 @@ export default function FilterElement({ setIsOccultView, searchBarRef }){
                 </div>
             </div>
 
-            <button 
-                className="Applie"
-                onClick={() => {
-                    searchBarRef.current.classList.remove("open")
-                    setIsOccultView(false);
-                }}
-            >
-                <p className="t5">Appliquer</p>
-            </button>
+            <div className="ApplieContainer">
+                <div className="hline"></div>
+                <button 
+                    className="Applie"
+                    onClick={() => {
+                        searchBarRef.current.classList.remove("open")
+                        setIsOccultView(false);
+                    }}
+                >
+                    <p className="t5">Appliquer</p>
+                </button>
+            </div>
+
+            <div className={`occultView Calendar ${seccondOccultView ? "open" : ""}`} style={{zIndex: "13"}} onClick={(e) => {
+                console.warn("IsOccult 2")
+                e.stopPropagation();
+                dayPickerRef.current.classList.remove("open");
+                setSeccondOccultView(false);
+            }}></div>
+
         </div>
     )
 }

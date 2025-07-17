@@ -18,7 +18,7 @@ import ArrowTopRight from "../assets/images/ArrowTopRight.png"
 import FiltersSearch from "../assets/images/FiltersSearch.png"
 
 import Terms from "../assets/images/Terms.png"
-import { useEffect, useRef, useState } from "react";
+import { useContext, useEffect, useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import Footer from "../components/Footer/Footer";
@@ -28,6 +28,8 @@ import FadeInImage from "../components/Utils/FadeInImage";
 import { classifyOffers } from "../services/offerFilters";
 import TopSearchBar from "../components/SearchBar/TopSearchBar";
 import FilterElement from "../components/SearchBar/FilterElement/FilterElement";
+import PopUpLogin from "../components/Auth/PopUpLogin/PopUpLogin";
+import { AuthContext } from "../components/Auth/authContext/authContext";
 
 
 
@@ -47,6 +49,7 @@ import FilterElement from "../components/SearchBar/FilterElement/FilterElement";
 
   export default function Home({navBarRef}) {
     const [isOccultView, setIsOccultView] = useState(false);
+    const { checkAuth, authState } = useContext(AuthContext);
 
     const offerContainerRef = useRef(null);
     const LogoContainerAnimationRef = useRef(null); 
@@ -64,6 +67,7 @@ import FilterElement from "../components/SearchBar/FilterElement/FilterElement";
     const { i18n } = useTranslation();
     const currentLang = i18n.language;
     const searchBarRef = useRef(null);
+    const PopUpLoginRef = useRef(null);
     const [HomeOffers, setHomeOffers] = useState([]);
     const [loading, setLoading] = useState(true);
     const [selectingOfferToday, setSelectingOfferToday] = useState({})
@@ -203,6 +207,24 @@ import FilterElement from "../components/SearchBar/FilterElement/FilterElement";
       return R * c;
     }
 
+
+    useEffect(() => {
+        const queryParams = new URLSearchParams(window.location.search);
+        const token = queryParams.get("token");
+
+
+        if (token) {
+        // ✅ Stocke le JWT dans localStorage
+        console.warn("Il y a un token de : ", token);
+        localStorage.setItem("jwtToken", token);
+
+        // ✅ Met à jour le contexte d'authentification
+        checkAuth();
+
+        // ✅ Redirige l'utilisateur là où il était
+        // navigate(`/profile`);
+        }
+    }, []);
 
     return (
       <div className="HomeContainerPrincipal" ref={offerContainerRef}>
@@ -379,11 +401,17 @@ import FilterElement from "../components/SearchBar/FilterElement/FilterElement";
               ))
               }
             </div>
-
-            <div className="ConnectYourSelf">
+            
+            
+            <div className={`ConnectYourSelf ${authState.isAuth && "close"}`}>
               <p className="t3">Rejoingnez-nous !</p>
               <p className="t5">Accédez à toutes les fonctionnalités en vous connectant ou en créant un compte</p>
-              <button>
+              <button 
+                className="Signup" 
+                onClick={() =>{
+                PopUpLoginRef.current.classList.add("open")
+                setIsOccultView(true);
+              }}>
                 <p className="t5">S'inscrire</p>
               </button>
               <div className="row">
@@ -391,7 +419,13 @@ import FilterElement from "../components/SearchBar/FilterElement/FilterElement";
                 <p className="t5">ou</p>
                 <div className="line"></div>
               </div>
-              <a className="t5">Se connecter</a>
+              <button 
+                className="Login" 
+                onClick={() =>{
+                PopUpLoginRef.current.classList.add("open")
+                setIsOccultView(true);
+              }}>
+                <p className="t5">Se connecter</p></button>
             </div>
 
             <div className="row">
@@ -450,7 +484,7 @@ import FilterElement from "../components/SearchBar/FilterElement/FilterElement";
             
             {/* <p className="t6">Sorties de dernière minute</p> */}
             <div className="row">
-              <p className="t4">Sortir ce soir</p> 
+              <p className="t32">Sortir ce soir</p>
               <button>
                 <img src={arrowRight} alt="arrow right icon"/>
               </button>
@@ -518,14 +552,14 @@ import FilterElement from "../components/SearchBar/FilterElement/FilterElement";
 
             <p className="t6">Populaire cet été</p>
             <div className="row">
-              <p className="t4">Les plus aimées</p> 
+              <p className="t32">Les plus aimées</p> 
               <button>
                 <img src={arrowRight} alt="arrow right icon"/>
               </button>
             </div> 
             <div className="HomeListPrestation">
               {
-                HomeOffers.map((offer, index) => {
+                homeOffersByCategory.popular.map((offer, index) => {
                   return(
                     <div key={index} className={`HomeListPrestationItem ${index === HomeOffers.length - 1 ? "flou" : ""}`} 
                     onClick={() => {
@@ -628,18 +662,23 @@ import FilterElement from "../components/SearchBar/FilterElement/FilterElement";
           <p className="t5">TitreBOSS TOM</p>
         )}
         ref={searchBarRef}
+        duration={0.4}
       >
         <FilterElement setIsOccultView={setIsOccultView} searchBarRef={searchBarRef}/>
       </PopUpBottom>
 
+
+      <PopUpLogin googleRedirectRoute="/" ref={PopUpLoginRef} setIsOccultView={setIsOccultView}/>
       {/* <div className={`occultView ${isOccultView ? "open" : ""}`} onClick={() => {
         // generalTerms.current.classList.remove("open");
         // setIsOccultView(false);
       }}></div> */}
 
           <div className={`occultView ${isOccultView ? "open" : ""}`} onClick={() => {
+            console.warn("IsOccult 1")
             searchBarRef.current.classList.remove("open");
-
+            PopUpLoginRef.current.classList.remove("open");
+            
             // PopUpBottomRef.current.style.bottom = "-100%";
             // CancelBottomRef.current.style.bottom = "-100%";
             // ParticipantBottomRef.current.style.bottom = "-100%";

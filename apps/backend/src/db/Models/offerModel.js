@@ -128,7 +128,14 @@ async function getAllOffers() {
               )
             )
         )
-      ) AS "isToday"
+      ) AS "isToday",
+      (
+        SELECT
+          count(*)
+        FROM reservation_slots
+        JOIN reservations_individuals ON reservation_slots.id = reservations_individuals.slot_id
+        WHERE reservation_slots.offer_slug = o.slug
+      ) AS nb_reservation
     FROM offers o;
   `);
 

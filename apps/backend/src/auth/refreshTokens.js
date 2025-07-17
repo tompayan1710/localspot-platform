@@ -123,7 +123,8 @@ async function refreshToken(req) {
     const newAccessToken = jwt.sign(
       { id: decoded.id, email: decoded.email, iat: Math.floor(Date.now()/1000) },
       process.env.JWT_SECRET,
-      { expiresIn: '10s' } // Access Token de 15 minutes
+      // { expiresIn: '10s' } // Access Token de 15 minutes
+      { expiresIn: '15m' }
     );
 
     const decodedAccessToken = jwt.decode(newAccessToken);

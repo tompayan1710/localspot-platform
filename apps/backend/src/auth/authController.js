@@ -76,11 +76,15 @@ async function login(userData) {
     if(provider ==="password-email"){
       //L'utilisateur essaye de se connecter avec password-email alors que son compte est un compte Google
       if(user.rows[0].provider != "password-email"){
-        return { success: false, status: 400, error:  `Vous vous êtes connecté avec votre compte ${user.rows[0].provider}.`};
+        return { 
+          success: false, 
+          status: 409,         
+          error: `Ce compte est lié à une authentification ${user.provider}. Veuillez vous connecter avec cette méthode.`
+        };
       }
 
       const validPassword = await bcrypt.compare(password, user.rows[0].password);
-      if (!validPassword) return { success: false, status: 400, error: "Mot de passe incorrect"};
+      if (!validPassword) return { success: false, status: 401, error: "Mot de passe incorrect"};
     }
 
     //IF provider === "google" Pas besoin de tester le mot de pass car pas de mot de passe à fournir
@@ -93,9 +97,17 @@ async function login(userData) {
     //GESTION DES TOKENS
     const userData = user.rows[0];
 
-    const token = jwt.sign({ id: userData.id, email: userData.email, iat: Math.floor(Date.now()/1000) }, process.env.JWT_SECRET, { expiresIn: '10s' });
+    const token = jwt.sign({ 
+        id: userData.id, 
+        email: userData.email, 
+        iat: Math.floor(Date.now()/1000) 
+      }, 
+      process.env.JWT_SECRET, 
+      // { expiresIn: '10s' }
+      { expiresIn: '15m' }
+    );
     
-    console.log("✅ Token généré avec expiration à 10 secondes :", token);
+    console.log("✅ Token généré avec expiration à  15m (minutes) :", token);
     // ✅ Décoder le token pour afficher la date d'expiration
     const decoded = jwt.decode(token);
 

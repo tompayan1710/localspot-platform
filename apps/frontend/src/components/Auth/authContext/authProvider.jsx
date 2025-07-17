@@ -27,6 +27,7 @@ const AuthProvider = ({ children }) => {
 
 
     const checkAuth = async () => {
+        // console.error("JE CHECKAuth")
         setAuthState(prevState => ({ ...prevState, loading: true }));
         console.log("Je met le loading à TRUE");
         try {

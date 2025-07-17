@@ -8,6 +8,7 @@ import ViarteLogo from "../../assets/images/ViarteLogo.png";
 import { GoogleAuthButton } from "./GoogleAuthButton"
 import Spinner from "../Spinner/Spinner"
 import GoBack from "../GoBack/GoBack";
+import FadeInImage from "../Utils/FadeInImage";
 
 export default function Login() {
   const [email, setEmail] = useState(""); 
@@ -84,7 +85,9 @@ export default function Login() {
       <GoBack nagigation={`${origin}`} scrollTo={`${options}`} text={"revenir"}/>
       <div className="authcomponentcontainer">
         <div className="form-container">
-          <img src={ViarteLogo} alt="localspot logo"/>
+          <div className="ImageWrapper">
+            <FadeInImage className="LogoImage" src={ViarteLogo} alt="localspot logo"/>
+          </div>
 
           {/* {myauthContext.isAuth ? "Connectééééé Contexte" : "Déconnecter Je suis une merde en code"}
           <p>{myauthContext.message}</p> */}

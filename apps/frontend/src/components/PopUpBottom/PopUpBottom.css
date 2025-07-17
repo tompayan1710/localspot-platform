@@ -12,13 +12,20 @@
   box-shadow: 0 -4px 15px rgba(0, 0, 0, 0.05); 
   transition: transform 0.5s ease-out; /* 👈 C'est ça qu'on anime maintenant */
   max-width: 500px;
+  padding-top: 55px;
 }
 
 .PopUpBottom.open {
   transform: translateY(0) translateX(-50%);
 }
 
-.PopUpBottom>.closeButton{
+.PopUpBottom>.HeadContainer{
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+}
+.PopUpBottom>.HeadContainer>.closeButton{
   position: absolute;
   top: 10px;
   right: 10px;
@@ -30,7 +37,7 @@
   border: none;
   cursor: pointer;
 }
-.PopUpBottom>.centerBar{
+.PopUpBottom>.HeadContainer>.centerBar{
   height: 5px;
   width: 50px;
   border-radius: 100px;
@@ -38,10 +45,10 @@
   margin: 25px auto;
   border: 1px solid var(--greysemidark);
 }
-.PopUpBottom>p{
+.PopUpBottom>.HeadContainer>p{
   padding: 0 50px;
 }
-.PopUpBottom>.closeButton>img{
+.PopUpBottom>.HeadContainer>.closeButton>img{
   width: 12px;
   height: 12px;
 }
@@ -71,14 +78,17 @@
   background-color: var(--greysemidark);
 }
 
+
 .PopUpBottom .bodyPopUpBottom{
   height: fit-content;
-  max-height: calc(100vh - 100px);
-  overflow: scroll;
+  /* max-height: calc(90vh - 150px);
+  overflow: scroll; */
   width: 100%;
   padding: 0 6%;
   padding: 15px;
   max-width: 500px;
+  max-height: calc(100vh - 70px);
+  overflow: scroll
 }
 
 
@@ -102,6 +112,12 @@
 .occultView.open {
   opacity: 1;
   visibility: visible;
+}
+
+.occultView.Calendar {
+  min-height: 100vh;
+  /* background-color: red; */
+  top: -20px;
 }
 /*/////////////////OccultView*/
 

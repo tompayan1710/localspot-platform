@@ -101,7 +101,7 @@ export default function PrivacyPolicy() {
       <section>
         <h2 className="t32">11. Contact</h2>
         <p className="t6">
-          Pour toute question relative à cette politique de confidentialité, vous pouvez nous contacter à : <a href="mailto:contact@viarte.com" className="t6">contact@viarte.com</a>
+          Pour toute question relative à cette politique de confidentialité, vous pouvez nous contacter à : <a href="mailto:tom.payan@viarte.eu" className="t6">tom.payan@viarte.eu</a>
         </p>
       </section>
     </div>

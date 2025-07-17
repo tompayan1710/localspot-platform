@@ -15,7 +15,7 @@
 }
 
 .slider-price .track {
-  height: 4px;
+  height: 3px;
   width: 100%;
   background: var(--greylight);
   border-radius: 4px;
@@ -23,7 +23,7 @@
 }
 .slider-price .selected-range{
     background: var(--lineargradientblack);
-    height: 6px;
+    height: 5px;
 }
 
 .slider-price .thumb {

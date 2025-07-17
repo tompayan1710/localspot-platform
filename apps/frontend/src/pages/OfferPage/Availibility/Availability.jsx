@@ -12,6 +12,7 @@ import arrowLeft from "../../../assets/images/arrowLeft.png";
 import GoBack from "../../../components/GoBack/GoBack";
 import PopUpBottom from "../../../components/PopUpBottom/PopUpBottom";
 import Spinner from "../../../components/Spinner/Spinner";
+import PopUpLogin from "../../../components/Auth/PopUpLogin/PopUpLogin";
 
 export default function Availability() {
   const today = new Date().toLocaleDateString('fr-CA');
@@ -591,7 +592,35 @@ export default function Availability() {
         </>
       </PopUpBottom>
 
-      <PopUpBottom
+
+      <PopUpLogin setIsOccultView={setIsOccultView} state={{
+            title: title,
+            adresse: adresse,
+            price: price,
+            OfferIsCancellable: OfferIsCancellable,
+            participantAdult: participantAdult,
+            participantReduced: participantReduced,
+            start_hour: selectedCreneau.slot?.from || "",
+            end_hour: selectedCreneau.slot?.to || "",
+            date: selectedDate,
+            total_capacity: total_capacity,
+          }} 
+          googleRedirectRoute={`/offer-page/${slug}/payment`}
+          navigateAfterTo={`/offer-page/${slug}/payment`}
+          navigateStateToPass={{                         // 🔁 state à passer à la navigation
+            title,
+            adresse,
+            price,
+            OfferIsCancellable,
+            participantAdult,
+            participantReduced,
+            start_hour: selectedCreneau.slot?.from || "",
+            end_hour: selectedCreneau.slot?.to || "",
+            date: selectedDate,
+            total_capacity
+          }}
+          ref={LoginBottomRef}/>
+      {/* <PopUpBottom
         onClose={() => {
           LoginBottomRef.current.classList.remove("open");
           setIsOccultView(false);
@@ -644,7 +673,7 @@ export default function Availability() {
             </button>
           </form>
         </div>
-      </PopUpBottom>
+      </PopUpBottom> */}
 
       <PopUpBottom
         onClose={() => {

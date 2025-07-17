@@ -300,6 +300,15 @@ animation: slideUpHome 0.8s ease forwards;
   display: flex;
   flex-direction: column;
   justify-content: center;
+  max-height: calc(6.5rem + 90px);
+  overflow: hidden;
+  transition: all 1s ease-in-out;
+  opacity: 1;
+}
+.HomeContainer .ConnectYourSelf.close{
+  max-height: 0;
+  margin: 0 auto;
+  opacity: 0;
 }
 .HomeContainer .ConnectYourSelf>p{
   text-align: center;
@@ -308,7 +317,7 @@ animation: slideUpHome 0.8s ease forwards;
 .HomeContainer .ConnectYourSelf>p:first-of-type{
   margin-bottom: 20px;
 }
-.HomeContainer .ConnectYourSelf button {
+.HomeContainer .ConnectYourSelf .Signup {
     background: linear-gradient(180deg, #545454, #373737);
     padding: 10px 16px;
     border: none;
@@ -318,7 +327,7 @@ animation: slideUpHome 0.8s ease forwards;
     margin-top: 15px;
 }
 
-.HomeContainer .ConnectYourSelf button>p {
+.HomeContainer .ConnectYourSelf .Signup>p {
   color: white;
 }
 
@@ -332,7 +341,13 @@ animation: slideUpHome 0.8s ease forwards;
   height: 1px;
   flex-grow: 1;
 }
-.ConnectYourSelf a{
+.ConnectYourSelf .Login{
+  background-color: transparent;
+  border: none;
+  width: fit-content;
+  margin: 0 auto;
+}
+.ConnectYourSelf .Login>p{
   text-align: center;
 }
 
@@ -731,7 +746,7 @@ animation: slideUpHome 0.8s ease forwards;
   position: absolute;
   top: 10px;
   right: 10px;
-  background-color: rgba(0, 0, 0, 0.1);
+  background-color: rgba(0, 0, 0, 0.3);
   border: none;
   border-radius: 100px;
   display: flex;

@@ -30,13 +30,13 @@ export const login = async (email, password) => {
         if (!response.ok) {
             // Gère les erreurs de réponse (401, 404, 500)
             const errorData = await response.json();
-            return { success: false, message: errorData.error || "Erreur inconnue" };
+            return { success: false, message: errorData.error || "Erreur inconnue", status: response.status };
         }
 
         const data = await response.json(); // ✅ Ici tu définis la variable data correctement
         console.log("Réponse de l'API Login :", data);
         if (!data.token) {
-            return { success: false, message: "Échec de la connexion, no token il respond" };
+            return { success: false, message: "Échec de la connexion, no token il respond", status: response.status  };
         }
         else{
             console.log("Attention Enregistrement jwtToken");
