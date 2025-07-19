@@ -1,0 +1,32 @@
+.SearchingPage{
+    min-height: 100vh;
+}
+.SearchingBody{
+    padding-bottom: 60px;
+}
+.SearchingBody>.centerPage{
+    position: relative;
+    align-items: end;
+    height: calc(50vh - 100px);
+}
+.SearchingBody>.NotFount{
+    margin: 10vh 0;
+}
+.SearchingBody>.NotFount>p{
+    text-align: center;
+    margin-top: 10px;
+    opacity: 0.4;
+}
+.SearchingBody>.NotFount>img{
+    width: 70%;
+    margin-left: 15%;
+}
+.SearchingBody>.ListOffers>p{
+    margin-top: 30px;
+    margin-bottom: 10px;
+    text-align: center;
+}
+.SearchingBody>.ListOffers>#Suggestions>p{
+    margin-left: 6%;
+    margin-top: 10vh;
+}

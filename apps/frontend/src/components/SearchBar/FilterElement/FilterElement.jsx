@@ -1,4 +1,4 @@
-import { useRef, useState } from "react"
+import { useEffect, useRef, useState } from "react"
 import SliderPrice from "../../Slider/SliderPrice"
 import "./FilterElement.css"
 import Morning from "../../../assets/images/Morning.png"
@@ -9,19 +9,35 @@ import arrowRight from "../../../assets/images/arrowRight.png"
 import arrowLeft from "../../../assets/images/arrowLeft.png"
 import { DayPicker } from "react-day-picker";
 import PopUpBottom from "../../PopUpBottom/PopUpBottom"
+import { useNavigate } from "react-router-dom"
 
 
-export default function FilterElement({ setIsOccultView, searchBarRef }){
-    const [minValue, setMinValue] = useState(30)
-    const [maxValue, setMaxValue] = useState(3000)
+export default function FilterElement({ 
+    setIsOccultView, 
+    searchBarRef, 
+    applieNavigate, 
+    setFiltersOptions,
+    moment="", 
+    priceRange_min=25, 
+    priceRange_max=3000, 
+    date="", 
+    categoriesList=[], 
+    nb_adult=0, 
+    nb_reduced=0,
+    fetchFilteredOffers
+}){
+    const navigate = useNavigate();
+    const [minValue, setMinValue] = useState(priceRange_min)
+    const [maxValue, setMaxValue] = useState(priceRange_max)
     const categories = ["Nautiques", "Culture & Patrimoine", "Bien-être", "Nature & Aventure", "Loisirs & Divertissement", "Sports & Sensations Fortes", "En Famille"];
-    const [selectedCategories, setSelectedCategories] = useState([])
-    const [participantAdult, setParticipantAdult] = useState(0);
-    const [participantReduced, setParticipantReduced] = useState(0);  
+    const [selectedCategories, setSelectedCategories] = useState(categoriesList)
+    const [participantAdult, setParticipantAdult] = useState(nb_adult);
+    const [participantReduced, setParticipantReduced] = useState(nb_reduced);  
     const dayPickerRef = useRef(null);
     const [seccondOccultView, setSeccondOccultView] = useState(false);
     const today = new Date().toLocaleDateString('fr-CA');
-    const [selectedDate, setSelectedDate] = useState();
+    const [selectedDate, setSelectedDate] = useState(date);
+
     const moments = [
         {
             text: "Matin",
@@ -36,8 +52,8 @@ export default function FilterElement({ setIsOccultView, searchBarRef }){
             img: Moon,
     }
     ];
-    const [selectedMoment, setSelectedMoment] = useState(null);
-
+    const [selectedMoment, setSelectedMoment] = useState(moment);
+    const [resetTrigger, setResetTrigger] = useState(0);
 
     const toggleCategory = (cat) => {
         setSelectedCategories((prev) =>
@@ -46,6 +62,17 @@ export default function FilterElement({ setIsOccultView, searchBarRef }){
             : [...prev, cat] // Ajouter sinon
         );
     };
+
+    useEffect(() => {
+        console.log(priceRange_min, priceRange_max);
+        setMinValue(priceRange_min)
+        setMaxValue(priceRange_max)
+    }, [priceRange_min, priceRange_max])
+
+
+
+
+
 
 
     return (
@@ -58,7 +85,7 @@ export default function FilterElement({ setIsOccultView, searchBarRef }){
                     <button
                         key={index}
                         className={`momentButton ${selectedMoment === moment.text ? "selected" : ""}`}
-                        onClick={() => setSelectedMoment(moment.text)}
+                        onClick={() => setSelectedMoment((prev) => prev === moment.text ? "" :  moment.text)}
                     >
                         <img src={moment.img} alt={moment.text} />
                         <p className="t6">{moment.text}</p>
@@ -69,7 +96,7 @@ export default function FilterElement({ setIsOccultView, searchBarRef }){
 
             <div className="column">
                 <p className="t32">Tranche de prix :</p>
-                <SliderPrice minValue={minValue} setMinValue={setMinValue} maxValue={maxValue} setMaxValue={setMaxValue}/>
+                <SliderPrice minValue={minValue} setMinValue={setMinValue} maxValue={maxValue} setMaxValue={setMaxValue} resetTrigger={resetTrigger}/>
             </div>
             <div className="column">
                 <p className="t32">Date</p>
@@ -87,7 +114,7 @@ export default function FilterElement({ setIsOccultView, searchBarRef }){
                             setSeccondOccultView(false);
                             setSelectedDate(null)
                         }}
-                        title={(
+                        title={( 
                         <p className="t5">TitreBOSS TOM</p>
                         )}
                         ref={dayPickerRef}
@@ -102,7 +129,7 @@ export default function FilterElement({ setIsOccultView, searchBarRef }){
                                 onSelect={(date) => {
                                 setSelectedDate(date ? date.toLocaleDateString('fr-CA') : today)
                                 }}
-                                disabled={[{ before: new Date() }]}
+                                disabled={[{ before: today }]}
                                 weekStartsOn={1}
                                 required
                                 captionLayout="buttons" // <-- OBLIGATOIRE pour voir les boutons flèches
@@ -125,15 +152,17 @@ export default function FilterElement({ setIsOccultView, searchBarRef }){
                             />
                             <div className="ApplieContainer">
                                 <div className="hline"></div>
-                                <button 
-                                    className="Applie"
-                                    onClick={() => {
-                                        dayPickerRef.current.classList.remove("open");
-                                        setSeccondOccultView(false);
-                                    }}
-                                >
-                                    <p className="t5">Ajouter</p>
-                                </button>
+                                <div className="row">
+                                    <button 
+                                        className="Applie"
+                                        onClick={() => {
+                                            dayPickerRef.current.classList.remove("open");
+                                            setSeccondOccultView(false);
+                                        }}
+                                    >
+                                        <p className="t5">Ajouter</p>
+                                    </button>
+                                </div>
                             </div>
                         </>
                     </PopUpBottom>
@@ -199,15 +228,69 @@ export default function FilterElement({ setIsOccultView, searchBarRef }){
 
             <div className="ApplieContainer">
                 <div className="hline"></div>
-                <button 
-                    className="Applie"
-                    onClick={() => {
-                        searchBarRef.current.classList.remove("open")
-                        setIsOccultView(false);
-                    }}
-                >
-                    <p className="t5">Appliquer</p>
-                </button>
+                <div className="row">
+                    <button 
+                        className="Reset"
+                        onClick={() => {
+                            setMinValue(25)
+                            setMaxValue(3000)
+                            setResetTrigger(prev => prev + 1)
+                            setSelectedCategories([])
+                            setParticipantAdult(0)
+                            setParticipantReduced(0)  
+                            setSelectedDate("")
+                            setSelectedMoment("")
+                        }}>
+                        <p className="t5">Effacer tout</p>
+                    </button>
+                    <button 
+                        className="Applie"
+                        onClick={() => {
+                            // searchBarRef.current.classList.remove("open")
+                            // setIsOccultView(false);
+                            if(applieNavigate){
+                                navigate(applieNavigate, {
+                                    state: {
+                                        priceRange: {
+                                            min: minValue,
+                                            max: maxValue,
+                                        },
+                                        date: selectedDate || null, // ou today si tu veux toujours passer une date
+                                        moment: selectedMoment || null, // "Matin", "Après-midi", "Soir"
+                                        // total_participants: participantAdult + participantReduced,
+                                        categories: selectedCategories, // tableau ex: ["Nautiques", "Bien-être"]
+                                        nb_adult: participantAdult,
+                                        nb_reduced: participantReduced
+                                    }
+                                });
+                            } else {
+                                console.log("J'applique les filtres !")
+                                const options = {
+                                    priceRange: {
+                                        min: minValue,
+                                        max: maxValue,
+                                    },
+                                    date: selectedDate || null, // ou today si tu veux toujours passer une date
+                                    moment: selectedMoment || null, // "Matin", "Après-midi", "Soir"
+                                    nb_adult: participantAdult,
+                                    nb_reduced: participantReduced,
+                                    categories: selectedCategories, // tableau ex: ["Nautiques", "Bien-être"]
+                                }
+                                setFiltersOptions(options)
+                                fetchFilteredOffers(options);
+                                searchBarRef.current.classList.remove("open")
+                                setIsOccultView(false);
+
+                            }
+
+                        }}
+                    >
+                        <p className="t5">Appliquer</p>
+                    </button>
+                    {/* <button onClick={() => {
+                        setResetTrigger((prev) => prev +1)
+                    }}>ResetTrigger</button> */}
+                </div>
             </div>
 
             <div className={`occultView Calendar ${seccondOccultView ? "open" : ""}`} style={{zIndex: "13"}} onClick={(e) => {

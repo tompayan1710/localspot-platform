@@ -1,6 +1,7 @@
 .FilterElement{
     /* background-color: red; */
     width: 100%;
+    padding-bottom: 50px;
 }
 .FilterElement>p{
     text-align: center;
@@ -19,19 +20,34 @@
     left: 15px;
     right: 15px;
 }
+
+.FilterElement .ApplieContainer>.row{
+  margin-top: 15px;
+  margin-bottom: 15px;
+  gap: 8px;
+}
 .FilterElement .Applie{
     background: var(--lineargradientblack);
     padding: 15px ;
     border: none;
     border-radius: 100px;
     width: 100%;
-    margin-top: 15px;
-    margin-bottom: 15px;
     cursor: pointer;
 }
 .FilterElement .Applie>p{
     color: white;
 }
+
+.FilterElement .Reset{
+    background: white;
+    padding: 15px ;
+    border: none;
+    border-radius: 100px;
+    width: 100%;
+    cursor: pointer;
+    border: 1px solid var(--greysemidark);
+}
+
 
 .FilterElement .ColumnCalendar>.OpenCalendar{
     display: flex;

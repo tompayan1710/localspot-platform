@@ -161,7 +161,7 @@ async function getAllOffers() {
   //     ) AS "isToday"
   //   FROM offers o
   // `);
-  console.log(result.rows)
+  // console.log(result.rows)
   return result.rows;
 }
 

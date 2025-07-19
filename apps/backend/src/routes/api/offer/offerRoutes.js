@@ -3,6 +3,7 @@ const router = express.Router();
 
 const { createOffer, getAllOffers, getOfferBySlug, getOffersProvider } = require("../../../db/Models/offerModel");
 const { findOrCreateCityByName } = require("../../../db/Models/AdresseModel");
+const db = require("../../../db/index");
 
 // ➕ Route pour créer une nouvelle offre
 router.post("/create", async (req, res) => {
@@ -221,6 +222,87 @@ router.post("/upload-offer-images", upload.array("images"), async (req, res) => 
     return res.status(500).json({ success: false, message: "Échec de l’upload des images." });
   }
 });
+
+
+
+router.post("/filter", async (req, res) => {
+  const { priceRange, date, moment, categories,  nb_adult, nb_reduced } = req.body;
+
+  const total_participants =  nb_adult + nb_reduced;
+  console.log( "priceRange", priceRange, "date", date, "moment", moment, "categories", categories, "total_participants", total_participants)
+  let conditions = [];
+  let values = [];
+  let index = 1;
+
+  if (priceRange?.min !== undefined) {
+    conditions.push(`price >= $${index}`);
+    values.push(priceRange.min);
+    index++;
+  }
+
+  if (priceRange?.max !== undefined) {
+    conditions.push(`price <= $${index}`);
+    values.push(priceRange.max);
+    index++;
+  }
+
+  // if (date) {
+  //   conditions.push(`$${index} = ANY(available_dates)`); // ou `date = $index` si c’est un champ direct
+  //   values.push(date);
+  //   index++;
+  // }
+
+  // if (moment) {
+  //   conditions.push(`moment = $${index}`);
+  //   values.push(moment);
+  //   index++;
+  // }
+
+  if (categories && categories.length > 0) {
+    // categories && $1
+    // -- devient : {'Nautiques', 'Bien-être', 'Culture'} && {'Bien-être', 'Sports'}
+
+    conditions.push(`categories && $${index}`);
+    values.push(categories);
+    index++;
+  }
+
+  // Si tu veux filtrer par capacité minimum par exemple :
+  if (total_participants > 0) {
+    conditions.push(`total_capacity >= $${index}`);
+    values.push(total_participants);
+    index++;
+  }
+
+  const whereClause = conditions.length ? `WHERE ${conditions.join(" AND ")}` : "";
+
+  const query = `
+    SELECT * FROM offers
+    ${whereClause}
+  `;
+
+  // ORDER BY created_at DESC
+  // LIMIT 50
+
+  // const query = `
+  //   SELECT * FROM offers
+  // `;
+
+  // const values = [];
+  try {
+    console.log("SQL Query:", query);
+    console.log("With values:", values);
+
+
+    const { rows } = await db.query(query, values);
+    // const {rows} = await db.query(query, values)
+    res.json(rows);
+  } catch (err) {
+    console.error("Erreur filtre offres :", err);
+    res.status(500).json({ success: false, message: "Erreur serveur" });
+  }
+});
+
 
 
 module.exports = router;

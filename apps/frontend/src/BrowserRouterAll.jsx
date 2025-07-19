@@ -39,6 +39,7 @@ import MyEarnings from "./pages/MyEarnings/MyEarnings";
 import ConfirmCreation from "./pages/CreateOffer/ConfirmCreation";
 import Reservations from "./pages/Reservations/Reservations";
 import ReservationsElement from "./pages/Reservations/ReservationElement/ReservationElement";
+import SearchingPage from "./pages/SearchingPage/SearchingPage";
 
 export default function BrowserRouterAll(){
     const location = useLocation();
@@ -85,6 +86,9 @@ export default function BrowserRouterAll(){
             {/* Page principale */}
             {/* <BottomNavBarNotAnimate /> */}
             <Route path="/" element={<Home navBarRef={navBarRef}/>} />
+            <Route path="/searching-page" element={<SearchingPage />} />
+            
+
             <Route path="/offer-page/:slug" element={<OfferPage />} />
             <Route path="/offer-page/:slug/availibility" element={<Availability />} />
             <Route path="/offer-page/:slug/payment" element={<PaymentPage />} />
