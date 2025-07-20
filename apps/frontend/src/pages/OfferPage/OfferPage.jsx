@@ -519,7 +519,7 @@ function allRefsReady() {
                   PopUpBottomRef.current.classList.add("open")
                   setIsOccultView(true);
                 }}
-              >i</button>
+              ><p className="t5">i</p></button>
               </div>        
               <p className="t1">4.5 / 5</p>
               <div className="StarsList">

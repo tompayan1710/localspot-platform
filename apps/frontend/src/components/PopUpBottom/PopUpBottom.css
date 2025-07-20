@@ -80,14 +80,12 @@
 
 
 .PopUpBottom .bodyPopUpBottom{
-  height: fit-content;
-  /* max-height: calc(90vh - 150px);
-  overflow: scroll; */
   width: 100%;
   padding: 15px;
-  max-width: 500px;
   max-height: calc(100% - 70px);
-  overflow: scroll
+  overflow: scroll;
+  background-color: red;
+  border: 2px solid green;
 }
 
 

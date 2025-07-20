@@ -565,11 +565,14 @@ justify-content: center;
     font-family: "Playfaire Display";
     margin-left: 10px;
 } 
+.ClientReviewContainer>.row:has(.iButton){
+  margin-bottom: 5px;
+}
 .ClientReviewContainer>.row>.iButton{
   background-color: transparent;
   border: 1px solid black;
-  height: 15px;  
-  width: 15px;
+  height: 17px;  
+  width: 17px;
   border-radius: 100px;
   display: flex;
   flex-direction: column;
@@ -577,6 +580,7 @@ justify-content: center;
   align-items: center;
   font-family: "cookie";
   margin-left: 5px;
+  margin-top: 2px;
   cursor: pointer;
 }
 
