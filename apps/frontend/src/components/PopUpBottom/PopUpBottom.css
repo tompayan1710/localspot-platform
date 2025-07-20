@@ -16,6 +16,12 @@
   /* height: calc(100% - 40px); */
   height: fit-content;
 }
+.PopUpBottom.fullHeight{
+
+}
+.PopUpBottom.fullHeight .bodyPopUpBottom{
+  max-height: 100%;
+}
 
 .PopUpBottom.open {
   transform: translateY(0) translateX(-50%);
@@ -89,15 +95,8 @@
   overflow: auto;
   display: flex;
   flex-direction: column;
-  background-color: red;
-  border: 2px solid green;
   height: fit-content;
 }
-
-.PopUpBottom .bodyPopUpBottom:has(.ApplieContainer){
-  background-color: orange;
-}
-
 
 
 /*/////////////////OccultView*/
@@ -123,7 +122,6 @@
 
 .occultView.Calendar {
   min-height: 100vh;
-  /* background-color: red; */
   top: -20px;
 }
 /*/////////////////OccultView*/

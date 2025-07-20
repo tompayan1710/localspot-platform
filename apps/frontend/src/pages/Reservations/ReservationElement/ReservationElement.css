@@ -130,7 +130,7 @@ border: 1px solid white;
     transform: translateX(-60%);
 }
 .ReservationsElement .half-sphere.right{
-    transform: translateX(40%);
+    transform: translateX(60%);
 }
 .ReservationsElement .hlinedashed {
     height: 1px;
