@@ -495,8 +495,8 @@ import TestHeight from "../components/TestHeight/TestHeight";
           }}></div>
 
 
-        <TestHeight num={1}/>
-        <TestHeight num={2}/>
+        {/* <TestHeight num={1}/>
+        <TestHeight num={2}/> */}
       </div>
     );
   }

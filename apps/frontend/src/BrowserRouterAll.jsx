@@ -86,8 +86,8 @@ export default function BrowserRouterAll(){
             !(hideNavBarOnRoutes.includes(location.pathname) ||
             hideNavBarPatterns.some(pattern => pattern.test(location.pathname))) && <NavBarTest ref={navBarRef}/>
         }
-        <TestHeight num={3}/>
-        <TestHeight num={4}/>
+        {/* <TestHeight num={3}/>
+        <TestHeight num={4}/> */}
         <Routes>
             {/* Page principale */}
             {/* <BottomNavBarNotAnimate /> */}
