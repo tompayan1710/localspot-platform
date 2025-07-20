@@ -24,7 +24,10 @@
     box-shadow: 0px 0px 1px rgba(0, 0, 0, 0.2);
     cursor: text;
 }
-.TopSearchBar>button{
+.TopSearchBar>.fake-input>p{
+    text-align: start;
+}
+.TopSearchBar>.loupeButton{
     background-color: transparent;
     border: none;
     cursor: pointer;
@@ -32,7 +35,7 @@
     border-bottom-right-radius: 40px;
     border-top-right-radius: 40px;
 }
-.TopSearchBar>button>img{
+.TopSearchBar>.loupeButton>img{
     height: 20px;
     margin-right: 15px;
     margin-left: 10px;

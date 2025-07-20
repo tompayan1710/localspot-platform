@@ -19,7 +19,7 @@ const TopSearchBar = forwardRef(({ setIsOccultView }, ref) => {
             >
                 <p className="t5">Commencer ma recherche</p>
             </button>
-            <button  onClick={() => {
+            <button className="loupeButton" onClick={() => {
                 ref.current?.classList.add("open");
                 setIsOccultView(true);
             }}>

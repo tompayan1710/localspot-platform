@@ -243,7 +243,8 @@ import { linearTheme } from "../services/themeModifier";
     useEffect(() => {
       const from = [53, 53, 53];
       // const to = [37, 38, 38]; 
-      const to = [0, 255, 255]; 
+      // const to = [0, 255, 255];
+      const to = [255, 0, 0]; 
       const cleanup = linearTheme(from, to);
 
       return cleanup; // ✅ on nettoie l'écouteur au démontage du composant

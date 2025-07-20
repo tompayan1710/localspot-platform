@@ -1,6 +1,7 @@
 .ReservationsElement{
     min-height: 100vh;
     /* background-color: var(--greylight); */
+    padding-bottom: 40px;
 }
 .ReservationsElement>p{
     text-align: center;
@@ -45,7 +46,8 @@
 .ReservationsElement .FactureBody{
     background-color: white;
     /* border: 1px solid var(--greysemidark); */
-    box-shadow: inset 0 0 0 1px var(--greysemidark);
+    /* box-shadow: inset 0 0 0 1px var(--greysemidark); */
+    box-shadow: inset 0 0 0 1px red;
     /* padding-bottom: 20px; */
     padding-top: 20px;
     display: flex;
@@ -154,7 +156,6 @@
     gap: 10px;
     cursor: pointer;
     margin-top: 50px;
-    margin-bottom: 30px;
 }
 .ReservationsElement .DownloadButton>img{
     height: 15px;
