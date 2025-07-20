@@ -40,6 +40,7 @@ import ConfirmCreation from "./pages/CreateOffer/ConfirmCreation";
 import Reservations from "./pages/Reservations/Reservations";
 import ReservationsElement from "./pages/Reservations/ReservationElement/ReservationElement";
 import SearchingPage from "./pages/SearchingPage/SearchingPage";
+import TestHeight from "./components/TestHeight/TestHeight";
 
 export default function BrowserRouterAll(){
     const location = useLocation();
@@ -82,6 +83,8 @@ export default function BrowserRouterAll(){
             !(hideNavBarOnRoutes.includes(location.pathname) ||
             hideNavBarPatterns.some(pattern => pattern.test(location.pathname))) && <NavBarTest ref={navBarRef}/>
         }
+        <TestHeight num={3}/>
+        <TestHeight num={4}/>
         <Routes>
             {/* Page principale */}
             {/* <BottomNavBarNotAnimate /> */}

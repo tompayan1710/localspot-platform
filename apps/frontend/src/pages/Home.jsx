@@ -31,6 +31,7 @@ import FilterElement from "../components/SearchBar/FilterElement/FilterElement";
 import PopUpLogin from "../components/Auth/PopUpLogin/PopUpLogin";
 import { AuthContext } from "../components/Auth/authContext/authContext";
 import OffersCard from "../components/OffersCard/OffersCard";
+import TestHeight from "../components/TestHeight/TestHeight";
 
 
 
@@ -492,6 +493,10 @@ import OffersCard from "../components/OffersCard/OffersCard";
             // ParticipantBottomRef.current.style.bottom = "-100%";
             setIsOccultView(false);
           }}></div>
+
+
+        <TestHeight num={1}/>
+        <TestHeight num={2}/>
       </div>
     );
   }
