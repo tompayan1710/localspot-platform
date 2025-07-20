@@ -3,6 +3,7 @@ import { BrowserRouter } from "react-router-dom";
 import BrowserRouterAll from "./BrowserRouterAll";
 import AuthProvider from "./components/Auth/authContext/authProvider";
 import { LoadScript } from "@react-google-maps/api";
+import { useEffect } from "react";
 
 
 
@@ -35,10 +36,10 @@ export default function App() {
   useEffect(() => {
     const meta = document.querySelector("meta[name='theme-color']");
     if (meta) {
-      meta.setAttribute("content", "#00ff00"); // vert
+      meta.setAttribute("content", "#f700ffff"); // vert
     }
   }, []);
-  
+
   return (
     <div id="AppWrapper">
     <LoadScript googleMapsApiKey={process.env.REACT_APP_GOOGLE_MAPS_KEY}   
