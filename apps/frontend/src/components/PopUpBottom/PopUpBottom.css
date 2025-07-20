@@ -13,7 +13,8 @@
   transition: transform 0.5s ease-out; /* 👈 C'est ça qu'on anime maintenant */
   max-width: 500px;
   padding-top: 55px;
-  height: calc(100% - 40px);
+  /* height: calc(100% - 40px); */
+  height: fit-content;
 }
 
 .PopUpBottom.open {
@@ -90,6 +91,7 @@
   flex-direction: column;
   background-color: red;
   border: 2px solid green;
+  height: fit-content;
 }
 
 .PopUpBottom .bodyPopUpBottom:has(.ApplieContainer){
