@@ -36,12 +36,18 @@ export default function App() {
   useEffect(() => {
     const meta = document.querySelector("meta[name='theme-color']");
     if (meta) {
-      meta.setAttribute("content", "ffffff"); // vert
+      meta.setAttribute("content", "535353"); // vert
     }
   }, []);
 
   return (
     <div id="AppWrapper">
+    {/* <button onClick={() =>{
+      const meta = document.querySelector("meta[name='theme-color']");
+      if (meta) {
+        meta.setAttribute("content", "535353"); // vert
+      }
+    }}></button> */}
     <LoadScript googleMapsApiKey={process.env.REACT_APP_GOOGLE_MAPS_KEY}   
               loadingElement={<div className="skeleton" style={{ width: "100%", height: "100%" }}></div>}
               libraries={LIBRARIES}
