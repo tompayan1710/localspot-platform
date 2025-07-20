@@ -5,6 +5,7 @@ import Spinner from "../../Spinner/Spinner";
 import { useLocation, useNavigate } from "react-router-dom";
 import { AuthContext } from "../authContext/authContext";
 import { login, signup } from "../../../services/auth";
+import "./PopUpLogin.css"
 
 const PopUpLogin = forwardRef(({ setIsOccultView, state={}, googleRedirectRoute="/", navigateAfterTo, navigateStateToPass = {}}, ref) => {
     const [email, setEmail] = useState(""); 

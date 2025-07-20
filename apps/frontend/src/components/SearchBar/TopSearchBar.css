@@ -11,7 +11,7 @@
     /* background-color: var(--greyverylight); */
     box-shadow: 0px 0px 20px rgba(0, 0, 0, 0.1);
 }
-.TopSearchBar>input {
+.TopSearchBar>.fake-input {
     padding: 8px 16px;
     font-size: 16px;
     border-radius: 30px;
@@ -22,6 +22,7 @@
     transition: border 0.3s, box-shadow 0.3s;
     width: 100%;
     box-shadow: 0px 0px 1px rgba(0, 0, 0, 0.2);
+    cursor: text;
 }
 .TopSearchBar>button{
     background-color: transparent;

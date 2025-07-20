@@ -616,9 +616,10 @@ function allRefsReady() {
               setIsOccultView(false);
             }}
             title={(
-              <p className="t5">CancelPolicy</p>
+              <p className="t5">CancelPolicy</p> 
             )}
             ref={CancelBottomRef}
+            fullHeight={true}
           >
             <p className="t6">Vous pouvez annuler votre réservation jusqu’à 24 heures avant le début de l’activité pour obtenir un remboursement complet. Passé ce délai, aucune annulation ni remboursement ne sera possible.</p>
           </PopUpBottom>

@@ -8,12 +8,17 @@ const TopSearchBar = forwardRef(({ setIsOccultView }, ref) => {
     return (
         <div className="TopSearchBar row" ref={ref}
         >
-            <input placeholder="Commencer ma recherche" onFocus={() => {
-                // Ouvre la barre de recherche
-                ref.current?.classList.add("open");
-                // Active aussi la vue occultante
-                setIsOccultView(true);
-            }}/>
+            <button         
+                className="fake-input"
+                onClick={() => {
+                    // Ouvre la barre de recherche
+                    ref.current?.classList.add("open");
+                    // Active aussi la vue occultante
+                    setIsOccultView(true);
+                }}
+            >
+                <p className="t5">Commencer ma recherche</p>
+            </button>
             <button  onClick={() => {
                 ref.current?.classList.add("open");
                 setIsOccultView(true);
