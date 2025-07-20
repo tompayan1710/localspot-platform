@@ -25,16 +25,6 @@ html, body {
   overscroll-behavior: contain; 
 }
 
-html {
-  background-color: green;
-}
-body {
-  background-color: red;
-}
-#root {
-  background-color: blue;
-}
-
 
 body::-webkit-scrollbar {
   display: none;                 /* Chrome/Safari */

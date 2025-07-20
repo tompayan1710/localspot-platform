@@ -36,7 +36,7 @@ export default function App() {
   useEffect(() => {
     const meta = document.querySelector("meta[name='theme-color']");
     if (meta) {
-      meta.setAttribute("content", "#f700ffff"); // vert
+      meta.setAttribute("content", "ffffff"); // vert
     }
   }, []);
 
