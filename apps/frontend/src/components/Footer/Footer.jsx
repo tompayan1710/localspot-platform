@@ -3,9 +3,10 @@ import ViarteV from "../../assets/images/ViarteV.png"
 import copieIconWhite from "../../assets/images/copieIconWhite.png"; 
 import arrowRight from "../../assets/images/arrowRight.png";
 import { useNavigate } from "react-router-dom";
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { linearTheme } from "../../services/themeModifier";
 
-export default function Footer({paddingBottom}) {
+export default function Footer({paddingBottom, isOtherTheme}) {
   const navigate = useNavigate();
   const [copied, setCopied] = useState(false);
   const email = "tompayan1710@gmail.com";
@@ -16,6 +17,17 @@ export default function Footer({paddingBottom}) {
       setTimeout(() => setCopied(false), 1000); // Reset après 2s
     });
   };
+
+
+  useEffect(() => {
+    if(isOtherTheme){
+      const from = [255, 255, 255];    // blanc
+      const to = [38, 38, 38]; 
+      const cleanup = linearTheme(from, to);
+
+      return cleanup; // ✅ on nettoie l'écouteur au démontage du composant
+    }
+  }, []);
 
 
   return (

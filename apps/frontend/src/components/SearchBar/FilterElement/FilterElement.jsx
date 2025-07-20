@@ -76,7 +76,7 @@ export default function FilterElement({
 
 
     return (
-        <div className="FilterElement">
+        <div className="FilterElement" style={{paddingBottom : "70px"}}>
             <p className="t3">Filtres</p>
             <div className="column">
                 <p className="t32">Moment de la journée</p>

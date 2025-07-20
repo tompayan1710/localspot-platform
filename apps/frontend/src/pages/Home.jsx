@@ -32,6 +32,7 @@ import PopUpLogin from "../components/Auth/PopUpLogin/PopUpLogin";
 import { AuthContext } from "../components/Auth/authContext/authContext";
 import OffersCard from "../components/OffersCard/OffersCard";
 import TestHeight from "../components/TestHeight/TestHeight";
+import { linearTheme } from "../services/themeModifier";
 
 
 
@@ -239,6 +240,13 @@ import TestHeight from "../components/TestHeight/TestHeight";
     }, [isOccultView]);
 
 
+    useEffect(() => {
+      const from = [53, 53, 53];
+      const to = [38, 38, 38]; 
+      const cleanup = linearTheme(from, to);
+
+      return cleanup; // ✅ on nettoie l'écouteur au démontage du composant
+    }, []);
 
 
     return (
@@ -427,7 +435,7 @@ import TestHeight from "../components/TestHeight/TestHeight";
 
           </div>
           <div id="DivSpace"></div>
-          <Footer />
+          <Footer isOtherTheme={true}/>
         </div>
 
         <PopUpBottom

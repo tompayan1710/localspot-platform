@@ -88,6 +88,9 @@
   background-color: red;
   border: 2px solid green;
 }
+.PopUpBottom .bodyPopUpBottom:has(.ApplieContainer){
+  background-color: orange;
+}
 
 
 
