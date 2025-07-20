@@ -32,6 +32,13 @@ const LIBRARIES = ["places"];
 
 
 export default function App() {
+  useEffect(() => {
+    const meta = document.querySelector("meta[name='theme-color']");
+    if (meta) {
+      meta.setAttribute("content", "#00ff00"); // vert
+    }
+  }, []);
+  
   return (
     <div id="AppWrapper">
     <LoadScript googleMapsApiKey={process.env.REACT_APP_GOOGLE_MAPS_KEY}   
