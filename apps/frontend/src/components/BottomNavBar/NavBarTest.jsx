@@ -10,6 +10,7 @@ import Explore from "../../assets/images/Explore.png"
 import OffersNav from "../../assets/images/OffersNav.png"
 import EuroNav from "../../assets/images/EuroNav.png"
 import ReservationsIcon from "../../assets/images/ReservationsIcon.png"
+import ExploreIcon from "../../assets/images/ExploreIcon.png"
 import Today from "../../assets/images/Today.png"
 import { AuthContext } from "../Auth/authContext/authContext"
 
@@ -93,13 +94,13 @@ const NavBarTest = forwardRef(({ isMap }, ref) => {
             }}
           >
             <div className={`IconWrapper ${activeTab === "explorer" ? "active" : ""}`}>
-              <img src={Explore} alt="explore icon"/>
+              <img src={ExploreIcon} alt="explore icon"/>
               <p className="t6">Explorer</p>
             </div>
                          
           </button>
            {/* <button className="NavBarButton" onClick={() =>  setActiveTab("activity")}>  */}
-           <button className="NavBarButton" 
+           {/* <button className="NavBarButton" 
               onClick={() => {
                 // setActiveTab("activity");
                 navigate("/activity");
@@ -109,7 +110,7 @@ const NavBarTest = forwardRef(({ isMap }, ref) => {
               <img src={jetSkieIcon} alt="activity icon"/>
               <p className="t6">Activité</p>
             </div>
-            </button>
+            </button> */}
             {/* <button className="NavBarButton" onClick={() => setActiveTab("restauration")}> */}
             {/* <button className="NavBarButton"
               onClick={() => {

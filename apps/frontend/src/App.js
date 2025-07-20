@@ -52,7 +52,7 @@ export default function App() {
 
       // Interpolation linéaire entre deux couleurs
       const from = [83, 83, 83];    // gris foncé
-      const to = [255, 255, 255];   // blanc (ou une autre couleur si tu veux)
+      const to = [38, 38, 38];   // blanc (ou une autre couleur si tu veux)
 
       const r = Math.round(from[0] + percent * (to[0] - from[0]));
       const g = Math.round(from[1] + percent * (to[1] - from[1]));
