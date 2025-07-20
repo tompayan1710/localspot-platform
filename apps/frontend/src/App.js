@@ -42,7 +42,7 @@ export default function App() {
 
   return (
     <div id="AppWrapper">
-    <button onClick={() =>{
+    {/* <button onClick={() =>{
       const meta = document.querySelector("meta[name='theme-color']");
       if (meta) {
         console.log("Meta ai chargé !!!")
@@ -74,7 +74,7 @@ export default function App() {
       }
     }}>
       Change white...
-    </button>
+    </button> */}
     <LoadScript googleMapsApiKey={process.env.REACT_APP_GOOGLE_MAPS_KEY}   
               loadingElement={<div className="skeleton" style={{ width: "100%", height: "100%" }}></div>}
               libraries={LIBRARIES}

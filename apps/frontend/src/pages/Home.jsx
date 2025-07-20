@@ -228,6 +228,19 @@ import TestHeight from "../components/TestHeight/TestHeight";
         }
     }, []);
 
+
+
+    useEffect(() => {
+      if (isOccultView) {
+        document.body.style.overflow = "hidden";   // bloque le scroll du body
+      } else {
+        document.body.style.overflow = "";         // réactive le scroll
+      }
+    }, [isOccultView]);
+
+
+
+
     return (
       <div className={`HomeContainerPrincipal ${isOccultView && "noScroll"}`} ref={offerContainerRef}>
         {/* <div ref={LogoContainerAnimationRef} className={`${true ? "" : ""} LogoContainerAnimation`}>
@@ -483,7 +496,8 @@ import TestHeight from "../components/TestHeight/TestHeight";
         // setIsOccultView(false);
       }}></div> */}
 
-          <div className={`occultView ${isOccultView ? "open" : ""}`} onClick={() => {
+          <div className={`occultView ${isOccultView ? "open" : ""}`}  
+          onClick={(e) => {
             console.warn("IsOccult 1")
             searchBarRef.current.classList.remove("open");
             PopUpLoginRef.current.classList.remove("open");
