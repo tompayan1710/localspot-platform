@@ -1,16 +1,10 @@
 .HomeContainerPrincipal{
   width: 100%;
-  min-height: 100vh;
-  /* height: 100vh; */
+  min-height: 100%;
   max-width: 100%;
-  /* background-color: red; */
-  /* margin-bottom: 50px; */
-  overflow: scroll;
   position: relative;
-  /* background-color: rebeccapurple; */
 }
 .HomeContainerPrincipal {
-  /* overflow-y: scroll; */
   scrollbar-width: none;
   -ms-overflow-style: none;
 }

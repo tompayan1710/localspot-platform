@@ -84,10 +84,9 @@
   /* max-height: calc(90vh - 150px);
   overflow: scroll; */
   width: 100%;
-  padding: 0 6%;
   padding: 15px;
   max-width: 500px;
-  max-height: calc(100vh - 70px);
+  max-height: calc(100% - 70px);
   overflow: scroll
 }
 

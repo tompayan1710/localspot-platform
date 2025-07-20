@@ -1,7 +1,7 @@
 .FilterElement{
     /* background-color: red; */
     width: 100%;
-    padding-bottom: 50px;
+    /* padding-bottom: 50px; */
 }
 .FilterElement>p{
     text-align: center;
@@ -99,6 +99,7 @@
 
 .FilterElement .Participants{
     margin-top: 25px;
+    margin-bottom: 0;
 }
 .FilterElement .AllMoments{
     display: flex;

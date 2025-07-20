@@ -46,12 +46,34 @@ export default function App() {
       const meta = document.querySelector("meta[name='theme-color']");
       if (meta) {
         console.log("Meta ai chargé !!!")
+        meta.setAttribute("content", "373838"); // vert
+      } else{
+        console.log("Non le meta n'ai pas chargé")
+      }
+    }}>
+      Change big black...
+    </button>
+    <button onClick={() =>{
+      const meta = document.querySelector("meta[name='theme-color']");
+      if (meta) {
+        console.log("Meta ai chargé !!!")
         meta.setAttribute("content", "535353"); // vert
       } else{
         console.log("Non le meta n'ai pas chargé")
       }
     }}>
-      Change Theme...
+      Change black...
+    </button>
+    <button onClick={() =>{
+      const meta = document.querySelector("meta[name='theme-color']");
+      if (meta) {
+        console.log("Meta ai chargé !!!")
+        meta.setAttribute("content", "ffffff"); // vert
+      } else{
+        console.log("Non le meta n'ai pas chargé")
+      }
+    }}>
+      Change white...
     </button>
     <LoadScript googleMapsApiKey={process.env.REACT_APP_GOOGLE_MAPS_KEY}   
               loadingElement={<div className="skeleton" style={{ width: "100%", height: "100%" }}></div>}

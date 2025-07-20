@@ -5,7 +5,7 @@ import crossiconBlack from "../../assets/images/crossiconBlack.png"
 const PopUpBottom = forwardRef(({ children, title, onClose , isHeader, duration=0.3, fullHeight, zIndex}, ref) => {
 
   return (
-    <div className="PopUpBottom" style={{transitionDuration: `${duration}s`, ...(fullHeight ? { height: "calc(100vh - 15px)" } : {}), ...(zIndex ? { zIndex: `${zIndex}` } : {})}} ref={ref}>
+    <div className="PopUpBottom" style={{transitionDuration: `${duration}s`, ...(fullHeight ? { height: "calc(100% - 15px)" } : {}), ...(zIndex ? { zIndex: `${zIndex}` } : {})}} ref={ref}>
         {
           isHeader === false ? <></>
           :

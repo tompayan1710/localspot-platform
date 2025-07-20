@@ -229,7 +229,7 @@ import TestHeight from "../components/TestHeight/TestHeight";
     }, []);
 
     return (
-      <div className="HomeContainerPrincipal" ref={offerContainerRef}>
+      <div className={`HomeContainerPrincipal ${isOccultView && "noScroll"}`} ref={offerContainerRef}>
         {/* <div ref={LogoContainerAnimationRef} className={`${true ? "" : ""} LogoContainerAnimation`}>
           <div className="LogoContainer">
             <img src={ViarteLogo} alt="Viarte Logo" 
