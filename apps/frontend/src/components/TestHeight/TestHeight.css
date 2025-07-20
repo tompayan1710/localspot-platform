@@ -6,6 +6,9 @@
     top: 0;
     z-index: 100;
     border: 2px solid rgb(0, 229, 255);
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
 }
 .TestHeight.TestHeight1{
     background-color: orange;
@@ -25,4 +28,11 @@
     left: 240px;
     background-color: green;
     height: 100%;
+}
+
+
+.MakeSpace{
+    height: 150px;
+    margin-top: 10px;
+    background-color: red;
 }

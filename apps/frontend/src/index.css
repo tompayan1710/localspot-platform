@@ -15,10 +15,11 @@ body {
 :root{
   --vh: 100%
 }
-html, body {
+html, body, #root{
   scrollbar-width: none;         /* Firefox */
   -ms-overflow-style: none;      /* IE */
   height: var(--vh);
+  margin: 0;
 }
 
 body::-webkit-scrollbar {

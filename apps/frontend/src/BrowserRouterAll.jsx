@@ -41,6 +41,8 @@ import Reservations from "./pages/Reservations/Reservations";
 import ReservationsElement from "./pages/Reservations/ReservationElement/ReservationElement";
 import SearchingPage from "./pages/SearchingPage/SearchingPage";
 import TestHeight from "./components/TestHeight/TestHeight";
+import TestPage from "./components/TestHeight/TestPage";
+import TestPageNav from "./components/TestHeight/TestPageNav";
 
 export default function BrowserRouterAll(){
     const location = useLocation();
@@ -66,6 +68,7 @@ export default function BrowserRouterAll(){
         "/terms-of-service",
         "/terms-and-conditions-of-sal",
         "/content-policy",
+        "/testpage",
     ];
     
     //offer-page/b2f3a4ae-6cc4-4353-824e-65de72035d68/availibility
@@ -91,6 +94,8 @@ export default function BrowserRouterAll(){
             <Route path="/" element={<Home navBarRef={navBarRef}/>} />
             <Route path="/searching-page" element={<SearchingPage />} />
             
+            <Route path="/testpage" element={<TestPage />} />
+            <Route path="/testpagenav" element={<TestPageNav />} />
 
             <Route path="/offer-page/:slug" element={<OfferPage />} />
             <Route path="/offer-page/:slug/availibility" element={<Availability />} />
