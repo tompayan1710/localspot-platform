@@ -1,6 +1,6 @@
 import { useState } from "react";
 
-export default function FadeInImage({ src, alt, className="", style={} }) {
+export default function FadeInImage({ src, alt, className="", style={} ,onClick = undefined }) {
   const [loaded, setLoaded] = useState(false);
 
   return (
@@ -10,6 +10,7 @@ export default function FadeInImage({ src, alt, className="", style={} }) {
       className={`${className} ${loaded ? "loaded" : "loading"}`}
       style={style}
       onLoad={() => setLoaded(true)}
+      onClick={onClick}
     />
   );
 }

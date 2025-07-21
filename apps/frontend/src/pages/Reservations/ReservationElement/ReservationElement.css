@@ -125,6 +125,8 @@ border: 1px solid white;
     transform: translateY(60%);
     border: 1px solid var(--greysemidark);
     position: relative;
+    display: flex;
+    flex-direction: row;
 }
 .ReservationsElement .half-sphere.left{
     transform: translateX(-60%);
@@ -132,6 +134,7 @@ border: 1px solid white;
 .ReservationsElement .half-sphere.right{
     transform: translateX(60%);
 }
+
 .ReservationsElement .hlinedashed {
     height: 1px;
     border-bottom: 1px dashed var(--greysemidark);

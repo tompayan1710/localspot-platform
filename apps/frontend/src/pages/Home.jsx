@@ -305,18 +305,20 @@ import { linearTheme } from "../services/themeModifier";
         <div ref={HomePageRef} className="HomeContainer">
           <div  className={`SelectingToday ${loading && "loading shimmer"}`}>
             {
-              !loading &&
+              !loading && homeOffersByCategory.popular.length > 1 &&
               <>
-              <FadeInImage src={yogo1} alt="selecting activity"/>
-              <button>
+              <FadeInImage src={homeOffersByCategory.popular[0].image_urls[0]} alt="selecting activity" onClick={() => {navigate(`/offer-page/${homeOffersByCategory.popular[0].slug}`);}}/>
+              <button 
+                onClick={() => {navigate(`/offer-page/${homeOffersByCategory.popular[0].slug}`);}}
+              >
                 <img src={extendIcon} alt="extend Icon"/>
               </button>
-              <div className="InfoOffer row">
+              <div className="InfoOffer row" onClick={() => {navigate(`/offer-page/${homeOffersByCategory.popular[0].slug}`);}}>
                 <div className="column">
-                  <p className="t5 maxLine">Cours de yoga en pleine aire avec tom</p>
+                  <p className="t5 maxLine">{homeOffersByCategory.popular[0].title}</p>
                   <div className="row adresse">
                     <img src={Map2dPinWhite} alt="map 2d pin white"/>
-                    <p className="t6 maxLine">04 place Godeau</p>
+                    <p className="t6 maxLine">{homeOffersByCategory.popular[0].adresse}</p>
                   </div>
                 </div>
                 <div className="GoTo">
@@ -357,14 +359,19 @@ import { linearTheme } from "../services/themeModifier";
             </div> */}
             {/* <p className="t6">Parfait pour l'été</p> */}
             {/* <p className="t6">Populaire sur Viarte</p> */}
-            <div className="row">
-              {/* <p className="t4">Les activité d'été</p>  */}
-              <p className="t32">Cet après-midi</p>
-              <button>
-                <img src={arrowRight} alt="arrow right icon"/>
-              </button>
-            </div> 
-            <OffersCard offers={homeOffersByCategory.thisAfternoon} loading={loading}/>
+            {
+              homeOffersByCategory.thisAfternoon.length > 0 &&
+              <>
+              <div className="row">
+                {/* <p className="t4">Les activité d'été</p>  */}
+                <p className="t32">Cet après-midi</p>
+                <button>
+                  <img src={arrowRight} alt="arrow right icon"/>
+                </button>
+              </div> 
+              <OffersCard offers={homeOffersByCategory.thisAfternoon} loading={loading}/>
+              </>
+            }
             
             
             <div className={`ConnectYourSelf ${authState.isAuth && "close"}`}>
