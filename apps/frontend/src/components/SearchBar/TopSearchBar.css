@@ -12,7 +12,7 @@
     box-shadow: 0px 0px 20px rgba(0, 0, 0, 0.1);
 }
 .TopSearchBar>.fake-input {
-    padding: 8px 16px;
+    padding: 10px 16px;
     font-size: 16px;
     border-radius: 30px;
     border: none;

@@ -5,6 +5,7 @@ import { getOffersProvider } from "../../services/offers";
 import { useNavigate } from "react-router-dom";
 import plus from "../../assets/images/plus.png"
 import CahierTexte from "../../components/CahierTexte/CahierTexte";
+import FadeInImage from "../../components/Utils/FadeInImage";
 
 export default function AllAnnoncesPage(){
     const navigate = useNavigate();
@@ -59,7 +60,9 @@ export default function AllAnnoncesPage(){
                     <button key={offer.id} className="AnnonceItem" onClick={() => {
                         navigate(`${offer.slug}`);
                     }}>
-                        <img src={offer.image_urls[0]}/>
+                        <div className="ImageWrapper">
+                            <FadeInImage src={offer.image_urls[0]} alt={"image annonce"}/>
+                        </div>
                         <div className="columnAnnonceOffer">
                             <p className="t5">{offer.title}</p>
                             <p className="t6">{offer.description}</p>

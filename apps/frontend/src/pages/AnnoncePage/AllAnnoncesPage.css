@@ -53,7 +53,13 @@
   background-color: transparent;
   cursor: pointer;
 }
-#AnnoncesPage>.allAnnonces .AnnonceItem>img{
+#AnnoncesPage>.allAnnonces .AnnonceItem>.ImageWrapper{
+  width: 100px;
+  height: 100px; 
+  border-radius: 15px;
+  background-color: var(--greylight);
+}
+#AnnoncesPage>.allAnnonces .AnnonceItem>.ImageWrapper>img{
   width: 100px;
   height: 100px; 
   min-width: 100px;
@@ -72,6 +78,7 @@
   -webkit-box-orient: vertical;
   overflow: hidden;
   text-overflow: ellipsis;
+  text-align: start;
 }
 
 #AnnoncesPage .noOffer{

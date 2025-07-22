@@ -130,7 +130,7 @@ export default function Profile() {
         authState.user?.provider?.is_validated ? (
           <>
           <div className="OfferListContainer">
-            { providerOffers ? providerOffers.map((offer) => (
+            { providerOffers.length > 0 ? providerOffers.map((offer) => (
               <div key={offer.id} className="OfferListItem">
                 <div className="OfferImageContainer"><img src={offer.image_urls[0]}/></div>
                 <div className="columnInfoOffer">

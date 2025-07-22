@@ -20,7 +20,11 @@ function linearTheme(from, to){
     };
 
     window.addEventListener("scroll", onScroll);
-    return () => window.removeEventListener("scroll", onScroll);
+    
+    return () =>  {
+      window.removeEventListener("scroll", onScroll)
+      meta.setAttribute("content", `white`);
+    };
 }
 
 

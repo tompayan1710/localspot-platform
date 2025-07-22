@@ -81,63 +81,117 @@ async function getOfferBySlug(slug) {
 //   return result.rows;
 // }
 async function getAllOffers() {
+  // const result = await db.query(`
+  //   SELECT 
+  //     o.*, 
+  //     (
+  //       -- CAS 1 : Créneau EXCEPTIONNEL aujourd'hui et pas tous annulés
+  //       EXISTS (
+  //         SELECT 1
+  //         FROM offer_exceptional_slots ex
+  //         WHERE ex.slug_offer = o.slug                     -- même offre
+  //           AND ex.date = CURRENT_DATE                     -- aujourd'hui
+  //           AND EXISTS (
+  //             SELECT 1
+  //             FROM unnest(ex.slots) AS slot                -- on prend chaque créneau de l'exceptionnel
+  //             WHERE NOT EXISTS (
+  //               SELECT 1
+  //               FROM offer_cancel_slots can,
+  //                   unnest(can.slots) AS canceled         -- on prend chaque créneau annulé
+  //               WHERE can.slug_offer = o.slug              -- même offre
+  //                 AND can.date = ex.date                   -- même jour
+  //                 AND canceled = slot                      -- on compare : même créneau
+  //             )
+  //           )
+  //           -- => on vérifie que AU MOINS UN créneau exceptionnel n'est pas annulé
+  //       )
+
+  //       OR
+
+  //       -- CAS 2 : Créneau RÉCURRENT aujourd'hui et pas tous annulés
+  //       EXISTS (
+  //         SELECT 1
+  //         FROM offer_recurring_slots re
+  //         WHERE re.slug_offer = o.slug
+  //           AND re.day_of_week = LOWER(TRIM(TO_CHAR(CURRENT_DATE, 'Day')))
+  //           -- ⬆️ convertit la date d'aujourd'hui en jour de semaine ("monday", "tuesday"...)
+  //           AND EXISTS (
+  //             SELECT 1
+  //             FROM unnest(re.slots) AS slot                -- on prend chaque créneau récurrent
+  //             WHERE NOT EXISTS (
+  //               SELECT 1
+  //               FROM offer_cancel_slots can,
+  //                   unnest(can.slots) AS canceled         -- on prend chaque créneau annulé
+  //               WHERE can.slug_offer = o.slug
+  //                 AND can.date = CURRENT_DATE
+  //                 AND canceled = slot                      -- on compare : même créneau
+  //             )
+  //           )
+  //       )
+  //     ) AS "isToday",
+  //     (
+  //       SELECT
+  //         count(*)
+  //       FROM reservation_slots
+  //       JOIN reservations_individuals ON reservation_slots.id = reservations_individuals.slot_id
+  //       WHERE reservation_slots.offer_slug = o.slug
+  //     ) AS nb_reservation
+  //   FROM offers o;
+  // `);
+
   const result = await db.query(`
+    WITH valid_slots AS (
+      SELECT o.slug AS offer_slug, unnest(ex.slots)::time AS slot
+      FROM offers o
+      JOIN offer_exceptional_slots ex ON ex.slug_offer = o.slug
+      WHERE ex.date = CURRENT_DATE
+        AND NOT EXISTS (
+          SELECT 1
+          FROM offer_cancel_slots can, unnest(can.slots) AS canceled
+          WHERE can.slug_offer = o.slug
+            AND can.date = ex.date
+            AND canceled = ANY(ex.slots)
+        )
+
+      UNION ALL
+
+      SELECT o.slug AS offer_slug, unnest(re.slots)::time AS slot
+      FROM offers o
+      JOIN offer_recurring_slots re ON re.slug_offer = o.slug
+      WHERE re.day_of_week = LOWER(TRIM(TO_CHAR(CURRENT_DATE, 'Day')))
+        AND NOT EXISTS (
+          SELECT 1
+          FROM offer_cancel_slots can, unnest(can.slots) AS canceled
+          WHERE can.slug_offer = o.slug
+            AND can.date = CURRENT_DATE
+            AND canceled = ANY(re.slots)
+        )
+    )
+
     SELECT 
-      o.*, 
-      (
-        -- CAS 1 : Créneau EXCEPTIONNEL aujourd'hui et pas tous annulés
-        EXISTS (
-          SELECT 1
-          FROM offer_exceptional_slots ex
-          WHERE ex.slug_offer = o.slug                     -- même offre
-            AND ex.date = CURRENT_DATE                     -- aujourd'hui
-            AND EXISTS (
-              SELECT 1
-              FROM unnest(ex.slots) AS slot                -- on prend chaque créneau de l'exceptionnel
-              WHERE NOT EXISTS (
-                SELECT 1
-                FROM offer_cancel_slots can,
-                    unnest(can.slots) AS canceled         -- on prend chaque créneau annulé
-                WHERE can.slug_offer = o.slug              -- même offre
-                  AND can.date = ex.date                   -- même jour
-                  AND canceled = slot                      -- on compare : même créneau
-              )
-            )
-            -- => on vérifie que AU MOINS UN créneau exceptionnel n'est pas annulé
-        )
+      o.*,
 
-        OR
+      -- Présence d'au moins un créneau le matin
+      EXISTS (
+        SELECT 1 FROM valid_slots vs
+        WHERE vs.offer_slug = o.slug AND vs.slot < '12:00'
+      ) AS "isMorning",
 
-        -- CAS 2 : Créneau RÉCURRENT aujourd'hui et pas tous annulés
-        EXISTS (
-          SELECT 1
-          FROM offer_recurring_slots re
-          WHERE re.slug_offer = o.slug
-            AND re.day_of_week = LOWER(TRIM(TO_CHAR(CURRENT_DATE, 'Day')))
-            -- ⬆️ convertit la date d'aujourd'hui en jour de semaine ("monday", "tuesday"...)
-            AND EXISTS (
-              SELECT 1
-              FROM unnest(re.slots) AS slot                -- on prend chaque créneau récurrent
-              WHERE NOT EXISTS (
-                SELECT 1
-                FROM offer_cancel_slots can,
-                    unnest(can.slots) AS canceled         -- on prend chaque créneau annulé
-                WHERE can.slug_offer = o.slug
-                  AND can.date = CURRENT_DATE
-                  AND canceled = slot                      -- on compare : même créneau
-              )
-            )
-        )
-      ) AS "isToday",
-      (
-        SELECT
-          count(*)
-        FROM reservation_slots
-        JOIN reservations_individuals ON reservation_slots.id = reservations_individuals.slot_id
-        WHERE reservation_slots.offer_slug = o.slug
-      ) AS nb_reservation
+      -- Après-midi
+      EXISTS (
+        SELECT 1 FROM valid_slots vs
+        WHERE vs.offer_slug = o.slug AND vs.slot >= '12:00' AND vs.slot < '18:00'
+      ) AS "isAfternoon",
+
+      -- Soir
+      EXISTS (
+        SELECT 1 FROM valid_slots vs
+        WHERE vs.offer_slug = o.slug AND vs.slot >= '18:00'
+      ) AS "isEvening"
+
     FROM offers o;
-  `);
+  `)
+
 
   // const result = await db.query(`
   //   SELECT 

@@ -119,7 +119,9 @@ import { linearTheme } from "../services/themeModifier";
 
           setSelectingOfferToday(offers[0]);
 
-          const classified = classifyOffers(offers, null); // si tu as la localisation
+          const classified = classifyOffers(offers, { lat: 43.7, lon: 7.25 });
+
+          // const classified = classifyOffers(offers, null); // si tu as la localisation
           //                                        userLocation
           setHomeOffersByCategory(classified);
 
@@ -198,17 +200,6 @@ import { linearTheme } from "../services/themeModifier";
     }
     
 
-    function getDistanceInKm(lat1, lon1, lat2, lon2) {
-      const R = 6371; // rayon de la Terre en km
-      const dLat = (lat2 - lat1) * Math.PI / 180;
-      const dLon = (lon2 - lon1) * Math.PI / 180;
-      const a =
-        Math.sin(dLat/2) * Math.sin(dLat/2) +
-        Math.cos(lat1 * Math.PI / 180) * Math.cos(lat2 * Math.PI / 180) *
-        Math.sin(dLon/2) * Math.sin(dLon/2);
-      const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a));
-      return R * c;
-    }
 
 
     useEffect(() => {
@@ -247,6 +238,8 @@ import { linearTheme } from "../services/themeModifier";
 
       return cleanup; // ✅ on nettoie l'écouteur au démontage du composant
     }, []);
+
+
 
 
     return (
@@ -360,7 +353,20 @@ import { linearTheme } from "../services/themeModifier";
             {/* <p className="t6">Parfait pour l'été</p> */}
             {/* <p className="t6">Populaire sur Viarte</p> */}
             {
-              homeOffersByCategory.thisAfternoon.length > 0 &&
+              homeOffersByCategory.morning && homeOffersByCategory.morning.length > 0 &&
+              <>
+              <div className="row">
+                {/* <p className="t4">Les activité d'été</p>  */}
+                <p className="t32">Ce matin</p>
+                <button>
+                  <img src={arrowRight} alt="arrow right icon"/>
+                </button>
+              </div> 
+              <OffersCard offers={homeOffersByCategory.morning} loading={loading}/>
+              </>
+            }
+            {
+              homeOffersByCategory.afternoon && homeOffersByCategory.afternoon.length > 0 &&
               <>
               <div className="row">
                 {/* <p className="t4">Les activité d'été</p>  */}
@@ -369,9 +375,18 @@ import { linearTheme } from "../services/themeModifier";
                   <img src={arrowRight} alt="arrow right icon"/>
                 </button>
               </div> 
-              <OffersCard offers={homeOffersByCategory.thisAfternoon} loading={loading}/>
+              <OffersCard offers={homeOffersByCategory.afternoon} loading={loading}/>
               </>
             }
+            
+            <p className="t6">Populaire cet été</p>
+            <div className="row">
+              <p className="t32">Les plus aimées</p> 
+              <button>
+                <img src={arrowRight} alt="arrow right icon"/>
+              </button>
+            </div> 
+            <OffersCard offers={homeOffersByCategory.popular} loading={loading}/>
             
             
             <div className={`ConnectYourSelf ${authState.isAuth && "close"}`}>
@@ -399,23 +414,19 @@ import { linearTheme } from "../services/themeModifier";
                 <p className="t5">Se connecter</p></button>
             </div>
 
-            <div className="row">
-              <p className="t32"> À moins de 5 mim</p> 
-              <button>
-                <img src={arrowRight} alt="arrow right icon"/>
-              </button>
-            </div> 
-            <OffersCard offers={homeOffersByCategory.popular} loading={loading}/>
+            {
+              homeOffersByCategory.nearby && homeOffersByCategory.nearby.length > 0 &&
+              <>
+              <div className="row">
+                <p className="t32"> À moins de 5 minutes</p> 
+                <button>
+                  <img src={arrowRight} alt="arrow right icon"/>
+                </button>
+              </div> 
+              <OffersCard offers={homeOffersByCategory.nearby} loading={loading}/>
+              </>
+            }
 
-            
-            {/* <p className="t6">Sorties de dernière minute</p> */}
-            <div className="row">
-              <p className="t32">Sortir ce soir</p>
-              <button>
-                <img src={arrowRight} alt="arrow right icon"/>
-              </button>
-            </div> 
-            <OffersCard offers={homeOffersByCategory.popular} loading={loading}/>
 
             {/* <p className="t6">disponnible aujourd'huit</p> */}
             <div className="freeConcelation">
@@ -431,14 +442,33 @@ import { linearTheme } from "../services/themeModifier";
             </div>
 
 
-            <p className="t6">Populaire cet été</p>
-            <div className="row">
-              <p className="t32">Les plus aimées</p> 
-              <button>
-                <img src={arrowRight} alt="arrow right icon"/>
-              </button>
-            </div> 
-            <OffersCard offers={homeOffersByCategory.popular} loading={loading}/>
+            {
+              homeOffersByCategory.evenning && homeOffersByCategory.evenning.length > 0 &&
+              <>
+              <div className="row">
+                {/* <p className="t4">Les activité d'été</p>  */}
+                <p className="t32">Sortir ce soir</p>
+                <button>
+                  <img src={arrowRight} alt="arrow right icon"/>
+                </button>
+              </div> 
+              <OffersCard offers={homeOffersByCategory.evenning} loading={loading}/>
+              </>
+            }
+
+            {
+              homeOffersByCategory.all_remaining && homeOffersByCategory.all_remaining.length > 0 &&
+              <>
+              <div className="row">
+                {/* <p className="t4">Les activité d'été</p>  */}
+                <p className="t32">À voir aussi</p>
+                <button>
+                  <img src={arrowRight} alt="arrow right icon"/>
+                </button>
+              </div> 
+              <OffersCard offers={homeOffersByCategory.all_remaining} loading={loading}/>
+              </>
+            }
 
           </div>
           <div id="DivSpace"></div>
