@@ -22,6 +22,7 @@ router.post("/create", async (req, res) => {
     image_urls,
     provider_id,
     pricePer,
+    total_capacity,
     qrcode_url,
     slug,
     cancellable
@@ -43,6 +44,7 @@ router.post("/create", async (req, res) => {
     "image_urls",image_urls,
     "provider_id",provider_id,
     "pricePer",pricePer,
+    "total_capacity", total_capacity,
     "qrcode_url", qrcode_url,
     "slug", slug,
     "cancellable", cancellable
@@ -74,6 +76,7 @@ router.post("/create", async (req, res) => {
     image_urls,
     provider_id,
     pricePer,
+    total_capacity,
     qrcode_url,
     slug,
     cancellable);
@@ -94,6 +97,7 @@ router.post("/create", async (req, res) => {
       image_urls,
       provider_id,
       pricePer,
+      total_capacity,
       qrcode_url,
       slug,
       cancellable 

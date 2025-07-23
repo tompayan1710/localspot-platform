@@ -158,6 +158,7 @@
 .FilterElement .rowAddParticipant>.row>.buttonParticipant:disabled{
   opacity: 0.5;
   cursor: not-allowed;
+  background-color: var(--greylight);
 }
 
 .FilterElement .rowAddParticipant>.row>p{

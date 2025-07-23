@@ -379,10 +379,10 @@ export default function Availability() {
                   className={`CreneauItem ${selectedCreneau.index === `${selectedDate}-${index}` ? "selected" : ""} 
                               ${places_disponnibles === 0 && "complete"} ${!isReservable && "notReservable" }`} 
                       onClick={() => {
-                        if(isReservable){
-                          setSelectedCreneau({index : `${selectedDate}-${index}`, slot: slot})
-                        }else{
+                        if(!isReservable || selectedCreneau.index === `${selectedDate}-${index}`){
                           setSelectedCreneau({index: "no-selected"})
+                        }else{
+                          setSelectedCreneau({index : `${selectedDate}-${index}`, slot: slot})
                         }}}>
                   {
                     places_disponnibles === 0 &&
@@ -543,10 +543,10 @@ export default function Availability() {
         ref={ParticipantBottomRef}
       >
         <>
-          <p className="t5">En tout il y a <strong>{total_capacity} places</strong></p>
+          {/* <p className="t5">En tout il y a <strong>{total_capacity} places</strong></p>
           <div className="AnimationHuman">
 
-          </div>
+          </div> */}
           <div className="rowTotal">
             <p className="t5">Participants :</p> 
             <p className="t5">{participantAdult + participantReduced}</p>

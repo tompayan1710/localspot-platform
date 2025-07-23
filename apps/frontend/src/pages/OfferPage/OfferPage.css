@@ -747,14 +747,14 @@ justify-content: center;
 
 
 
-.offerContainer .bodyPopUpBottom>.rowAddParticipant{
+.bodyPopUpBottom>.rowAddParticipant{
   margin-top: 10px;
   justify-content: space-between;
   display: flex;
   flex-direction: row;
 }
 
-.offerContainer .bodyPopUpBottom>.rowAddParticipant>.row>.buttonParticipant{
+.bodyPopUpBottom>.rowAddParticipant>.row>.buttonParticipant{
   border-radius: 100px;
   /* background: linear-gradient(to bottom, #b5edb1, var(--greenlight)); */
   background-color: transparent;
@@ -768,19 +768,20 @@ justify-content: center;
   border: 1px solid var(--greysemidark);
   cursor: pointer;
 }
-.offerContainer .bodyPopUpBottom>.rowAddParticipant>.row>.buttonParticipant>p{
+.bodyPopUpBottom>.rowAddParticipant>.row>.buttonParticipant>p{
   font-family: "cookie";
 }
-.offerContainer .bodyPopUpBottom>.rowAddParticipant>.row>.buttonParticipant:disabled{
+.bodyPopUpBottom>.rowAddParticipant>.row>.buttonParticipant:disabled{
   opacity: 0.5;
   cursor: not-allowed;
+  background-color: var(--greylight);
 }
 
-.offerContainer .bodyPopUpBottom>.rowAddParticipant>.row>p{
+.bodyPopUpBottom>.rowAddParticipant>.row>p{
   min-width: 0.8rem;
   text-align: center;
 }
-.offerContainer .bodyPopUpBottom>.rowAddParticipant>.row{
+.bodyPopUpBottom>.rowAddParticipant>.row{
   gap: 8px;
 
 }

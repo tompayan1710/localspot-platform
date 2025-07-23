@@ -144,7 +144,7 @@
 }
 .AvailabilityContainer .DayPickerContainer>.CalendarContainer>p{
   font-weight: 100;
-  text-align: center;
+  text-align: center; 
   margin-top: 15px;
 }
 

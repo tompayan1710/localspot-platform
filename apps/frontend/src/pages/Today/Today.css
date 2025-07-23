@@ -117,7 +117,7 @@
     border-top: 1px solid var(--greysemidark);
     position: relative;
     top: -30px;
-    padding-bottom: 80px;
+    padding-bottom: 60px;
 }
 .TodayReservationPage .barToScroll{
     height: 5px;
@@ -415,14 +415,18 @@
 
 
 .TodayReservationPage .SpinnerContainer{
+    --heightTop: 0px;
     width: 100%;
     max-width: 500px;
-    height:  calc(100vh - 200px);
+    height: calc(100% - var(--heightTop) - 60px); /*Les 60px représentes la navbar*/
     display: flex;
+    flex-direction: row;
     justify-content: center;
+    justify-items: center;
     align-items: center;
+    align-content: center;
     position: fixed;
-    top: 160px;
+    top: var(--heightTop);
 }
 .TodayReservationPage .NoCreneau{
     position: fixed;

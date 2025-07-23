@@ -575,7 +575,7 @@ function allRefsReady() {
             ref={ParticipantBottomRef}
           >
             <>
-              <p className="t6">il reste actuellement <strong className={`${10<3 ? "short" : ""}`}>10 places</strong></p>
+              {/* <p className="t6">il reste actuellement <strong className={`${10<3 ? "short" : ""}`}>10 places</strong></p> */}
               <div className="AnimationHuman">
 
               </div>

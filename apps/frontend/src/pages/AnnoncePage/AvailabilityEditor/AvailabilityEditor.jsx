@@ -107,14 +107,22 @@ export default function AvailabilityEditor(){
         }
 
         if(recurentOpen){
+            // setTimeout(() => {
+            //     if (recurentRef.current) {
+            //     const height = recurentRef.current.scrollHeight;
+            //     recurentRef.current.style.maxHeight = `${height}px`;
+            //     recurentRef.current.classList.add("appear");
+            //     }
+            // }, 500);
+
             console.log("disponnibilitiExRef :", recurentRef.current.scrollHeight);
-            recurentRef.current.style.maxHeight = Math.max(recurentRef.current.scrollHeight + 400,700) + "px";//700 et +200 valeur de base pour laissez de la marge au maxheight
+            recurentRef.current.style.maxHeight = Math.max(recurentRef.current.scrollHeight + 10000,700) + "px";//700 et +200 valeur de base pour laissez de la marge au maxheight
             recurentRef.current.classList.add("appear");
         }else{
             recurentRef.current.classList.remove("appear");
             recurentRef.current.style.maxHeight = "0px";
         }
-    },[cancelOpen, disponnibilitiOpen, recurentOpen, availability, changing])
+    },[cancelOpen, disponnibilitiOpen, recurentOpen, availability, changing, heights])
 
 
 
@@ -443,7 +451,7 @@ export default function AvailabilityEditor(){
                     ))
                     }
                 </div>
-            {/* </div> */}
+
             <div className="hlineExceptionnal"></div>
             <div className="addExceptionnal">
                 <div className="row">

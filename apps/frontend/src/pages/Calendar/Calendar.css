@@ -169,6 +169,7 @@
     overflow: hidden;
     width: 100%;
     top: -30px;
+    padding-bottom: 20px;
 }
 
 .Calendar .AllReservationList>.barToScroll{
@@ -311,19 +312,22 @@
     border-bottom: 1px dashed var(--greysemidark);
     border-image: repeating-linear-gradient(to right, var(--greysemidark) 0, var(--greysemidark) 5px, transparent 5px, transparent 10px);
     border-image-slice: 1;
-    margin: 10px 0;
+    margin: 10px 0; 
 }
 
 
 .Calendar .SpinnerContainer{
+    --heightTop: 0px;
     width: 100%;
     max-width: 500px;
-    height:  calc(100vh - 350px);
+    height: calc(100% - var(--heightTop));
     display: flex;
     justify-content: center;
+    justify-items: center;
     align-items: center;
+    align-content: center;
     position: fixed;
-    top: 300px;
+    top: var(--heightTop);
 }
 
 .Calendar .NoCreneau{

@@ -908,7 +908,8 @@ input[type=number] {
   position: relative;
   width: 100%;
   margin-top: 5px;
-  margin-bottom: 25px;
+  margin-bottom: 10px;
+  gap: 7px;
 }
 .CreateOfferPage5 .PriceContainer>input{
   width: 80px;
@@ -939,6 +940,18 @@ input[type=number] {
   border: 1px solid var(--greymiddledark); /* ta bordure rouge */
   box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
   outline: none; /* supprime le halo orange par défaut */
+}
+
+.CreateOfferPage5 .CapaciteContainer {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  margin-top: 8px;
+  gap: 7px;
+  margin-bottom: 25px;
+}
+.CreateOfferPage5 .CapaciteContainer>.InputText {
+  margin-top: 0;
 }
 
 .CreateOfferPage5 .duration-slider{

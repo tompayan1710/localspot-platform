@@ -9,6 +9,7 @@ import plus from "../../assets/images/plus.png"
 import { AuthContext } from "../../components/Auth/authContext/authContext"
 import Spinner from "../../components/Spinner/Spinner";
 import FadeInImage from "../../components/Utils/FadeInImage";
+import { linearTheme } from "../../services/themeModifier";
 
 
 export default function Today() {
@@ -117,9 +118,29 @@ export default function Today() {
     console.log(creneauOfSelectedDate);
   }, [creneauOfSelectedDate])
 
+
+    useEffect(() => {
+        const TodayWeek = document.getElementById("TodayweekContainer");
+        const SpinnerContainer = document.getElementById("SpinnerContainer");
+
+        if (TodayWeek && SpinnerContainer) {
+            const heightTodayWeek = TodayWeek.scrollHeight;
+            SpinnerContainer.style.setProperty('--heightTop', `${heightTodayWeek}px`);
+        }
+    }, [isLoading]);
+
+
+    useEffect(() => {
+      const from = [243, 244, 246]; 
+      const to = [255, 255, 255]; 
+      const cleanup = linearTheme(from, to);
+
+      return cleanup; // ✅ on nettoie l'écouteur au démontage du composant
+    }, []);
+
   return (
     <div className="TodayReservationPage">
-        <div className="TodayweekContainer">
+        <div id="TodayweekContainer" className="TodayweekContainer">
             {next7Days.length > 0 && !isLoading ? 
             <>
             <div className="row">
@@ -177,7 +198,7 @@ export default function Today() {
             <div className="barToScroll"></div>
             {
                 // !isLoading ? ( allCreneaux[next7Days[selectedDay].toLocaleDateString('fr-CA')] ? 
-                 !isLoading ? ( Object.keys(creneauOfSelectedDate).length > 0 ? 
+                !isLoading ? ( Object.keys(creneauOfSelectedDate).length > 0 ? 
                 (
                     
                     // allCreneaux[next7Days[selectedDay].toLocaleDateString('fr-CA')].map((slot) => { 
@@ -326,7 +347,7 @@ export default function Today() {
                     </button>
                 </div>
             )
-                :<div className="SpinnerContainer">
+                :<div id={"SpinnerContainer"} className="SpinnerContainer">
                     <Spinner />
                 </div>
             }

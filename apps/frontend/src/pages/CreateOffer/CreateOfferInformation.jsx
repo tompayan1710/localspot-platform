@@ -79,8 +79,9 @@ export default function CreateOfferInformations(){
         title: "",
         description: "",
         freeCancellation: isCancellable,
-        price: "",
+        price: 0,
         pricePer: "personne",
+        capacite: 0
     });
 
     const handleChange = (e) => {
@@ -130,6 +131,7 @@ export default function CreateOfferInformations(){
             image_urls: images_urls, // ou [images[0]] si c'est une seule
             provider_id: authState.user.provider.id, // à récupérer dynamiquement si possible
             pricePer: form.pricePer,
+            total_capacity: form.capacite,
             qrcode_url: qrcode_url,
             slug: slug,
             cancellable: isCancellable
@@ -236,34 +238,10 @@ export default function CreateOfferInformations(){
                     <p className="RightInfo t6">{form.description.length}/{limitDescription}</p>
 
 
-                    {/* <label className="t4">Prix</label>
-                    <div className="PriceInputWrapper">
-                        <span className="t6">À partir de </span>
-                        <input
-                            type="number"
-                            name="price"
-                            className="InputText"
-                            value={form.price}
-                            onChange={handleChange}
-                            min="0"
-                            max={maxPrice}
-                        />
-                     <span className="PriceSuffix t5">€ </span>
-                     <span className="t6"> par</span>
-                     <select
-                    name="pricePer"
-                    value={form.pricePer}
-                    onChange={handleChange}
-                    className="t6"
-                    >
-                        <option value="personne">personne</option>
-                        <option value="groupe">groupe</option>
-                    </select>
-                    </div> */}
                     <label className="t4">Durée de l'activité</label>
                     <DurationSlider setValue={setDuration} durations={["15 min", "30 min", "1 h", "2 h", "4 h", "+ 6 h"]}/>
                     <label className="t4">Prix</label>
-                    <div className="PriceContainer">
+                    <div className="PriceContainer row">
                         <input
                             type="number"
                             name="price"
@@ -275,7 +253,10 @@ export default function CreateOfferInformations(){
                             required
                         />
                         <p>€</p>
-                        <select
+                        <span>
+                            <p className="t6"> / personnes</p>
+                        </span>
+                        {/* <select
                             name="pricePer"
                             value={form.pricePer}
                             onChange={handleChange}
@@ -283,9 +264,24 @@ export default function CreateOfferInformations(){
                             >
                             <option value="personne">personne</option>
                             <option value="groupe">groupe</option>
-                        </select>
+                        </select> */}
                     </div>
                     
+                    <label className="t4">Nombre maximum de participants</label>
+                    <div className="CapaciteContainer">
+                        <input
+                            type="number"
+                            name="capacite"
+                            className="InputText"
+                            value={form.capacite}
+                            onChange={handleChange}
+                            min={1}
+                            max={300}
+                            required
+                        />
+                        {/* <p>€</p> */}
+                        <p className="t6">/ participants</p>
+                    </div>
                     <div className="CancellableContainer">
                         <label className="t4">Annulation gratuite</label>
                         <p className="t6">Choisissez si vos clients peuvent annuler gratuitement leur réservation</p>

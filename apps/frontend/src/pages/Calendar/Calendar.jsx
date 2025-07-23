@@ -12,6 +12,7 @@ import { DayPicker } from "react-day-picker";
 import Spinner from "../../components/Spinner/Spinner"
 import FadeInImage from "../../components/Utils/FadeInImage"
 import Map2DPin from "../../assets/images/Map2DPin.png"
+import { linearTheme } from "../../services/themeModifier"
 
 export default function Calendar(){
 
@@ -149,10 +150,28 @@ export default function Calendar(){
     dateLimit.setDate(now.getDate() + 30);
 
 
+    useEffect(() => {
+        const Calendar = document.getElementById("CalendarContainer");
+        const SpinnerContainer = document.getElementById("SpinnerContainer");
+
+        if (Calendar && SpinnerContainer) {
+            const heightCalendar = Calendar.scrollHeight;
+            SpinnerContainer.style.setProperty('--heightTop', `${heightCalendar}px`);
+        }
+    }, [isLoading]);
+
+    useEffect(() => {
+      const from = [243, 244, 246]; 
+      const to = [255, 255, 255]; 
+      const cleanup = linearTheme(from, to);
+
+      return cleanup; // ✅ on nettoie l'écouteur au démontage du composant
+    }, []);
+
     return (
         <div className="Calendar">
             <div className="DayPickerContainer">
-                <div className="CalendarContainer">
+                <div id={"CalendarContainer"} className="CalendarContainer">
                     {/* <p className="t5">Choisissez une date</p> */}
                     <DayPicker
                         mode="single"
@@ -330,7 +349,7 @@ export default function Calendar(){
                         </div>
                     )
                     :
-                    <div className="SpinnerContainer">
+                    <div id={"SpinnerContainer"} className="SpinnerContainer">
                         <Spinner />
                     </div>
                 }
