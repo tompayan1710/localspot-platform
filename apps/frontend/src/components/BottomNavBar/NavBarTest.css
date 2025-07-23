@@ -20,7 +20,7 @@
     position: fixed;
     left: 50%;
     transform: translateX(-50%);
-    height: 60px;
+    height: 70px;
     width: 100%;
     max-width: 500px;
     z-index: 4;
@@ -28,7 +28,7 @@
     border-top: 1px solid var(--greylight);
     display: flex;
     flex-direction: row;
-    justify-content: space-around;
+    justify-content: space-evenly;
     box-shadow: 0 -4px 30px rgba(0, 0, 0, 0.05);
     bottom: 0px;
     pointer-events: none;
@@ -68,20 +68,20 @@
  
 
 
-.IconWrapper {
+.NavBarButton .IconWrapper {
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  gap: 4px;
+  gap: 2px;
 }
 
-.IconWrapper img{
-    width: 32px;
+.NavBarButton .IconWrapper img{
+    height: 35px;
     opacity: 0.2;
     transition: all 0.4s ease;
 }
-.IconWrapper p{
+.NavBarButton .IconWrapper p{
     position: relative;
     opacity: 0.6;
     top: 0px;
@@ -89,12 +89,12 @@
 }   
 
 
-.IconWrapper.active img {
+.NavBarButton .IconWrapper.active img {
   /* width: 30px; */
   opacity: 1;
-  transform: scale(1.35);
+  transform: scale(1.15);
 }
-.IconWrapper.active p {
+.NavBarButton .IconWrapper.active p {
     top: 4px;
     opacity: 1;
     /* font-size: 0.6rem;  */

@@ -164,6 +164,15 @@ const NavBarTest = forwardRef(({ isMap }, ref) => {
             
             <button className="NavBarButton" onClick={() => {
               // setActiveTab("annonces");
+              navigate("/annonces");
+            }}>
+              <div className={`IconWrapper ${activeTab === "annonces" ? "active" : ""}`}>
+                <img src={OffersNav} alt="annonces icon"/>
+                <p className="t6">Annonces</p>
+              </div>
+            </button>     
+            <button className="NavBarButton" onClick={() => {
+              // setActiveTab("annonces");
               navigate("/my-earnings");
             }}>
               <div className={`IconWrapper ${activeTab === "my-earnings" ? "active" : ""}`}>
@@ -171,16 +180,7 @@ const NavBarTest = forwardRef(({ isMap }, ref) => {
                 {/* My Earnings */}
                 <p className="t6">Mes&nbsp;Revenus</p>
               </div>
-            </button>
-            <button className="NavBarButton" onClick={() => {
-              // setActiveTab("annonces");
-              navigate("/annonces");
-            }}>
-              <div className={`IconWrapper ${activeTab === "annonces" ? "active" : ""}`}>
-                <img src={OffersNav} alt="annonces icon"/>
-                <p className="t6">Annonces</p>
-              </div>
-            </button>            
+            </button>       
           </>
           ):<></>)
         :<></>}

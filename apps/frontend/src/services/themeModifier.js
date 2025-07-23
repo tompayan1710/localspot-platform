@@ -8,7 +8,7 @@ function linearTheme(from, to){
       const windowHeight = document.body.scrollHeight - window.innerHeight;
       const percent = Math.min(Math.max(scrollTop / windowHeight, 0), 1);
 
-      // Interpolation linéaire entre deux couleurs
+    // Interpolation linéaire entre deux couleurs
     //   const from = [83, 83, 83];    // gris foncé
     //   const to = [38, 38, 38];   // blanc (ou une autre couleur si tu veux)
 
