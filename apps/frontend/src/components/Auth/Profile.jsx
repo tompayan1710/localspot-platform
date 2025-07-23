@@ -64,6 +64,7 @@ export default function Profile() {
     if (!authState.loading && !authState.isAuth) {
       console.log("🔄 Redirection car non authentifié");
       navigate("/login", {
+        replace: true,
         state: {
           origin: "/", 
           scrollTo: ""

@@ -132,7 +132,7 @@ export default function Today() {
 
     useEffect(() => {
       const from = [243, 244, 246]; 
-      const to = [255, 255, 255]; 
+      const to = [243, 244, 246]; 
       const cleanup = linearTheme(from, to);
 
       return cleanup; // ✅ on nettoie l'écouteur au démontage du composant

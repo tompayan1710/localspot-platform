@@ -13,6 +13,7 @@ import FilterElement from "../../components/SearchBar/FilterElement/FilterElemen
 import { useLocation } from "react-router-dom";
 import { getFilteredOffers, getAllOffers } from "../../services/offers";
 import Spinner from "../../components/Spinner/Spinner";
+import { linearTheme } from "../../services/themeModifier";
 
 
 export default function SearchingPage(){
@@ -101,6 +102,14 @@ const fetchFilteredOffers = async (filteredOption) => {
     }, [isOccultView]);
 
     
+    useEffect(() => {
+      const from = [83, 83, 83]; 
+      const to = [255, 255, 255]; 
+      const cleanup = linearTheme(from, to);
+
+      return cleanup; // ✅ on nettoie l'écouteur au démontage du composant
+    }, [])
+    ;
     return (
 
         <div className="SearchingPage">

@@ -19,6 +19,8 @@ function linearTheme(from, to){
       meta.setAttribute("content", `rgb(${r},${g},${b})`);
     };
 
+    onScroll();
+
     window.addEventListener("scroll", onScroll);
     
     return () =>  {
