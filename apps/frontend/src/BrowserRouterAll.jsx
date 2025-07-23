@@ -43,6 +43,7 @@ import SearchingPage from "./pages/SearchingPage/SearchingPage";
 import TestHeight from "./components/TestHeight/TestHeight";
 import TestPage from "./components/TestHeight/TestPage";
 import TestPageNav from "./components/TestHeight/TestPageNav";
+import AddComment from "./pages/Comments/AddComment";
 
 export default function BrowserRouterAll(){
     const location = useLocation();
@@ -78,6 +79,7 @@ export default function BrowserRouterAll(){
     /^\/annonces\/[^\/]+\/availability-editor$/, 
     /^\/annonces\/[^\/]+\/confirm-creation$/,
     /^\/reservations\/[^\/]+$/,
+    /^\/offer-page\/[^\/]+\/add-comment$/,
     ];
 
     return(
@@ -101,7 +103,7 @@ export default function BrowserRouterAll(){
             <Route path="/offer-page/:slug/availibility" element={<Availability />} />
             <Route path="/offer-page/:slug/payment" element={<PaymentPage />} />
             <Route path="/confirm-payment" element={<ConfirmPaymentPage />} />
-
+            <Route path="/offer-page/:slug/add-comment" element={<AddComment />} />
 
             <Route path="/activity" element={<Activity />} />
 

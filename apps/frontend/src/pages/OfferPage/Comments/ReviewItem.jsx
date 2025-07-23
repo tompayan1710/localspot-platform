@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState } from "react";
-import starIcon from "../../assets/images/starIcon.png";
+import starIcon from "../../../assets/images/starIcon2.png";
 
-export default function ReviewItem({ index, comment, readMoreIsEnable, setReadMoreIsEnable }) {
+export default function ReviewItem({ index, comment, rating, date, readMoreIsEnable, setReadMoreIsEnable }) {
   const pRef = useRef(null);
   const [isTruncated, setIsTruncated] = useState(false);
 
@@ -22,12 +22,15 @@ export default function ReviewItem({ index, comment, readMoreIsEnable, setReadMo
     <>
       <div className="secondHline"></div>
       <div className={`ReviewItem ${readMoreIsEnable[index] ? "Big" : ""}`}>
-        <p className="t6">June 22, 2025</p>
-        <div className="row">
-          {Array.from({ length: 5 }).map((_, i) => (
+        <p className="t6">{date}</p>
+        <div className="StarList row">
+          {Array.from({ length: rating }).map((_, i) => (
             <img key={i} src={starIcon} alt="star Icon" />
           ))}
-          <p className="t6 starEnd">4.5/5</p>
+          {Array.from({ length: (5 - rating) }).map((_, i) => (
+            <img key={i} className="NonChose" src={starIcon} alt="star Icon" />
+          ))}
+          <p className="t6 starEnd">{rating}/5</p>
         </div>
         <p
           ref={pRef}

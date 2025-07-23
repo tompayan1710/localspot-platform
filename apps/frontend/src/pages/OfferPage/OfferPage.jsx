@@ -25,9 +25,10 @@ import { useParams } from "react-router-dom";
 import Carrousel from "../../components/Carrousel/Carrousel";
 import Footer from "../../components/Footer/Footer";
 import GoBack from "../../components/GoBack/GoBack";
-import ReviewItem from "./ReviewItem";
+import ReviewItem from "./Comments/ReviewItem";
 import { useNavigate, useLocation } from "react-router-dom";
 import PopUpBottom from "../../components/PopUpBottom/PopUpBottom";
+import OfferComments from "./Comments/OfferComments";
 
 export default function OfferPage() {
   const { slug } = useParams();
@@ -56,7 +57,6 @@ export default function OfferPage() {
   const [durations, setDurations] = useState({});
   const [navigationSelected, setNavigationSelected] = useState(0);
   const [scrollSyncEnabled, setScrollSyncEnabled] = useState(true);
-  const [readMoreIsEnable, setReadMoreIsEnable] = useState({});
   const [isOccultView, setIsOccultView] = useState(false);
   const [participantAdult, setParticipantAdult] = useState(2);
   const [participantReduced, setParticipantReduced] = useState(1);      
@@ -270,6 +270,7 @@ function allRefsReady() {
       refOfferMapContainer.current.style.paddingBottom=`calc(${hauteur}px + 45px)`
     }
   }, [isLoading]);
+
 
 
     return (
@@ -510,79 +511,17 @@ function allRefsReady() {
               
               <img src={arrowRight} alt="arrow right icon"/>
             </div>
-
-            <div className="ClientReviewContainer">
-              <div className="row">
-                <p className="t4 ReviewTitle">Customer Riviews</p>
-                <button className="iButton" onClick={() => {
-                  // PopUpBottomRef.current.style.bottom = "0px";
-                  PopUpBottomRef.current.classList.add("open")
-                  setIsOccultView(true);
-                }}
-              ><p className="t5">i</p></button>
-              </div>        
-              <p className="t1">4.5 / 5</p>
-              <div className="StarsList">
-                {
-                  Array.from({ length: 5 }).map((_, index) => (
-                    <div key={index} className="StarItem">
-                      <img src={starIcon} alt="Star Icon" />
-                    </div>
-                  ))
-                }
-              </div>
-              <div className="validateReview">
-                <div className="row">
-                  <img src={Lorier} alt="lorier illustration"/>
-                </div>
-                <div className="column">
-                  {/* <p>Seul Les personnes ayant acheter "participer" on la possibilité de commenter</p> */}
-                  {/* <p>les commentaires des autres personnes serve à vous décrire leur ressentie et autre</p> */}
-                  {/* Avis 100 % authentiques. */}
-                  {/* Seules les personnes ayant réservé cette activité peuvent partager leur ressenti pour vous guider dans votre choix */}
-                  <p className="t5">les avis des participants</p>
-                  {/* <p className="t6">Les commentaires partagés vous permettent de découvrir les ressentis et avis d'autres participants.</p> */}
-                  <p className="t6">Les commentaires reflètent les ressentis de participants ayant réellement vécu l’expérience.</p>
-                </div>
-              </div>
-              <p className="t5 BasedOn">Based on 345 reviews :</p>
-              <div className="rankStarContainer">
-              {
-                Array.from({length: 5}).map((_, index) => {
-                  const myindex = 5 - index;
-                  return (
-                    <React.Fragment key={`rank-${myindex}`}>
-                    <p key={`start${myindex}`} className="t6 starStart">{myindex}&nbsp;star{myindex>1 ? "s" : ""}</p>
-                    <div key={`progression${myindex}`} className="rankProgression">
-                      <div className="rankGoldProgression"></div>
-                    </div>
-                    <p key={`number${myindex}`} className="t6 starEnd">{myindex*25}</p>
-                </React.Fragment>
-                  )
-                })
-              }
-            </div>
-            <div id={"secondHline"}></div>
-            <div className="ReviewItemColumn">
-            {
-              Array.from({length: 5}).map((_, index) => {
-                return (
-                  <div key={`review-${index}`}>
-                  <ReviewItem
-                    index={index}
-                    comment={"J’ai adoré ce super syJ’ai adoré cette était superJ’ai adoré ce super syJ’ai adoré cette était superJ’ai adoré ce super syJ’ai adoré cette était superJ’ai adoré ce super syJ’ai adoré cette était superJ’ai adoré ce super syJ’ai adoré cette était super soré cette était super sy"}
-                    readMoreIsEnable={readMoreIsEnable}
-                    setReadMoreIsEnable={setReadMoreIsEnable}
-                  />
-                  </div>
-                )
-              })
-            }
-            </div>
-            
-           
-            <p className="seeMore t5">Voir <strong>+</strong></p>
-            </div>
+            <OfferComments offerSlug={slug} children={
+              <div className="ContainerIButton row">
+                  <p className="t4 ReviewTitle">Customer Riviews</p>
+                  <button className="iButton" onClick={() => {
+                    // PopUpBottomRef.current.style.bottom = "0px";
+                    PopUpBottomRef.current.classList.add("open")
+                    setIsOccultView(true);
+                  }}
+                ><p className="t5">i</p></button>
+              </div> 
+            }/>
             <Footer paddingBottom={"150px"}/>
           </div>
 

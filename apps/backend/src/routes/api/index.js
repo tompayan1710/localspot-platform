@@ -14,6 +14,7 @@ const googleRoutes = require('./google/googleRoutes');
 const availibilityRoutes = require('./availibility/availibilityRoutes');
 const reservationRoutes = require('./reservations/reservationsRoutes');
 const paymentRoutes = require('./payment/paymentRoutes');
+const commentsRoutes = require('./comments/commentsRoutes');
 
 router.use('/auth', authRoutes);
 router.use('/offer', offerRoutes);
@@ -27,7 +28,7 @@ router.use('/google', googleRoutes);
 router.use('/availibility', availibilityRoutes);
 router.use('/reservations', reservationRoutes);
 router.use('/payment', paymentRoutes);
-
+router.use('/comments', commentsRoutes);
 
  
  
