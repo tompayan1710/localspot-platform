@@ -48,7 +48,9 @@ export default function Login() {
         setMessage("Connexion réussie ✅");
         localStorage.setItem("jwtToken", response.token);
         setTimeout(() => {
-            navigate("/profile");
+            navigate("/profile", {
+              replace: true
+            });
             setTimeout(() => {
               checkAuth(); // << Appelle un peu après la redirection
             }, 200);

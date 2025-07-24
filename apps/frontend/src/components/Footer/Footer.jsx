@@ -31,7 +31,7 @@ export default function Footer({paddingBottom, isOtherTheme}) {
 
 
   return (
-    <div id={"Footer"} className="FooterContainer" style={{ paddingBottom: paddingBottom || "70px" }}>
+    <div id={"Footer"} className="FooterContainer" style={{ paddingBottom: paddingBottom || "90px" }}>
       <img src={ViarteV} alt="ViarteV"/>
       <p className="t6">
         Les offres affichées ont fait l'objet d'une sélection rigoureuse et d’un contrôle qualité strict, dans le but de vous proposer des prestations de grande qualité. 

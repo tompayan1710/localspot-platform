@@ -124,17 +124,20 @@ const NavBarTest = forwardRef(({ isMap }, ref) => {
               </div>
             </button> */}
 
-            <button className="NavBarButton"
-              onClick={() => {
-                // setActiveTab("restauration");
-                navigate("/reservations");
-              }}
-            >
-              <div className={`IconWrapper ${activeTab === "reservations" ? "active" : ""}`}>
-                <img src={ReservationsIcon} alt="reservations icon"/>
-                <p className="t6">Reservations</p>
-              </div>
-            </button>
+            {
+              authState.isAuth &&
+              <button className="NavBarButton"
+                  onClick={() => {
+                    // setActiveTab("restauration");
+                    navigate("/reservations");
+                  }}
+                >
+                  <div className={`IconWrapper ${activeTab === "reservations" ? "active" : ""}`}>
+                    <img src={ReservationsIcon} alt="reservations icon"/>
+                    <p className="t6">Reservations</p>
+                  </div>
+              </button>
+            }
           </>
         )}
 
