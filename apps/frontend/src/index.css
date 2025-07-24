@@ -22,6 +22,7 @@ html, body, #root{
   margin: 0;
 }
 html, body {
+  height: 100%;
   overscroll-behavior: contain; 
 }
 
@@ -50,6 +51,8 @@ code {
   width: 100%;
   min-height: 100%;
   /* border: 2px solid black; */
+  display: flex;/*//////////////////////////*/
+  flex-direction: column;/*/////////////////*/
   box-shadow: 0 0px 30px rgba(0, 0, 0, 0.04)
 }
 

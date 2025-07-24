@@ -280,7 +280,7 @@
   align-items: start;
   /* background-color: #f9fafb; */
   padding: 0px 0;
-  padding-bottom: 150px;
+  padding-bottom: 120px;
 }
 
 .profile-container .ProfileEditContainer{
@@ -620,6 +620,20 @@
     background: linear-gradient(180deg, #373737, #545454);
   }
   
+.profile-container .whiteButton {
+    width: fit-content;
+    padding: 8px 15px;
+    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.05);
+    border: 1px solid var(--greysemidark);
+    border-radius: 8px;
+    background-color: white;
+    cursor: pointer;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05), inset 0 -3px 1px rgba(0, 0, 0, 0.04);
+    margin: 0 auto;
+    margin-top: 15px;
+    margin-bottom: 50px;
+}
+
 
 .profile-container .SettingsListContainer{
   display: flex;

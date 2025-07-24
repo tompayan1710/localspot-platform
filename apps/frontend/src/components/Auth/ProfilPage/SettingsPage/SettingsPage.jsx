@@ -5,7 +5,8 @@ import { useState } from "react";
 import arrowRight from "../../../../assets/images/arrowRight.png"
 import NotificationLine from "../../../../assets/images/NotificationLine.png"
 import trashBlack from "../../../../assets/images/trashBlack.png"
-import privacy from "../../../../assets/images/privacy.png"
+import Pin from "../../../../assets/images/Pin (3).png"
+import Document from "../../../../assets/images/Document.png"
 import { deleteAccount } from "../../../../services/auth";
 import { motion, AnimatePresence } from "framer-motion";
 
@@ -30,28 +31,50 @@ export default function SettingsPage(){
 
     return(
       <>
-        <div className='SettingsPageContianer'>
+        <div className='SettingsPageContainer'>
           <GoBack nagigation={"/profile"} text={"revenir"}/>
           <p className="t2">Settings</p> 
           <div className="SettingsListContainer">
-            <div className="SettingsListItem" onClick={() => navigate("/settings")}>
-              <div className="SettingsRow">
-                <div className="RowFirst"><img src={NotificationLine} alt="notifications icon"/><p className="t4">Notifications</p></div>
-                  <img src={arrowRight} alt="arrow right"/>
+            <p className="t4">General</p>
+            <div className="SettingsBox">
+              <div className="SettingsRow row" onClick={() => navigate("notification")}>
+                <div className="RowFirst row">
+                  <img src={NotificationLine} alt="notifications icon"/>
+                  <p className="t4">Notifications</p>
                 </div>
-                <div className="hline"></div>
+                <img src={arrowRight} alt="arrow right"/>
               </div>
-              <div className="SettingsListItem">
-                <div className="SettingsRow">
-                  <div className="RowFirst"><img src={privacy} alt="log out icon"/><p className="t4">Log out</p></div>
-                    <img src={arrowRight} alt="arrow right"/>
-                  </div>
-                <div className="hline"></div>
+            </div>
+            <div className="SettingsBox">
+              <div className="SettingsRow row">
+                <div className="RowFirst row">
+                  <img src={Pin} alt="notifications icon"/>
+                  <p className="t4">Adresse de facturation</p>
+                </div>
+                <img src={arrowRight} alt="arrow right"/>
               </div>
-              <div onClick={openDeletePupUp} id="DeleteAccount"><p className="t5">Delete account</p></div>
+            </div>
+            <p className="t4">Documents</p>
+            <div className="SettingsBox" onClick={() => navigate("/terms-of-service")}>
+              <div className="SettingsRow row">
+                <div className="RowFirst row">
+                  <img src={Document} alt="Document icon"/>
+                  <p className="t4">Conditions générales</p>
+                </div>
+                <img src={arrowRight} alt="arrow right"/>
+              </div>
+              <div className="hline"></div>
+              <div className="SettingsRow row">
+                <div className="RowFirst row" onClick={() => navigate("/privacy-policy")}>
+                  <img src={Document} alt="Document icon"/>
+                  <p className="t4">Politique de confidentialité</p>
+                </div>
+                <img src={arrowRight} alt="arrow right"/>
+              </div>
+            </div>
           </div>
-          
         </div>
+        {/* <div onClick={openDeletePupUp} id="DeleteAccount"><p className="t5">Delete account</p></div> */}
         <AnimatePresence>
           {isPopupOpen && (
             <motion.div
@@ -91,8 +114,12 @@ export default function SettingsPage(){
             </motion.div>
           )}
         </AnimatePresence>
-
-
         </>
     )
 }
+
+
+
+
+
+

@@ -1,12 +1,12 @@
 import { useTranslation } from 'react-i18next';
-import global from "../../../assets/images/global.png"
-import arrowRight from "../../../assets/images/arrowRight.png"
-import France from "../../../assets/images/France.png"
-import United_Kingdom from "../../../assets/images/United_Kingdom.png"
-import Italy from "../../../assets/images/Italy.png"
-import Germany from "../../../assets/images/Germany.png"
+import global from "../../../../assets/images/global.png"
+import arrowRight from "../../../../assets/images/arrowRight.png"
+import France from "../../../../assets/images/France.png"
+import United_Kingdom from "../../../../assets/images/United_Kingdom.png"
+import Italy from "../../../../assets/images/Italy.png"
+import Germany from "../../../../assets/images/Germany.png"
 import "./EditLanguage.css"
-import GoBack from '../../GoBack/GoBack';
+import GoBack from '../../../GoBack/GoBack';
 import { useLocation } from 'react-router-dom';
 
 
@@ -28,8 +28,8 @@ export default function EditLanguage(){
             {[
                 { code: 'en', label: 'English', flag: United_Kingdom },
                 { code: 'fr', label: 'Français', flag: France },
-                { code: 'it', label: 'Italiano', flag: Italy },
-                { code: 'de', label: 'Deutsch', flag: Germany },
+                // { code: 'it', label: 'Italiano', flag: Italy },
+                // { code: 'de', label: 'Deutsch', flag: Germany },
             ].map(({ code, label, flag }) => (
                 <div
                 key={code}

@@ -244,15 +244,7 @@ import { linearTheme } from "../services/themeModifier";
 
     return (
       <div className={`HomeContainerPrincipal ${isOccultView && "noScroll"}`} ref={offerContainerRef}>
-        {/* <div ref={LogoContainerAnimationRef} className={`${true ? "" : ""} LogoContainerAnimation`}>
-          <div className="LogoContainer">
-            <img src={ViarteLogo} alt="Viarte Logo" 
-            onLoad={(e) => {
-              e.currentTarget.classList.add("loaded");
-            }}/>
-          </div>
-        </div> */}
-        {/* <SearchBar ref={searchBarRef}/> */}
+  
         <div className="ViarteIntro">
           <img src={ViarteV} alt="Viarte Logo"/>
           <div className="row">
@@ -273,13 +265,6 @@ import { linearTheme } from "../services/themeModifier";
           <div className="hline"></div>
         </div>
 
-        {/* <div className="ParticipantSelectContainer" onClick={() => {
-          // ParticipantBottomRef.current.style.bottom = "0px";
-          searchBarRef.current.classList.add("open")
-          setIsOccultView(true);
-        }}>
-          <p>BIG BOSS TOM</p>
-        </div> */}
         <div className="IntroUIContainer">
           <div className="Images">
             <div className={`ImageWrapper ${loading && "loading shimmer"}`}>
@@ -322,41 +307,11 @@ import { linearTheme } from "../services/themeModifier";
             }
           </div>
           <div className="HomeSectionContainer">
-            {/* <div className="IntroImage">
-              <p className="t5">Discover the best of</p>
-              {
-                loading ? <div className="ContainerSkeleton"><div className="SkeletonCity shimmer"></div></div>
-                : <p className="t1">Nice</p>
-              }
-              <div className="ContainerCenter">
-                <div className="SkeletonImage shimmer SkeletonLeft"></div>
-                    <div className="SkeletonImage shimmer"></div>
-                    <div className="SkeletonImage shimmer SkeletonRight"></div>
-                    <>
-                    
-                  </>
-                {loading ? (
-                  <>
-                    
-                  </>
-                ) : (
-                  <>
-                  <FadeInImage src={NiceIntro2} alt="Intro Image parachute" />
-                    <FadeInImage src={NiceIntro1} alt="Intro Image class" />
-                    <FadeInImage src={NiceIntro3} alt="Intro Image chateau" />
-                    </>
-                )}
-                <div className={`Shadow ${loading ? "loading" : ""}`}></div>
-              </div>
 
-            </div> */}
-            {/* <p className="t6">Parfait pour l'été</p> */}
-            {/* <p className="t6">Populaire sur Viarte</p> */}
             {
               homeOffersByCategory.morning && homeOffersByCategory.morning.length > 0 &&
               <>
               <div className="row">
-                {/* <p className="t4">Les activité d'été</p>  */}
                 <p className="t32">Ce matin</p>
                 <button>
                   <img src={arrowRight} alt="arrow right icon"/>
@@ -369,7 +324,6 @@ import { linearTheme } from "../services/themeModifier";
               homeOffersByCategory.afternoon && homeOffersByCategory.afternoon.length > 0 &&
               <>
               <div className="row">
-                {/* <p className="t4">Les activité d'été</p>  */}
                 <p className="t32">Cet après-midi</p>
                 <button>
                   <img src={arrowRight} alt="arrow right icon"/>
@@ -427,8 +381,6 @@ import { linearTheme } from "../services/themeModifier";
               </>
             }
 
-
-            {/* <p className="t6">disponnible aujourd'huit</p> */}
             <div className="freeConcelation">
               <div className="hline"></div>
               <p className="t3">Annulation Gratuite</p>
@@ -446,7 +398,6 @@ import { linearTheme } from "../services/themeModifier";
               homeOffersByCategory.evenning && homeOffersByCategory.evenning.length > 0 &&
               <>
               <div className="row">
-                {/* <p className="t4">Les activité d'été</p>  */}
                 <p className="t32">Sortir ce soir</p>
                 <button>
                   <img src={arrowRight} alt="arrow right icon"/>
@@ -460,7 +411,6 @@ import { linearTheme } from "../services/themeModifier";
               homeOffersByCategory.all_remaining && homeOffersByCategory.all_remaining.length > 0 &&
               <>
               <div className="row">
-                {/* <p className="t4">Les activité d'été</p>  */}
                 <p className="t32">À voir aussi</p>
                 <button>
                   <img src={arrowRight} alt="arrow right icon"/>
@@ -487,9 +437,6 @@ import { linearTheme } from "../services/themeModifier";
         <div className="generalTerms">
           <img src={Terms} alt="generals terms illustration"/>
           <h3 className="t3">Conditions Générales</h3>
-          {/* <p className="t5">
-            Pour finaliser votre réservation, vous devez accepter nos conditions générales d’utilisation et de vente.
-          </p> */}
           <p className="t6">
             En poursuivant, vous acceptez nos{" "}
             <a href="/terms-of-service" className="t6" target="_blank" rel="noopener noreferrer">
@@ -536,26 +483,15 @@ import { linearTheme } from "../services/themeModifier";
 
 
       <PopUpLogin googleRedirectRoute="/" ref={PopUpLoginRef} setIsOccultView={setIsOccultView}/>
-      {/* <div className={`occultView ${isOccultView ? "open" : ""}`} onClick={() => {
-        // generalTerms.current.classList.remove("open");
-        // setIsOccultView(false);
-      }}></div> */}
 
           <div className={`occultView ${isOccultView ? "open" : ""}`}  
           onClick={(e) => {
             console.warn("IsOccult 1")
             searchBarRef.current.classList.remove("open");
             PopUpLoginRef.current.classList.remove("open");
-            
-            // PopUpBottomRef.current.style.bottom = "-100%";
-            // CancelBottomRef.current.style.bottom = "-100%";
-            // ParticipantBottomRef.current.style.bottom = "-100%";
             setIsOccultView(false);
           }}></div>
 
-
-        {/* <TestHeight num={1}/>
-        <TestHeight num={2}/> */}
       </div>
     );
   }

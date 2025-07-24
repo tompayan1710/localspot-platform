@@ -1,0 +1,62 @@
+.NotificationPage{
+    padding: 60px 6%;
+}
+.NotificationPage .hline{
+    height: 0.7px;
+}
+
+.NotificationPage>p{
+    margin-bottom: 8px;
+}
+.NotificationPage .SettingsBox{
+  background-color: white;
+  border: 1px solid var(--greysemidark);
+  border-radius: 10px;
+}
+.NotificationPage .SettingsBox .SettingsRow{
+  padding: 15px;
+  justify-content: space-between;
+  gap: 20px;
+}
+.NotificationPage .SettingsBox .SettingsRow>.RowFirst{
+  gap: 15px;
+  flex: 1;
+}
+.NotificationPage .SettingsBox .SettingsRow>.RowFirst>.column{
+  gap: 2px;
+}
+.NotificationPage .SettingsBox .SettingsRow>img{
+  height: 12px;
+}
+.NotificationPage .SettingsBox .RowFirst>img{
+  height: 25px;
+}
+
+
+.NotificationPage .switch{
+    background: var(--greysemidark);
+    padding: 4px;
+    width: 40px;
+    border-radius: 100px;
+    border: none;
+    cursor: pointer;
+}
+.NotificationPage .switch>div{
+    background: white;
+    height: 20px;
+    width: 20px;
+    border-radius: 100px;
+    transition: all 0.3s ease-in-out;
+}
+
+
+.NotificationPage .switch.open{
+    background: var(--lineargradientgreenRight);
+}
+.NotificationPage .switch.open>div{
+    margin-left: 12px;
+}
+/* .AvailabilityEditor .DayContainer.open{
+    background-color: white;
+    border: 1px solid var(--greysemidark);
+} */

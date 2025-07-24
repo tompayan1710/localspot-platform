@@ -170,7 +170,7 @@
     width: 100%;
     top: -30px;
     min-height: 300px;
-    padding-bottom: 20px;
+    padding-bottom: 40px;
 }
 
 .Calendar .AllReservationList>.barToScroll{
@@ -332,15 +332,16 @@
 }
 
 .Calendar .NoCreneau{
-    position: fixed;
+    /* position: fixed; */
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
     width: 80%;
     max-width: 350px;
-    left: 50%;
-    transform: translate(-50%);
+    /* left: 50%; */
+    /* transform: translate(-50%); */
+    margin: 0 auto;
     height:  calc(100vh - 350px);
     top: 350px;
 }

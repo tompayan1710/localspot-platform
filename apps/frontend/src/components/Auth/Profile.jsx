@@ -13,12 +13,14 @@ import EuroIcon from "../../assets/images/EuroIcon.png"
 import CreditCard from "../../assets/images/CreditCard.png"
 import Calendar from "../../assets/images/Calendar.png"
 import crossWhite from "../../assets/images/crossWhite.png"
+import templateOffer from "../../assets/images/templateOffer.png"
 import yoga3 from "../../assets/images/yoga3.jpg"
 import Cuisto from "../../assets/images/Cuisto.jpg"
 import CalendarBorder from "../../assets/images/CalendarBorder.png"
 import { useTranslation } from "react-i18next"; 
 
 import { getOffersProvider } from "../../services/offers"
+import FadeInImage from "../Utils/FadeInImage";
 
 export default function Profile() {
   const navigate = useNavigate();
@@ -134,7 +136,18 @@ export default function Profile() {
       {authState.user?.provider_id ? (
         authState.user?.provider?.is_validated ? (
           <>
-          <div className="OfferListContainer">
+          <div className="BecomProviderBig">
+              <div className="BecomProviderContainer">
+                <FadeInImage src={templateOffer} alt="template photo"/>
+                <FadeInImage src={templateOffer} alt="template photo"/>
+              </div>
+              {/* <p className="t4">Mes annonces</p> */}
+              <p className="t6">Gérez facilement vos activités, suivez vos réservations et mettez à jour vos offres en temps réel.</p>
+            </div>
+        <button className="whiteButton" onClick={() => {navigate("/become-provider")}}>
+            Voir mes annonces
+        </button>
+          {/* <div className="OfferListContainer">
             { providerOffers.length > 0 ? providerOffers.map((offer) => (
               <div key={offer.id} className="OfferListItem">
                 <div className="OfferImageContainer"><img src={offer.image_urls[0]}/></div>
@@ -149,7 +162,6 @@ export default function Profile() {
                 <div className="Illutrate"></div>
                 <div className="Illutrate"></div>
                 <div className="Illutrate"></div>
-                {/* <img src={files} alt="files"/> */}
                 <span className="BackgroundLinear"></span>
                 <span className="PlusButton">
                   <img src={crossWhite} alt="cross white"/>
@@ -163,7 +175,7 @@ export default function Profile() {
             
           <button className="ProfileAddOffertContainer" onClick={() => {navigate("/create-offer")}}>
             Ajouter une offre
-          </button>
+          </button> */}
         </>
       ) : (
       <p className="t32 IsValidateMessage">
@@ -174,8 +186,8 @@ export default function Profile() {
       <>
        <div className="BecomProviderBig">
               <div className="BecomProviderContainer">
-                <img src={yoga3} alt="yoga photo"/>
-                <img src={Cuisto} alt="cuisto photo"/>
+                <FadeInImage src={yoga3} alt="yoga photo"/>
+                <FadeInImage src={Cuisto} alt="cuisto photo"/>
               </div>
               <p className="t4">Devenir prestataire</p>
               <p className="t6">Votre demande sera traitée sous 24h et notre réponse vous sera rapidement communiquée.</p>
@@ -208,27 +220,35 @@ export default function Profile() {
               </div>
               <div className="hline"></div>
             </div>
-            <div className="SettingsListItem" onClick={() => console.log("pressed")}>
+            <div className="SettingsListItem" onClick={() => navigate("/currency")}>
               <div className="SettingsRow">
                 <div className="RowFirst"><img src={EuroIcon} alt="currenncy icon"/><p className="t4">Currency</p></div>
                 <img src={arrowRight} alt="arrow right"/>
               </div>
               <div className="hline"></div>
             </div>
-            <div className="SettingsListItem" onClick={() => navigate("/booking-system")}>
-              <div className="SettingsRow">
-                <div className="RowFirst"><img src={CalendarBorder} alt="currenncy icon"/><p className="t4">Booking system</p></div>
-                <img src={arrowRight} alt="arrow right"/>
-              </div>
-              <div className="hline"></div>
-            </div>
-            <div className="SettingsListItem" onClick={() => navigate("/payment-methode")}>
-              <div className="SettingsRow">
-                <div className="RowFirst"><img src={CreditCard} alt="credit card icon"/><p className="t4">Payment methods</p></div>
-                <img src={arrowRight} alt="arrow right"/>
-              </div>
-              <div className="hline"></div>
-            </div> 
+            {
+              authState.user?.provider_id && (
+                authState.user?.provider?.is_validated && (
+                  <>
+                    <div className="SettingsListItem" onClick={() => navigate("/booking-system")}>
+                      <div className="SettingsRow">
+                        <div className="RowFirst"><img src={CalendarBorder} alt="currenncy icon"/><p className="t4">Booking system</p></div>
+                        <img src={arrowRight} alt="arrow right"/>
+                      </div>
+                      <div className="hline"></div>
+                    </div>
+                    <div className="SettingsListItem" onClick={() => navigate("/payment-methode")}>
+                      <div className="SettingsRow">
+                        <div className="RowFirst"><img src={CreditCard} alt="credit card icon"/><p className="t4">Payment methods</p></div>
+                        <img src={arrowRight} alt="arrow right"/>
+                      </div>
+                      <div className="hline"></div>
+                    </div> 
+                  </>
+                )
+              )
+            }
             <div className="SettingsListItem" onClick={handleLogout}>
               <div className="SettingsRow">
                 <div className="RowFirst"><img src={logOutIcon} alt="log out icon"/><p className="t4">Log out</p></div>

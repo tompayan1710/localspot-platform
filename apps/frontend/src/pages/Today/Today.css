@@ -117,7 +117,7 @@
     border-top: 1px solid var(--greysemidark);
     position: relative;
     top: -30px;
-    padding-bottom: 60px;
+    padding-bottom: 80px;
     min-height: 300px;
 }
 .TodayReservationPage .barToScroll{
@@ -429,17 +429,22 @@
     position: fixed;
     top: var(--heightTop);
 }
+.reservationList:has(.NoCreneau){
+    padding: 0;
+}
+
 .TodayReservationPage .NoCreneau{
-    position: fixed;
+    /* position: fixed; */
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
     width: 80%;
     max-width: 350px;
-    left: 50%;
-    transform: translate(-50%);
-    height:  calc(100vh - 200px);
+    /* left: 50%; */
+    /* transform: translate(-50%); */
+    height:  calc(100vh - 270px);
+    margin: 0 auto;
     top: 160px;
 }
 .TodayReservationPage .NoCreneau>p{

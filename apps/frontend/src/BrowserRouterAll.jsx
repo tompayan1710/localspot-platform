@@ -16,7 +16,7 @@ import BecomeProvider from "./pages/BecomeProvider/BecomeProvider";
 import BecomeProviderAddInfo from "./pages/BecomeProvider/BecomeProviderAddInfo";
 import BecomeProviderAddContact from "./pages/BecomeProvider/BecomeProviderContact";
 import EditProfile from "./components/Auth/ProfilPage/EditProfile";
-import EditLanguage from "./components/Auth/ProfilPage/EditLanguage";
+import EditLanguage from "./components/Auth/ProfilPage/EditLanguage/EditLanguage";
 import SettingsPage from "./components/Auth/ProfilPage/SettingsPage/SettingsPage";
 import Availability from "./pages/OfferPage/Availibility/Availability";
 import PaymentPage from "./pages/OfferPage/Payment/PaymentPage";
@@ -44,6 +44,8 @@ import TestHeight from "./components/TestHeight/TestHeight";
 import TestPage from "./components/TestHeight/TestPage";
 import TestPageNav from "./components/TestHeight/TestPageNav";
 import AddComment from "./pages/Comments/AddComment";
+import CurrencyPage from "./components/Auth/ProfilPage/Currency/CurrencyPage";
+import NotificationSettings from "./components/Auth/ProfilPage/SettingsPage/NotificationSettings/NotificationSettings";
 
 export default function BrowserRouterAll(){
     const location = useLocation();
@@ -55,6 +57,7 @@ export default function BrowserRouterAll(){
         "/signup",
         "/booking-system",
         "/settings",
+        "/settings/notification",
         "/edit-language",
         "/edit-profile",
         "/become-provider",
@@ -70,6 +73,7 @@ export default function BrowserRouterAll(){
         "/terms-and-conditions-of-sal",
         "/content-policy",
         "/testpage",
+        "/currency"
     ];
     
     //offer-page/b2f3a4ae-6cc4-4353-824e-65de72035d68/availibility
@@ -142,6 +146,10 @@ export default function BrowserRouterAll(){
             <Route path="/payment-methode" element={<PaymentMethode />} />
             <Route path="/booking-system" element={<BookingSystem />} />
             <Route path="/settings" element={<SettingsPage />} />
+            <Route path="/settings/notification" element={<NotificationSettings />} />
+        
+
+            <Route path="/currency" element={<CurrencyPage />} />
     
             <Route path="/become-provider" element={<BecomeProvider />} />
             <Route path="/become-provider/add-info" element={<BecomeProviderAddInfo/>} />

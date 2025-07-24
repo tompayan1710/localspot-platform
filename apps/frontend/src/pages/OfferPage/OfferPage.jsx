@@ -522,7 +522,7 @@ function allRefsReady() {
                 ><p className="t5">i</p></button>
               </div> 
             }/>
-            <Footer paddingBottom={"150px"}/>
+            <Footer paddingBottom={"180px"}/>
           </div>
 
 
