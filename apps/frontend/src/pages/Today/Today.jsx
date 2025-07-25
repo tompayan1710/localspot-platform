@@ -278,7 +278,7 @@ export default function Today() {
                                                         })
                                                     }
                                                 </div>
-                                                <p className="t6">ref : #GTR-10485932</p>
+                                                <p className="t6">ref : #{slot.offer_slug}</p>
                                                 <p className="t4">{allOffers[slot.offer_slug].title}</p>
                                                 <div className="hlinedashed"></div>
                                                 {

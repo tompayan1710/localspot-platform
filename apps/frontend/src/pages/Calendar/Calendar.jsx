@@ -290,7 +290,7 @@ export default function Calendar(){
                                                                         <img src={NiceIntro1} alt="reservation Offer image"/> */}
                                                                     </div>
                                                                     <div className="column">
-                                                                        <p className="t6">ref : #GTR-10485932</p>
+                                                                        <p className="t6">ref : #{slot.offer_slug}</p>
                                                                         <p className="t4">{allOffers[slot.offer_slug].title}</p>
                                                                         <div className="hlinedashed"></div>
                                                                         <div className="column">

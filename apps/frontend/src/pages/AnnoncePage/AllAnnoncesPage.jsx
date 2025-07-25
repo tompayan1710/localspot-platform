@@ -4,6 +4,7 @@ import { AuthContext } from "../../components/Auth/authContext/authContext";
 import { getOffersProvider } from "../../services/offers";
 import { useNavigate } from "react-router-dom";
 import plus from "../../assets/images/plus.png"
+import Pin from "../../assets/images/Pin (3).png"
 import CahierTexte from "../../components/CahierTexte/CahierTexte";
 import FadeInImage from "../../components/Utils/FadeInImage";
 
@@ -64,8 +65,13 @@ export default function AllAnnoncesPage(){
                             <FadeInImage src={offer.image_urls[0]} alt={"image annonce"}/>
                         </div>
                         <div className="columnAnnonceOffer">
-                            <p className="t5">{offer.title}</p>
-                            <p className="t6">{offer.description}</p>
+                            <p className="t5 maxLine bold">{offer.title}</p>
+                            {/* <p className="t6 maxLine">{offer.description}</p> */}
+                            <div className="row">
+                                <img src={Pin} alt="Pin adresse"/>
+                                <p className="t6 maxLine">{offer.adresse}</p>
+                            </div>
+                            <p className="t6 maxLine">{offer.price}€ par personne</p>
                         </div> 
                     </button>
                     )) : 

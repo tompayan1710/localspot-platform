@@ -1,0 +1,82 @@
+
+
+/*///////////////////////::ConfirmPayement*/
+.ConfirmPayement{
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.ConfirmPayement>.ViarteFont{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    margin-top: 20px;
+    margin-bottom: 50px;
+}
+.ConfirmPayement>.ViarteFont>img{
+    width: 80px;
+}
+.ConfirmPayement>p:first-of-type{
+  /* font-family: "Cookie"; */
+  font-family: "Playfaire Display";
+  font-weight: 100;
+  margin-top: 15px;
+  margin-bottom: 10px;
+}
+
+.ConfirmPayement .SuccesIcon{
+  padding: 16px;
+  width: fit-content;
+  background: var(--lineargradientgreen);
+  border-radius: 100%;
+  display: flex;
+  flex-direction: column;
+}
+.ConfirmPayement .SuccesIcon>img{
+  height: 25px;
+  width: 25px;
+  filter: invert(1);
+}
+
+.ConfirmPayement>.hline88{
+    margin-top: 30px;
+    margin-bottom: 50px;
+}
+.ConfirmPayement>p{
+  max-width: 400px;
+  width: 90%;
+  text-align: center;
+}
+
+
+.ConfirmPayement .NavigateButton{
+    gap: 10px;    
+    position: fixed;
+    width: 100%;
+    bottom: 0;
+    max-width: calc(500px);
+    align-items: center;
+    margin-bottom: 20px;
+}
+.ConfirmPayement .NavigateButton>button{
+    width: 88%;
+    border-radius: 100px;
+    cursor: pointer;
+    padding: 15px 50px;
+}
+.ConfirmPayement .NavigateButton>button:first-of-type{
+    background: linear-gradient(180deg, #545454, #373737);
+    font-weight: lighter;
+    border: none;
+}
+.ConfirmPayement .NavigateButton>button:first-of-type>p{
+    color: white;
+}
+
+.ConfirmPayement .NavigateButton>button:last-of-type{
+    background-color: transparent;
+    border: 1px solid var(--greysemidark);
+}

@@ -66,6 +66,10 @@
     /* padding-bottom: 6px; */
     pointer-events: auto;
 }
+.BottomNavBarNotAnimate.Multiple .NavBarButton{
+  flex: 1;
+}
+
  
 
 

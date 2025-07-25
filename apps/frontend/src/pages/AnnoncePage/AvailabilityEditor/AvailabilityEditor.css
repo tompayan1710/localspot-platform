@@ -568,3 +568,60 @@
 .AvailabilityEditor .rdp-today.today-red::before {
   color: var(--rednormal);
 }
+
+
+
+
+
+
+
+
+
+
+.AvailabilityEditor .react-datepicker-popper{
+    /* background-color: red; */
+}
+
+.react-datepicker-popper div{
+    border-color: var(--greysemidark);
+    font-weight: 100;
+}
+
+.react-datepicker{
+    border: 1px solid var(--greysemidark);
+    box-shadow: 0px 0px 20px rgba(0, 0, 0, 0.05);
+}
+.AvailabilityEditor .react-datepicker__header{
+    background-color: var(--greyverylight);
+}
+.react-datepicker-popper[data-placement^=bottom] .react-datepicker__triangle{
+    fill: var(--greyverylight);
+    color: var(--greyverylight);
+}
+
+ul.react-datepicker__time-list {
+  overflow-y: scroll;       /* ou auto si tu veux que ça apparaisse quand nécessaire */
+  scrollbar-width: none;    /* Firefox */
+}
+
+ul.react-datepicker__time-list::-webkit-scrollbar {
+  display: none;            /* Chrome, Safari, Edge */
+}
+
+.react-datepicker-popper .react-datepicker__triangle{
+    stroke: var(--greysemidark);
+    /* border-radius: 10px; */
+}
+
+.react-datepicker__time-container .react-datepicker__time .react-datepicker__time-box ul.react-datepicker__time-list li.react-datepicker__time-list-item{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.react-datepicker__time-container .react-datepicker__time .react-datepicker__time-box ul.react-datepicker__time-list li.react-datepicker__time-list-item--selected{
+    background: var(--lineargradientgreen)!important;
+    margin: 0 4px;
+    border-radius: 4px;
+}

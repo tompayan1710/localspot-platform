@@ -3,7 +3,7 @@
     width: 100%;
     min-height: 100vh;
     padding-top: 10px;
-    padding-bottom: 80px;
+    padding-bottom: 90px;
 }
 
 #AnnoncesPage .StatistiqueAnnonces{
@@ -38,15 +38,14 @@
     display: flex;
     flex-direction: column;
     margin-top: 10px;
-    gap: 10px;
+    gap: 20px;
 }
 
 #AnnoncesPage>.allAnnonces .AnnonceItem{
   display: flex;
   flex-direction: row;
   align-items: center;
-  padding: 8px;
-  border: 1px solid var(--greysemidark);
+  border: none;
   border-radius: 20px;
   /* box-shadow: 0 0px 20px rgba(0, 0, 0, 0.08); */
   gap: 10px;
@@ -54,16 +53,17 @@
   cursor: pointer;
 }
 #AnnoncesPage>.allAnnonces .AnnonceItem>.ImageWrapper{
-  width: 100px;
-  height: 100px; 
+  --dim: 70px;
+  width: var(--dim);
+  height: var(--dim); 
   border-radius: 15px;
   background-color: var(--greylight);
 }
 #AnnoncesPage>.allAnnonces .AnnonceItem>.ImageWrapper>img{
-  width: 100px;
-  height: 100px; 
-  min-width: 100px;
-  border-radius: 15px;
+  width: var(--dim);
+  height: var(--dim); 
+  min-width: var(--dim);
+  border-radius: 8px;
   object-fit: cover;
 }
 #AnnoncesPage .AnnonceItem .columnAnnonceOffer{
@@ -71,14 +71,21 @@
   flex-direction: column;
   justify-content: center;
   margin-left: 10px;
+  gap: px;
 }
-#AnnoncesPage .AnnonceItem .columnAnnonceOffer>p{
-  display: -webkit-box;
-  -webkit-line-clamp: 2;
-  -webkit-box-orient: vertical;
-  overflow: hidden;
-  text-overflow: ellipsis;
+#AnnoncesPage .AnnonceItem .columnAnnonceOffer p{
   text-align: start;
+}
+#AnnoncesPage .AnnonceItem .columnAnnonceOffer p:first-of-type{
+  margin-bottom: 4px;
+}
+#AnnoncesPage .AnnonceItem .columnAnnonceOffer>.row{
+  align-items: start;
+  gap: 3px;
+}
+#AnnoncesPage .AnnonceItem .columnAnnonceOffer img{
+  height: 15px;
+  width: 15px;
 }
 
 #AnnoncesPage .noOffer{

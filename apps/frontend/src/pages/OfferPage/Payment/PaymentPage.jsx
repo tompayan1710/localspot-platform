@@ -252,7 +252,7 @@ export default function PaymentPage() {
                         },
                     }}
                     >
-                        <CheckoutForm isStripeReady={isStripeReady} onReady={() => setIsStripeReady(true)} price={price}/>
+                        <CheckoutForm isStripeReady={isStripeReady} onReady={() => setIsStripeReady(true)} price={price} saveCreneau={saveCreneau}/>
                     </Elements>
                 </div>
                 )}

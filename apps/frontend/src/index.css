@@ -160,6 +160,8 @@ a{
 .bold{
   font-weight: bold;
 }
+
+
 .row{
   display: flex;
   flex-direction: row;

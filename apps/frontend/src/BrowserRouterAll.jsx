@@ -1,5 +1,5 @@
 import { BrowserRouter, Routes, Route, Navigate, useLocation } from "react-router-dom";
-import { useRef } from "react";
+import { useEffect, useRef } from "react";
 import Home from "./pages/Home";
 
 import NotFound from "./pages/NotFound";
@@ -34,7 +34,7 @@ import Today from "./pages/Today/Today";
 import Calendar from "./pages/Calendar/Calendar";
 import Activity from "./pages/Activity/Activity";
 import Restauration from "./pages/Restauration/Restauration";
-import ConfirmPaymentPage from "./pages/OfferPage/Payment/ConfirmPaymentPage";
+import ConfirmPaymentPage from "./pages/OfferPage/Payment/ComfirmPayment/ConfirmPaymentPage";
 import MyEarnings from "./pages/MyEarnings/MyEarnings";
 import ConfirmCreation from "./pages/CreateOffer/ConfirmCreation";
 import Reservations from "./pages/Reservations/Reservations";
@@ -51,6 +51,12 @@ import FormInfoPayement from "./pages/OfferPage/Payment/FormInfoPayement/FormInf
 export default function BrowserRouterAll(){
     const location = useLocation();
     const navBarRef = useRef();
+
+    const pathname = location.pathname;
+
+    useEffect(() => {
+        window.scrollTo(0, 0);
+    }, [pathname]);
 
     const hideNavBarOnRoutes = [
         // "/",
@@ -74,7 +80,8 @@ export default function BrowserRouterAll(){
         "/terms-and-conditions-of-sal",
         "/content-policy",
         "/testpage",
-        "/currency"
+        "/currency",
+        "/confirm-payment"
     ];
     
     //offer-page/b2f3a4ae-6cc4-4353-824e-65de72035d68/availibility

@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { useStripe, useElements, PaymentElement  } from "@stripe/react-stripe-js";
 
-export default function CheckoutForm({ onReady, isStripeReady, price }) {
+export default function CheckoutForm({ onReady, isStripeReady, price, saveCreneau }) {
   const stripe = useStripe();
   const elements = useElements();
   const [message, setMessage] = useState(null);
@@ -14,6 +14,8 @@ export default function CheckoutForm({ onReady, isStripeReady, price }) {
         return;
     }
 
+    saveCreneau();
+
     setIsProcessing(true);
 
     const { error, paymentIntent } = await stripe.confirmPayment({
@@ -21,7 +23,7 @@ export default function CheckoutForm({ onReady, isStripeReady, price }) {
         confirmParams: {
             return_url: `${window.location.origin}/confirm-payment`
         },
-        redirect: "if_required"
+        // redirect: "if_required"
     });
 
     if (error) {
