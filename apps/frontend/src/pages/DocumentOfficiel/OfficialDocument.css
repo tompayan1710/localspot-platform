@@ -17,8 +17,8 @@
 .OfficalDocumentContainer h2{
     padding-bottom: 10px;
     padding-top: 30px;
-    font-weight: 700;
-    font-family: "Playfair Display";
+    font-weight: 500;
+    /* font-family: "Playfair Display"; */
     text-decoration: none;
     text-underline-offset: 3px; 
     text-decoration-thickness: 1px; 

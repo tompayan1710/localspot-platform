@@ -84,15 +84,14 @@
   margin-top: 8px;
   width: 100%;
   margin-bottom: 30px;
+  font-size: 16px;
 }
 .EditProfilContainer form .InputText:focus {
   outline: none;
   border: 1px solid var(--greysemidark);
-      border-color: var(--greymiddledark);
-
+  border-color: var(--greymiddledark);
   padding: 12px 10px;
   box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-
 }
 
 .EditProfilContainer form>.DescriptionInput{

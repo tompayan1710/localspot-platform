@@ -32,6 +32,7 @@
   border-radius: 10px;
   margin-top: 8px;
   width: 100%;
+  font-size: 16px;
   /* margin-bottom: 30px; */
 }
 .FormInfoPayement .InputText:focus {
@@ -46,17 +47,21 @@
 
 
 .FormInfoPayement .InputText.error {
-    border: 1px solid red;
+    border: 1px solid var(--rednormal);
 }
 
 .FormInfoPayement .error-message {
-    color: red;
+    color: var(--rednormal);
     font-size: 12px;
     margin-top: 4px;
 }
 
 .FormInfoPayement .PhoneInput{
   margin-bottom: 10px;
+  font-size: 16px;
+}
+.FormInfoPayement .PhoneInput.error .PhoneInputInput {
+  border: 1px solid var(--rednormal);
 }
 
 /* Supprime toute image de fond par défaut */

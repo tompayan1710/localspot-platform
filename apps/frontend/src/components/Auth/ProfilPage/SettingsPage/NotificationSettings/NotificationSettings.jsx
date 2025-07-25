@@ -12,6 +12,30 @@
 
         const [isReservationEmail, setIsReservationEmail] = useState(true); 
         const [isSuggestionEmail, setIsSuggestionEmail] = useState(true); 
+
+        // const UpdatePreference = async () => {
+        //     const response = await fetch(`${process.env.REACT_APP_API_URL}/api/offer/filter`, {
+        //         method: "POST",
+        //         headers: {
+        //             "Content-Type": "application/json"
+        //         },
+        //         body: JSON.stringify(filters),
+        //         });
+
+        //         if (!response.ok) {
+        //         throw new Error("Erreur serveur");
+        //         }
+
+        //         const data = await response.json();
+
+        //         return data
+
+        //     } catch (err) {
+        //         console.error("❌ Erreur getFilteredOffers:", err);
+        //         return { success: false };
+        //     }
+        // }
+        
         return(
             <div className="NotificationPage">
                 <GoBack nagigation={"/settings"} text={"revenir"}/>

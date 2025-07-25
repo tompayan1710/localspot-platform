@@ -124,7 +124,7 @@ export default function FormInfoPayement(){
                 { title: "Informations" },
                 { title: "Paiement" }
             ]}/>
-            <div className="FormInfoBody">
+            <form className="FormInfoBody" autoComplete="on" onSubmit={(e) => { e.preventDefault(); handleSubmit(); }}>
                 <p className="Title t3">Vérifier vos informations personnels</p>
                 <div className="Securised row">
                     <img src={LockGreen} alt={"Lock green"}/>
@@ -133,7 +133,11 @@ export default function FormInfoPayement(){
                 <p className="t5 label">Nom complet*</p>
                 <input
                     className={`InputText ${errors.name ? "error" : ""}`}
+                    name="name"
+                    autoComplete="name"
+                    type="text"
                     value={name}
+                    required
                     onChange={(e) => setName(e.target.value)}
                 />
                 {errors.name && <p className="error-message">{errors.name}</p>}
@@ -142,17 +146,24 @@ export default function FormInfoPayement(){
                 <input
                     className={`InputText ${errors.email ? "error" : ""}`}
                     type="email"
+                    autoComplete="email"
+                    name="email"
                     value={email}
+                    required
                     onChange={(e) => setEmail(e.target.value)}
                 />
                 {errors.email && <p className="error-message">{errors.email}</p>}
 
                 <p className="t5 label">Numéro de téléphone*</p>
+                {/* react-phone-number-input transmet les props non reconnues à l’<input> interne. Donc ajoute name et autoComplete="tel" : */}
                 <PhoneInput
                     defaultCountry="FR"
                     international
                     withCountryCallingCode
                     value={phone}
+                    autoComplete="tel"
+                    name="tel"
+                    required
                     onChange={setPhone}
                     className={`PhoneInput ${errors.phone ? "error" : ""}`}
                     placeholder="Entrez votre numéro"
@@ -168,7 +179,7 @@ export default function FormInfoPayement(){
                     Suivant
                 </button>
                 <p className="t6 info">Le nom indiqué sera utilisé pour toute la réservation et sera associé à tous les participants.</p>
-            </div>
+            </form>
         </div>
     )
 }
