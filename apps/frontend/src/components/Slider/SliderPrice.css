@@ -27,19 +27,23 @@
 }
 
 .slider-price .thumb {
-  height: 20px;
-  width: 20px;
-  background: var(--lineargradientblack);
-  border-radius: 50%;
   cursor: pointer;
   position: relative;
   top: 0px;
-  box-shadow: 0 0 3px rgba(0,0,0,0.2);
+  /* transform: translatex(-50%); */
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
-}
+  padding: 15px;
+} 
+.slider-price .thumb>div {
+  height: 20px;
+  width: 20px;
+  background: var(--lineargradientblack);
+  border-radius: 50%;
+  box-shadow: 0 0 3px rgba(0,0,0,0.2);
+} 
 .slider-price .thumb>.tooltip {
   position: relative;
   top: -20px;

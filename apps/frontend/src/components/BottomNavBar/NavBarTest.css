@@ -35,9 +35,9 @@
     pointer-events: none;
     gap: 10%;
 }
-.BottomNavBarNotAnimate.Test{
-  /* background-color: red!important; */
-  /* bottom: -200px; */
+.BottomNavBarNotAnimate.Multiple{
+  justify-content: space-around;
+  gap: 0px;
 }
 .BottomNavBarNotAnimate.Test.sliderInBottomNav{
   animation: sliderInBottomNav 0.8s ease-out forwards;

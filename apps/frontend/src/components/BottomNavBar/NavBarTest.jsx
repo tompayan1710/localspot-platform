@@ -71,7 +71,9 @@ const NavBarTest = forwardRef(({ isMap }, ref) => {
   }, [activeTab]);
 
   return (
-    <div ref={ref} className={`BottomNavBarNotAnimate Test ${hidden ? "hidden" : ""}`}>
+    <div  ref={ref} 
+          className={`BottomNavBarNotAnimate Test ${hidden ? "hidden" : ""} ${authState.user?.provider_id && 
+          authState.user?.provider?.is_validated ? "Multiple" : ""}`}>
       {
         isMap?
         <button className="MapButton" onClick={() => console.log("Clique on map")}>

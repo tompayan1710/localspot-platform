@@ -46,6 +46,7 @@ import TestPageNav from "./components/TestHeight/TestPageNav";
 import AddComment from "./pages/Comments/AddComment";
 import CurrencyPage from "./components/Auth/ProfilPage/Currency/CurrencyPage";
 import NotificationSettings from "./components/Auth/ProfilPage/SettingsPage/NotificationSettings/NotificationSettings";
+import FormInfoPayement from "./pages/OfferPage/Payment/FormInfoPayement/FormInfoPayement";
 
 export default function BrowserRouterAll(){
     const location = useLocation();
@@ -80,6 +81,7 @@ export default function BrowserRouterAll(){
     const hideNavBarPatterns = [
     /^\/offer-page\/[^\/]+\/availibility$/,  // regex pour offer-page/:slug/availibility
     /^\/offer-page\/[^\/]+\/payment$/, 
+    /^\/offer-page\/[^\/]+\/add-info$/, 
     /^\/annonces\/[^\/]+\/availability-editor$/, 
     /^\/annonces\/[^\/]+\/confirm-creation$/,
     /^\/reservations\/[^\/]+$/,
@@ -105,6 +107,7 @@ export default function BrowserRouterAll(){
 
             <Route path="/offer-page/:slug" element={<OfferPage />} />
             <Route path="/offer-page/:slug/availibility" element={<Availability />} />
+            <Route path="/offer-page/:slug/add-info" element={<FormInfoPayement />} />
             <Route path="/offer-page/:slug/payment" element={<PaymentPage />} />
             <Route path="/confirm-payment" element={<ConfirmPaymentPage />} />
             <Route path="/offer-page/:slug/add-comment" element={<AddComment />} />

@@ -1,20 +1,10 @@
 .PayementPageContainer{
   min-height: 100vh;
 }
-.PayementPageContainer .TopDivOpacity {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100vw;
-    background: linear-gradient(to bottom, rgb(255, 255, 255) 0%, rgb(255, 255, 255) 60%, rgba(255, 255, 255, 0) 100%);
-    height: 60px;
-    z-index: 2;
-} 
-
 
 .PayementPageContainer .TitleContainer{
   margin: 0 6%;
-  padding-top: 60px;
+  padding-top: 40px;
 }
 .PayementPageContainer .TitleContainer>p:first-of-type{
   margin-bottom: 5px;

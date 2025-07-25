@@ -115,6 +115,7 @@ body{
 
   /* --lineargradientblack: linear-gradient(180deg, #535353, #373737); */
   --lineargradientblack: linear-gradient(180deg, rgb(83, 83, 83), rgb(55, 55, 55));
+  --lineargradientblackRight: linear-gradient(to right, rgb(83, 83, 83), rgb(55, 55, 55));
   --lineargradientgreen: linear-gradient(to bottom, #c4f5c1, #7de276);
   --lineargradientgreenRight: linear-gradient(to right, #b5edb1, var(--greennormal));
   --lineargradientred: linear-gradient(180deg, #fcb3b3, var(--rednormal));

@@ -10,8 +10,8 @@
     padding-top: 20px;
 }
 .OfficalDocumentContainer>h1{
-    font-family: "Playfair Display";
-    font-weight: 900;
+    /* font-family: "Playfair Display"; */
+    font-weight: 500;
 }
 
 .OfficalDocumentContainer h2{

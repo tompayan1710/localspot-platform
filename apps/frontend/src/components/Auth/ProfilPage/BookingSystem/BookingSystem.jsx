@@ -3,6 +3,7 @@ import GoBack from "../../../GoBack/GoBack";
 import "./BookingSystem.css";
 import TimeOnlyPicker from "./TimeOnlyPicker";
 import crossiconBlack from "../../../../assets/images/crossiconBlack.png"
+import ArrowLeftAndRight from "../../../../assets/images/ArrowLeftAndRight.png"
 import ViarteLogo from "../../../../assets/images/ViarteLogo.png"
 import GoogleCalendarIcon from "../../../../assets/images/GoogleCalendarIcon.png"
 import { AuthContext } from "../../authContext/authContext";
@@ -145,9 +146,10 @@ async function saveCreneau({
       <GoBack nagigation={`/profile`} scrollTo={``} text={"revenir"} />
       <div className="ContentContainer">
         <div className="row">
-          <img src={ViarteLogo} alt="Viarte Logo"/>
-          <div className="horizontalLine"></div>
-          <img src={GoogleCalendarIcon} alt="Google Calendar Logo"/>
+          <img className="Connecting" src={ViarteLogo} alt="Viarte Logo"/>
+          {/* <div className="horizontalLine"></div> */}
+          <img className="TheConnection" src={ArrowLeftAndRight} alt="Arrow left and right"/>
+          <img className="Connecting" src={GoogleCalendarIcon} alt="Google Calendar Logo"/>
         </div>
         <p className="t5">Connectez votre agenda Viarte à Google Agenda</p>
         {/* <p className="t6">

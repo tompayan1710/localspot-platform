@@ -145,7 +145,7 @@ export default function Profile() {
               <p className="t6">Gérez facilement vos activités, suivez vos réservations et mettez à jour vos offres en temps réel.</p>
             </div>
         <button className="whiteButton" onClick={() => {navigate("/become-provider")}}>
-            Voir mes annonces
+            <p className="t5">Voir mes annonces</p>
         </button>
           {/* <div className="OfferListContainer">
             { providerOffers.length > 0 ? providerOffers.map((offer) => (

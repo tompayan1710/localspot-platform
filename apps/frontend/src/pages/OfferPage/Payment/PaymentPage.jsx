@@ -9,6 +9,7 @@ import { loadStripe } from "@stripe/stripe-js"
 import CheckoutForm from "./CheckoutForm"
 import { Elements } from "@stripe/react-stripe-js";
 import Spinner from "../../../components/Spinner/Spinner";
+import ProgressBar from "../../../components/ProgressBar/ProgressBar";
 
 
 export default function PaymentPage() {
@@ -23,7 +24,10 @@ export default function PaymentPage() {
 
     const locationParams = location.state;
     const fallbackParams = JSON.parse(sessionStorage.getItem("paymentParams") || "{}");
-
+        
+    const name = locationParams?.title ?? fallbackParams.title;
+    const email = locationParams?.email ?? fallbackParams.email;
+    const phone = locationParams?.phone ?? fallbackParams.phone;
     const title = locationParams?.title ?? fallbackParams.title;
     const price = locationParams?.price ?? fallbackParams.price;
     const OfferIsCancellable = locationParams?.OfferIsCancellable ?? fallbackParams.OfferIsCancellable;
@@ -34,6 +38,7 @@ export default function PaymentPage() {
     const date = locationParams?.date ?? fallbackParams.date;
     const adresse = locationParams?.adresse ?? fallbackParams.adresse;
     const total_capacity = locationParams?.total_capacity ?? fallbackParams.total_capacity;
+    const selectedCreneau = locationParams?.selectedCreneau ?? fallbackParams.selectedCreneau;
 
     const [isFetching, setIsFetching] = useState(true);
     const [isStripeReady, setIsStripeReady] = useState(false);
@@ -52,16 +57,8 @@ export default function PaymentPage() {
             participantReduced == null)
         {
             console.warn("❌ PayementPage Aucun state recu ou champs manquants !");
-            navigate(`/offer-page/${slug}/availibility`, {
-                state: {
-                    title: title,
-                    adresse: adresse,
-                    price: price,
-                    participantAdult: participantAdult,
-                    participantReduced: participantReduced,
-                    OfferIsCancellable: OfferIsCancellable,
-                    total_capacity: total_capacity,
-                }
+            navigate(`/offer-page/${slug}/add-info`, {
+                state: stateAddInfo
             })
         }
 
@@ -145,7 +142,8 @@ export default function PaymentPage() {
                 participants: participants, 
                 total_participants: participantAdult + participantReduced, 
                 price_per_person: price, 
-                title: title
+                title: title,
+                selectedCreneau: selectedCreneau
             }
             console.log(ObjectToSave);
 
@@ -179,72 +177,102 @@ export default function PaymentPage() {
         { firstName: "Clara", lastName: "Petit", type: "enfant" }
     ];
 
+    const stateAvailibility = {
+        price,
+        OfferIsCancellable,
+        title,
+        adresse,
+        total_capacity,
+        participantAdult,
+        participantReduced,
+        selectedCreneau
+    }
+
+    const stateAddInfo = {
+        name, 
+        email,
+        phone,
+        title,
+        price,
+        OfferIsCancellable,
+        participantAdult,
+        participantReduced,
+        start_hour,
+        end_hour,
+        date,
+        total_capacity,
+        adresse,
+        selectedCreneau
+    }
     return (
     <div className="PayementPageContainer">
-      <GoBack
-        nagigation={`/offer-page/${slug}/availibility`}
-        scrollTo={""}
-        text={"revenir"}
-        state={{
-          title,
-          adresse,
-          price,
-          participantAdult,
-          participantReduced,
-          OfferIsCancellable,
-        }}
-      />
+        <GoBack
+            nagigation={`/offer-page/${slug}/add-info`}
+            scrollTo={""}
+            text={"revenir"}
+            state={stateAddInfo}
+        />
+        <ProgressBar num_etape={3} steps ={[
+            {   
+                title: "Réservation",
+                route: `/offer-page/${slug}/availibility`,
+                state: stateAvailibility
+                },
+            {   
+                title: "Informations",
+                route: `/offer-page/${slug}/add-info`,
+                state: stateAddInfo
+            },
+            { title: "Paiement" }
+        ]}/>
 
-      <div className="TopDivOpacity"></div>
+        <div className="TitleContainer">
+            <p className="t3">Sélectionnez un moyen de payement</p>
+        </div>
 
-      <div className="TitleContainer">
-        <p className="t32">Sélectionnez un moyen de payement</p>
-      </div>
+        <div className="MethodesContainer">
+            {isFetching ? (
+                <div className="loaderContainer">
+                    <Spinner />
+                    {/* <p className="loader">Chargement du paiement...</p> */}
+                </div>
+            ) : (
+            <>
+                {/* <div className={`MethodeItem ${selectedMethode === 1 ? "selected" : ""}`} onClick={() => setSelectedMethode(1)}>
+                <div className="row">
+                    <img src={PayPalLogo} alt="paypal logo" />
+                    <p className="t4">PayPal</p>
+                </div>
+                <div className="round">
+                    <div className={`${selectedMethode === 1 ? "underRound" : ""}`}></div>
+                </div>
+                </div> */}
 
-      <div className="MethodesContainer">
-
-        {isFetching ? (
-            <div className="loaderContainer">
-                <Spinner />
-                {/* <p className="loader">Chargement du paiement...</p> */}
-            </div>
-        ) : (
-        <>
-            {/* <div className={`MethodeItem ${selectedMethode === 1 ? "selected" : ""}`} onClick={() => setSelectedMethode(1)}>
-            <div className="row">
-                <img src={PayPalLogo} alt="paypal logo" />
-                <p className="t4">PayPal</p>
-            </div>
-            <div className="round">
-                <div className={`${selectedMethode === 1 ? "underRound" : ""}`}></div>
-            </div>
-            </div> */}
-
-            {stripePromise && clientSecret && (
-            <div className="full-width-stripe-container" style={{ opacity: isStripeReady ? 1 : 0, transition: "opacity 0.3s ease" }}>
-                <Elements
-                stripe={stripePromise}
-                options={{
-                    clientSecret,
-                    appearance: {
-                    theme: 'stripe',
-                    variables: {
-                        colorPrimary: '#008cdd',
-                        colorText: '#333',
-                        fontFamily: 'Poppins, Arial, sans-serif',
-                        borderRadius: '15px',
-                    },
-                    },
-                }}
-                >
-                <CheckoutForm isStripeReady={isStripeReady} onReady={() => setIsStripeReady(true)} />
-                </Elements>
-            </div>
+                {stripePromise && clientSecret && (
+                <div className="full-width-stripe-container" style={{ opacity: isStripeReady ? 1 : 0, transition: "opacity 0.3s ease" }}>
+                    <Elements
+                    stripe={stripePromise}
+                    options={{
+                        clientSecret,
+                        appearance: {
+                        theme: 'stripe',
+                        variables: {
+                            colorPrimary: '#008cdd',
+                            colorText: '#333',
+                            fontFamily: 'Poppins, Arial, sans-serif',
+                            borderRadius: '15px',
+                        },
+                        },
+                    }}
+                    >
+                    <CheckoutForm isStripeReady={isStripeReady} onReady={() => setIsStripeReady(true)} />
+                    </Elements>
+                </div>
+                )}
+            </>
             )}
-        </>
-        )}
-        <button onClick={() => {saveCreneau()}}>SaveCreneau</button>
-      </div>
+            <button onClick={() => {saveCreneau()}}>SaveCreneau</button>
+        </div>
     </div>
   );
 }

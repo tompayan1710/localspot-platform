@@ -15,11 +15,12 @@ import Spinner from "../../../components/Spinner/Spinner";
 import PopUpLogin from "../../../components/Auth/PopUpLogin/PopUpLogin";
 
 export default function Availability() {
-  const today = new Date().toLocaleDateString('fr-CA');
-  const [selectedDate, setSelectedDate] = useState(today);
-
   const { slug } = useParams();
   const location = useLocation();
+
+  const today = new Date().toLocaleDateString('fr-CA');
+  const [selectedDate, setSelectedDate] = useState(location.state?.date || today);
+
   const price = location.state?.price;
   const OfferIsCancellable = location.state?.OfferIsCancellable;
   const title = location.state?.title;
@@ -33,7 +34,8 @@ export default function Availability() {
   const creneauRef = useRef(null); // ← Étape 1
   const [barStyle, setBarStyle] = useState({ width: 0, angle: 0 });
   const [isOccultView, setIsOccultView] = useState(false);
-  const [selectedCreneau, setSelectedCreneau] = useState({index: "no-selected"});
+  const [selectedCreneau, setSelectedCreneau] = useState(location.state?.selectedCreneau || {index: "no-selected"});
+  console.error(selectedCreneau);
   const [datesWithSlots, setDatesWithSlots] = useState({});
 
   const ParticipantBottomRef = useRef(null); 
@@ -66,7 +68,7 @@ export default function Availability() {
     // ✅ Redirection uniquement lorsque loading est terminé
     console.warn("ACTUELLEMENT mon loading est :", authState.loading, " IsAuth :", authState.isAuth)
     if (!authState.loading && authState.isAuth) {
-      navigate(`/offer-page/${slug}/payment`, {
+      navigate(`/offer-page/${slug}/add-info`, {
         state: {
           title: title,
           adresse: adresse,
@@ -78,6 +80,7 @@ export default function Availability() {
           end_hour: selectedCreneau.slot.to,
           date: selectedDate,
           total_capacity: total_capacity,
+          selectedCreneau: selectedCreneau
         }
       });
     }else{
@@ -255,7 +258,9 @@ export default function Availability() {
   
   useEffect(() => {
     getValidDates(disponnibility);
-    if(selectedCreneau.index==="no-selected"){
+
+    if (!Object.keys(disponnibility).length) return;
+    if(selectedCreneau.index==="no-selected"  || !selectedCreneau.slot){
       return;
     }else{
       const creneauSlot = selectedCreneau.slot
@@ -604,6 +609,7 @@ export default function Availability() {
             end_hour: selectedCreneau.slot?.to || "",
             date: selectedDate,
             total_capacity: total_capacity,
+            selectedCreneau: selectedCreneau,
           }} 
           googleRedirectRoute={`/offer-page/${slug}/payment`}
           navigateAfterTo={`/offer-page/${slug}/payment`}
@@ -617,7 +623,8 @@ export default function Availability() {
             start_hour: selectedCreneau.slot?.from || "",
             end_hour: selectedCreneau.slot?.to || "",
             date: selectedDate,
-            total_capacity
+            total_capacity,
+            selectedCreneau: selectedCreneau
           }}
           ref={LoginBottomRef}/>
       {/* <PopUpBottom

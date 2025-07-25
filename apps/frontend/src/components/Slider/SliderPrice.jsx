@@ -86,12 +86,14 @@ export default function SliderPrice({ minValue, setMinValue, maxValue, setMaxVal
                     borderRadius: "4px",
                   }}
                 />
-                {children}
+                {children} 
               </div>
             );
           }}
           renderThumb={({ props, index }) => (
-            <div {...props} className="thumb" key={index}></div>
+            <div {...props} className="thumb" key={index}>
+              <div></div>
+            </div>
           )}
         />
       </div>
