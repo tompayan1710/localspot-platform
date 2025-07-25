@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { useStripe, useElements, PaymentElement  } from "@stripe/react-stripe-js";
 
-export default function CheckoutForm({ onReady, isStripeReady }) {
+export default function CheckoutForm({ onReady, isStripeReady, price }) {
   const stripe = useStripe();
   const elements = useElements();
   const [message, setMessage] = useState(null);
@@ -41,11 +41,15 @@ export default function CheckoutForm({ onReady, isStripeReady }) {
     <form className="stripe-form-container" onSubmit={handleSubmit}>
       <PaymentElement onReady={onReady}/>
 
-      <button disabled={isProcessing} id="submit" className={`${isStripeReady ? "loaded" : ""} stripe-pay-button`}>
-        <span id="button-text" >
-          {isProcessing ? "Processing ..." : "Pay now"}
-        </span>
-      </button>
+      <div className="PayButtonContainer">
+        <div className="column">
+          <p className="t5">Total</p>
+          <p className="t3 bold">{price}€</p>
+        </div>
+        <button disabled={isProcessing} id="submit" className={`${isStripeReady ? "loaded" : ""} stripe-pay-button`}>
+          <p className="t32">{isProcessing ? "Processing ..." : "Payer"}</p>
+        </button>
+      </div>
 
       {/* Show any error or success messages */}
       

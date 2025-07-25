@@ -1,5 +1,6 @@
 .ProgressBar {
-    width: 100%;
+    width: 110%;
+    margin-left: -5%;
     display: flex;
     /* justify-content: space-evenly; */
     /* align-items: flex-start; */

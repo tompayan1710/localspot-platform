@@ -7,7 +7,7 @@ import logoCB from "../../../assets/images/logoCB.png";
 import { AuthContext } from "../../../components/Auth/authContext/authContext";
 import { loadStripe } from "@stripe/stripe-js"
 import CheckoutForm from "./CheckoutForm"
-import { Elements } from "@stripe/react-stripe-js";
+import { CardCvcElement, CardExpiryElement, CardNumberElement, Elements } from "@stripe/react-stripe-js";
 import Spinner from "../../../components/Spinner/Spinner";
 import ProgressBar from "../../../components/ProgressBar/ProgressBar";
 
@@ -231,25 +231,12 @@ export default function PaymentPage() {
         </div>
 
         <div className="MethodesContainer">
-            {isFetching ? (
-                <div className="loaderContainer">
-                    <Spinner />
-                    {/* <p className="loader">Chargement du paiement...</p> */}
-                </div>
-            ) : (
+
             <>
-                {/* <div className={`MethodeItem ${selectedMethode === 1 ? "selected" : ""}`} onClick={() => setSelectedMethode(1)}>
-                <div className="row">
-                    <img src={PayPalLogo} alt="paypal logo" />
-                    <p className="t4">PayPal</p>
-                </div>
-                <div className="round">
-                    <div className={`${selectedMethode === 1 ? "underRound" : ""}`}></div>
-                </div>
-                </div> */}
 
                 {stripePromise && clientSecret && (
-                <div className="full-width-stripe-container" style={{ opacity: isStripeReady ? 1 : 0, transition: "opacity 0.3s ease" }}>
+                // <div className="full-width-stripe-container" style={{ opacity: isStripeReady ? 1 : 0, transition: "opacity 0.3s ease" }}>
+                <div className="full-width-stripe-container" >
                     <Elements
                     stripe={stripePromise}
                     options={{
@@ -265,13 +252,12 @@ export default function PaymentPage() {
                         },
                     }}
                     >
-                    <CheckoutForm isStripeReady={isStripeReady} onReady={() => setIsStripeReady(true)} />
+                        <CheckoutForm isStripeReady={isStripeReady} onReady={() => setIsStripeReady(true)} price={price}/>
                     </Elements>
                 </div>
                 )}
             </>
-            )}
-            <button onClick={() => {saveCreneau()}}>SaveCreneau</button>
+            {/* <button onClick={() => {saveCreneau()}}>SaveCreneau</button> */}
         </div>
     </div>
   );
