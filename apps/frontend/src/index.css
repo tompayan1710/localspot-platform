@@ -176,6 +176,12 @@ a{
   text-overflow: ellipsis;
 }
 
+.maxLine1{
+  -webkit-line-clamp: 1;
+}
+
+
+
 .column{
   display: flex;
   flex-direction: column;

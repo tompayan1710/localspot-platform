@@ -23,6 +23,56 @@ export default function ReservationsElement(){
         }
     }, []);
 
+
+    const [reservation, setReservation ] = useState([])
+
+    const getReservation = async () => {
+        try {
+            const res = await fetch(`${process.env.REACT_APP_API_URL}/api/reservation_individual/get?reservation_id=${reservation_id}`, {
+                method: "GET",
+            });
+
+            const data = await res.json();
+            if(data.success){
+                return(data.reservation);
+            }else{
+                console.error("❌ Erreur getAllReservations :", data.error);
+                return
+            }
+        } catch (error) {
+            console.error("❌ Erreur getAllReservations :", error);
+            return;
+        } 
+    }
+
+    useEffect(() => {
+
+        const fetchData = async () => {
+            const reservation = await getReservation();
+            if (reservation) {
+                setReservation(reservation);
+            }
+        };
+
+        fetchData();
+    }, []);
+
+
+
+    useEffect(() => {
+        console.log(reservation)
+    }, [reservation])
+
+    const dateObj = new Date(reservation?.reservation_created_at);
+
+    const formattedDate = dateObj.toLocaleDateString("fr-FR", {
+    day: "2-digit",
+    month: "2-digit",
+    year: "numeric",
+    });
+
+    console.log(formattedDate);
+
     return (
         <div className="ReservationsElement">
             <button className="CloseButton" onClick={() => navigate(-1)}>
@@ -31,7 +81,7 @@ export default function ReservationsElement(){
             <div className="FactureContainer">
                 <div className="LogoHead row">
                     <img src={ViarteV} alt="Viarte Logo"/>
-                    <p className="t6">07-11-2025</p>
+                    <p className="t6">{formattedDate}</p>
                 </div>
                 <div className="FactureBody">
                     <div className="ThanksFull">
@@ -52,15 +102,15 @@ export default function ReservationsElement(){
                     </div>
                     <div className="row">
                         <p className="t6">Activité</p>
-                        <p className="t6">Visite guidée de Nice</p>
+                        <p className="t6">{reservation.title}</p>
                     </div>
                     <div className="row">
                         <p className="t6">Départ</p>
-                        <p className="t6">07-11-2025 à 14h00</p>
+                        <p className="t6">{formattedDate} à {reservation.start_hour}</p>
                     </div>
                     <div className="row">
                         <p className="t6">Adresse</p>
-                        <p className="t6">04 Place Godeau</p>
+                        <p className="t6">{reservation.adresse}</p>
                     </div>
                     {/* <div className="row SeparateLine">
                         <div className="half-sphere left"></div>
@@ -70,26 +120,42 @@ export default function ReservationsElement(){
                     <div className="hlinedashed"></div>
                     <div className="row">
                         <p className="t6">Client</p>
-                        <p className="t6">Jean Dupont</p>
+                        <p className="t6">{reservation.name || "non renseigné"}</p>
                     </div>
+                    <div className="row">
+                        <p className="t6">Email</p>
+                        <p className="t6">{reservation.email || "non renseigné"}</p>
+                    </div>
+                    <div className="row">
+                        <p className="t6">Téléphone</p>
+                        <p className="t6">{reservation.phone || "non renseigné"}</p>
+                    </div>
+                    <div className="hlinedashed"></div>
                     <div className="row">
                         <p className="t6">Paiement</p>
                         <p className="t6">Carte Visa ****1234</p>
                     </div>
+                    <div className="row">
+                        <p className="t6">Status de payement</p>
+                        <p className="t6">{reservation.reservation_status}</p>
+                    </div>
 
                     <div className="hlinedashed"></div>
                     <div className="row">
-                        <p className="t6">×2&nbsp;&nbsp;&nbsp;adult</p>
-                        <p className="t6">70,00€</p>
+                        <p className="t6">×{reservation.nb_adult}&nbsp;&nbsp;&nbsp;adult</p>
+                        <p className="t6">{reservation.nb_adult * reservation.price_per_person}€</p>
                     </div>
-                    <div className="row">
-                        <p className="t6">×1&nbsp;&nbsp;&nbsp;reduced</p>
-                        <p className="t6">30,00€</p>
-                    </div>
+                    {
+                        reservation.nb_reduced > 0 &&
+                        <div className="row">
+                            <p className="t6">×{reservation.nb_reduced}&nbsp;&nbsp;&nbsp;reduced</p>
+                            <p className="t6">{reservation.nb_reduced * reservation.price_per_person}€</p>
+                        </div>
+                    }
                     <div className="hlinedashed"></div>
                     <div className="row">
                         <p className="t32">TOTAL</p>
-                        <p className="t32">100,00€</p>
+                        <p className="t32">{reservation.total_price}€</p>
                     </div>
                     <p className="t6">(toutes taxes comprises)</p>
 

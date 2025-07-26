@@ -13,6 +13,7 @@ const translate = require('./translate/translate');
 const googleRoutes = require('./google/googleRoutes');
 const availibilityRoutes = require('./availibility/availibilityRoutes');
 const reservationRoutes = require('./reservations/reservationsRoutes');
+const reservationIndividualRoutes = require('./reservations/reservationIndividualRoutes');
 const paymentRoutes = require('./payment/paymentRoutes');
 const commentsRoutes = require('./comments/commentsRoutes');
 
@@ -27,6 +28,7 @@ router.use('/translate', translate);
 router.use('/google', googleRoutes);
 router.use('/availibility', availibilityRoutes);
 router.use('/reservations', reservationRoutes);
+router.use('/reservation_individual', reservationIndividualRoutes);
 router.use('/payment', paymentRoutes);
 router.use('/comments', commentsRoutes);
 

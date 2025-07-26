@@ -25,11 +25,12 @@ export default function PaymentPage() {
     const locationParams = location.state;
     const fallbackParams = JSON.parse(sessionStorage.getItem("paymentParams") || "{}");
         
-    const name = locationParams?.title ?? fallbackParams.title;
+    const name = locationParams?.name ?? fallbackParams.name;
     const email = locationParams?.email ?? fallbackParams.email;
     const phone = locationParams?.phone ?? fallbackParams.phone;
     const title = locationParams?.title ?? fallbackParams.title;
     const price = locationParams?.price ?? fallbackParams.price;
+    const offer_provider_id = locationParams?.offer_provider_id ?? fallbackParams.offer_provider_id;
     const OfferIsCancellable = locationParams?.OfferIsCancellable ?? fallbackParams.OfferIsCancellable;
     const participantAdult = locationParams?.participantAdult ?? fallbackParams.participantAdult;
     const participantReduced = locationParams?.participantReduced ?? fallbackParams.participantReduced;
@@ -48,13 +49,23 @@ export default function PaymentPage() {
     useEffect(() =>{
 
         
-        console.error("JE SUIS DANS PAYEMEMT PAGE")
-        console.log(location.state);
         if(
+            name == null ||
+            email == null ||
+            phone == null ||
+            title == null ||
             price == null ||
+            offer_provider_id == null ||
             OfferIsCancellable == null ||
             participantAdult == null ||
-            participantReduced == null)
+            participantReduced == null ||
+            start_hour == null ||
+            end_hour == null ||
+            date == null ||
+            adresse == null ||
+            total_capacity == null ||
+            selectedCreneau == null
+        )
         {
             console.warn("❌ PayementPage Aucun state recu ou champs manquants !");
             navigate(`/offer-page/${slug}/add-info`, {
@@ -123,6 +134,7 @@ export default function PaymentPage() {
         console.log("📅 Événements :", data);
     }; 
     
+    console.error("Le nom est :", name);
     
     async function saveCreneau() {
         const dateObject = new Date(date);
@@ -133,17 +145,21 @@ export default function PaymentPage() {
         try {
             const ObjectToSave = {
                 user_id: authState.user?.id, 
-                provider_id: authState.user?.provider_id, 
+                provider_id: offer_provider_id, 
                 offerSlug: slug, 
                 date: formattedDate, 
                 start_hour: start_hour, 
                 end_hour: end_hour, 
                 location: adresse, 
-                participants: participants, 
+                nb_adult: participantAdult,
+                nb_reduced: participantReduced,
                 total_participants: participantAdult + participantReduced, 
                 price_per_person: price, 
                 title: title,
-                selectedCreneau: selectedCreneau
+                selectedCreneau: selectedCreneau,
+                name: name,
+                email: email,
+                phone: phone
             }
             console.log(ObjectToSave);
 
@@ -157,9 +173,9 @@ export default function PaymentPage() {
             const data = await response.json();
             console.log(data)
             if (data.success) {
-                alert("✅ " + data.message);
+                console.log("✅ " + data.message);
             } else {
-            alert("❌ Erreur lors de l’enregistrement du créneau");
+            alert("❌ Erreur lors de l’enregistrement de la réservation");
             }
         
             return data;
@@ -170,18 +186,12 @@ export default function PaymentPage() {
         }
     }
 
-
-    const participants = [
-        { firstName: "Alice", lastName: "Durand", type: "adulte" },
-        { firstName: "Bob", lastName: "Martin", type: "réduit" },
-        { firstName: "Clara", lastName: "Petit", type: "enfant" }
-    ];
-
     const stateAvailibility = {
         price,
         OfferIsCancellable,
         title,
         adresse,
+        offer_provider_id,
         total_capacity,
         participantAdult,
         participantReduced,
@@ -194,6 +204,7 @@ export default function PaymentPage() {
         phone,
         title,
         price,
+        offer_provider_id,
         OfferIsCancellable,
         participantAdult,
         participantReduced,

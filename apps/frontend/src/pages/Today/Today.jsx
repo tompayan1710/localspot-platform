@@ -16,7 +16,7 @@ export default function Today() {
   const navigate = useNavigate();
   const allDay = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
   const [firstMonth, setFirstMonth] = useState("");
-  const [lastMonth, setLastMonth] = useState("");
+  const [lastMonth, setLastMonth] = useState(""); 
   const [next7Days, setNext7Days] = useState([]);
   const [selectedDay, setSelectedDay] = useState(0);
   const [isLoading, setIsLoading] = useState(true);

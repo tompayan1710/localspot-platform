@@ -542,6 +542,7 @@ function allRefsReady() {
                   participantReduced: participantReduced,
                   OfferIsCancellable: offer.cancellable,
                   total_capacity: offer.total_capacity,
+                  offer_provider_id: offer.provider_id
                 }
               })
             }}>Voir les<br></br>disponnibilités</button>

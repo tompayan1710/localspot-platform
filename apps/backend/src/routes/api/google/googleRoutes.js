@@ -300,27 +300,30 @@ async function findExistingGoogleEvent(access_token, calendarId, summary, startT
 
 
 router.post("/save-creaneau", async (req, res) => {
-  const { user_id, provider_id, offerSlug, date, start_hour, end_hour, location, participants, total_participants, price_per_person, title } = req.body;
+  const { user_id, provider_id, offerSlug, date, start_hour, end_hour, location,  nb_adult, nb_reduced, total_participants, price_per_person, name, email, phone } = req.body;
 
-  console.log(user_id, provider_id, offerSlug, date, start_hour, end_hour, location, participants, total_participants, price_per_person, title)
+  // console.log(user_id, provider_id, offerSlug, date, start_hour, end_hour, location, total_participants, price_per_person)
 
-  try {
+  try { 
 
     const [ slot_id, newTotalReserved, newStatus ] = await findExistingCreneauOrCreate(provider_id, offerSlug, date, start_hour, end_hour, total_participants, price_per_person);
 
-    const participantsJson = JSON.stringify(participants); 
 
     const reservation_individual = await pool.query(`
       INSERT INTO reservations_individuals (
         user_id,
         slot_id,
-        participants,
+        nb_adult,
+        nb_reduced,
         total_participants,
         total_price,
         payment_status,
-        reservation_status
-      ) VALUES ($1, $2, $3, $4, $5, $6, $7)
-    `, [user_id, slot_id, participantsJson, total_participants, price_per_person * (total_participants), "paid", "confirmed"]);
+        reservation_status,
+        name, 
+        email, 
+        phone
+      ) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11)
+    `, [user_id, slot_id, nb_adult, nb_reduced, total_participants, price_per_person * (total_participants), "paid", "confirmed", name, email, phone]);
 
 
 
@@ -353,7 +356,16 @@ router.post("/save-creaneau", async (req, res) => {
 
       const eventObject = {
         summary: `${title.slice(0, 20)}... \n(${newStatus == "full" ? "COMPLET - " : ""}${newTotalReserved} participants)`,
-        description: `${title}\n\nParticipants : ${newTotalReserved}${newStatus == "full" ? " (COMPLET)" : ""}\nTotal : ${newTotalReserved * price_per_person} €\n\nListe des participants :\n${participantsList}
+        description: `
+          ${title}\n\n
+
+          Participant : ${newTotalReserved}${newStatus == "full" ? " (COMPLET)" : ""}\n
+          Total : ${newTotalReserved * price_per_person} €\n\n
+          
+          Informations:\n
+          Nom: ${name}\n
+          Email: ${email}\n
+          Téléphone: ${phone}
         `,
         location: location,
         start: { dateTime: startTime, timeZone: "Europe/Paris" },

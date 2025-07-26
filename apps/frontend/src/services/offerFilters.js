@@ -110,7 +110,6 @@ export function classifyOffers(offers, userLocation = null) {
 
   // Toutes les offres restantes (pas encore utilisées)
   const nonAdd = sortedOffers.filter(o => !usedSlugs.has(o.slug)).slice(0, 5);
-  console.error(nonAdd)
   const popular = nonAdd.slice(0, 3);
   const all_remaining = nonAdd.slice(3);
 

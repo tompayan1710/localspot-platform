@@ -361,8 +361,7 @@
 }
 .CompleteOverlay p{
   color: var(--greydark);
-  font-weight: bold;
-  text-shadow: 0px 2px 15px rgba(0,0,0,0.2);
+  text-shadow: 0px 2px 15px rgba(0,0,0,0.1);
 }
 
 .AvailabilityContainer .CreneauPicker > .CreneauItem .NoCreneau {

@@ -29,7 +29,7 @@ export default function FormInfoPayement(){
     const total_capacity = location.state?.total_capacity;
     const adresse = location.state?.adresse;
     const selectedCreneau = location.state?.selectedCreneau;
-    console.error(selectedCreneau);
+    const offer_provider_id = location.state?.offer_provider_id;
     const [name, setName] = useState(location.state?.name || "");
     const [email, setEmail] = useState(location.state?.email || "");
     const [phone, setPhone] = useState(location.state?.phone || "");
@@ -51,7 +51,8 @@ export default function FormInfoPayement(){
             date == null ||
             total_capacity == null ||
             adresse == null ||
-            selectedCreneau == null
+            selectedCreneau == null ||
+            offer_provider_id == null
         )
         {
             console.warn("❌ PayementPage Aucun state recu ou champs manquants !");
@@ -82,6 +83,7 @@ export default function FormInfoPayement(){
                     title,
                     adresse,
                     price,
+                    offer_provider_id,
                     OfferIsCancellable, 
                     participantAdult,
                     participantReduced,
@@ -109,6 +111,7 @@ export default function FormInfoPayement(){
         OfferIsCancellable,
         title,
         adresse,
+        offer_provider_id,
         total_capacity,
         participantAdult,
         participantReduced

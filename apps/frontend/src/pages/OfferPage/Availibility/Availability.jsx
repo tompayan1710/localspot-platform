@@ -26,7 +26,7 @@ export default function Availability() {
   const title = location.state?.title;
   const adresse = location.state?.adresse;
   const total_capacity = location.state?.total_capacity;
-
+  const offer_provider_id = location.state?.offer_provider_id;
 
   const [participantAdult, setParticipantAdult] = useState(location.state?.participantAdult || 2);
   const [participantReduced, setParticipantReduced] = useState(location.state?.participantReduced || 1); 
@@ -35,7 +35,6 @@ export default function Availability() {
   const [barStyle, setBarStyle] = useState({ width: 0, angle: 0 });
   const [isOccultView, setIsOccultView] = useState(false);
   const [selectedCreneau, setSelectedCreneau] = useState(location.state?.selectedCreneau || {index: "no-selected"});
-  console.error(selectedCreneau);
   const [datesWithSlots, setDatesWithSlots] = useState({});
 
   const ParticipantBottomRef = useRef(null); 
@@ -73,6 +72,7 @@ export default function Availability() {
           title: title,
           adresse: adresse,
           price: price,
+          offer_provider_id: offer_provider_id,
           OfferIsCancellable: OfferIsCancellable,
           participantAdult: participantAdult,
           participantReduced: participantReduced,
@@ -393,7 +393,7 @@ export default function Availability() {
                     places_disponnibles === 0 &&
                     <>
                     <div className="CompleteOverlay">
-                      <p className="t5">COMPLET</p>
+                      <p className="t5 bold">COMPLET</p>
                     </div>
                     <div className={`NoCreneau`}  
                       style={{
