@@ -3,7 +3,6 @@ const app = express();
 const path = require("path");
 const compression = require("compression");
 const apiRoutes = require("./routes/api/index");
-const apiRoutes = require("./routes/api/payment/paymentRoutes");
 // const an  uthRoutes = require('./auth/authRoutes');
 // const { pool } = require('./db/index'); // Utiliser la pool existante
 
@@ -23,7 +22,7 @@ app.use(cookieParser());
 // 2. ROUTE WEBHOOK STRIPE AVANT express.json()
 // =========================
 const paymentRoutes = require("./routes/api/payment/paymentRoutes");
-app.use("/api/payment", paymentRoutes); 
+app.use("/api/payment", paymentRoutes);
 // ⚠️ Cette route gère `bodyParser.raw` pour le webhook
 
 

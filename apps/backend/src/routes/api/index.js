@@ -29,7 +29,6 @@ router.use('/google', googleRoutes);
 router.use('/availibility', availibilityRoutes);
 router.use('/reservations', reservationRoutes);
 router.use('/reservation_individual', reservationIndividualRoutes);
-router.use('/payment', paymentRoutes);
 router.use('/comments', commentsRoutes);
 
  
