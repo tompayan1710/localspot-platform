@@ -1,8 +1,7 @@
 const express = require("express");
 const router = express.Router();
 const fetch = require("node-fetch");
-const pool = require("../../../db/index");
-const { getOfferBySlug } = require("../../../db/Models/offerModel");
+const pool = require("../../db/index");
 require("dotenv").config();
 
 
