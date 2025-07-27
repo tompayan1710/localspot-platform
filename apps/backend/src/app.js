@@ -21,9 +21,9 @@ app.use(cookieParser());
 // =========================
 // 2. ROUTE WEBHOOK STRIPE AVANT express.json()
 // =========================
-const paymentRoutes = require("./routes/api/payment/paymentRoutes");
-app.use("/api/payment", paymentRoutes);
-// ⚠️ Cette route gère `bodyParser.raw` pour le webhook
+const webhook = require("./routes/api/payment/webhook/webhook");
+app.use("/api/stripe", webhook);
+
 
 
 app.use(express.json());
