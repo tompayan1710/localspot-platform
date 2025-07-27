@@ -107,7 +107,6 @@ export default function PaymentPage() {
                         email,
                         phone
                     }),
-                    body: JSON.stringify({ amount }),
                 });
 
                 if(responseClient.status === 400) {
@@ -154,85 +153,85 @@ export default function PaymentPage() {
     
     console.error("Le nom est :", name);
     
-    async function saveCreneau() {
-        const dateObject = new Date(date);
-        const formattedDate = dateObject.toLocaleDateString('fr-CA', { timeZone: 'Europe/Paris' });
+    // async function saveCreneau() {
+    //     const dateObject = new Date(date);
+    //     const formattedDate = dateObject.toLocaleDateString('fr-CA', { timeZone: 'Europe/Paris' });
 
-        console.log(formattedDate, start_hour, end_hour)
+    //     console.log(formattedDate, start_hour, end_hour)
 
-        try {
-            const ObjectToSave = {
-                user_id: authState.user?.id, 
-                provider_id: offer_provider_id, 
-                offerSlug: slug, 
-                date: formattedDate, 
-                start_hour: start_hour, 
-                end_hour: end_hour, 
-                location: adresse, 
-                nb_adult: participantAdult,
-                nb_reduced: participantReduced,
-                total_participants: participantAdult + participantReduced, 
-                price_per_person: price, 
-                title: title,
-                selectedCreneau: selectedCreneau,
-                name: name,
-                email: email,
-                phone: phone
-            }
-            console.log(ObjectToSave);
+    //     try {
+    //         const ObjectToSave = {
+    //             user_id: authState.user?.id, 
+    //             provider_id: offer_provider_id, 
+    //             offerSlug: slug, 
+    //             date: formattedDate, 
+    //             start_hour: start_hour, 
+    //             end_hour: end_hour, 
+    //             location: adresse, 
+    //             nb_adult: participantAdult,
+    //             nb_reduced: participantReduced,
+    //             total_participants: participantAdult + participantReduced, 
+    //             price_per_person: price, 
+    //             title: title,
+    //             selectedCreneau: selectedCreneau,
+    //             name: name,
+    //             email: email,
+    //             phone: phone
+    //         }
+    //         console.log(ObjectToSave);
 
 
-            const response = await fetch(`${process.env.REACT_APP_API_URL}/api/google/save-creaneau`, {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify(ObjectToSave)
-            });
+    //         const response = await fetch(`${process.env.REACT_APP_API_URL}/api/google/save-creaneau`, {
+    //         method: "POST",
+    //         headers: { "Content-Type": "application/json" },
+    //         body: JSON.stringify(ObjectToSave)
+    //         });
         
-            const data = await response.json();
-            console.log(data)
-            if (data.success) {
-                console.log("✅ " + data.message);
-                const reservation_individual = data.reservation_individual;
-                return reservation_individual
-            } else {
-            alert("❌ Erreur lors de l’enregistrement de la réservation");
-            }
+    //         const data = await response.json();
+    //         console.log(data)
+    //         if (data.success) {
+    //             console.log("✅ " + data.message);
+    //             const reservation_individual = data.reservation_individual;
+    //             return reservation_individual
+    //         } else {
+    //         alert("❌ Erreur lors de l’enregistrement de la réservation");
+    //         }
         
-            return data;
-        } catch (error) {
-            console.error("❌ Erreur lors de la sauvegarde :", error);
-            alert("❌ Problème de connexion ou de serveur");
-            return null;
-        }
-    }
+    //         return data;
+    //     } catch (error) {
+    //         console.error("❌ Erreur lors de la sauvegarde :", error);
+    //         alert("❌ Problème de connexion ou de serveur");
+    //         return null;
+    //     }
+    // }
 
-    const sendEmail = async (reservation_individual) => {
+    // const sendEmail = async (reservation_individual) => {
 
-        const fullReservation = {
-            ...reservation_individual,
-            title,
-            adresse,
-            price_per_person: price,
-            nb_adult: participantAdult,
-            nb_reduced: participantReduced,
-            total_price: price * (participantAdult + participantReduced)
-        };  
-        try {
-            const res = await fetch(`${process.env.REACT_APP_API_URL}/api/payment/tickets/send-email-invoice`,
-            {
-                method: "POST",
-                headers: { "Content-Type": "application/json" },
-                body: JSON.stringify(fullReservation),
-            }
-            );
-            const data = await res.json();
-            if (!res.ok || !data.success) throw new Error(data.error || "Erreur envoi mail");
-            alert("Email envoyé !");
-        } catch (e) {
-            console.error(e);
-            alert("Échec envoi email");
-        }
-    };
+    //     const fullReservation = {
+    //         ...reservation_individual,
+    //         title,
+    //         adresse,
+    //         price_per_person: price,
+    //         nb_adult: participantAdult,
+    //         nb_reduced: participantReduced,
+    //         total_price: price * (participantAdult + participantReduced)
+    //     };  
+    //     try {
+    //         const res = await fetch(`${process.env.REACT_APP_API_URL}/api/payment/tickets/send-email-invoice`,
+    //         {
+    //             method: "POST",
+    //             headers: { "Content-Type": "application/json" },
+    //             body: JSON.stringify(fullReservation),
+    //         }
+    //         );
+    //         const data = await res.json();
+    //         if (!res.ok || !data.success) throw new Error(data.error || "Erreur envoi mail");
+    //         alert("Email envoyé !");
+    //     } catch (e) {
+    //         console.error(e);
+    //         alert("Échec envoi email");
+    //     }
+    // };
 
 
 
@@ -314,7 +313,7 @@ export default function PaymentPage() {
                             },
                         }}
                     >
-                        <CheckoutForm isStripeReady={isStripeReady} onReady={() => setIsStripeReady(true)} price={price} saveCreneau={saveCreneau} sendEmail={sendEmail}/>
+                        <CheckoutForm isStripeReady={isStripeReady} onReady={() => setIsStripeReady(true)} price={price} />
                     </Elements>
                 </div>
                 )}

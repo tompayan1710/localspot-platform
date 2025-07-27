@@ -1,7 +1,8 @@
 import { useEffect, useState } from "react";
 import { useStripe, useElements, PaymentElement  } from "@stripe/react-stripe-js";
+import Spinner from "../../../components/Spinner/Spinner";
 
-export default function CheckoutForm({ onReady, isStripeReady, price, saveCreneau, sendEmail }) {
+export default function CheckoutForm({ onReady, isStripeReady, price }) {
   const stripe = useStripe();
   const elements = useElements();
   const [message, setMessage] = useState(null);
@@ -31,11 +32,6 @@ export default function CheckoutForm({ onReady, isStripeReady, price, saveCrenea
     } else if (paymentIntent && paymentIntent.status === "succeeded") {
       setMessage({message: "Payment status: " + paymentIntent.status + " 🎉"});
 
-      const reservation_individual = await saveCreneau();
-      if (reservation_individual) {
-        await sendEmail(reservation_individual);
-      }
-      
     } else {
       setMessage({error: "Unexpected state"});
     }
@@ -55,11 +51,14 @@ export default function CheckoutForm({ onReady, isStripeReady, price, saveCrenea
           <p className="t3 bold">{price}€</p>
         </div>
         <button disabled={isProcessing} id="submit" className={`${isStripeReady ? "loaded" : ""} stripe-pay-button`}>
-          <p className="t32">{isProcessing ? "Processing ..." : "Payer"}</p>
+          {!isProcessing ?
+            <p className="t32">Payer</p>
+            :
+            <Spinner />
+          }
         </button>
       </div>
 
-      {/* Show any error or success messages */}
       
       {message && (
         message.message ? 

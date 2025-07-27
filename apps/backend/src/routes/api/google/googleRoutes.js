@@ -299,6 +299,18 @@ async function findExistingGoogleEvent(access_token, calendarId, summary, startT
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+
 router.post("/save-creaneau", async (req, res) => {
   const { user_id, provider_id, offerSlug, date, start_hour, end_hour, location,  nb_adult, nb_reduced, total_participants, price_per_person, name, email, phone } = req.body;
 
