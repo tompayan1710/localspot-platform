@@ -1,3 +1,7 @@
+.ProgressBarContainer{
+    width: 100%;
+    overflow: hidden;
+}
 .ProgressBar {
     width: 110%;
     margin-left: -5%;
@@ -7,7 +11,7 @@
     margin-top: 40px;
     position: relative;
     /* gap: 20px; */
-}
+}   
 
 .StepContainer {
     flex: 1;

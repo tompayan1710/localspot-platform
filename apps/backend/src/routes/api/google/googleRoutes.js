@@ -323,6 +323,7 @@ router.post("/save-creaneau", async (req, res) => {
         email, 
         phone
       ) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11)
+      RETURNING *;
     `, [user_id, slot_id, nb_adult, nb_reduced, total_participants, price_per_person * (total_participants), "paid", "confirmed", name, email, phone]);
 
 
@@ -419,9 +420,8 @@ router.post("/save-creaneau", async (req, res) => {
         }
       }
 
-      return res.json({ success: true, message: "Réservation enregistrée dans calendrier Google."});
+      return res.json({ success: true, message: "Réservation enregistrée dans calendrier Google.", reservation_individual: reservation_individual.rows[0]});
 
-  
   } else{//Pas de system de reservation
     console.log("NO CALENDAR associé GOOGLE")
     return res.json({ success: true, message: "Réservation enregistrée sans system de réservation."});

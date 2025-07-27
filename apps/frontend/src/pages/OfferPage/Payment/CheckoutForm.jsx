@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { useStripe, useElements, PaymentElement  } from "@stripe/react-stripe-js";
 
-export default function CheckoutForm({ onReady, isStripeReady, price, saveCreneau }) {
+export default function CheckoutForm({ onReady, isStripeReady, price, saveCreneau, sendEmail }) {
   const stripe = useStripe();
   const elements = useElements();
   const [message, setMessage] = useState(null);
@@ -14,7 +14,7 @@ export default function CheckoutForm({ onReady, isStripeReady, price, saveCrenea
         return;
     }
 
-    saveCreneau();
+
 
     setIsProcessing(true);
 
@@ -30,6 +30,12 @@ export default function CheckoutForm({ onReady, isStripeReady, price, saveCrenea
       setMessage({error: error.message});
     } else if (paymentIntent && paymentIntent.status === "succeeded") {
       setMessage({message: "Payment status: " + paymentIntent.status + " 🎉"});
+
+      const reservation_individual = await saveCreneau();
+      if (reservation_individual) {
+        await sendEmail(reservation_individual);
+      }
+      
     } else {
       setMessage({error: "Unexpected state"});
     }

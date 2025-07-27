@@ -13,7 +13,7 @@ export default function Reservations(){
     const reservation_id = "IFJ3FF3SIA2"
     const { authState } = useContext(AuthContext);
     
-    const [AllReservations, setAllReservations ] = useState([])
+    const [AllReservations, setAllReservations ] = useState({})
     const [ offers, setOffers ] = useState({});
 
     const getAllReservations = async () => {
@@ -42,7 +42,23 @@ export default function Reservations(){
         const fetchData = async () => {
             const reservations = await getAllReservations();
             if (reservations) {
-                setAllReservations(reservations);
+                const objectReservation = {};
+                reservations.map((reservation) => {
+                    const dateObj = new Date(reservation.reservation_created_at); // Crée un objet Date
+
+                    const formattedDate = dateObj.toLocaleDateString("en-US", {
+                        year: "numeric",
+                        month: "long",
+                        day: "numeric",
+                    });
+
+                    console.log(formattedDate); // "July 10, 2025"
+                    if(!objectReservation[formattedDate]){
+                        objectReservation[formattedDate] = []
+                    }
+                    objectReservation[formattedDate].push(reservation)
+                })
+                setAllReservations(objectReservation);
 
                 const objectOffers = { ...offers };
                 for (const reservation of reservations) {
@@ -71,98 +87,63 @@ export default function Reservations(){
             <p className="t32">Mes reservation</p>
             <div className="AllReservations">
                 {
-                    AllReservations.length > 0 ? AllReservations.map((reservation) => {
-                        const dateObj = new Date(reservation.reservation_created_at); // Crée un objet Date
-
-                        const formattedDate = dateObj.toLocaleDateString("en-US", {
-                        year: "numeric",
-                        month: "long",
-                        day: "numeric",
-                        });
-
-                        console.log(formattedDate); // "July 10, 2025"
-
-
+                    Object.entries(AllReservations).map(([date, reservations]) => {
                         return (
-                            <React.Fragment key={reservation.reservation_id}>
-                            <p className="t6">{formattedDate}</p>
-                            <div className="ReservationItem" onClick={() => {
-                                navigate(`/reservations/${reservation.reservation_id}`)
-                            }}>
-                                <div className="ImagesOffers">
-                                {/* {
-                                    Array.from({ length: 2 }).map((_, index) => {
-                                        const imageOffer = allOffers[slot.offer_slug].image_urls[index]; 
-                                        return (
-                                            imageOffer && */}
-                                                {/* // <>
-                                                // <p className="TESTINUMBER">{index}</p> */}
-                                                <div className="ImageWrapper">
-                                                    {offers[reservation.offer_slug]?.image_urls[1] && 
-                                                        <FadeInImage src={offers[reservation.offer_slug]?.image_urls[1]} alt="offer imageReservation offer image"/>
-                                                    }
-                                                </div>
-                                                <div className="ImageWrapper">
-                                                    <FadeInImage src={offers[reservation.offer_slug]?.image_urls[0]} alt="offer imageReservation offer image"/>
-                                                </div>
-                                            {/* );
-                                        })
-                                    } */}
-                                </div>
-                                <div className="column">
-                                    <p className="t4 maxLine maxLine1">{offers[reservation.offer_slug]?.title}Explorez les calanques en kayak</p>
-                                    <div className="hlinedashed"></div>
-                                    {/* <p className="t6">07/11/2025 à 14:35</p> */}
-                                    <div className="row">
-                                        <div className="column">
-                                            <p className="t6">Participant : {reservation.total_participants ?? 0}</p>
-                                            <p className="t6">×{reservation.nb_adult} adult  {reservation.nb_reduced ? `×${reservation.nb_reduced} reduced` : ""}</p>
+                            <React.Fragment key={`${date}`}>
+                            <p className="t6">{date}</p>
+                            {
+                                reservations.length > 0 ? reservations.map((reservation) => {
+                                return (
+                                    <React.Fragment key={reservation.reservation_id}>
+                                    <div className="ReservationItem" onClick={() => {
+                                        navigate(`/reservations/${reservation.reservation_id}`)
+                                    }}>
+                                        <div className="ImagesOffers">
+                                        {/* {
+                                            Array.from({ length: 2 }).map((_, index) => {
+                                                const imageOffer = allOffers[slot.offer_slug].image_urls[index]; 
+                                                return (
+                                                    imageOffer && */}
+                                                        {/* // <>
+                                                        // <p className="TESTINUMBER">{index}</p> */}
+                                                        <div className="ImageWrapper">
+                                                            {offers[reservation.offer_slug]?.image_urls[1] && 
+                                                                <FadeInImage src={offers[reservation.offer_slug]?.image_urls[1]} alt="offer imageReservation offer image"/>
+                                                            }
+                                                        </div>
+                                                        <div className="ImageWrapper">
+                                                            <FadeInImage src={offers[reservation.offer_slug]?.image_urls[0]} alt="offer imageReservation offer image"/>
+                                                        </div>
+                                                    {/* );
+                                                })
+                                            } */}
                                         </div>
-                                        <p className="t4">{reservation.total_price}€</p>
+                                        <div className="column">
+                                            <p className="t4 maxLine maxLine1">{offers[reservation.offer_slug]?.title}Explorez les calanques en kayak</p>
+                                            <div className="hlinedashed"></div>
+                                            {/* <p className="t6">07/11/2025 à 14:35</p> */}
+                                            <div className="row">
+                                                <div className="column">
+                                                    <p className="t6">Participant : {reservation.total_participants ?? 0}</p>
+                                                    <p className="t6">×{reservation.nb_adult} adult  {reservation.nb_reduced ? `×${reservation.nb_reduced} reduced` : ""}</p>
+                                                </div>
+                                                <p className="t4">{reservation.total_price}€</p>
+                                            </div>
+                                        </div>
                                     </div>
-                                </div>
-                            </div>
-                            
-                            {/* <div className="hline88"></div> */}
+                                    
+                                    {/* <div className="hline88"></div> */}
+                                    </React.Fragment>
+                                )
+                                })
+                                :
+                                <></>
+                            }
                             </React.Fragment>
                         )
                     })
-                    :
-                    <></>
                 }
 
-                <div className="ReservationItem">
-                    <div className="ImagesOffers">
-                    {/* {
-                        Array.from({ length: 2 }).map((_, index) => {
-                            const imageOffer = allOffers[slot.offer_slug].image_urls[index]; 
-                            return (
-                                imageOffer && */}
-                                    {/* // <>
-                                    // <p className="TESTINUMBER">{index}</p> */}
-                                    <div className="ImageWrapper">
-                                        <FadeInImage src={NiceIntro1} alt="offer imageReservation offer image"/>
-                                    </div>
-                                    <div className="ImageWrapper">
-                                        <FadeInImage src={NiceIntro1} alt="offer imageReservation offer image"/>
-                                    </div>
-                                {/* );
-                            })
-                        } */}
-                    </div>
-                    <div className="column">
-                        <p className="t4 truncate-multiline">Explorez les calanques en kayak</p>
-                        <div className="hlinedashed"></div>
-                        {/* <p className="t6">07/11/2025 à 14:35</p> */}
-                        <div className="row">
-                            <div className="column">
-                                <p className="t6">Participant : 5</p>
-                                <p className="t6">×2 adult  ×2 reduced</p>
-                            </div>
-                            <p className="t4">104.00€</p>
-                        </div>
-                    </div>
-                </div>
             </div>
         </div>
     )

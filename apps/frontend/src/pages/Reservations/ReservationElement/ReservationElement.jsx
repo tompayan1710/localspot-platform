@@ -73,6 +73,55 @@ export default function ReservationsElement(){
 
     console.log(formattedDate);
 
+
+
+    const downloadTicket = async () => {
+        const body = {
+            reservation_id: reservation.reservation_id,
+            date: formattedDate,
+            title: reservation.title,
+            start_hour: reservation.start_hour,
+            adresse: reservation.adresse,
+            name: reservation.name,
+            email: reservation.email,
+            phone: reservation.phone,
+            reservation_status: reservation.reservation_status,
+            nb_adult: reservation.nb_adult,
+            nb_reduced: reservation.nb_reduced,
+            price_per_person: reservation.price_per_person,
+            total_price: reservation.total_price,
+        }
+        const url = `${process.env.REACT_APP_API_URL}/api/payment/tickets/download-ticket?reservation_id=${reservation.reservation_id}`;
+        try {
+            const response = await fetch(url, {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify(body),
+            });
+            if (!response.ok) throw new Error("Erreur de téléchargement");
+
+
+            // Récupère le PDF en blob
+            const blob = await response.blob();
+            const urlBlob = window.URL.createObjectURL(blob);
+
+            // Crée un lien temporaire pour forcer le téléchargement
+            const link = document.createElement("a");
+            link.href = urlBlob;
+            link.download = `Viarte_Reservation_${reservation.reservation_id}_2025-07-26.pdf`; // nom du fichier
+            document.body.appendChild(link);
+            link.click();
+
+            // Nettoyage
+            link.remove();
+            window.URL.revokeObjectURL(urlBlob);
+        } catch (error) {
+            console.error("Erreur downloadTicket:", error);
+            alert("Impossible de télécharger le ticket.");
+        }
+    };
+
+
     return (
         <div className="ReservationsElement">
             <button className="CloseButton" onClick={() => navigate(-1)}>
@@ -185,7 +234,11 @@ export default function ReservationsElement(){
             </div>
             <p className="t6">Ce ticket numérique peut être scanné à l’entrée.</p>
 
-            <button className="DownloadButton">
+            {/* <button className="DownloadButton" onClick={sendEmail}>
+                <img src={downloadicon} alt="download icon"/>
+                <p className="t5">Send Email</p>
+            </button> */}
+            <button className="DownloadButton" onClick={downloadTicket}>
                 <img src={downloadicon} alt="download icon"/>
                 <p className="t5">Download Receipt</p>
             </button>

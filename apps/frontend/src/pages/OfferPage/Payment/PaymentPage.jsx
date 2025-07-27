@@ -89,6 +89,24 @@ export default function PaymentPage() {
                     headers: {
                         "Content-Type": "application/json",  // ← OBLIGATOIRE
                     },
+                    body: JSON.stringify({
+                        // amount: price * (participantAdult + participantReduced),
+                        amount: amount,
+                        user_id: authState.user?.id,
+                        provider_id: offer_provider_id,
+                        offerSlug: slug,
+                        date,
+                        start_hour,
+                        end_hour,
+                        location: adresse,
+                        nb_adult: participantAdult,
+                        nb_reduced: participantReduced,
+                        total_participants: participantAdult + participantReduced,
+                        price_per_person: price,
+                        name,
+                        email,
+                        phone
+                    }),
                     body: JSON.stringify({ amount }),
                 });
 
@@ -174,6 +192,8 @@ export default function PaymentPage() {
             console.log(data)
             if (data.success) {
                 console.log("✅ " + data.message);
+                const reservation_individual = data.reservation_individual;
+                return reservation_individual
             } else {
             alert("❌ Erreur lors de l’enregistrement de la réservation");
             }
@@ -185,6 +205,37 @@ export default function PaymentPage() {
             return null;
         }
     }
+
+    const sendEmail = async (reservation_individual) => {
+
+        const fullReservation = {
+            ...reservation_individual,
+            title,
+            adresse,
+            price_per_person: price,
+            nb_adult: participantAdult,
+            nb_reduced: participantReduced,
+            total_price: price * (participantAdult + participantReduced)
+        };  
+        try {
+            const res = await fetch(`${process.env.REACT_APP_API_URL}/api/payment/tickets/send-email-invoice`,
+            {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify(fullReservation),
+            }
+            );
+            const data = await res.json();
+            if (!res.ok || !data.success) throw new Error(data.error || "Erreur envoi mail");
+            alert("Email envoyé !");
+        } catch (e) {
+            console.error(e);
+            alert("Échec envoi email");
+        }
+    };
+
+
+
 
     const stateAvailibility = {
         price,
@@ -249,21 +300,21 @@ export default function PaymentPage() {
                 // <div className="full-width-stripe-container" style={{ opacity: isStripeReady ? 1 : 0, transition: "opacity 0.3s ease" }}>
                 <div className="full-width-stripe-container" >
                     <Elements
-                    stripe={stripePromise}
-                    options={{
-                        clientSecret,
-                        appearance: {
-                        theme: 'stripe',
-                        variables: {
-                            colorPrimary: '#008cdd',
-                            colorText: '#333',
-                            fontFamily: 'Poppins, Arial, sans-serif',
-                            borderRadius: '15px',
-                        },
-                        },
-                    }}
+                        stripe={stripePromise}
+                        options={{
+                            clientSecret,
+                            appearance: {
+                            theme: 'stripe',
+                            variables: {
+                                colorPrimary: '#008cdd',
+                                colorText: '#333',
+                                fontFamily: 'Poppins, Arial, sans-serif',
+                                borderRadius: '15px',
+                            },
+                            },
+                        }}
                     >
-                        <CheckoutForm isStripeReady={isStripeReady} onReady={() => setIsStripeReady(true)} price={price} saveCreneau={saveCreneau}/>
+                        <CheckoutForm isStripeReady={isStripeReady} onReady={() => setIsStripeReady(true)} price={price} saveCreneau={saveCreneau} sendEmail={sendEmail}/>
                     </Elements>
                 </div>
                 )}
