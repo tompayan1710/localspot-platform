@@ -319,15 +319,13 @@ p {
                         <p class="t6">×${reservation.nb_adult}&nbsp;&nbsp;&nbsp;adult</p>
                         <p class="t6">${reservation.nb_adult * reservation.price_per_person}€</p>
                     </div>
-                    ${
-                        reservation.nb_reduced > 0 &&
-                        `
-                        <div class="row">
-                            <p class="t6">×${reservation.nb_reduced}&nbsp;&nbsp;&nbsp;reduced</p>
-                            <p class="t6">${reservation.nb_reduced * reservation.price_per_person}€</p>
-                        </div>
-                        `
-                    }
+                    ${parseInt(reservation.nb_reduced) > 0 ? `
+                    <div class="row">
+                        <p class="t6">×${reservation.nb_reduced}&nbsp;&nbsp;&nbsp;reduced</p>
+                        <p class="t6">${reservation.nb_reduced * reservation.price_per_person}€</p>
+                    </div>
+                    ` : ""}
+
                     <div class="hlinedashed"></div>
                     <div class="row">
                         <p class="t32">TOTAL</p>

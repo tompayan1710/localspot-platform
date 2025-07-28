@@ -132,19 +132,22 @@ let event;
         date: meta.date,
         start_hour: meta.start_hour,
         end_hour: meta.end_hour,
-        location: meta.adresse, // ⚠️ metadata key = "adresse", mais attendu ici = "location"
+        adresse: meta.adresse, // ⚠️ metadata key = "adresse", mais attendu ici = "location"
         nb_adult: parseInt(meta.nb_adult, 10),
         nb_reduced: parseInt(meta.nb_reduced, 10),
         total_participants: parseInt(meta.total_participants, 10),
         price_per_person: parseFloat(meta.price_per_person),
+        total_price: parseInt(meta.total_participants, 10) * parseFloat(meta.price_per_person),
         name: meta.name,
         email: meta.email,
         phone: meta.phone,
         title: meta.title
       };
 
-      console.log("✅Reservation");
+      console.log("💥✅Reservation :");
       console.log(reservation);
+      process.stdout.write("✅ Log direct\n"); // flush immédiat
+
       console.log("Envoie de l'email");
       // sendAdminAlertEmail({
       //   to: "tompayan1710@gmail.com",
@@ -157,7 +160,15 @@ let event;
       const savedReservation = await saveCreneau(reservation);
       const completeReservation = { ...reservation, ...savedReservation };
 
-      
+      console.log("💥✅savedReservation :");
+      console.log(savedReservation);
+      process.stdout.write("✅ Log direct\n");
+
+      console.log("💥✅completeReservation :");
+      console.log(completeReservation);
+      process.stdout.write("✅ Log direct\n");
+
+
       const pdfPath = await generateTicketPDF(completeReservation);
 
       sendReservationEmail(completeReservation, pdfPath)
