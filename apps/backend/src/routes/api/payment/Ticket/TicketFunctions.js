@@ -4,6 +4,7 @@ const path = require("path");
 async function generateTicketPDF(reservation) {
     console.log("✅GENERATE PDF : reservation : ")
     console.log(reservation);
+    console.log("✅ Chromium executable path:", puppeteer.executablePath());
     const browser = await puppeteer.launch({
     args: ["--no-sandbox", "--disable-setuid-sandbox"]
     });
