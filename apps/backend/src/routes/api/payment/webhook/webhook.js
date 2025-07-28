@@ -143,6 +143,8 @@ let event;
         title: meta.title
       };
 
+      console.log("✅Reservation");
+      console.log(reservation);
       console.log("Envoie de l'email");
       // sendAdminAlertEmail({
       //   to: "tompayan1710@gmail.com",
@@ -151,11 +153,12 @@ let event;
       // });
       // console.log("Réservation enregistrée :", reservation);
 
-      const reservation_individual = await saveCreneau(reservation);
+      const reservation_id = await saveCreneau(reservation);
         // 2. Génération du PDF
-      const pdfPath = await generateTicketPDF(reservation_individual);
+      reservation.reservation_id = reservation_id
+      const pdfPath = await generateTicketPDF(reservation);
 
-      sendReservationEmail(reservation_individual, pdfPath)
+      sendReservationEmail(reservation, pdfPath)
       console.log("Email envoyé avec succé");
 
 
