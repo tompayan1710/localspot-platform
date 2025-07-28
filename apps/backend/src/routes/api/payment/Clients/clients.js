@@ -64,7 +64,7 @@ router.post("/create-payment-intent", async (req, res) => {
         start_hour,
         end_hour,
         date,
-        adresse,
+        adresse: adresse || "CreatePayementNoAdresse",
         total_capacity,
       },
 

@@ -84,14 +84,10 @@ export default function PaymentPage() {
 
 
                 const amount = 51;
+                console.error("BOG BOS")
                 console.log("Montant envoyé à Stripe :", amount); // doit afficher: 51
 
-                const responseClient = await fetch(`${process.env.REACT_APP_API_URL}/api/payment/clients/create-payment-intent`, {
-                    method: "POST",
-                    headers: {
-                        "Content-Type": "application/json",  // ← OBLIGATOIRE
-                    },
-                    body: JSON.stringify({
+                const body = {
                         amount: amount,
                         user_id: authState.user?.id,
                         offerSlug: slug,
@@ -110,7 +106,16 @@ export default function PaymentPage() {
                         date,
                         adresse,
                         total_capacity,
-                    }),
+                    }
+
+                console.error(body);
+                console.error("Fin body");
+                const responseClient = await fetch(`${process.env.REACT_APP_API_URL}/api/payment/clients/create-payment-intent`, {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json",  // ← OBLIGATOIRE
+                    },
+                    body: JSON.stringify(body),
                 });
 
                 const data = await responseClient.json(); // 🔥 Ajoute ça même si le status est 400

@@ -125,6 +125,11 @@ let event;
 
       const meta = paymentIntent.metadata;
 
+      console.log("Webhook metadata:", event.data.object.metadata);
+      // forcer le vidage du buffer stdout
+      process.stdout.write('');
+
+
       const reservation = {
         user_id: meta.user_id && meta.user_id !== "guest" ? parseInt(meta.user_id, 10) : 1,
         provider_id: parseInt(meta.provider_id, 10),
@@ -132,7 +137,7 @@ let event;
         date: meta.date,
         start_hour: meta.start_hour,
         end_hour: meta.end_hour,
-        adresse: meta.adresse, // ⚠️ metadata key = "adresse", mais attendu ici = "location"
+        adresse: meta.adresse || `PasDAdresse`, // ⚠️ metadata key = "adresse", mais attendu ici = "location"
         nb_adult: parseInt(meta.nb_adult, 10),
         nb_reduced: parseInt(meta.nb_reduced, 10),
         total_participants: parseInt(meta.total_participants, 10),
