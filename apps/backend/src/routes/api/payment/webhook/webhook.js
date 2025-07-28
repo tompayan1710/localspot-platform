@@ -153,12 +153,14 @@ let event;
       // });
       // console.log("Réservation enregistrée :", reservation);
 
-      const reservation_id = await saveCreneau(reservation);
         // 2. Génération du PDF
-      reservation.reservation_id = reservation_id
-      const pdfPath = await generateTicketPDF(reservation);
+      const savedReservation = await saveCreneau(reservation);
+      const completeReservation = { ...reservation, ...savedReservation };
 
-      sendReservationEmail(reservation, pdfPath)
+      
+      const pdfPath = await generateTicketPDF(completeReservation);
+
+      sendReservationEmail(completeReservation, pdfPath)
       console.log("Email envoyé avec succé");
 
 
