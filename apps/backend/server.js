@@ -18,6 +18,11 @@ app.listen(PORT, () => {
 db.query("SELECT NOW()")
   .then(() => {
     console.log("✅ Connecté à PostgreSQL (vérification unique)");
+
+    return db.query("SELECT current_database()");
+  })
+  .then((res) => {
+    console.log("📦 Base de données courante :", res.rows[0].current_database);
   })
   .catch((err) => {
     console.error("❌ Erreur de connexion PostgreSQL :", err.message);
