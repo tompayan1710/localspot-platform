@@ -1,4 +1,7 @@
 const nodemailer = require("nodemailer");
+require("dotenv").config();
+// console.log("ENV VARIABLES:", process.env);
+
 
 const transporter = nodemailer.createTransport({
   service: "gmail",
@@ -9,6 +12,15 @@ const transporter = nodemailer.createTransport({
 });
 
 async function sendAdminAlertEmail({ to, subject, message }) {
+  // console.log("📧 sendAdminAlertEmail appelée avec :", { to, subject, message });
+  // console.log("⚙ ENV:", { ADMIN_EMAIL: process.env.ADMIN_EMAIL, ADMIN_PASSWORD: process.env.ADMIN_PASSWORD ? "OK" : "MISSING" });
+
+
+  //  console.log("Valeurs actuelles :", {
+  //   ADMIN_EMAIL: process.env.ADMIN_EMAIL,
+  //   ADMIN_PASSWORD: process.env.ADMIN_PASSWORD ? "********" : undefined,
+  // });
+
   const mailOptions = {
     from: process.env.ADMIN_EMAIL,
     to,

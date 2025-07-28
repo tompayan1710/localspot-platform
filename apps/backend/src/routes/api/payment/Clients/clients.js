@@ -15,22 +15,29 @@ router.post("/create-payment-intent", async (req, res) => {
   const {
       amount,
       user_id,
-      provider_id,
       offerSlug,
-      date,
-      start_hour,
-      end_hour,
-      location,
-      nb_adult,
-      nb_reduced,
-      price_per_person,
-      total_participants,
       name,
       email,
-      phone
+      phone,
+      title,
+      price_per_person,
+      provider_id,
+      OfferIsCancellable,
+      nb_adult,
+      nb_reduced,
+      total_participants,
+      start_hour,
+      end_hour,
+      date,
+      adresse,
+      total_capacity,
     } = req.body;
 
+  console.log("Montant reçu (backend):", amount);
+  console.log(!amount)
+  console.log(amount < 50)
   if (!amount || amount < 50) {  // Sécurité : min 0.50€
+    console.log("Le amount est invalide");
     return res.status(400).send({ error: { message: "Invalid amount" } });
   }
 
@@ -43,26 +50,32 @@ router.post("/create-payment-intent", async (req, res) => {
       },
       metadata: {
         user_id: user_id || "guest",
-        provider_id,
         offerSlug,
-        date,
-        start_hour,
-        end_hour,
-        location,
-        nb_adult,
-        nb_reduced,
-        total_participants,
-        price_per_person,
         name,
         email,
         phone,
+        title,
+        price_per_person,
+        provider_id,
+        OfferIsCancellable,
+        nb_adult,
+        nb_reduced,
+        total_participants,
+        start_hour,
+        end_hour,
+        date,
+        adresse,
+        total_capacity,
       },
 
       // payment_method_types: ['card', 'bancontact'], 
     });
 
+    console.log("✅ PaymentIntent créé avec succès :", paymentIntent.id);
+
     res.send({ clientSecret: paymentIntent.client_secret });
   } catch (e) {
+    console.error("❌ ERREUR Stripe lors de createPaymentIntent :", e.message);
     return res.status(400).send({
       error: {
         message: e.message,

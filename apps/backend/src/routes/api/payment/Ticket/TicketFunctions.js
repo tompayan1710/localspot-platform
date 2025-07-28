@@ -2,6 +2,8 @@ const puppeteer = require("puppeteer");
 const path = require("path");
 
 async function generateTicketPDF(reservation) {
+    console.log("✅GENERATE PDF : reservation : ")
+    console.log(reservation);
     const browser = await puppeteer.launch({
     args: ["--no-sandbox", "--disable-setuid-sandbox"]
     });

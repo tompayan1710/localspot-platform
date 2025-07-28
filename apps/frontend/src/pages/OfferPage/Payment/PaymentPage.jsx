@@ -84,36 +84,43 @@ export default function PaymentPage() {
 
 
                 const amount = 51;
+                console.log("Montant envoyé à Stripe :", amount); // doit afficher: 51
+
                 const responseClient = await fetch(`${process.env.REACT_APP_API_URL}/api/payment/clients/create-payment-intent`, {
                     method: "POST",
                     headers: {
                         "Content-Type": "application/json",  // ← OBLIGATOIRE
                     },
                     body: JSON.stringify({
-                        // amount: price * (participantAdult + participantReduced),
                         amount: amount,
                         user_id: authState.user?.id,
-                        provider_id: offer_provider_id,
                         offerSlug: slug,
-                        date,
-                        start_hour,
-                        end_hour,
-                        location: adresse,
+                        name,
+                        email,
+                        phone,
+                        title,
+                        price_per_person: price,
+                        provider_id: offer_provider_id,
+                        OfferIsCancellable,
                         nb_adult: participantAdult,
                         nb_reduced: participantReduced,
                         total_participants: participantAdult + participantReduced,
-                        price_per_person: price,
-                        name,
-                        email,
-                        phone
+                        start_hour,
+                        end_hour,
+                        date,
+                        adresse,
+                        total_capacity,
                     }),
                 });
 
+                const data = await responseClient.json(); // 🔥 Ajoute ça même si le status est 400
+
                 if(responseClient.status === 400) {
-                    console.error("❌ Could not paid under 0.50 euro");
+                    console.error("❌ Erreur backend :", data?.error?.message || "Erreur inconnue");
+                    alert("❌ Erreur Stripe : " + (data?.error?.message || "inconnue"));
                     navigate("/");
                 } else{
-                    const { clientSecret } = await responseClient.json();         
+                    const { clientSecret } = data;         
                     setClientSecret(clientSecret)
                 }
             } catch (err) {
