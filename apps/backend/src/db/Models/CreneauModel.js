@@ -119,7 +119,7 @@ async function getAccessToken(provider_id) {
 
 
 async function saveCreneau(params) {
-  const {user_id, provider_id, offerSlug, date, start_hour, end_hour, location,  nb_adult, nb_reduced, total_participants, price_per_person, name, email, phone, title } = params;
+  const {user_id, provider_id, offerSlug, date, start_hour, end_hour, adresse,  nb_adult, nb_reduced, total_participants, price_per_person, name, email, phone, title } = params;
   try { 
 
     const [ slot_id, newTotalReserved, newStatus ] = await findExistingCreneauOrCreate(provider_id, offerSlug, date, start_hour, end_hour, total_participants, price_per_person);
@@ -139,7 +139,7 @@ async function saveCreneau(params) {
         email, 
         phone
       ) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11)
-      RETURNING *;
+      RETURNING *, id AS reservation_id;
     `, [user_id, slot_id, nb_adult, nb_reduced, total_participants, price_per_person * (total_participants), "paid", "confirmed", name, email, phone]);
 
 
@@ -184,7 +184,7 @@ async function saveCreneau(params) {
           Email: ${email}\n
           Téléphone: ${phone}
         `,
-        location: location,
+        location: adresse,
         start: { dateTime: startTime, timeZone: "Europe/Paris" },
         end: { dateTime: endTime, timeZone: "Europe/Paris" },
         colorId: "8"

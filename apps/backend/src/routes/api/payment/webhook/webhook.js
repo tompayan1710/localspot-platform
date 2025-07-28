@@ -145,7 +145,7 @@ let event;
       };
 
       console.log("💥✅Reservation :");
-      console.log(reservation);
+      console.error(reservation);
       process.stdout.write("✅ Log direct\n"); // flush immédiat
 
       console.log("Envoie de l'email");
@@ -161,11 +161,11 @@ let event;
       const completeReservation = { ...reservation, ...savedReservation };
 
       console.log("💥✅savedReservation :");
-      console.log(savedReservation);
+      console.error(savedReservation);
       process.stdout.write("✅ Log direct\n");
 
       console.log("💥✅completeReservation :");
-      console.log(completeReservation);
+      console.error(completeReservation);
       process.stdout.write("✅ Log direct\n");
 
 
