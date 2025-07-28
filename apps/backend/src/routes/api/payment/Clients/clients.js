@@ -66,6 +66,7 @@ router.post("/create-payment-intent", async (req, res) => {
         date,
         adresse: adresse || "CreatePayementNoAdresse",
         total_capacity,
+        mode: process.env.NODE_ENV
       },
 
       // payment_method_types: ['card', 'bancontact'], 

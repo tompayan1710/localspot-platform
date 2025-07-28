@@ -1,7 +1,7 @@
 const express = require("express");
 const router = express.Router();
 const fetch = require("node-fetch");
-const db = require("../../db/index");
+const db = require("../index");
 require("dotenv").config();
 
 
@@ -119,7 +119,7 @@ async function getAccessToken(provider_id) {
 
 
 async function saveCreneau(params) {
-  const {user_id, provider_id, offerSlug, date, start_hour, end_hour, adresse,  nb_adult, nb_reduced, total_participants, price_per_person, name, email, phone, title } = params;
+  const {user_id, provider_id, offerSlug, date, start_hour, end_hour, adresse,  nb_adult, nb_reduced, total_participants, price_per_person, name, email, phone, title, payment_intent_id } = params;
   try { 
 
     const [ slot_id, newTotalReserved, newStatus ] = await findExistingCreneauOrCreate(provider_id, offerSlug, date, start_hour, end_hour, total_participants, price_per_person);
@@ -137,10 +137,11 @@ async function saveCreneau(params) {
         reservation_status,
         name, 
         email, 
-        phone
-      ) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11)
+        phone,
+        stripe_payment_intent_id
+      ) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12)
       RETURNING *, id AS reservation_id;
-    `, [user_id, slot_id, nb_adult, nb_reduced, total_participants, price_per_person * (total_participants), "paid", "confirmed", name, email, phone]);
+    `, [user_id, slot_id, nb_adult, nb_reduced, total_participants, price_per_person * (total_participants), "paid", "confirmed", name, email, phone, payment_intent_id]);
 
 
 

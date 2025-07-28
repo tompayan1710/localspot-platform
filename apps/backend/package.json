@@ -6,14 +6,14 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "node server.js",
     "build:dev": "cd ../frontend && npm install && npm run build && cd ../backend && xcopy ..\\frontend\\build\\* build\\ /s /e /h /y",
-    "build": "cd ../frontend && npm install --legacy-peer-deps && npm run build && cd ../backend && rm -rf build && mkdir build && cp -r ../frontend/build/* build/",
-    "postinstall": "puppeteer install"
+    "build": "cd ../frontend && npm install --legacy-peer-deps && npm run build && cd ../backend && rm -rf build && mkdir build && cp -r ../frontend/build/* build/"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "description": "",
   "dependencies": {
+    "@react-pdf/renderer": "^4.3.0",
     "@supabase/supabase-js": "^2.49.8",
     "bcryptjs": "^3.0.2",
     "compression": "^1.8.0",
@@ -29,7 +29,6 @@
     "nanoid": "^5.1.5",
     "nodemailer": "^7.0.3",
     "pg": "^8.14.1",
-    "puppeteer": "^20.7.4",
     "qrcode": "^1.5.4",
     "redis": "^4.7.0",
     "stripe": "^18.3.0",

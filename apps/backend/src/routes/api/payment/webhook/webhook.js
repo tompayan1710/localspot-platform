@@ -4,10 +4,10 @@ const stripe = require("stripe")(process.env.STRIPE_SECRET_KEY);
 const bodyParser = require("body-parser");
 const { sendReservationEmail, sendAdminAlertEmail } = require("../../../api/../../utils/email");
 const { saveCreneau } = require("../../../../db/Models/CreneauModel");
-const { generateTicketPDF } = require("../Ticket/TicketFunctions");
+// const { generateTicketPDF } = require("../Ticket/TicketFunctions");
 const fs = require("fs");
 
-
+const { generateTicketPDF } = require("../Ticket/generateTicketPDF");
 
 // ----------------------
 // 3. Webhook Stripe
@@ -125,6 +125,13 @@ let event;
 
       const meta = paymentIntent.metadata;
 
+      if (meta.mode !== process.env.NODE_ENV) {
+        console.warn("⛔ Webhook ignoré car mode différent :", meta.mode, "vs", process.env.NODE_ENV);
+        return response.status(200).send("Webhook ignoré - mauvais environnement");
+      }
+
+
+
       console.log("Webhook metadata:", event.data.object.metadata);
       // forcer le vidage du buffer stdout
       process.stdout.write('');
@@ -146,7 +153,8 @@ let event;
         name: meta.name,
         email: meta.email,
         phone: meta.phone,
-        title: meta.title
+        title: meta.title,
+        payment_intent_id: paymentIntent.id
       };
 
       console.log("💥✅Reservation :");
@@ -173,8 +181,10 @@ let event;
       console.error(completeReservation);
       process.stdout.write("✅ Log direct\n");
 
-
       const pdfPath = await generateTicketPDF(completeReservation);
+      await sendReservationEmail(completeReservation, pdfPath);
+      await fs.promises.unlink(pdfPath); // nettoyage
+      // const pdfPath = await generateTicketPDF(completeReservation);
 
       sendReservationEmail(completeReservation, pdfPath)
       console.log("Email envoyé avec succé");

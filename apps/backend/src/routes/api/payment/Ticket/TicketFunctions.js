@@ -1,4 +1,5 @@
-const puppeteer = require("puppeteer");
+const puppeteer = require("puppeteer-core");
+const chromium = require("chrome-aws-lambda");
 const path = require("path");
 
 async function generateTicketPDF(reservation) {
@@ -6,10 +7,18 @@ async function generateTicketPDF(reservation) {
     console.log(reservation);
 
     try{
-        console.log("✅ Chromium executable path:", puppeteer.executablePath());
+        const isProd = process.env.NODE_ENV === "production";
+
         const browser = await puppeteer.launch({
-        args: ["--no-sandbox", "--disable-setuid-sandbox"]
+        args: chromium.args,
+            executablePath: isProd
+                ? await chromium.executablePath // Render / production
+                : undefined, // Local => utilise Puppeteer installé en local
+            headless: true,
+            defaultViewport: chromium.defaultViewport,
+            ignoreHTTPSErrors: true,
         });
+
         const page = await browser.newPage();
         // Ton HTML dynamique
         const html = `
@@ -356,7 +365,7 @@ async function generateTicketPDF(reservation) {
     await browser.close();
     return filePath;
     } catch (err) {
-        console.error('ERREUR GENERATE PDF puppeteer :', err)
+        console.error("❌ ERREUR GENERATE PDF puppeteer :", err);
         throw err;
     }
 }
