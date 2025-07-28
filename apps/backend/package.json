@@ -8,7 +8,6 @@
     "build:dev": "cd ../frontend && npm install && npm run build && cd ../backend && xcopy ..\\frontend\\build\\* build\\ /s /e /h /y",
     "build": "cd ../frontend && npm install --legacy-peer-deps && npm run build && cd ../backend && rm -rf build && mkdir build && cp -r ../frontend/build/* build/",
     "postinstall": "puppeteer install"
-
   },
   "keywords": [],
   "author": "",
@@ -30,7 +29,7 @@
     "nanoid": "^5.1.5",
     "nodemailer": "^7.0.3",
     "pg": "^8.14.1",
-    "puppeteer": "^24.15.0",
+    "puppeteer": "^20.7.4",
     "qrcode": "^1.5.4",
     "redis": "^4.7.0",
     "stripe": "^18.3.0",

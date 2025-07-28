@@ -1,7 +1,7 @@
 const express = require("express");
 const router = express.Router();
 const fetch = require("node-fetch");
-const pool = require("../../db/index");
+const db = require("../../db/index");
 require("dotenv").config();
 
 
@@ -18,10 +18,10 @@ async function findExistingCreneauOrCreate(provider_id, offerSlug, date, start_h
     LIMIT 1;
   `;
   const values = [provider_id, offerSlug, date, start_hour, end_hour];
-  const result = await pool.query(query, values);
+  const result = await db.query(query, values);
 
 
-  const offer_result = await pool.query(`
+  const offer_result = await db.query(`
     SELECT total_capacity
       FROM offers
       WHERE slug = $1;`, [offerSlug]);
@@ -37,7 +37,7 @@ async function findExistingCreneauOrCreate(provider_id, offerSlug, date, start_h
     newTotalReserved = total_participants + result.rows[0].total_reserved;
     newStatus = newTotalReserved < total_capacity ? "available" : "full";
 
-    await pool.query(`
+    await db.query(`
       UPDATE reservation_slots
       SET total_reserved = $1, status = $2, updated_at = NOW()
       WHERE id = $3
@@ -48,7 +48,7 @@ async function findExistingCreneauOrCreate(provider_id, offerSlug, date, start_h
     newStatus = "available";
     newStatus = newTotalReserved < total_capacity ? "available" : "full";
 
-    const { rows } = await pool.query(`
+    const { rows } = await db.query(`
       INSERT INTO reservation_slots (
         provider_id, 
         offer_slug, 
@@ -72,7 +72,7 @@ async function findExistingCreneauOrCreate(provider_id, offerSlug, date, start_h
 
 async function getAccessToken(provider_id) {
   try {
-    const result = await pool.query(
+    const result = await db.query(
       "SELECT access_token, refresh_token FROM provider_booking_integrations WHERE provider_id = $1",
       [provider_id]
     );
@@ -103,7 +103,7 @@ async function getAccessToken(provider_id) {
 
       access_token = data.access_token;
 
-      await pool.query(`
+      await db.query(`
         UPDATE provider_booking_integrations
         SET access_token = $1
         WHERE provider_id = $2
@@ -125,7 +125,7 @@ async function saveCreneau(params) {
     const [ slot_id, newTotalReserved, newStatus ] = await findExistingCreneauOrCreate(provider_id, offerSlug, date, start_hour, end_hour, total_participants, price_per_person);
 
 
-    const reservation_individual = await pool.query(`
+    const reservation_individual = await db.query(`
       INSERT INTO reservations_individuals (
         user_id,
         slot_id,
@@ -145,7 +145,7 @@ async function saveCreneau(params) {
 
 
     //Teste si le prestataire est sur google calendar
-    const isBookingSystem = await pool.query(`
+    const isBookingSystem = await db.query(`
       SELECT * FROM provider_booking_integrations WHERE provider_id = $1
     `, [provider_id]);
     
@@ -154,7 +154,7 @@ async function saveCreneau(params) {
       const access_token = await getAccessToken(provider_id);
       if (!access_token) return null;
 
-      const calendarRes = await pool.query(`
+      const calendarRes = await db.query(`
         SELECT calendar_id FROM provider_booking_integrations WHERE provider_id = $1
       `, [provider_id]);
 
@@ -194,7 +194,7 @@ async function saveCreneau(params) {
       // console.log("✅ EventObject envoyé :", JSON.stringify(eventObject, null, 2));
     
    
-      const isCreneauGoogleCalendar = await pool.query(`
+      const isCreneauGoogleCalendar = await db.query(`
         SELECT * FROM reservations_creneaux_google_calendar WHERE reservation_slots_id = $1 AND provider_id = $2
       `, [slot_id, provider_id]);
 
@@ -214,7 +214,7 @@ async function saveCreneau(params) {
 
         googleEventId = createdEvent.id;
 
-        await pool.query(`
+        await db.query(`
           INSERT INTO reservations_creneaux_google_calendar (
             reservation_slots_id, 
             provider_id, 
