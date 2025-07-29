@@ -186,7 +186,6 @@ let event;
       await fs.promises.unlink(pdfPath); // nettoyage
       // const pdfPath = await generateTicketPDF(completeReservation);
 
-      sendReservationEmail(completeReservation, pdfPath)
       console.log("Email envoyé avec succé");
 
 
