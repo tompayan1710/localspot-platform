@@ -123,6 +123,16 @@ let event;
       // handlePaymentIntentSucceeded(paymentIntent);
       console.log("✅ PaymentIntent successful:", paymentIntent.id);
 
+      // Infos sur le moyen de paiement
+      const charge = paymentIntent.charges?.data?.[0];
+
+      let payment_method = "Inconnu";
+      if (charge && charge.payment_method_details && charge.payment_method_details.card) {
+        const { brand, last4 } = charge.payment_method_details.card;
+        payment_method = `${brand.toUpperCase()} - XXXX ${last4}`;
+      }
+
+
       const meta = paymentIntent.metadata;
 
       if (meta.mode !== process.env.NODE_ENV) {
@@ -154,7 +164,8 @@ let event;
         email: meta.email,
         phone: meta.phone,
         title: meta.title,
-        payment_intent_id: paymentIntent.id
+        payment_intent_id: paymentIntent.id,
+        payment_method: payment_method
       };
 
       console.log("💥✅Reservation :");
@@ -179,7 +190,7 @@ let event;
 
       console.log("💥✅completeReservation :");
       console.error(completeReservation);
-      process.stdout.write("✅ Log direct\n");
+      process.stdout.write("✅ Log direct\n");  
 
       const pdfPath = await generateTicketPDF(completeReservation);
       await sendReservationEmail(completeReservation, pdfPath);
