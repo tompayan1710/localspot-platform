@@ -50,8 +50,6 @@ const htmlContent = `
   <div style="max-width: 600px; margin: auto; background: white; padding: 40px; border-radius: 10px; box-shadow: 0 0 10px rgba(0,0,0,0.05);">
 
     <div style="text-align: center;">
-      <img src="${process.env.FRONTEND_URL}/images/ViarteLogo.png" alt="Logo" style="display: block; max-height: 40px; margin-bottom: 20px;" />
-      <img src="${process.env.FRONTEND_URL}/images/Validate.png" alt="Validate Icon" style="display: block; max-height: 60px; margin-bottom: 20px;" />
       <h1 style="margin: 10px 0;">Merci pour votre commande</h1>
       <p style="color: #555;">Nous avons bien reçu votre réservation</p>
       <p style="font-size: 12px; color: #999;">Vous recevrez un email contenant votre ticket numérique</p>
