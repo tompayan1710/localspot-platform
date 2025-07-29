@@ -44,9 +44,17 @@ export default function Signup() {
       const loginResponse = await login(email, password);
       if (loginResponse.token) {
 
-        checkAuth();
+        setTimeout(() => {
+          checkAuth();
 
-        navigate("/profile");
+          setTimeout(() => {
+            navigate("/profile", {
+              replace: true
+            });
+          }, 300);
+
+            // checkAuth();
+          }, 300);
       } else {
         setMessage("Erreur lors de la connexion automatique.");
       }

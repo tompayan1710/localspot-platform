@@ -48,14 +48,16 @@ export default function Login() {
         setMessage("Connexion réussie ✅");
         localStorage.setItem("jwtToken", response.token);
         setTimeout(() => {
+          checkAuth();
+
+          setTimeout(() => {
             navigate("/profile", {
               replace: true
             });
-            setTimeout(() => {
-              checkAuth(); // << Appelle un peu après la redirection
-            }, 200);
+          }, 300);
+
             // checkAuth();
-          }, 1000);
+          }, 300);
     } else {
       setIsSuccess(false);
       setMessage(response.message || "Erreur de connexion.");

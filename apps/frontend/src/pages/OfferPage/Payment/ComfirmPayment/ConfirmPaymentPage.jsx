@@ -1,8 +1,10 @@
 import "./ConfirmPaymentPage.css"
 import ValidateProgress from "../../../../assets/images/ValidateProgress.png"
 import ViarteFontLinear from "../../../../assets/images/ViarteFontLinear.png"
+import { useNavigate } from "react-router-dom";
 
 export default function ConfirmPayementPage() {
+  const navigate = useNavigate();
 
   return (
     <div className="ConfirmPayement">
@@ -19,7 +21,7 @@ export default function ConfirmPayementPage() {
       </p>
       <div className="hline88"></div>
       <div className="NavigateButton column">
-        <button>
+        <button onClick={() => navigate("/")}>
           <p className="t4">Retour à l’accueil</p>
         </button>
         <button>

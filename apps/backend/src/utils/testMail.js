@@ -1,21 +1,44 @@
-require("dotenv").config(); // Charge le .env
-const { sendAdminAlertEmail } = require("./email");
+const fs = require("fs");
+const path = require("path");
+const { renderToFile } = require("@react-pdf/renderer");
+const TicketDocument = require("../routes/api/payment/Ticket/TicketDocument");
+const { sendReservationEmail } = require("./email");
 
-// (async () => {
-//   try {
-//     // Vérification des variables
+async function main() {
+  const fakeReservation = {
+    reservation_id: 103,
+    offerSlug: "01bd532b-0eac-4c79-a2a2-bbdb6a98b172",
+    title: "Conduire un cabriolet d'Antibes à Monaco",
+    adresse: "7 Bd du Président Wilson, 06600 Antibes, France7 Bd du Président Wilson, 06600 Antibes, France",
+    date: "2025-08-13",
+    start_hour: "07:00",
+    end_hour: "08:00",
+    nb_adult: 2,
+    nb_reduced: 1,
+    total_participants: 3,
+    price_per_person: 75,
+    total_price: 225,
+    name: "Cabriolet",
+    email: "tompayan1710@gmail.com",
+    phone: "+33765594097",
+    payment_method: "Inconnu",
+    reservation_status: "confirmed",
+  };
 
-//     console.log("✅ Test d'envoi de mail en cours...");
+  const outputPath = path.join(__dirname, `ticket_${fakeReservation.reservation_id}.pdf`);
 
-//     // Appel de la fonction pour envoyer un mail
-//     await sendAdminAlertEmail({
-//       to: "tompayan1710@gmail.com", // L'email de test
-//       subject: "Test de Mail depuis Node.js",
-//       message: "Ceci est un test d'email envoyé via la fonction sendAdminAlertEmail()",
-//     });
+  console.log("📄 Génération du PDF...");
+  await renderToFile(
+    TicketDocument({ reservation: fakeReservation }),
+    outputPath
+  );
+  console.log("✅ PDF généré :", outputPath);
 
-//     console.log("✅ Email de test envoyé avec succès !");
-//   } catch (err) {
-//     console.error("❌ Erreur lors de l'envoi du mail :", err);
-//   }
-// })();
+  console.log("📧 Envoi de l'email...");
+  await sendReservationEmail(fakeReservation, outputPath);
+  console.log("✅ Email envoyé !");
+}
+
+main().catch(err => {
+  console.error("❌ Erreur :", err);
+});

@@ -127,9 +127,20 @@ let event;
       const charge = paymentIntent.charges?.data?.[0];
 
       let payment_method = "Inconnu";
-      if (charge && charge.payment_method_details && charge.payment_method_details.card) {
-        const { brand, last4 } = charge.payment_method_details.card;
-        payment_method = `${brand.toUpperCase()} - XXXX ${last4}`;
+
+      // Vérifie si une charge existe
+      if (paymentIntent.charges && paymentIntent.charges.data && paymentIntent.charges.data.length > 0) {
+        const charge = paymentIntent.charges.data[0];
+
+        // Vérifie que la charge contient bien une carte
+        if (charge.payment_method_details && charge.payment_method_details.card) {
+          const { brand, last4 } = charge.payment_method_details.card;
+          payment_method = `${brand.toUpperCase()} - XXXX ${last4}`;
+        } else {
+          console.warn("⚠️ Pas de détails de carte dans la charge :", charge.payment_method_details);
+        }
+      } else {
+        console.warn("⚠️ Aucune charge trouvée dans PaymentIntent :", paymentIntent.charges);
       }
 
 

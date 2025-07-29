@@ -134,7 +134,7 @@ export default function ReservationsElement(){
                 </div>
                 <div className="FactureBody">
                     <div className="ThanksFull">
-                        <img src={PartyIcon} alt="Party icon"/>
+                        {/* <img src={PartyIcon} alt="Party icon"/> */}
                         <p className="t32 bold">Thank you !</p>
                         <p className="t6">Your ticker has been issued<br></br>successfully</p>
                     </div>
