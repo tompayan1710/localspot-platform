@@ -33,7 +33,8 @@
 .EditProfilContainer .ImageContainer{
     position: relative;
     margin: 0 auto;
-    margin-top: 50px;
+    margin-top: 20px;
+    margin-bottom: 30px;
     width: fit-content;
     border-radius: 200px;
     padding: 15px;
@@ -47,8 +48,9 @@
     width: 100px;
     height: 100px;
     border-radius: 200px;
+    object-fit: cover;
 }
-.EditProfilContainer .ImageContainer>button{
+.EditProfilContainer .ImageContainer>.EditPenButton{
     position: absolute;
     top: 10px;
     right: 2px;
@@ -64,10 +66,17 @@
     -webkit-backdrop-filter: blur(8px); 
     cursor: pointer;
 }
-.EditProfilContainer .ImageContainer>button>img{
+.EditProfilContainer .ImageContainer>.EditPenButton>img{
     width: 14px;
 }
 
+.EditProfilContainer .ImageContainer.have-image{
+  padding: 0;
+}
+.EditProfilContainer .ImageContainer.have-image>img{
+    width: 130px;
+    height: 130px;
+}
 
 .EditProfilContainer .ListInformation{
     display: flex;
@@ -166,3 +175,20 @@
     background: linear-gradient(180deg, #373737, #545454);
   }
   
+
+
+.EditProfilContainer .ConnexionInfoBox {
+  margin-top: 20px;
+  margin-bottom: 30px;
+  padding: 20px 25px;
+  background-color: var(--greyverylight);
+  border: 1px solid var(--greysemidark);
+  border-radius: 10px;
+  gap: 10px;
+}
+.EditProfilContainer .ConnexionInfoBox>p{
+  margin-bottom: 10px;
+}
+.EditProfilContainer .ConnexionInfoBox>.row{
+  justify-content: space-between;
+}

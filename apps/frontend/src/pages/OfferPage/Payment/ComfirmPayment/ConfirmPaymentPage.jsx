@@ -16,7 +16,7 @@ export default function ConfirmPayementPage() {
         </div>
       <p className="t2 bold">PAIEMENT RÉUSSI</p>
       <p className="SuccesMessage t6">
-        Votre paiement a été validé avec succès. Merci d’avoir choisi notre service !  
+        Votre paiement a été validé avec succès.<br></br>  
         Vous recevrez un e-mail de confirmation contenant tous les détails de votre réservation.
       </p>
       <div className="hline88"></div>
@@ -24,8 +24,8 @@ export default function ConfirmPayementPage() {
         <button onClick={() => navigate("/")}>
           <p className="t4">Retour à l’accueil</p>
         </button>
-        <button>
-          <p className="t4">Voir mon ticket</p>
+        <button onClick={() => navigate("/reservations")}>
+          <p className="t4">Voir mes réservations</p>
         </button>
       </div>
     </div>

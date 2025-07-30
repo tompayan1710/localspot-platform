@@ -45,7 +45,7 @@ export default function SettingsPage(){
                 <img src={arrowRight} alt="arrow right"/>
               </div>
             </div>
-            <div className="SettingsBox">
+            {/* <div className="SettingsBox">
               <div className="SettingsRow row">
                 <div className="RowFirst row">
                   <img src={Pin} alt="notifications icon"/>
@@ -53,7 +53,7 @@ export default function SettingsPage(){
                 </div>
                 <img src={arrowRight} alt="arrow right"/>
               </div>
-            </div>
+            </div> */}
             <p className="t4">Documents</p>
             <div className="SettingsBox" onClick={() => navigate("/terms-of-service")}>
               <div className="SettingsRow row">

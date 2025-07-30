@@ -60,3 +60,37 @@
     background-color: white;
     border: 1px solid var(--greysemidark);
 } */
+
+
+
+
+.NotificationPage  .SaveButton {
+    background: linear-gradient(180deg, #545454, #373737);
+    color: #ffffff;
+    padding: 7px 16px;
+    font-size: 1rem;
+    font-weight: lighter;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: background 1s, transform 0.2s;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    width: fit-content;
+    align-self: center;
+    font-size: 0.8rem;
+    margin-top: 35px;
+  }
+.NotificationPage .SaveButton>p {
+  color: white;
+}
+.NotificationPage .SaveButton>img {
+  width: 15px;
+  height: 15px;
+}
+.NotificationPage .SaveButton:hover {
+    background: linear-gradient(180deg, #373737, #545454);
+  }
+  

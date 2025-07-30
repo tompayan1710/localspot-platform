@@ -64,10 +64,20 @@ const AuthProvider = ({ children }) => {
     });
     };
 
+    const updateUser = (newUserData) => {
+        setAuthState((prev) => ({
+            ...prev,
+            user: {
+            ...prev.user,
+            ...newUserData,
+            },
+        }));
+        };
+
 
 
   return(
-    <AuthContext.Provider value={{authState, checkAuth, logout}}>
+    <AuthContext.Provider value={{authState, checkAuth, updateUser, logout}}>
         {children}
     </AuthContext.Provider>
   )

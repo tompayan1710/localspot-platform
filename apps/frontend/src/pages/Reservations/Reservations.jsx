@@ -1,5 +1,5 @@
 import "./Reservations.css"
-import NiceIntro1 from "../../assets/images/NiceIntro1.png"
+import noReservations from "../../assets/images/noReservations.png"
 import FadeInImage from "../../components/Utils/FadeInImage"
 import { useNavigate } from "react-router-dom"
 import { useContext, useEffect, useState } from "react";
@@ -87,7 +87,7 @@ export default function Reservations(){
             <p className="t32">Mes reservation</p>
             <div className="AllReservations">
                 {
-                    Object.entries(AllReservations).map(([date, reservations]) => {
+                    Object.entries(AllReservations).length > 0 ? Object.entries(AllReservations).map(([date, reservations]) => {
                         return (
                             <React.Fragment key={`${date}`}>
                             <p className="t6">{date}</p>
@@ -142,6 +142,12 @@ export default function Reservations(){
                             </React.Fragment>
                         )
                     })
+                    :
+                    <div className="NoReservation">
+                        <div className="MessageNone">
+                            <img src={noReservations} alt="no reservations image"/>
+                        </div>
+                    </div>
                 }
 
             </div>

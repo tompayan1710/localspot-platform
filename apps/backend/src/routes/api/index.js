@@ -16,6 +16,7 @@ const reservationRoutes = require('./reservations/reservationsRoutes');
 const reservationIndividualRoutes = require('./reservations/reservationIndividualRoutes');
 const paymentRoutes = require('./payment/paymentRoutes');
 const commentsRoutes = require('./comments/commentsRoutes');
+const userRoutes = require('./user/userRoutes');
 
 router.use('/auth', authRoutes);
 router.use('/offer', offerRoutes);
@@ -31,6 +32,7 @@ router.use('/reservations', reservationRoutes);
 router.use('/reservation_individual', reservationIndividualRoutes);
 router.use('/payment', paymentRoutes);
 router.use('/comments', commentsRoutes);
+router.use('/user', userRoutes);
 
  
  

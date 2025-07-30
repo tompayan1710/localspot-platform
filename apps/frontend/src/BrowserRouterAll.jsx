@@ -81,7 +81,8 @@ export default function BrowserRouterAll(){
         "/content-policy",
         "/testpage",
         "/currency",
-        "/confirm-payment"
+        "/confirm-payment", 
+        "/settings"
     ];
     
     //offer-page/b2f3a4ae-6cc4-4353-824e-65de72035d68/availibility

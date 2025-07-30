@@ -14,9 +14,9 @@
 
 
 .SettingsPageContainer .SettingsListContainer{
-  background-color: var(--greylight);
+  /* background-color: var(--greylight); */
   /* box-shadow: inset 0px 0px 10px rgba(0, 0, 0, 0.08); */
-  border-top: 1px solid var(--greysemidark);
+  /* border-top: 1px solid var(--greysemidark); */
   flex: 1;
   display: flex;
   flex-direction: column;
