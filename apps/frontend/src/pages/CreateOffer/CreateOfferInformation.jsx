@@ -265,7 +265,7 @@ export default function CreateOfferInformations(){
                             <option value="personne">personne</option>
                             <option value="groupe">groupe</option>
                         </select> */}
-                    </div>
+                    </div> 
                     
                     <label className="t4">Nombre maximum de participants</label>
                     <div className="CapaciteContainer">
@@ -280,7 +280,7 @@ export default function CreateOfferInformations(){
                             required
                         />
                         {/* <p>€</p> */}
-                        <p className="t6">/ participants</p>
+                        <p className="t6">/&nbsp;participants</p>
                     </div>
                     <div className="CancellableContainer">
                         <label className="t4">Annulation gratuite</label>

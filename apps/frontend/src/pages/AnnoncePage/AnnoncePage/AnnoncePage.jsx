@@ -116,10 +116,10 @@ export default function AnnoncePage(){
             {/* <div className="AnnonceGrapheContainer">
                 <LineGraphe />
             </div> */}
-            <div id="AnnonceStatistique"></div>
+            {/* <div id="AnnonceStatistique"></div> */}
             <div className="row">
                 <p className="t32">Informations</p>
-                <button>
+                <button onClick={() => navigate(`edit-infos`)}>
                     <p className="t6">Modifier</p>
                 </button>
             </div>
@@ -140,10 +140,18 @@ export default function AnnoncePage(){
                     <p className="t6">Durée&nbsp;:</p>
                     <p className={`t5 OfferDuree ${isLoading ? "loading shimmer" : ""}`}>{isLoading ? "" : `${offer.duration}`}</p>
                 </div>
+                <div className="row">
+                    <p className="t6">Capacité maximal&nbsp;:</p>
+                    <p className={`t5 OfferDuree ${isLoading ? "loading shimmer" : ""}`}>{isLoading ? "" : `${offer.total_capacity} participant${offer.total_capacity > 1 ? "s" : ""}`}</p>
+                </div>
+                <div className="row">
+                    <p className="t6">Annulation gratuite&nbsp;:</p>
+                    <p className={`t5 OfferType ${isLoading ? "loading shimmer" : ""}`}>{isLoading ? "" : `${offer.cancellable ? "Oui" : "Non"}`}</p>
+                </div>
             </div>
-            <div className="hline88"></div>
-            <div className="CancellableContainer">
-                <p className="t5">Annulation gratuite</p>
+            {/* <div className="hline88"></div> */}
+            {/* <div className="CancellableContainer">
+                <p className="t32">Annulation gratuite</p>
                 <p className="t6">Choisissez si vos clients peuvent annuler gratuitement leur réservation</p>
 
                 {
@@ -165,7 +173,7 @@ export default function AnnoncePage(){
                     :
                     <div className="toggle-button-group loading shimmer"></div>
                 }
-            </div>
+            </div> */}
             {/* <div className="hline88"></div> */}
             <div className="MapSection">
                 <p className="t32">Visibilité locale de l’offre</p>
@@ -189,7 +197,7 @@ export default function AnnoncePage(){
             </div>   
             <div className="row">
                 <p className="t32">Mes photos</p>
-                <button>
+                <button onClick={() => navigate(`edit-photos`)}>
                     <p className="t6">Modifier</p>
                 </button>
             </div>

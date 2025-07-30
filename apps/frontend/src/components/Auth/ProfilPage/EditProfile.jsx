@@ -160,7 +160,7 @@ export default function EditProfil() {
                       style={{ display: "none" }} // masque le bouton natif
                     />
                   </label>
-                </div>
+                </div> 
 
                 
                 <div className="ConnexionInfoBox column">

@@ -116,6 +116,7 @@
   width: 100%;
   font-family: 'Inter', sans-serif;
   resize: none;
+  margin-bottom: 20px;
 }
 .EditProfilContainer form>.DescriptionInput:focus {
   outline: none;
@@ -193,4 +194,75 @@
 }
 .EditProfilContainer .ConnexionInfoBox>.row{
   justify-content: space-between;
+}
+
+
+
+.EditProfilContainer .CancellableContainer {
+    margin: 0 auto;
+    margin-bottom: 30px;
+}
+
+.EditProfilContainer .CancellableContainer > p:first-child {
+    /* font-weight: bold; */
+    margin-bottom: 5px;
+}
+
+.EditProfilContainer .CancellableContainer .toggle-button-group{
+    margin-top: 10px;
+    /* background-color: var(--greylight); */
+    width: fit-content;
+    border-radius: 8px;
+    border: 1px solid var(--greysemidark);
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+}
+.EditProfilContainer .CancellableContainer .toggle-button-group>button{
+    border: none;
+    /* background-color: red; */
+    padding: 5px 40px;
+    background-color: transparent;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+}
+.EditProfilContainer .CancellableContainer .toggle-button-group>button.active{
+
+    /* background-color: white; */
+    background: var(--lineargradientgreen);
+    border-radius: 8px;
+    box-shadow: 0 4px 5px rgba(0, 0, 0, 0.03);
+    transform: scale(1.15);
+}
+.EditProfilContainer .CancellableContainer .toggle-button-group>button.active.non{
+    background: var(--lineargradientred );
+}
+.EditProfilContainer .CancellableContainer .toggle-button-group>button.active>p{
+    color: white;
+}
+
+
+.EditProfilContainer .CancellableContainer .toggle-button-group.loading{
+    height: 25px;
+    width: 200px;
+    border-radius: 8px;
+    border: none;
+    background-color: var(--greylight);
+}
+
+
+
+.EditProfilContainer .CapaciteContainer {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  margin-top: 8px;
+  gap: 7px;
+  margin-bottom: 25px;
+}
+.EditProfilContainer .CapaciteContainer>.InputText {
+  margin-top: 0;
+  margin: 0;
+  width: 80px;
 }

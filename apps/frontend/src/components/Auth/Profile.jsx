@@ -144,7 +144,7 @@ export default function Profile() {
               {/* <p className="t4">Mes annonces</p> */}
               <p className="t6">Gérez facilement vos activités, suivez vos réservations et mettez à jour vos offres en temps réel.</p>
             </div>
-        <button className="whiteButton" onClick={() => {navigate("/become-provider")}}>
+        <button className="whiteButton" onClick={() => {navigate("/annonces")}}>
             <p className="t5">Voir mes annonces</p>
         </button>
           {/* <div className="OfferListContainer">
@@ -193,7 +193,7 @@ export default function Profile() {
               <p className="t6">Votre demande sera traitée sous 24h et notre réponse vous sera rapidement communiquée.</p>
             </div>
         <button className="BecomeProviderButton" onClick={() => {navigate("/become-provider")}}>
-            Devenir prestataire
+            <p className="t6">Devenir prestataire</p>
         </button>
       </>
     }

@@ -1,5 +1,6 @@
 import "./Reservations.css"
 import noReservations from "../../assets/images/noReservations.png"
+import loupeicon from "../../assets/images/loupeicon.png"
 import FadeInImage from "../../components/Utils/FadeInImage"
 import { useNavigate } from "react-router-dom"
 import { useContext, useEffect, useState } from "react";
@@ -7,6 +8,7 @@ import { useContext, useEffect, useState } from "react";
 import { AuthContext } from "../../components/Auth/authContext/authContext";
 import React from "react";
 import { getOfferBySlug } from "../../services/offers";
+import WhiteButton from "../../components/Buttons/WhiteButton/WhiteButton";
 
 export default function Reservations(){
     const navigate = useNavigate();
@@ -87,7 +89,7 @@ export default function Reservations(){
             <p className="t32">Mes reservation</p>
             <div className="AllReservations">
                 {
-                    Object.entries(AllReservations).length > 0 ? Object.entries(AllReservations).map(([date, reservations]) => {
+                    false && Object.entries(AllReservations).length > 0 ? Object.entries(AllReservations).map(([date, reservations]) => {
                         return (
                             <React.Fragment key={`${date}`}>
                             <p className="t6">{date}</p>
@@ -146,6 +148,8 @@ export default function Reservations(){
                     <div className="NoReservation">
                         <div className="MessageNone">
                             <img src={noReservations} alt="no reservations image"/>
+                            <p className="t6">Vous n'avez aucune réservation pour <br></br>le moment.</p>
+                            <WhiteButton text={"Rechercher des annonces"} onClick={() => navigate("/")} img={loupeicon} alt={"loupe icon"}/>
                         </div>
                     </div>
                 }

@@ -33,6 +33,7 @@ import { AuthContext } from "../components/Auth/authContext/authContext";
 import OffersCard from "../components/OffersCard/OffersCard";
 import TestHeight from "../components/TestHeight/TestHeight";
 import { linearTheme } from "../services/themeModifier";
+import WhiteButton from "../components/Buttons/WhiteButton/WhiteButton";
 
 
 
@@ -387,9 +388,10 @@ import { linearTheme } from "../services/themeModifier";
               <p className="t5">
                   Les prestataires peuvent activer l’annulation gratuite avec un délai minimum.
               </p>
-              <button>
+              {/* <button>
                 <p className="t6">Politique d'annulation</p>
-              </button>
+              </button> */}
+              <WhiteButton text={"Politique d'annulation"}/>
               <div className="hline"></div>
             </div>
 

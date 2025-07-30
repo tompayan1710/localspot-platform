@@ -76,11 +76,14 @@ export default function SliderPrice({ minValue, setMinValue, maxValue, setMaxVal
 
             return (
               <div {...props} className="track">
+                <div className="Squelleton">
+                </div>
                 <div
                   className="selected-range"
                   style={{
                     position: "absolute",
-                    top: "-1px",
+                    top: "50%",
+                    transform: "translateY(-50%)",
                     left: `${percentMin}%`,
                     width: `${percentMax - percentMin}%`,
                     borderRadius: "4px",

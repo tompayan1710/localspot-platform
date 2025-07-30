@@ -297,7 +297,7 @@ export default function Calendar(){
                                                                             <p className="t5">Participant : {slot.total_reserved} {allOffers[slot.offer_slug].total_capacity - slot.total_reserved === 0 && "(COMPLET)"}</p>
                                                                             <p className="t6">×2 adult&nbsp;&nbsp;×2 reduced</p>
                                                                         </div>
-                                                                        <div className="row">
+                                                                        {/* <div className="row">
                                                                             <div className="rowParticipant">
                                                                                 <div><img src={plus} alt="plus icon"/></div>
                                                                                 <img src={NiceIntro} alt="reservation Offer image"/>
@@ -305,7 +305,7 @@ export default function Calendar(){
                                                                                 <img src={NiceIntro} alt="reservation Offer image"/>
                                                                             </div>
                                                                             <button className="t6">see&nbsp;all</button>
-                                                                        </div>
+                                                                        </div> */}
                                                                         <div className="hlinedashed"></div>
                                                                         <div className="row">
                                                                             <p className="t32">TOTAL</p>

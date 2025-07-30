@@ -604,7 +604,6 @@
     border: none;
     border-radius: 6px;
     cursor: pointer;
-    transition: background 1s, transform 0.2s;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -615,11 +614,12 @@
     font-size: 0.8rem;
     margin-bottom: 50px;
   }
-  
-.profile-container  .BecomeProviderButton:hover {
-    background: linear-gradient(180deg, #373737, #545454);
+
+  .profile-container .BecomeProviderButton>p {
+    color: white;
   }
   
+
 .profile-container .whiteButton {
     width: fit-content;
     padding: 8px 15px;

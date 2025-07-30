@@ -121,6 +121,9 @@ body{
   --lineargradientred: linear-gradient(180deg, #fcb3b3, var(--rednormal));
   --lineargradienyellow: linear-gradient(180deg, #f0fcb3, var(--yellownormal));
   --maxsize: 500px;
+
+  /* --boxshadow: 0px 5px 20px rgba(0,0,0,0.08) */
+  --boxshadow: 0px 0px 0px 1px rgba(0,0,0,0.02),0px 5px 20px 0px rgba(0,0,0,0.058);
 }
 
 input,

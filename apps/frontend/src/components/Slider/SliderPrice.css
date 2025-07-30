@@ -4,7 +4,7 @@
 
 .slider-price>.row{
     /* margin-top: 10px; */
-    margin-bottom: 15px;
+    margin-bottom: 10px;
     justify-content: space-between;
 }
 
@@ -15,12 +15,23 @@
 }
 
 .slider-price .track {
-  height: 3px;
+  height: 25px;
   width: 100%;
-  background: var(--greylight);
+  /* background: orange; */
   border-radius: 4px;
   position: relative;
+  cursor: pointer!important;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
 }
+.slider-price .Squelleton{
+  background-color: var(--greylight);
+  width: 100%;
+  height: 5px;
+  border-radius: 4px;
+}
+
 .slider-price .selected-range{
     background: var(--lineargradientblack);
     height: 5px;

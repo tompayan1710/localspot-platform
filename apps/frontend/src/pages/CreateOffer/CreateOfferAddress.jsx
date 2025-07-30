@@ -373,7 +373,7 @@ export default function CreateOfferAddress(){
               <p className="t32">Ajoutez des photos qui mettent en valeur votre offre&nbsp;!</p>
               <p className="t6">
                 Les photos doivent correspondre à l’offre réelle et respecter notre <a onClick={() => navigate("/content-policy")}>politique de contenu</a>. 
-              </p>
+              </p> 
               <label className="CreateOfferAddPhotos">
                 <img src={galleryPhotosIcon} alt="gallery photos icon"/>
                 <p className="t5">Ajouter des photos</p>

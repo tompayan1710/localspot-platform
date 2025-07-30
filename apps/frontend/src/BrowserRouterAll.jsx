@@ -47,6 +47,8 @@ import AddComment from "./pages/Comments/AddComment";
 import CurrencyPage from "./components/Auth/ProfilPage/Currency/CurrencyPage";
 import NotificationSettings from "./components/Auth/ProfilPage/SettingsPage/NotificationSettings/NotificationSettings";
 import FormInfoPayement from "./pages/OfferPage/Payment/FormInfoPayement/FormInfoPayement";
+import AnnonceEditInfos from "./pages/AnnoncePage/AnnonceEditInfos/AnnonceEditInfos";
+import AnnonceEditPhotos from "./pages/AnnoncePage/AnnonceEditPhotos/AnnonceEditPhotos";
 
 export default function BrowserRouterAll(){
     const location = useLocation();
@@ -92,6 +94,8 @@ export default function BrowserRouterAll(){
     /^\/offer-page\/[^\/]+\/add-info$/, 
     /^\/annonces\/[^\/]+\/availability-editor$/, 
     /^\/annonces\/[^\/]+\/confirm-creation$/,
+    /^\/annonces\/[^\/]+\/edit-infos$/,
+    /^\/annonces\/[^\/]+\/edit-photos$/,
     /^\/reservations\/[^\/]+$/,
     /^\/offer-page\/[^\/]+\/add-comment$/,
     ];
@@ -139,6 +143,8 @@ export default function BrowserRouterAll(){
             <Route path="/annonces/:slug" element={<AnnoncePage />} />
             <Route path="/annonces/:slug/availability-editor" element={<AvailabilityEditor />} />
             <Route path="/annonces/:slug/confirm-creation" element={<ConfirmCreation />} />
+            <Route path="/annonces/:slug/edit-infos" element={<AnnonceEditInfos />} />
+            <Route path="/annonces/:slug/edit-photos" element={<AnnonceEditPhotos />} />
 
 
             <Route path="/create-offer" element={<CreateOffer />} />

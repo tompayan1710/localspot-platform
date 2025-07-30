@@ -309,4 +309,93 @@ router.post("/filter", async (req, res) => {
 
 
 
+
+
+router.patch("/update-info", upload.none(), async (req, res) => {
+  const { offer_slug } = req.body;
+  const fieldsToUpdate = JSON.parse(req.body.fieldsToUpdate || "{}");
+
+  if (!offer_slug || Object.keys(fieldsToUpdate).length === 0) {
+    return res.status(400).json({ message: "Requête invalide" });
+  }
+
+  const fields = [];
+  const values = [];
+
+  Object.entries(fieldsToUpdate).forEach(([key, value], index) => {
+    fields.push(`${key} = $${index + 1}`);
+    values.push(value);
+  });
+
+  values.push(offer_slug);
+  const query = `UPDATE offers SET ${fields.join(", ")} WHERE slug = $${values.length} RETURNING *`;
+
+  try {
+    const { rows } = await db.query(query, values);
+    if (rows.length === 0) {
+      return res.status(404).json({ message: "Offre introuvable." });
+    }
+
+    return res.json(rows[0]); // ← renvoie l'offre mise à jour
+  } catch (err) {
+    console.error("❌ Erreur SQL :", err);
+    return res.status(500).json({ message: "Erreur serveur." });
+  }
+});
+
+
+router.patch("/update-photos", upload.array("new_photos"), async (req, res) => {
+  const { offer_slug } = req.body;
+  let remaining_urls = [];
+
+  try {
+    remaining_urls = JSON.parse(req.body.remaining_urls || "[]");
+  } catch {
+    return res.status(400).json({ success: false, message: "Invalid JSON in remaining_urls" });
+  }
+
+  if (!offer_slug) return res.status(400).json({ success: false, message: "Missing slug" });
+
+  const newFiles = req.files || [];
+  const newUploadedUrls = [];
+
+  try {
+    for (const file of newFiles) {
+      const fileExt = file.originalname.split(".").pop();
+      const filePath = `offers/${offer_slug}-${Date.now()}.${fileExt}`;
+
+      const { error: uploadError } = await supabase.storage
+        .from("offers-images")
+        .upload(filePath, file.buffer, {
+          contentType: file.mimetype,
+          upsert: false
+        });
+
+      if (uploadError) throw uploadError;
+
+      const { data: publicUrlData } = supabase
+        .storage
+        .from("offers-images")
+        .getPublicUrl(filePath);
+
+      newUploadedUrls.push(publicUrlData.publicUrl);
+    }
+
+    const finalImageUrls = [...remaining_urls, ...newUploadedUrls];
+
+    // 🔄 Mise à jour de la base de données (Postgres ici)
+    const result = await db.query(
+      "UPDATE offers SET image_urls = $1 WHERE slug = $2 RETURNING *",
+      [finalImageUrls, offer_slug]
+    );
+
+    return res.json({ success: true, offer: result.rows[0] });
+  } catch (err) {
+    console.error("Erreur Supabase Upload :", err);
+    return res.status(500).json({ success: false, message: "Erreur lors du traitement des images." });
+  }
+});
+
+
+
 module.exports = router;

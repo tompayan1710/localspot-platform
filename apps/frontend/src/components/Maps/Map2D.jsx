@@ -443,7 +443,7 @@ console.log("Directions générées :", allDirections);
 
       {mapRef.current && hotes.length>0 ? (
         <>
-        <MapLabel map={mapRef.current} position={center} index={1000}>
+          {/* <MapLabel map={mapRef.current} position={center} index={1000}>
             <div className="MapAdresseContainer my-annonces">
               <div>
                 <p className="t4"></p>
@@ -451,7 +451,7 @@ console.log("Directions générées :", allDirections);
               </div>
               <p className="t6">My Annonce</p>
             </div>
-          </MapLabel>
+          </MapLabel> */}
           {
             hotes.map((hote) => {
               const destination = { lat: hote.latitude, lng: hote.longitude };
