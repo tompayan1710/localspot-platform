@@ -232,6 +232,9 @@ router.post("/upload-offer-images", upload.array("images"), async (req, res) => 
 router.post("/filter", async (req, res) => {
   const { priceRange, date, moment, categories,  nb_adult, nb_reduced } = req.body;
 
+
+  console.log(req.body);
+
   const total_participants =  nb_adult + nb_reduced;
   console.log( "priceRange", priceRange, "date", date, "moment", moment, "categories", categories, "total_participants", total_participants)
   let conditions = [];
@@ -256,12 +259,6 @@ router.post("/filter", async (req, res) => {
   //   index++;
   // }
 
-  // if (moment) {
-  //   conditions.push(`moment = $${index}`);
-  //   values.push(moment);
-  //   index++;
-  // }
-
   if (categories && categories.length > 0) {
     // categories && $1
     // -- devient : {'Nautiques', 'Bien-être', 'Culture'} && {'Bien-être', 'Sports'}
@@ -278,12 +275,12 @@ router.post("/filter", async (req, res) => {
     index++;
   }
 
-  const whereClause = conditions.length ? `WHERE ${conditions.join(" AND ")}` : "";
+  const whereClause = conditions.join(" AND "); // 🔁 sans "WHERE"
 
-  const query = `
-    SELECT * FROM offers
-    ${whereClause}
-  `;
+  // const query = `
+  //   SELECT * FROM offers
+  //   ${whereClause}
+  // `;
 
   // ORDER BY created_at DESC
   // LIMIT 50
@@ -294,12 +291,17 @@ router.post("/filter", async (req, res) => {
 
   // const values = [];
   try {
-    console.log("SQL Query:", query);
+    // console.log("SQL Query:", query);
+    // console.log("With values:", values);
+    console.log("WhereClause:", whereClause);
     console.log("With values:", values);
 
+    const rows = await getAllOffers(whereClause, values, moment);
 
-    const { rows } = await db.query(query, values);
+
+    // const { rows } = await db.query(query, values);
     // const {rows} = await db.query(query, values)
+
     res.json(rows);
   } catch (err) {
     console.error("Erreur filtre offres :", err);

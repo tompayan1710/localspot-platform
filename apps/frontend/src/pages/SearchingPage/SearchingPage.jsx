@@ -76,6 +76,9 @@ const fetchFilteredOffers = async (filteredOption) => {
             try {
                 const offers = await getAllOffers();
 
+                // offers.map((offer) => {
+                    
+                // })
                 console.log("Offres :", offers.offers);
                 setAllOffers(Array.isArray(offers.offers) ? offers.offers : []);
             } catch (err) {
@@ -90,10 +93,12 @@ const fetchFilteredOffers = async (filteredOption) => {
             fetchAllOffers()
         }
 
-    }, [filteredOffers])
+    }, [])
 
 
-        useEffect(() => {
+
+
+    useEffect(() => {
       if (isOccultView) {
         document.body.style.overflow = "hidden";   // bloque le scroll du body
       } else {
@@ -108,8 +113,16 @@ const fetchFilteredOffers = async (filteredOption) => {
       const cleanup = linearTheme(from, to);
 
       return cleanup; // ✅ on nettoie l'écouteur au démontage du composant
-    }, [])
-    ;
+    }, []);
+
+
+    const suggestions = allOffers.filter(
+        offerAll => !filteredOffers.some(
+            offerFiltered => offerFiltered.slug === offerAll.slug
+        )
+    );
+
+
     return (
 
         <div className="SearchingPage">
@@ -154,16 +167,19 @@ const fetchFilteredOffers = async (filteredOption) => {
                                 <img src={SearchNotFount} alt="Search not fount"/>
                                 <p className="t32 bold">Aucune offre trouvé</p>
                             </div>
-                            <div className="ListOffers">
-                                <div id={"Suggestions"}>
-                                    <p className="t4">Quelques suggestions :</p>
-                                </div>
-                                <OffersCard offers={allOffers} loading={loadingAll} vertical={true}/>
-                            </div>
                         </>                        
                     )
                     
+                    
                 }
+                { suggestions.length > 0 && (
+                    <div className="ListOffers">
+                        <div id={"Suggestions"}>
+                            <p className="t4">Quelques suggestions :</p>
+                        </div>
+                        <OffersCard offers={suggestions} loading={loadingAll} vertical={true}/>
+                    </div>
+                )}
             </div>
             <PopUpBottom 
                 onClose={() => {
