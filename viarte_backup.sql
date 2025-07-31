@@ -241,6 +241,23 @@ ALTER SEQUENCE public.hotes_id_seq OWNED BY public.hotes.id;
 
 
 --
+-- Name: invitation_tokens; Type: TABLE; Schema: public; Owner: postgres
+--
+
+CREATE TABLE public.invitation_tokens (
+    id uuid DEFAULT gen_random_uuid() NOT NULL,
+    token text DEFAULT (gen_random_uuid())::text NOT NULL,
+    provider_id integer NOT NULL,
+    created_at timestamp without time zone DEFAULT now(),
+    expires_at timestamp without time zone,
+    used_at timestamp without time zone,
+    is_used boolean DEFAULT false
+);
+
+
+ALTER TABLE public.invitation_tokens OWNER TO postgres;
+
+--
 -- Name: offer_cancel_slots; Type: TABLE; Schema: public; Owner: postgres
 --
 
@@ -460,7 +477,8 @@ CREATE TABLE public.providers (
     sizes character varying(30),
     moredetails text,
     is_validated boolean DEFAULT false,
-    stripe_account_id text
+    stripe_account_id text,
+    invitation_token text DEFAULT (gen_random_uuid())::text
 );
 
 
@@ -662,7 +680,8 @@ CREATE TABLE public.reservations_individuals (
     nb_reduced integer,
     email text,
     name character varying(100),
-    phone character varying(100)
+    phone character varying(100),
+    stripe_payment_intent_id text
 );
 
 
@@ -696,14 +715,17 @@ ALTER SEQUENCE public.reservations_individuals_id_seq OWNED BY public.reservatio
 
 CREATE TABLE public.users (
     id integer NOT NULL,
-    first_name character varying(100),
-    last_name character varying(100),
     email character varying(150) NOT NULL,
     password text,
     role character varying(50) DEFAULT 'member'::character varying,
     created_at timestamp without time zone DEFAULT CURRENT_TIMESTAMP,
     provider_id integer,
-    provider character varying(50)
+    provider character varying(50),
+    name character varying(100),
+    phone character varying(20),
+    profil_picture text,
+    receive_booking_emails boolean DEFAULT true,
+    receive_activity_suggestions boolean DEFAULT true
 );
 
 
@@ -990,6 +1012,7 @@ COPY public.cities (id, name, department_id) FROM stdin;
 16	Les Sables-d'Olonne	17
 17	Coupvray	12
 18	Sainte-Geneviève-des-Bois	18
+19	Gaillard	19
 \.
 
 
@@ -1023,6 +1046,7 @@ COPY public.departments (id, name) FROM stdin;
 16	15
 17	Vendee
 18	Essonne
+19	Haute-Savoie
 \.
 
 
@@ -1034,6 +1058,14 @@ COPY public.hotes (id, name, location, type, created_at, updated_at, latitude, l
 2	La Place Hotel	1 Av. 24 Août, 06600 Antibes	Hotel	2025-05-21 11:17:21.124918	2025-05-21 11:17:21.124918	43.580032	7.122513	4	https://cf.bstatic.com/xdata/images/hotel/max1024x768/42921670.jpg?k=e3a4aca8d1c0a56a2a999a67d158fe83f67ff1b7f93182c1ed25ea458dcd8a66&o=&hp=1
 3	Studio Eco Haussman	10 avenue des Lilas, 75019 Paris, France	Studio	2025-07-01 20:56:51.456738	2025-07-01 20:56:51.456738	43.7	7.25	2	https://assets.minorhotels.com/image/upload/q_auto,f_auto/media/minor/anantara/images/anantara-plaza-nice/11_gallery_ok/anantara_plaza_nice_hotel_drone_exterior_hotel_hero-crpd-1920x1037.jpg
 1	Le Vigangier Futil	12 rue de la Paix, 75002 Paris, France	Hotel	2025-05-21 11:17:21.124918	2025-05-21 11:17:21.124918	\N	\N	\N	\N
+\.
+
+
+--
+-- Data for Name: invitation_tokens; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+COPY public.invitation_tokens (id, token, provider_id, created_at, expires_at, used_at, is_used) FROM stdin;
 \.
 
 
@@ -1091,9 +1123,9 @@ COPY public.offers (id, title, description, type, price, image_urls, created_at,
 22	Expérience Aquajet au Cap d’Antibes	Nagez comme un dauphin sur le célèbre Cap d'Antibes, de 7 à 77 ans !\nVotre Aquajet 100% sécurisé vous procurera des sensations uniques et inoubliables.\nIl suffit d’être à l’aise dans l’eau	Activite	60.00	{https://knswskkdaimyrcstijsm.supabase.co/storage/v1/object/public/offers-images/offers/1751539922898_caption_1.jpg,https://knswskkdaimyrcstijsm.supabase.co/storage/v1/object/public/offers-images/offers/1751539923540_caption.jpg,https://knswskkdaimyrcstijsm.supabase.co/storage/v1/object/public/offers-images/offers/1751539923806_caption_5.jpg,https://knswskkdaimyrcstijsm.supabase.co/storage/v1/object/public/offers-images/offers/1751539924129_caption_2.jpg,https://knswskkdaimyrcstijsm.supabase.co/storage/v1/object/public/offers-images/offers/1751539924578_caption_3.jpg}	2025-07-03 12:52:29.368044	2025-07-03 12:52:29.368044	5	43.5891473	7.123715499999999	4	Port Vauban, Antibes, France	{Nautiques,"Sports & Sensations Fortes"}	personne	15 min	https://knswskkdaimyrcstijsm.supabase.co/storage/v1/object/public/offers-images/qrcodes/1751539924911_6e7830e6-fd73-4ae1-9419-f47777fa6f95.png	6e7830e6-fd73-4ae1-9419-f47777fa6f95	t	4
 20	Survoler la Côte d'Azur en avion privé	Vivez une expérience inoubliable en survolant la splendide Côte d'Azur à bord d’un avion privé. Admirez depuis le ciel les paysages époustouflants de la Méditerranée, les plages dorées, les villages perchés et les montagnes environnantes. 	Activite	500.00	{https://knswskkdaimyrcstijsm.supabase.co/storage/v1/object/public/offers-images/offers/1751539185273_15305892-86c3-4d18-8a4b-2880b2ded338.avif,https://knswskkdaimyrcstijsm.supabase.co/storage/v1/object/public/offers-images/offers/1751539186042_be85b758-ee24-43ac-97cd-ad6ed301f31f.avif,https://knswskkdaimyrcstijsm.supabase.co/storage/v1/object/public/offers-images/offers/1751539186290_dd4bd889-c77a-4a34-b3a3-cb9f12425ac6.avif,https://knswskkdaimyrcstijsm.supabase.co/storage/v1/object/public/offers-images/offers/1751539186666_eb3f00e3-a14c-4737-9772-aa7c2a92f020.avif}	2025-07-03 12:40:52.753928	2025-07-03 12:40:52.753928	5	43.5486286	6.9554298	15	Aéroport de Cannes Mandelieu, 245 Av. Francis Tonner, 06400 Cannes, France	{"Nature & Aventure","Culture & Patrimoine","Sports & Sensations Fortes"}	personne	15 min	https://knswskkdaimyrcstijsm.supabase.co/storage/v1/object/public/offers-images/qrcodes/1751539186999_be82fc03-325c-4453-96b8-2ae7fd028222.png	be82fc03-325c-4453-96b8-2ae7fd028222	t	4
 21	Conduire un cabriolet d'Antibes à Monaco	Profitez de paysages époustouflants à bord d'un cabriolet électrique que vous conduisez et visitez des sites emblématiques.	Activite	75.00	{https://knswskkdaimyrcstijsm.supabase.co/storage/v1/object/public/offers-images/offers/1751539509661_f38c43a6-87fa-43d5-8569-9e5dae0d5cde.avif,https://knswskkdaimyrcstijsm.supabase.co/storage/v1/object/public/offers-images/offers/1751539510372_5c6bd7af-a6db-4404-8845-4d5353862748.avif,https://knswskkdaimyrcstijsm.supabase.co/storage/v1/object/public/offers-images/offers/1751539510793_0b1a09f6-6a1f-4e86-8c26-5cc01871b51a.avif,https://knswskkdaimyrcstijsm.supabase.co/storage/v1/object/public/offers-images/offers/1751539511147_9bdee7b9-0322-4be4-a4b9-3eb442700c44.avif,https://knswskkdaimyrcstijsm.supabase.co/storage/v1/object/public/offers-images/offers/1751539511460_737110c7-a7c0-4636-bd9a-bfe3f0b0e47f.avif}	2025-07-03 12:47:08.879574	2025-07-03 12:47:08.879574	5	43.57850560000001	7.1200497	4	7 Bd du Président Wilson, 06600 Antibes, France	{"En Famille","Loisirs & Divertissement","Nature & Aventure","Sports & Sensations Fortes"}	personne	15 min	https://knswskkdaimyrcstijsm.supabase.co/storage/v1/object/public/offers-images/qrcodes/1751539511879_01bd532b-0eac-4c79-a2a2-bbdb6a98b172.png	01bd532b-0eac-4c79-a2a2-bbdb6a98b172	t	4
-23	Explorez les calanques en kayak	Découvrez les calanques sauvages de la Côte Bleue en kayak de mer.	Activite	35.00	{https://knswskkdaimyrcstijsm.supabase.co/storage/v1/object/public/offers-images/offers/1751558949802_229c67d0-80fc-4fa2-8afc-e51cd0a59d9b.avif,https://knswskkdaimyrcstijsm.supabase.co/storage/v1/object/public/offers-images/offers/1751558950982_9735be50-2507-4857-b593-b0a02b7ab62b.avif,https://knswskkdaimyrcstijsm.supabase.co/storage/v1/object/public/offers-images/offers/1751558951868_aa1aa723-6472-4cf0-a53c-3faf24481322.avif,https://knswskkdaimyrcstijsm.supabase.co/storage/v1/object/public/offers-images/offers/1751558952363_daf28703-100d-4b83-aa10-0f44367f8b3e.avif}	2025-07-03 18:11:20.98421	2025-07-03 18:11:20.98421	5	43.7157607	7.351195100000001	11	11 Av. de la Liberté, 06360 Èze, France	{Nautiques,"Loisirs & Divertissement","Nature & Aventure","En Famille"}	personne	15 min	https://knswskkdaimyrcstijsm.supabase.co/storage/v1/object/public/offers-images/qrcodes/1751558953513_d1eec0ec-f975-4b72-9fd9-b52b1ab964d2.png	d1eec0ec-f975-4b72-9fd9-b52b1ab964d2	t	4
 24			Food	12.00	{https://knswskkdaimyrcstijsm.supabase.co/storage/v1/object/public/offers-images/offers/1752400435594_Calendar.png,https://knswskkdaimyrcstijsm.supabase.co/storage/v1/object/public/offers-images/offers/1752400436226_carRedIcon.png,https://knswskkdaimyrcstijsm.supabase.co/storage/v1/object/public/offers-images/offers/1752400437103_clickicon.png}	2025-07-13 11:58:30.464934	2025-07-13 11:58:30.464934	5	46.5011991	-1.7781025	16	Les Sables-d'Olonne, France	{"Nourriture asiatique","Spécialité local"}	personne	15 min	https://knswskkdaimyrcstijsm.supabase.co/storage/v1/object/public/offers-images/qrcodes/1752400437524_aa1d1250-ce49-4488-99d6-18f6ff911376.png	aa1d1250-ce49-4488-99d6-18f6ff911376	t	4
-35	Test Capacité	ceci este le teste pour ma capacité	Activite	1599.00	{https://knswskkdaimyrcstijsm.supabase.co/storage/v1/object/public/offers-images/offers/1753273709927_ViarteLogoGoogle.png,https://knswskkdaimyrcstijsm.supabase.co/storage/v1/object/public/offers-images/offers/1753273710240_ViarteLogo.png}	2025-07-23 14:29:25.996118	2025-07-23 14:29:25.996118	5	43.5691905	7.1123854	4	Juan-les-Pins, 06160 Antibes, France	{"Sports & Sensations Fortes","Loisirs & Divertissement","Nature & Aventure"}	personne	4 h	https://knswskkdaimyrcstijsm.supabase.co/storage/v1/object/public/offers-images/qrcodes/1753273710713_77b2f91a-8d54-402a-93af-43e743dd13a5.png	77b2f91a-8d54-402a-93af-43e743dd13a5	f	19
+35	Test Capacité2	ceci este le teste pour ma capacitéfsf	Activite	1599.00	{https://knswskkdaimyrcstijsm.supabase.co/storage/v1/object/public/offers-images/offers/1753273709927_ViarteLogoGoogle.png,https://knswskkdaimyrcstijsm.supabase.co/storage/v1/object/public/offers-images/offers/77b2f91a-8d54-402a-93af-43e743dd13a5-1753888693146.jpg,https://knswskkdaimyrcstijsm.supabase.co/storage/v1/object/public/offers-images/offers/77b2f91a-8d54-402a-93af-43e743dd13a5-1753888693840.png,https://knswskkdaimyrcstijsm.supabase.co/storage/v1/object/public/offers-images/offers/77b2f91a-8d54-402a-93af-43e743dd13a5-1753888694396.png}	2025-07-23 14:29:25.996118	2025-07-23 14:29:25.996118	5	43.5691905	7.1123854	4	Juan-les-Pins, 06160 Antibes, France	{"Sports & Sensations Fortes","Loisirs & Divertissement","Nature & Aventure"}	personne	2 h	https://knswskkdaimyrcstijsm.supabase.co/storage/v1/object/public/offers-images/qrcodes/1753273710713_77b2f91a-8d54-402a-93af-43e743dd13a5.png	77b2f91a-8d54-402a-93af-43e743dd13a5	t	18
+23	Explorez les calanques en kayak	Découvrez les calanques sauvages de la Côte Bleue en kayak de mer.	Activite	35.00	{https://knswskkdaimyrcstijsm.supabase.co/storage/v1/object/public/offers-images/offers/1751558949802_229c67d0-80fc-4fa2-8afc-e51cd0a59d9b.avif,https://knswskkdaimyrcstijsm.supabase.co/storage/v1/object/public/offers-images/offers/1751558950982_9735be50-2507-4857-b593-b0a02b7ab62b.avif,https://knswskkdaimyrcstijsm.supabase.co/storage/v1/object/public/offers-images/offers/1751558951868_aa1aa723-6472-4cf0-a53c-3faf24481322.avif,https://knswskkdaimyrcstijsm.supabase.co/storage/v1/object/public/offers-images/offers/d1eec0ec-f975-4b72-9fd9-b52b1ab964d2-1753888582810.jpg,https://knswskkdaimyrcstijsm.supabase.co/storage/v1/object/public/offers-images/offers/d1eec0ec-f975-4b72-9fd9-b52b1ab964d2-1753888583585.png,https://knswskkdaimyrcstijsm.supabase.co/storage/v1/object/public/offers-images/offers/d1eec0ec-f975-4b72-9fd9-b52b1ab964d2-1753888638608.jpg,https://knswskkdaimyrcstijsm.supabase.co/storage/v1/object/public/offers-images/offers/d1eec0ec-f975-4b72-9fd9-b52b1ab964d2-1753888654838.jpg}	2025-07-03 18:11:20.98421	2025-07-03 18:11:20.98421	5	43.7157607	7.351195100000001	11	11 Av. de la Liberté, 06360 Èze, France	{Nautiques,"Loisirs & Divertissement","Nature & Aventure","En Famille"}	personne	15 min	https://knswskkdaimyrcstijsm.supabase.co/storage/v1/object/public/offers-images/qrcodes/1751558953513_d1eec0ec-f975-4b72-9fd9-b52b1ab964d2.png	d1eec0ec-f975-4b72-9fd9-b52b1ab964d2	t	4
 \.
 
 
@@ -1109,13 +1141,14 @@ COPY public.provider_booking_integrations (id, provider_id, platform, access_tok
 -- Data for Name: providers; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
-COPY public.providers (id, name, bio, logo_url, tel, email, instagram, facebook, website, type, sizes, moredetails, is_validated, stripe_account_id) FROM stdin;
-2	MonNomOfficial	Ma biographie official	https://knswskkdaimyrcstijsm.supabase.co/storage/v1/object/public/providers-images/logo/1749129298417_TestRename.jpg	+33765594098	lechat@gmail.com	MonInstagram	Monfacebook	monbigsite.fr	Company	3 - 10	Il est vrai que tout parti politique moderne temps inexorablement à l'oligarchie et au désir de haine	f	\N
-3	Monbignom	oijfs	https://knswskkdaimyrcstijsm.supabase.co/storage/v1/object/public/providers-images/logo/1749129562611_TestRename.jpg	+33765594020	lebigchat@gmail.com	mlfjsfs		siteweb.fr	Independent	seul		f	\N
-1	localspot-db	FLJSOFJSOIFJS	https://knswskkdaimyrcstijsm.supabase.co/storage/v1/object/public/providers-images/logo/1749127966506_images.jpg	+33765594097	tompayan1710@gmail.com	insta	okfoskfosokfoks	SFS.fr	Company	11 - 20	fsfsfsfsfs	t	\N
-4	LocalSpot	Ma desctiption	https://knswskkdaimyrcstijsm.supabase.co/storage/v1/object/public/providers-images/logo/1749227206471_images.jpg	+33765594097	tompayan1710@gmail.com	moninsta	fac	siteweb	Company	3 - 10	Mon détail à ajouter	t	\N
-5	BigTomRappel	FSIOSJF	https://knswskkdaimyrcstijsm.supabase.co/storage/v1/object/public/providers-images/logo/1751118905743_starIcon.png	+33765594097	tompayan1710@gmail.com	moninsta	fac	monsite.fr	Independent	en équipe	,k	t	\N
-6	PrestataireNoOffers	Je suis un prestataire qui n'as pas d'offre	https://knswskkdaimyrcstijsm.supabase.co/storage/v1/object/public/providers-images/logo/1752309836503_ViarteLogo.png	+33765594097	tompayan1710@gmail.com	moninsta	monfacebo	monsite.fr	Company	3 - 10	Ceci est mon détail à ajouter	t	acct_1Rk1sUGfNWv7XEni
+COPY public.providers (id, name, bio, logo_url, tel, email, instagram, facebook, website, type, sizes, moredetails, is_validated, stripe_account_id, invitation_token) FROM stdin;
+2	MonNomOfficial	Ma biographie official	https://knswskkdaimyrcstijsm.supabase.co/storage/v1/object/public/providers-images/logo/1749129298417_TestRename.jpg	+33765594098	lechat@gmail.com	MonInstagram	Monfacebook	monbigsite.fr	Company	3 - 10	Il est vrai que tout parti politique moderne temps inexorablement à l'oligarchie et au désir de haine	f	\N	\N
+3	Monbignom	oijfs	https://knswskkdaimyrcstijsm.supabase.co/storage/v1/object/public/providers-images/logo/1749129562611_TestRename.jpg	+33765594020	lebigchat@gmail.com	mlfjsfs		siteweb.fr	Independent	seul		f	\N	\N
+1	localspot-db	FLJSOFJSOIFJS	https://knswskkdaimyrcstijsm.supabase.co/storage/v1/object/public/providers-images/logo/1749127966506_images.jpg	+33765594097	tompayan1710@gmail.com	insta	okfoskfosokfoks	SFS.fr	Company	11 - 20	fsfsfsfsfs	t	\N	\N
+4	LocalSpot	Ma desctiption	https://knswskkdaimyrcstijsm.supabase.co/storage/v1/object/public/providers-images/logo/1749227206471_images.jpg	+33765594097	tompayan1710@gmail.com	moninsta	fac	siteweb	Company	3 - 10	Mon détail à ajouter	t	\N	\N
+6	PrestataireNoOffers	Je suis un prestataire qui n'as pas d'offre	https://knswskkdaimyrcstijsm.supabase.co/storage/v1/object/public/providers-images/logo/1752309836503_ViarteLogo.png	+33765594097	tompayan1710@gmail.com	moninsta	monfacebo	monsite.fr	Company	3 - 10	Ceci est mon détail à ajouter	t	acct_1Rk1sUGfNWv7XEni	\N
+8	Studio Yoga Azur	Un espace détente pour tous les niveaux.	https://knsws...yoga1.jpg	+33611223344	contact@yogaazur.com	yoga_azur	facebook.com/yogaazur	yogaazur.fr	Independent	1 - 3	Cours de yoga en petit groupe face mer.	t	\N	
+5	BigTomRappel	FSIOSJF	https://knswskkdaimyrcstijsm.supabase.co/storage/v1/object/public/providers-images/logo/1751118905743_starIcon.png	+33765594097	tompayan1710@gmail.com	moninsta	fac	monsite.fr	Independent	en équipe	,k	t	\N	7a692e3a-ff1e-49e3-aefa-23da87d6d3ff
 \.
 
 
@@ -1140,6 +1173,7 @@ COPY public.qr_codes (id, slug, id_hote, adresse, image_url, user_id, latitude, 
 54	09d3210b-7264-4555-a47a-4d51194df2f9	2	8 Av. du Donjon, 91700 Sainte-Geneviève-des-Bois, France	https://knswskkdaimyrcstijsm.supabase.co/storage/v1/object/public/offers-images/qrcodes/1752668051264_09d3210b-7264-4555-a47a-4d51194df2f9.png	32	48.6463572	2.327905299999999
 55	dcfca511-113b-4501-aaf3-5737a5b2ee3f	2	118-120 Rue de Rivoli, 75001 Paris, France	https://knswskkdaimyrcstijsm.supabase.co/storage/v1/object/public/offers-images/qrcodes/1753272431022_dcfca511-113b-4501-aaf3-5737a5b2ee3f.png	32	48.8594276	2.3460452
 57	77b2f91a-8d54-402a-93af-43e743dd13a5	2	Juan-les-Pins, 06160 Antibes, France	https://knswskkdaimyrcstijsm.supabase.co/storage/v1/object/public/offers-images/qrcodes/1753273710713_77b2f91a-8d54-402a-93af-43e743dd13a5.png	32	43.5691905	7.1123854
+58	7fc5e310-277b-4fc1-bcba-e154dfb972e3	2	58 Rue de la Libération, 74240 Gaillard, France	https://knswskkdaimyrcstijsm.supabase.co/storage/v1/object/public/offers-images/qrcodes/1753875777159_7fc5e310-277b-4fc1-bcba-e154dfb972e3.png	32	46.1855355	6.2068663
 \.
 
 
@@ -1150,9 +1184,10 @@ COPY public.qr_codes (id, slug, id_hote, adresse, image_url, user_id, latitude, 
 COPY public.refresh_tokens (id, user_id, refresh_token, expires_at, created_at) FROM stdin;
 97	34	eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MzQsImVtYWlsIjoidDIzNTkwNTI3QGdtYWlsLmNvbSIsImlhdCI6MTc1MjMyNDU1NCwiZXhwIjoxNzY3ODc2NTU0fQ.KAxTknKCMlYyLzRCAyUQOrZpVadzaEhpcZYMeTB-fmo	2026-01-08 13:49:14.011	2025-07-12 10:33:00.775004
 85	32	eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MzIsImVtYWlsIjoidG9tcGF5YW4xNzEwQGdtYWlsLmNvbSIsImlhdCI6MTc1MTMwNzI3NiwiZXhwIjoxNzY2ODU5Mjc2fQ.kL2vvEl3xMYk-t9hfS6xP2niQtuDfDCMi3XLHEcJFNw	2025-12-27 19:14:36.617	2025-06-29 21:31:31.756224
-176	32	eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MzIsImVtYWlsIjoidG9tcGF5YW4xNzEwQGdtYWlsLmNvbSIsImlhdCI6MTc1MzYwMjUxNCwiZXhwIjoxNzY5MTU0NTE0fQ.DtEM88dGq4vh6WQN7uLCotgbNrNhc7iFsZZZZ0FsDYo	2026-01-23 08:48:34.745	2025-07-27 09:48:34.750107
+176	32	eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MzIsImVtYWlsIjoidG9tcGF5YW4xNzEwQGdtYWlsLmNvbSIsImlhdCI6MTc1MzYwODY4NywiZXhwIjoxNzY5MTYwNjg3fQ.0c-3Im8ozcf0U2HA770G-TVdoQQ5qeeO-nf1ZZerbwE	2026-01-23 10:31:27.715	2025-07-27 09:48:34.750107
 118	32	eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MzIsImVtYWlsIjoidG9tcGF5YW4xNzEwQGdtYWlsLmNvbSIsImlhdCI6MTc1MjY4ODM1OCwiZXhwIjoxNzY4MjQwMzU4fQ.wWww_mwnry2tWk8gCmSaYVrcZ7zYxHK6rFtbpCLM6P8	2026-01-12 18:52:38.111	2025-07-16 19:52:26.162945
 94	32	eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MzIsImVtYWlsIjoidG9tcGF5YW4xNzEwQGdtYWlsLmNvbSIsImlhdCI6MTc1MjE2ODU2MSwiZXhwIjoxNzY3NzIwNTYxfQ.KxPB7KAKEE-g3BIflSXvLGSOa3bmeLExIgoOoxiMju4	2026-01-06 18:29:21.08	2025-07-10 11:30:24.918565
+178	41	eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6NDEsImVtYWlsIjoidG9tY2hhdDEwQGdtYWlsLmNvbSIsImlhdCI6MTc1MzY5MDMzNCwiZXhwIjoxNzY5MjQyMzM0fQ.XqeDHfWPnEfxfYHBmOnvNMDc5DfBlLYBloWsEckTa0o	2026-01-24 09:12:14.574	2025-07-27 23:22:07.603748
 71	32	eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MzIsImVtYWlsIjoidG9tcGF5YW4xNzEwQGdtYWlsLmNvbSIsImlhdCI6MTc0OTEyNzQ5NSwiZXhwIjoxNzY0Njc5NDk1fQ.CALMlP2vRUuBQ-MHrme2VogcsG7WK2zxzEn8d_LpGb4	2025-12-02 13:44:55.194	2025-05-31 12:51:42.238876
 60	32	eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MzIsImVtYWlsIjoidG9tcGF5YW4xNzEwQGdtYWlsLmNvbSIsImlhdCI6MTc0NzYzNTI4MCwiZXhwIjoxNzYzMTg3MjgwfQ.5axDkDA1wwse950hacV5OFGoXbZB_U0DYTu-GJ9RZU8	2025-11-15 07:14:40.438	2025-05-14 14:37:37.658329
 101	32	eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MzIsImVtYWlsIjoidG9tcGF5YW4xNzEwQGdtYWlsLmNvbSIsImlhdCI6MTc1MjU4ODM3NCwiZXhwIjoxNzY4MTQwMzc0fQ.2ZcrEvEkq5fCBpGUeqMwlmJGz-g_cT1ptEAVdiHPWmA	2026-01-11 15:06:14.85	2025-07-14 17:11:53.996395
@@ -1165,6 +1200,7 @@ COPY public.refresh_tokens (id, user_id, refresh_token, expires_at, created_at) 
 59	32	eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MzIsImVtYWlsIjoidG9tcGF5YW4xNzEwQGdtYWlsLmNvbSIsImlhdCI6MTc0NzIyMDI2OCwiZXhwIjoxNzYyNzcyMjY4fQ.MBgT8cU7LpNDSWWZEgnglxF7-RdCS6vkf49el7yqTYU	2025-11-10 11:57:48.358	2025-05-14 12:57:48.359308
 64	32	eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MzIsImVtYWlsIjoidG9tcGF5YW4xNzEwQGdtYWlsLmNvbSIsImlhdCI6MTc0ODU4NDMzNiwiZXhwIjoxNzY0MTM2MzM2fQ.HttlpZJ923z9dX8d0rSthcGhtQdU0CwBLNX-AkZXkNA	2025-11-26 06:52:16.407	2025-05-24 19:40:33.351187
 95	32	eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MzIsImVtYWlsIjoidG9tcGF5YW4xNzEwQGdtYWlsLmNvbSIsImlhdCI6MTc1MjI1NTU1MiwiZXhwIjoxNzY3ODA3NTUyfQ.tgGKX-zF1p4qqLhBMzLXhpP27TcMfZegj_Ch-8EvSXw	2026-01-07 18:39:12.402	2025-07-11 07:56:01.495585
+192	41	eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6NDEsImVtYWlsIjoidG9tY2hhdDEwQGdtYWlsLmNvbSIsImlhdCI6MTc1MzgxODk1NiwiZXhwIjoxNzY5MzcwOTU2fQ.CieQ8CCN_xHrAdO0g070KaxG81QO5fpUOjt_VPuHpXk	2026-01-25 20:55:56.425	2025-07-29 20:24:25.002327
 106	32	eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MzIsImVtYWlsIjoidG9tcGF5YW4xNzEwQGdtYWlsLmNvbSIsImlhdCI6MTc1MjY4MTExNywiZXhwIjoxNzY4MjMzMTE3fQ.xOLhB1teCw3K8orXklzJMG4aTsk8Hu4OtB1t6kvS_nw	2026-01-12 16:51:57.898	2025-07-16 17:51:57.900198
 107	32	eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MzIsImVtYWlsIjoidG9tcGF5YW4xNzEwQGdtYWlsLmNvbSIsImlhdCI6MTc1MjY4MTIyNCwiZXhwIjoxNzY4MjMzMjI0fQ.SLcVjtwJBjM1XSkQdVjDyOYYPNByEc7b8hsCUouVnAg	2026-01-12 16:53:44.125	2025-07-16 17:53:44.130584
 70	32	eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MzIsImVtYWlsIjoidG9tcGF5YW4xNzEwQGdtYWlsLmNvbSIsImlhdCI6MTc0ODY4MTkyNiwiZXhwIjoxNzY0MjMzOTI2fQ.7ffD7dZLmuYhWiMVJ56kr2D8yk6ZXPT1PZBwlmUcAuU	2025-11-27 09:58:46.361	2025-05-31 10:56:51.818549
@@ -1176,9 +1212,12 @@ COPY public.refresh_tokens (id, user_id, refresh_token, expires_at, created_at) 
 65	32	eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MzIsImVtYWlsIjoidG9tcGF5YW4xNzEwQGdtYWlsLmNvbSIsImlhdCI6MTc0ODU4OTgwOSwiZXhwIjoxNzY0MTQxODA5fQ.5JR-4gLef8CkEAVZCifT8WIS61aaaWzTRS6Oe67gGdo	2025-11-26 08:23:29.672	2025-05-30 07:55:31.615536
 112	32	eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MzIsImVtYWlsIjoidG9tcGF5YW4xNzEwQGdtYWlsLmNvbSIsImlhdCI6MTc1MjY4MjMzMCwiZXhwIjoxNzY4MjM0MzMwfQ.y9NF_2C13m5ED5YFnVORWqNFJ5F5srJBdKHGljADiy0	2026-01-12 17:12:10.735	2025-07-16 18:12:10.736735
 117	32	eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MzIsImVtYWlsIjoidG9tcGF5YW4xNzEwQGdtYWlsLmNvbSIsImlhdCI6MTc1MjY4ODMwNCwiZXhwIjoxNzY4MjQwMzA0fQ.azf0WU0NoijSyPv9rT4TTJPh5ZNLYDroINnuL5QxR9M	2026-01-12 18:51:44.941	2025-07-16 19:51:44.942181
+203	42	eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6NDIsImVtYWlsIjoic2FwaWVuc0BnbWFpbC5jb20iLCJpYXQiOjE3NTM5NjkzMDYsImV4cCI6MTc2OTUyMTMwNn0.E8AmTNIbY1s3MSMddySh2PzQrUwt4l6ZAYkUoYSzqi0	2026-01-27 14:41:46.877	2025-07-31 15:41:46.877516
+205	42	eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6NDIsImVtYWlsIjoic2FwaWVuc0BnbWFpbC5jb20iLCJpYXQiOjE3NTM5NzM1OTEsImV4cCI6MTc2OTUyNTU5MX0.b94ssHOp3K5mkHVI377iTGecPdOaiG6ghrXuLci9meo	2026-01-27 15:53:11.077	2025-07-31 16:53:11.079687
 80	32	eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MzIsImVtYWlsIjoidG9tcGF5YW4xNzEwQGdtYWlsLmNvbSIsImlhdCI6MTc1MTIxOTE5OSwiZXhwIjoxNzY2NzcxMTk5fQ.mJIXvVgmy_nPV85jyAO7K-JjEPQaUDGd652IaIrgh8c	2025-12-26 18:46:39.394	2025-06-29 16:45:14.381511
 127	32	eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MzIsImVtYWlsIjoidG9tcGF5YW4xNzEwQGdtYWlsLmNvbSIsImlhdCI6MTc1MjY4OTU0NCwiZXhwIjoxNzY4MjQxNTQ0fQ.ld8yW7-ycox-znVUNLmQivsdZI9L3xzH7Y_a-cZ7uRs	2026-01-12 19:12:24.643	2025-07-16 20:12:24.645415
 128	32	eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MzIsImVtYWlsIjoidG9tcGF5YW4xNzEwQGdtYWlsLmNvbSIsImlhdCI6MTc1MjY4OTU5NywiZXhwIjoxNzY4MjQxNTk3fQ.X-yodIdNTPrE6_siGeeOKcT_bnAtTi9604YXIHjJ7RU	2026-01-12 19:13:17.49	2025-07-16 20:13:17.492339
+179	32	eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MzIsImVtYWlsIjoidG9tcGF5YW4xNzEwQGdtYWlsLmNvbSIsImlhdCI6MTc1MzcwNDQ3MCwiZXhwIjoxNzY5MjU2NDcwfQ.MHm6aaa9qlC65FieTCZg2mts8OYn40kxGrYhZ-3vng4	2026-01-24 13:07:50.506	2025-07-28 13:38:18.857989
 130	32	eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MzIsImVtYWlsIjoidG9tcGF5YW4xNzEwQGdtYWlsLmNvbSIsImlhdCI6MTc1MjY4OTY2MCwiZXhwIjoxNzY4MjQxNjYwfQ.YA6fT3KoLmaADAOcpyI1oA8sE19ZmXhIfuWIJHXenB8	2026-01-12 19:14:20.443	2025-07-16 20:14:20.450207
 131	32	eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MzIsImVtYWlsIjoidG9tcGF5YW4xNzEwQGdtYWlsLmNvbSIsImlhdCI6MTc1MjY4OTc0NywiZXhwIjoxNzY4MjQxNzQ3fQ.GtsLR3bpBqUSXqvx3Ei1dMjffOqcpSCWnt3f52A8a4A	2026-01-12 19:15:47.919	2025-07-16 20:15:47.921957
 132	32	eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MzIsImVtYWlsIjoidG9tcGF5YW4xNzEwQGdtYWlsLmNvbSIsImlhdCI6MTc1MjY4OTc1OCwiZXhwIjoxNzY4MjQxNzU4fQ._vLlyrciB2LaC31gpcQ2l6rfq9C7lA_SlmGB6XaytKk	2026-01-12 19:15:58.392	2025-07-16 20:15:58.393736
@@ -1190,14 +1229,42 @@ COPY public.refresh_tokens (id, user_id, refresh_token, expires_at, created_at) 
 121	32	eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MzIsImVtYWlsIjoidG9tcGF5YW4xNzEwQGdtYWlsLmNvbSIsImlhdCI6MTc1MjY4ODM1OCwiZXhwIjoxNzY4MjQwMzU4fQ.wWww_mwnry2tWk8gCmSaYVrcZ7zYxHK6rFtbpCLM6P8	2026-01-12 18:52:38.111	2025-07-16 19:52:36.186075
 122	32	eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MzIsImVtYWlsIjoidG9tcGF5YW4xNzEwQGdtYWlsLmNvbSIsImlhdCI6MTc1MjY4ODM1OCwiZXhwIjoxNzY4MjQwMzU4fQ.wWww_mwnry2tWk8gCmSaYVrcZ7zYxHK6rFtbpCLM6P8	2026-01-12 18:52:38.148	2025-07-16 19:52:38.164186
 123	32	eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MzIsImVtYWlsIjoidG9tcGF5YW4xNzEwQGdtYWlsLmNvbSIsImlhdCI6MTc1MjY4ODM1OCwiZXhwIjoxNzY4MjQwMzU4fQ.wWww_mwnry2tWk8gCmSaYVrcZ7zYxHK6rFtbpCLM6P8	2026-01-12 18:52:38.152	2025-07-16 19:52:38.164951
+182	41	eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6NDEsImVtYWlsIjoidG9tY2hhdDEwQGdtYWlsLmNvbSIsImlhdCI6MTc1Mzc2ODEwNywiZXhwIjoxNzY5MzIwMTA3fQ.Hs-aQlnJureXXioAZA5hkscz9BDpAN4VN0szUFjSzew	2026-01-25 06:48:27.187	2025-07-29 07:33:09.064236
 124	32	eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MzIsImVtYWlsIjoidG9tcGF5YW4xNzEwQGdtYWlsLmNvbSIsImlhdCI6MTc1MjY4ODk3NSwiZXhwIjoxNzY4MjQwOTc1fQ.NFFcRBiXzyVdEqc_XkWeEe03h93l_iqfCCYoxBH2kIk	2026-01-12 19:02:55.995	2025-07-16 19:54:30.054239
 125	32	eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MzIsImVtYWlsIjoidG9tcGF5YW4xNzEwQGdtYWlsLmNvbSIsImlhdCI6MTc1MjY4OTAzNiwiZXhwIjoxNzY4MjQxMDM2fQ.Ms5TlD8ZC6KdWrtikJi6LjBqvoh9TFBPKsUxL0dvziQ	2026-01-12 19:03:56.365	2025-07-16 20:03:42.902436
 175	41	eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6NDEsImVtYWlsIjoidG9tY2hhdDEwQGdtYWlsLmNvbSIsImlhdCI6MTc1MzYwMTU4MSwiZXhwIjoxNzY5MTUzNTgxfQ.zyImhbDPFp0m-CpACYgqevI-R33C7TFv_gHjyYTYqYM	2026-01-23 08:33:01.829	2025-07-25 23:20:59.000163
 138	35	eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MzUsImVtYWlsIjoidG9tdGVzdG1kcEBnbWFpbC5jb20iLCJpYXQiOjE3NTI3Mjk2NTAsImV4cCI6MTc2ODI4MTY1MH0.lii0M3WQNlFz9uWGUNpyMu7LZQAq_LEo7DhBBORcZPk	2026-01-13 06:20:50.385	2025-07-16 23:14:54.329116
 139	33	eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MzMsImVtYWlsIjoibGViaWd0b21AZ21haWwuY29tIiwiaWF0IjoxNzUyNzI5NzY3LCJleHAiOjE3NjgyODE3Njd9.-NIBe9ssqmkPDEFev5z8hSfVlXNErpGrVV_VDf8mNxk	2026-01-13 06:22:47.781	2025-07-17 07:22:47.783109
 140	33	eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MzMsImVtYWlsIjoibGViaWd0b21AZ21haWwuY29tIiwiaWF0IjoxNzUyNzI5Nzk2LCJleHAiOjE3NjgyODE3OTZ9.xKSgAdLjfmDysB6ak9jale155Muyc8Zr6A2fLYu5vZc	2026-01-13 06:23:16.171	2025-07-17 07:23:16.174221
+191	41	eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6NDEsImVtYWlsIjoidG9tY2hhdDEwQGdtYWlsLmNvbSIsImlhdCI6MTc1MzgwOTA3NiwiZXhwIjoxNzY5MzYxMDc2fQ.sEwdBlkrpr8i9p8v-P6qndrY6qSiKJLOdv8MGb18RR8	2026-01-25 18:11:16.911	2025-07-29 10:07:20.246893
+204	42	eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6NDIsImVtYWlsIjoic2FwaWVuc0BnbWFpbC5jb20iLCJpYXQiOjE3NTM5NzAzMjEsImV4cCI6MTc2OTUyMjMyMX0.Kk8XeV0zm1wX63jSSxBp63DT2qqRfIJSd0VOj0yOtNw	2026-01-27 14:58:41.218	2025-07-31 15:58:41.220196
+206	42	eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6NDIsImVtYWlsIjoic2FwaWVuc0BnbWFpbC5jb20iLCJpYXQiOjE3NTM5NzM2NjAsImV4cCI6MTc2OTUyNTY2MH0.vZ1c4yoEOwSLiUZr92oLYXBdzvvgjY8AvRyTeT-ayrY	2026-01-27 15:54:20.783	2025-07-31 16:54:20.785208
 156	32	eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MzIsImVtYWlsIjoidG9tcGF5YW4xNzEwQGdtYWlsLmNvbSIsImlhdCI6MTc1Mjk5NTc2NCwiZXhwIjoxNzY4NTQ3NzY0fQ.aYXVAIGHb0ibvwkUmRtmf8jUKrNWBu2PAyy4Cxuv8zo	2026-01-16 08:16:04.065	2025-07-20 09:16:04.068444
+198	32	eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MzIsImVtYWlsIjoidG9tcGF5YW4xNzEwQGdtYWlsLmNvbSIsImlhdCI6MTc1Mzk0NzYwNiwiZXhwIjoxNzY5NDk5NjA2fQ.EiVFNO9AZDEiIp8RQsMBXwMf16ANMa5xxEAof36zRz8	2026-01-27 08:40:06.272	2025-07-31 07:43:47.129689
+202	32	eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MzIsImVtYWlsIjoidG9tcGF5YW4xNzEwQGdtYWlsLmNvbSIsImlhdCI6MTc1Mzk2OTI1NiwiZXhwIjoxNzY5NTIxMjU2fQ.aDqBDfZw5TU-BC7hdV_6wha8Hyn0PQyaeylPY1jsFHU	2026-01-27 14:40:56.14	2025-07-31 15:16:26.259081
+207	42	eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6NDIsImVtYWlsIjoic2FwaWVuc0BnbWFpbC5jb20iLCJpYXQiOjE3NTM5NzM3NzAsImV4cCI6MTc2OTUyNTc3MH0.-dRPDxW6s7hVynY1p_sQ_k8TPypfNfX2pgpKt_OFNqc	2026-01-27 15:56:10.777	2025-07-31 16:56:10.779657
+201	32	eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MzIsImVtYWlsIjoidG9tcGF5YW4xNzEwQGdtYWlsLmNvbSIsImlhdCI6MTc1Mzk2OTI1NiwiZXhwIjoxNzY5NTIxMjU2fQ.aDqBDfZw5TU-BC7hdV_6wha8Hyn0PQyaeylPY1jsFHU	2026-01-27 14:40:56.14	2025-07-31 14:30:22.327419
+208	42	eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6NDIsImVtYWlsIjoic2FwaWVuc0BnbWFpbC5jb20iLCJpYXQiOjE3NTM5NzQzMjQsImV4cCI6MTc2OTUyNjMyNH0.kQoCIuI7De3N0fXalJHHQgVino9D7Tvi5IJu0_PbrSM	2026-01-27 16:05:24.096	2025-07-31 17:05:24.097836
+209	42	eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6NDIsImVtYWlsIjoic2FwaWVuc0BnbWFpbC5jb20iLCJpYXQiOjE3NTM5NzQ0MTksImV4cCI6MTc2OTUyNjQxOX0.SGlT6Pk2yIqZADAsEixItRVVmNa_LqIYogWaiNi1ut4	2026-01-27 16:06:59.43	2025-07-31 17:06:59.431877
+210	42	eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6NDIsImVtYWlsIjoic2FwaWVuc0BnbWFpbC5jb20iLCJpYXQiOjE3NTM5NzQ1NjMsImV4cCI6MTc2OTUyNjU2M30.yFtYiQvKALPqR821we78Cj1rXa2ZLauTaA74EGwbtjE	2026-01-27 16:09:23.463	2025-07-31 17:09:23.470791
 162	32	eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MzIsImVtYWlsIjoidG9tcGF5YW4xNzEwQGdtYWlsLmNvbSIsImlhdCI6MTc1MzI3ODQyNCwiZXhwIjoxNzY4ODMwNDI0fQ.p3YtqYowI4_RR3xEanoauLiN_OEOKjx-nbVVM7-7xW0	2026-01-19 14:47:04.969	2025-07-23 13:57:33.071252
+211	42	eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6NDIsImVtYWlsIjoic2FwaWVuc0BnbWFpbC5jb20iLCJpYXQiOjE3NTM5NzQ1NjMsImV4cCI6MTc2OTUyNjU2M30.yFtYiQvKALPqR821we78Cj1rXa2ZLauTaA74EGwbtjE	2026-01-27 16:09:23.562	2025-07-31 17:09:23.56399
+212	42	eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6NDIsImVtYWlsIjoic2FwaWVuc0BnbWFpbC5jb20iLCJpYXQiOjE3NTM5NzQ3MzUsImV4cCI6MTc2OTUyNjczNX0.GvW9FMcPRaEbNCFm9aTGx37H3djOqzm0hhky4jmHGww	2026-01-27 16:12:15.753	2025-07-31 17:12:15.755577
+213	42	eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6NDIsImVtYWlsIjoic2FwaWVuc0BnbWFpbC5jb20iLCJpYXQiOjE3NTM5NzQ4MjYsImV4cCI6MTc2OTUyNjgyNn0.qG1w0l3ZxKKS5EjCmLoUt8Kk5gjmfTt761iby9FbHbs	2026-01-27 16:13:47.002	2025-07-31 17:13:47.005042
+214	42	eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6NDIsImVtYWlsIjoic2FwaWVuc0BnbWFpbC5jb20iLCJpYXQiOjE3NTM5NzY2MzgsImV4cCI6MTc2OTUyODYzOH0.4vL3vqIPz5VmYzhR4V38KSiugh4bjTbEkBCmjl6yBv0	2026-01-27 16:43:58.196	2025-07-31 17:43:58.198182
+215	42	eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6NDIsImVtYWlsIjoic2FwaWVuc0BnbWFpbC5jb20iLCJpYXQiOjE3NTM5NzY3NjYsImV4cCI6MTc2OTUyODc2Nn0.SZm-A0-xW0iLjXu-JVYIk0RW6HDAhMMq1pT2AmKW5NE	2026-01-27 16:46:06.957	2025-07-31 17:46:06.959455
+216	42	eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6NDIsImVtYWlsIjoic2FwaWVuc0BnbWFpbC5jb20iLCJpYXQiOjE3NTM5NzcwOTksImV4cCI6MTc2OTUyOTA5OX0.qwDOCXv9n-onLuwcY9eq23PiBKAOE9-hasWZW4Veqj4	2026-01-27 16:51:39.396	2025-07-31 17:51:39.398483
+217	42	eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6NDIsImVtYWlsIjoic2FwaWVuc0BnbWFpbC5jb20iLCJpYXQiOjE3NTM5ODEzMDMsImV4cCI6MTc2OTUzMzMwM30.sjiW44--SZA3i2FLme964aEBSkPBZjtRraQ8GaIyE-o	2026-01-27 18:01:43.144	2025-07-31 18:02:39.317817
+218	42	eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6NDIsImVtYWlsIjoic2FwaWVuc0BnbWFpbC5jb20iLCJpYXQiOjE3NTM5ODEzMjgsImV4cCI6MTc2OTUzMzMyOH0.s7pFpP4NkLnCQ9sNE1wbDs1r_BF0CB2fhzbXlcZmaiI	2026-01-27 18:02:08.592	2025-07-31 19:02:08.649073
+219	42	eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6NDIsImVtYWlsIjoic2FwaWVuc0BnbWFpbC5jb20iLCJpYXQiOjE3NTM5ODE0NjUsImV4cCI6MTc2OTUzMzQ2NX0.h6bjWp6LfInKGg1DkZ21onbUsrQxv8FYZYBzW_E483w	2026-01-27 18:04:25.435	2025-07-31 19:04:25.437785
+220	42	eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6NDIsImVtYWlsIjoic2FwaWVuc0BnbWFpbC5jb20iLCJpYXQiOjE3NTM5ODE4NjksImV4cCI6MTc2OTUzMzg2OX0.19EG6YuhMHDWvvasNcWbxltlB45gIcntx57ptJn_biI	2026-01-27 18:11:09.604	2025-07-31 19:11:09.605268
+221	42	eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6NDIsImVtYWlsIjoic2FwaWVuc0BnbWFpbC5jb20iLCJpYXQiOjE3NTM5ODI1ODIsImV4cCI6MTc2OTUzNDU4Mn0.CMoo83iUznR2NMbPBD0iB1aDxXDydRTUL54VV9oHi_8	2026-01-27 18:23:02.87	2025-07-31 19:23:02.872361
+222	42	eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6NDIsImVtYWlsIjoic2FwaWVuc0BnbWFpbC5jb20iLCJpYXQiOjE3NTM5ODMzOTEsImV4cCI6MTc2OTUzNTM5MX0.xa5wYemoe5JGYuuYJIba0KdWedQjH0UndeXdcI9ev7g	2026-01-27 18:36:31.348	2025-07-31 19:36:31.349836
+223	42	eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6NDIsImVtYWlsIjoic2FwaWVuc0BnbWFpbC5jb20iLCJpYXQiOjE3NTM5ODM2MjcsImV4cCI6MTc2OTUzNTYyN30.A_pp4f7eXa6xTqHmg9Nx-07DN2wDB8ESk8z3cxa0h4c	2026-01-27 18:40:27.937	2025-07-31 19:40:27.943604
+224	42	eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6NDIsImVtYWlsIjoic2FwaWVuc0BnbWFpbC5jb20iLCJpYXQiOjE3NTM5ODM2MzUsImV4cCI6MTc2OTUzNTYzNX0.ggk5sAjtgnOIBc4OFDbdk3NrQv4c3sQNt4ch6BM3I5I	2026-01-27 18:40:35.369	2025-07-31 19:40:35.375446
+225	42	eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6NDIsImVtYWlsIjoic2FwaWVuc0BnbWFpbC5jb20iLCJpYXQiOjE3NTM5ODM2MzUsImV4cCI6MTc2OTUzNTYzNX0.ggk5sAjtgnOIBc4OFDbdk3NrQv4c3sQNt4ch6BM3I5I	2026-01-27 18:40:35.52	2025-07-31 19:40:35.525063
+226	42	eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6NDIsImVtYWlsIjoic2FwaWVuc0BnbWFpbC5jb20iLCJpYXQiOjE3NTM5ODM2NjYsImV4cCI6MTc2OTUzNTY2Nn0.j1N_PWDp3nbg3OQMT83atwmwYfFHZVq__G1Z0pf_npc	2026-01-27 18:41:06.632	2025-07-31 19:41:06.633483
+227	42	eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6NDIsImVtYWlsIjoic2FwaWVuc0BnbWFpbC5jb20iLCJpYXQiOjE3NTM5ODM2NzUsImV4cCI6MTc2OTUzNTY3NX0.lNyIzt91X2sC_bAn9aEE1s5AqiMa7sqKTShdLfbZqrA	2026-01-27 18:41:15.951	2025-07-31 19:41:15.955638
 \.
 
 
@@ -1234,10 +1301,45 @@ COPY public.reservation_slots (id, provider_id, offer_slug, date, start_hour, en
 41	5	be82fc03-325c-4453-96b8-2ae7fd028222	2025-07-25	07:00	08:00	3	500.00	available	2025-07-25 22:50:16.899993	2025-07-25 22:50:16.899993
 24	5	be82fc03-325c-4453-96b8-2ae7fd028222	2025-07-31	08:00	09:00	4	500.00	full	2025-07-10 11:30:49.960711	2025-07-25 23:48:06.316447
 43	5	01bd532b-0eac-4c79-a2a2-bbdb6a98b172	2025-07-30	07:00	08:00	3	75.00	available	2025-07-26 10:32:12.751639	2025-07-26 10:32:12.751639
-44	5	be82fc03-325c-4453-96b8-2ae7fd028222	2025-07-31	09:00	10:30	3	500.00	available	2025-07-26 11:03:30.356815	2025-07-26 11:03:30.356815
 45	5	be82fc03-325c-4453-96b8-2ae7fd028222	2025-07-26	08:15	09:15	3	500.00	available	2025-07-26 11:12:23.859596	2025-07-26 11:12:23.859596
 46	5	be82fc03-325c-4453-96b8-2ae7fd028222	2025-07-31	07:00	08:00	3	500.00	available	2025-07-26 11:14:46.705031	2025-07-26 11:14:46.705031
 47	5	be82fc03-325c-4453-96b8-2ae7fd028222	2025-07-31	09:00	10:00	4	500.00	full	2025-07-26 11:21:30.801781	2025-07-26 11:21:30.801781
+44	5	be82fc03-325c-4453-96b8-2ae7fd028222	2025-07-31	09:00	10:30	4	500.00	full	2025-07-26 11:03:30.356815	2025-07-28 10:32:51.208967
+48	5	be82fc03-325c-4453-96b8-2ae7fd028222	2025-08-01	07:00	08:00	3	500.00	available	2025-07-28 11:04:18.989902	2025-07-28 11:04:18.989902
+49	5	be82fc03-325c-4453-96b8-2ae7fd028222	2025-08-01	16:00	17:00	4	500.00	full	2025-07-28 11:06:10.926491	2025-07-28 11:32:06.440876
+50	5	be82fc03-325c-4453-96b8-2ae7fd028222	2025-08-01	12:30	16:00	3	500.00	available	2025-07-28 11:55:18.556358	2025-07-28 11:55:18.556358
+51	5	be82fc03-325c-4453-96b8-2ae7fd028222	2025-08-01	18:00	23:45	4	500.00	full	2025-07-28 12:27:31.729157	2025-07-28 12:27:31.729157
+52	5	be82fc03-325c-4453-96b8-2ae7fd028222	2025-08-02	01:45	04:15	3	500.00	available	2025-07-28 13:41:59.982783	2025-07-28 13:41:59.982783
+53	5	be82fc03-325c-4453-96b8-2ae7fd028222	2025-08-02	08:15	09:15	3	500.00	available	2025-07-28 13:46:51.569148	2025-07-28 13:46:51.569148
+54	5	be82fc03-325c-4453-96b8-2ae7fd028222	2025-08-03	07:00	08:00	3	500.00	available	2025-07-28 13:58:21.313012	2025-07-28 13:58:21.313012
+55	5	be82fc03-325c-4453-96b8-2ae7fd028222	2025-08-03	08:00	09:00	3	500.00	available	2025-07-28 14:08:44.901557	2025-07-28 14:08:44.901557
+56	5	be82fc03-325c-4453-96b8-2ae7fd028222	2025-08-03	09:00	10:00	3	500.00	available	2025-07-28 14:14:37.042267	2025-07-28 14:14:37.042267
+57	5	be82fc03-325c-4453-96b8-2ae7fd028222	2025-08-03	10:00	11:00	3	500.00	available	2025-07-28 14:18:56.393992	2025-07-28 14:18:56.393992
+58	5	be82fc03-325c-4453-96b8-2ae7fd028222	2025-08-24	07:00	08:00	4	500.00	full	2025-07-28 15:00:37.522716	2025-07-28 15:00:37.522716
+59	5	be82fc03-325c-4453-96b8-2ae7fd028222	2025-08-23	01:45	04:15	3	500.00	available	2025-07-28 15:10:46.515333	2025-07-28 15:10:46.515333
+60	5	be82fc03-325c-4453-96b8-2ae7fd028222	2025-08-14	07:00	08:00	4	500.00	full	2025-07-28 19:31:29.202247	2025-07-28 19:31:29.202247
+61	5	be82fc03-325c-4453-96b8-2ae7fd028222	2025-08-16	01:45	04:15	3	500.00	available	2025-07-28 21:48:00.121492	2025-07-28 21:48:00.121492
+62	5	01bd532b-0eac-4c79-a2a2-bbdb6a98b172	2025-08-27	07:00	08:00	4	75.00	full	2025-07-29 07:36:48.025019	2025-07-29 07:36:48.025019
+64	5	6e7830e6-fd73-4ae1-9419-f47777fa6f95	2025-07-29	20:30	21:45	3	60.00	available	2025-07-29 07:49:15.304473	2025-07-29 07:49:15.304473
+65	5	d1eec0ec-f975-4b72-9fd9-b52b1ab964d2	2025-07-29	07:00	08:00	4	35.00	full	2025-07-29 07:59:52.9328	2025-07-29 07:59:52.9328
+63	5	6e7830e6-fd73-4ae1-9419-f47777fa6f95	2025-07-29	05:00	09:00	4	60.00	full	2025-07-29 07:45:30.859108	2025-07-29 10:16:25.264684
+66	5	147f15ce-3b5d-4dc2-bf4e-f0775c7fa726	2025-07-29	22:00	22:15	4	199.00	full	2025-07-29 10:19:58.494538	2025-07-29 10:34:53.593569
+67	5	77b2f91a-8d54-402a-93af-43e743dd13a5	2025-07-29	07:00	08:00	7	1599.00	available	2025-07-29 10:40:12.734207	2025-07-29 10:40:12.734207
+68	5	07782d1c-50b9-477e-9114-2a9892c08800	2025-07-31	07:00	08:00	3	999.00	available	2025-07-29 10:49:15.074714	2025-07-29 10:49:15.074714
+69	5	147f15ce-3b5d-4dc2-bf4e-f0775c7fa726	2025-07-29	08:00	09:00	4	199.00	full	2025-07-29 11:01:03.938337	2025-07-29 11:03:02.857764
+70	5	147f15ce-3b5d-4dc2-bf4e-f0775c7fa726	2025-07-29	07:00	08:00	4	199.00	full	2025-07-29 11:05:44.985397	2025-07-29 11:05:44.985397
+71	5	147f15ce-3b5d-4dc2-bf4e-f0775c7fa726	2025-07-29	14:00	16:00	4	199.00	full	2025-07-29 11:06:47.278974	2025-07-29 11:22:45.780186
+73	5	147f15ce-3b5d-4dc2-bf4e-f0775c7fa726	2025-08-05	07:00	08:00	3	199.00	available	2025-07-29 11:26:29.385207	2025-07-29 11:26:29.385207
+74	5	147f15ce-3b5d-4dc2-bf4e-f0775c7fa726	2025-08-05	08:00	09:00	3	199.00	available	2025-07-29 11:29:19.047787	2025-07-29 11:29:19.047787
+75	5	147f15ce-3b5d-4dc2-bf4e-f0775c7fa726	2025-08-05	22:00	22:15	3	199.00	available	2025-07-29 11:41:30.364102	2025-07-29 11:41:30.364102
+76	5	07782d1c-50b9-477e-9114-2a9892c08800	2025-08-14	07:00	08:00	3	999.00	available	2025-07-29 18:49:09.041635	2025-07-29 18:49:09.041635
+77	5	be82fc03-325c-4453-96b8-2ae7fd028222	2025-08-06	18:00	20:00	3	500.00	available	2025-07-29 18:54:02.256707	2025-07-29 18:54:02.256707
+78	5	01bd532b-0eac-4c79-a2a2-bbdb6a98b172	2025-08-20	07:00	08:00	3	75.00	available	2025-07-29 18:57:35.717959	2025-07-29 18:57:35.717959
+79	5	6e7830e6-fd73-4ae1-9419-f47777fa6f95	2025-08-05	13:00	14:45	3	60.00	available	2025-07-29 19:05:25.483479	2025-07-29 19:05:25.483479
+80	5	07782d1c-50b9-477e-9114-2a9892c08800	2025-08-07	07:00	08:00	4	999.00	full	2025-07-29 19:06:58.646491	2025-07-29 19:11:15.813649
+81	5	01bd532b-0eac-4c79-a2a2-bbdb6a98b172	2025-08-13	07:00	08:00	3	75.00	available	2025-07-29 19:13:18.7518	2025-07-29 19:13:18.7518
+82	5	6e7830e6-fd73-4ae1-9419-f47777fa6f95	2025-07-29	13:00	14:45	3	60.00	available	2025-07-29 21:56:36.820063	2025-07-29 21:56:36.820063
+72	5	07782d1c-50b9-477e-9114-2a9892c08800	2025-08-21	07:00	08:00	4	999.00	full	2025-07-29 11:13:58.953348	2025-07-29 22:03:21.722451
 \.
 
 
@@ -1253,42 +1355,85 @@ COPY public.reservations_creneaux_google_calendar (id, reservation_slots_id, pro
 -- Data for Name: reservations_individuals; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
-COPY public.reservations_individuals (id, user_id, slot_id, total_participants, total_price, payment_status, reservation_status, created_at, updated_at, nb_adult, nb_reduced, email, name, phone) FROM stdin;
-61	41	46	3	1500.00	paid	confirmed	2025-07-26 11:14:46.711256	2025-07-26 11:14:46.711256	1	2	tompayan1710@gmail.com	Survoler la Côte d'Azur en avion privé	+33765594097
-60	41	43	3	225.00	paid	confirmed	2025-07-26 10:32:12.760143	2025-07-26 10:32:12.760143	3	1	\N	\N	\N
-62	41	47	4	2000.00	paid	confirmed	2025-07-26 11:21:30.808917	2025-07-26 11:21:30.808917	2	2	tompayan1710@gmail.com	Clara BigBoss	+33765594097
-28	32	15	5	2500.00	paid	confirmed	2025-07-10 08:34:23.072957	2025-07-10 08:34:23.072957	3	1	\N	\N	\N
-29	32	15	1	500.00	paid	confirmed	2025-07-10 08:34:54.331603	2025-07-10 08:34:54.331603	3	1	\N	\N	\N
-30	32	16	6	3000.00	paid	confirmed	2025-07-10 08:35:30.869266	2025-07-10 08:35:30.869266	3	1	\N	\N	\N
-31	32	17	4	2000.00	paid	confirmed	2025-07-10 08:36:07.898516	2025-07-10 08:36:07.898516	3	1	\N	\N	\N
-32	32	17	2	1000.00	paid	confirmed	2025-07-10 08:36:35.081326	2025-07-10 08:36:35.081326	3	1	\N	\N	\N
-33	32	18	6	3000.00	paid	confirmed	2025-07-10 08:42:59.238173	2025-07-10 08:42:59.238173	3	1	\N	\N	\N
-34	32	19	6	3000.00	paid	confirmed	2025-07-10 08:45:04.761597	2025-07-10 08:45:04.761597	3	1	\N	\N	\N
-35	32	20	6	3000.00	paid	confirmed	2025-07-10 08:50:50.972323	2025-07-10 08:50:50.972323	3	1	\N	\N	\N
-36	32	21	4	2000.00	paid	confirmed	2025-07-10 08:51:47.694385	2025-07-10 08:51:47.694385	3	1	\N	\N	\N
-37	32	21	4	2000.00	paid	confirmed	2025-07-10 08:52:13.463512	2025-07-10 08:52:13.463512	3	1	\N	\N	\N
-38	32	22	5	2500.00	paid	confirmed	2025-07-10 09:15:19.173118	2025-07-10 09:15:19.173118	3	1	\N	\N	\N
-39	32	23	2	1000.00	paid	confirmed	2025-07-10 09:18:39.40762	2025-07-10 09:18:39.40762	3	1	\N	\N	\N
-40	32	24	1	500.00	paid	confirmed	2025-07-10 11:30:49.962962	2025-07-10 11:30:49.962962	3	1	\N	\N	\N
-41	32	25	2	1000.00	paid	confirmed	2025-07-11 10:10:52.730855	2025-07-11 10:10:52.730855	3	1	\N	\N	\N
-42	32	26	5	2500.00	paid	confirmed	2025-07-11 13:24:14.387202	2025-07-11 13:24:14.387202	3	1	\N	\N	\N
-43	32	27	3	1500.00	paid	confirmed	2025-07-11 13:24:39.798575	2025-07-11 13:24:39.798575	3	1	\N	\N	\N
-44	32	28	6	3000.00	paid	confirmed	2025-07-11 13:24:59.263823	2025-07-11 13:24:59.263823	3	1	\N	\N	\N
-45	32	29	6	210.00	paid	confirmed	2025-07-11 19:20:26.278489	2025-07-11 19:20:26.278489	3	1	\N	\N	\N
-46	32	30	2	1000.00	paid	confirmed	2025-07-11 19:37:35.146882	2025-07-11 19:37:35.146882	3	1	\N	\N	\N
-47	32	31	3	105.00	paid	confirmed	2025-07-12 08:02:41.11307	2025-07-12 08:02:41.11307	3	1	\N	\N	\N
-48	32	32	3	105.00	paid	confirmed	2025-07-12 08:03:02.028147	2025-07-12 08:03:02.028147	3	1	\N	\N	\N
-49	32	33	5	175.00	paid	confirmed	2025-07-12 08:03:23.961446	2025-07-12 08:03:23.961446	3	1	\N	\N	\N
-50	32	34	6	210.00	paid	confirmed	2025-07-12 08:03:40.966863	2025-07-12 08:03:40.966863	3	1	\N	\N	\N
-51	32	35	3	1500.00	paid	confirmed	2025-07-12 08:04:02.408694	2025-07-12 08:04:02.408694	3	1	\N	\N	\N
-52	32	36	5	2500.00	paid	confirmed	2025-07-12 08:04:23.696759	2025-07-12 08:04:23.696759	3	1	\N	\N	\N
-53	32	25	4	2000.00	paid	confirmed	2025-07-12 08:48:51.236175	2025-07-12 08:48:51.236175	3	1	\N	\N	\N
-54	32	37	5	2500.00	paid	confirmed	2025-07-15 15:34:46.881426	2025-07-15 15:34:46.881426	3	1	\N	\N	\N
-55	32	38	3	1500.00	paid	confirmed	2025-07-15 15:35:10.03184	2025-07-15 15:35:10.03184	3	1	\N	\N	\N
-56	32	39	3	2997.00	paid	confirmed	2025-07-17 18:50:06.913252	2025-07-17 18:50:06.913252	3	1	\N	\N	\N
-57	32	40	3	4797.00	paid	confirmed	2025-07-23 16:31:20.363593	2025-07-23 16:31:20.363593	3	1	\N	\N	\N
-58	32	41	3	1500.00	paid	confirmed	2025-07-25 22:50:16.91027	2025-07-25 22:50:16.91027	3	1	\N	\N	\N
-59	41	24	3	1500.00	paid	confirmed	2025-07-25 23:48:06.321012	2025-07-25 23:48:06.321012	3	1	\N	\N	\N
+COPY public.reservations_individuals (id, user_id, slot_id, total_participants, total_price, payment_status, reservation_status, created_at, updated_at, nb_adult, nb_reduced, email, name, phone, stripe_payment_intent_id) FROM stdin;
+61	41	46	3	1500.00	paid	confirmed	2025-07-26 11:14:46.711256	2025-07-26 11:14:46.711256	1	2	tompayan1710@gmail.com	Survoler la Côte d'Azur en avion privé	+33765594097	\N
+60	41	43	3	225.00	paid	confirmed	2025-07-26 10:32:12.760143	2025-07-26 10:32:12.760143	3	1	\N	\N	\N	\N
+66	32	49	1	500.00	paid	confirmed	2025-07-28 11:32:06.444489	2025-07-28 11:32:06.444489	1	0	tompayan1710@gmail.com	Tom Payan	+33765594097	\N
+71	32	54	3	1500.00	paid	confirmed	2025-07-28 13:58:21.316215	2025-07-28 13:58:21.316215	2	1	tompayan1710@gmail.com	PAYAN jean luc	+33765594097	\N
+76	43	59	3	1500.00	paid	confirmed	2025-07-28 15:10:46.51707	2025-07-28 15:10:46.51707	2	1	tompayan1710@gmail.com	Bac Pro	+33333333333	\N
+81	41	64	3	180.00	paid	confirmed	2025-07-29 07:49:15.307932	2025-07-29 07:49:15.307932	2	1	tompayan1710@gmail.com	Tableau	+33121212121	pi_3Rq6PI2f0HHvMFDt0iJ7Y37N
+86	41	67	7	11193.00	paid	confirmed	2025-07-29 10:40:12.740136	2025-07-29 10:40:12.740136	6	1	tompayan1710@gmail.com	Files	+33765594097	pi_3Rq94n2f0HHvMFDt1kwdjm1Z
+91	41	71	3	597.00	paid	confirmed	2025-07-29 11:06:47.283546	2025-07-29 11:06:47.283546	2	1	tompayan1710@gmail.com	Page	+33765594097	pi_3Rq9UT2f0HHvMFDt1FfjImLa
+96	41	75	3	597.00	paid	confirmed	2025-07-29 11:41:30.366233	2025-07-29 11:41:30.366233	2	1	tompayan1710@gmail.com	Tom Payan	+33765594097	pi_3RqA282f0HHvMFDt1b16JzUV
+101	41	80	3	2997.00	paid	confirmed	2025-07-29 19:06:58.654559	2025-07-29 19:06:58.654559	2	1	tompayan1710@gmail.com	Taxerlesriches	+33765594097	pi_3RqGzC2f0HHvMFDt0YMus4Fw
+62	41	47	4	2000.00	paid	confirmed	2025-07-26 11:21:30.808917	2025-07-26 11:21:30.808917	2	2	tompayan1710@gmail.com	Clara BigBoss	+33765594097	\N
+67	32	50	3	1500.00	paid	confirmed	2025-07-28 11:55:18.56468	2025-07-28 11:55:18.56468	2	1	tompayan1710@gmail.com	Tom Payan	+33765594097	\N
+72	32	55	3	1500.00	paid	confirmed	2025-07-28 14:08:44.908178	2025-07-28 14:08:44.908178	2	1	tompayan1710@gmail.com	LeClara Jean Luc	+33999999999	\N
+77	32	60	4	2000.00	paid	confirmed	2025-07-28 19:31:29.206541	2025-07-28 19:31:29.206541	4	0	tompayan1710@gmail.com	AirUp	+33199999999	pi_3RputK2f0HHvMFDt0fnuTV5U
+82	41	65	4	140.00	paid	confirmed	2025-07-29 07:59:52.939111	2025-07-29 07:59:52.939111	3	1	clarascipione1@gmail.com	QRcode	+33434343434	pi_3Rq6Zb2f0HHvMFDt0FEOiJ8K
+87	41	68	3	2997.00	paid	confirmed	2025-07-29 10:49:15.077586	2025-07-29 10:49:15.077586	2	1	tompayan1710@gmail.com	clavier	+33765594097	pi_3Rq9DY2f0HHvMFDt0J3WLdOG
+28	32	15	5	2500.00	paid	confirmed	2025-07-10 08:34:23.072957	2025-07-10 08:34:23.072957	3	1	\N	\N	\N	\N
+29	32	15	1	500.00	paid	confirmed	2025-07-10 08:34:54.331603	2025-07-10 08:34:54.331603	3	1	\N	\N	\N	\N
+30	32	16	6	3000.00	paid	confirmed	2025-07-10 08:35:30.869266	2025-07-10 08:35:30.869266	3	1	\N	\N	\N	\N
+31	32	17	4	2000.00	paid	confirmed	2025-07-10 08:36:07.898516	2025-07-10 08:36:07.898516	3	1	\N	\N	\N	\N
+32	32	17	2	1000.00	paid	confirmed	2025-07-10 08:36:35.081326	2025-07-10 08:36:35.081326	3	1	\N	\N	\N	\N
+33	32	18	6	3000.00	paid	confirmed	2025-07-10 08:42:59.238173	2025-07-10 08:42:59.238173	3	1	\N	\N	\N	\N
+92	41	72	3	2997.00	paid	confirmed	2025-07-29 11:13:58.958173	2025-07-29 11:13:58.958173	2	1	tompayan1710@gmail.com	Ecriture	+33765594097	pi_3Rq9bT2f0HHvMFDt06dACaRv
+97	41	76	3	2997.00	paid	confirmed	2025-07-29 18:49:09.054143	2025-07-29 18:49:09.054143	2	1	tompayan1710@gmail.com	Lacarte Céline	+33765594097	pi_3RqGhr2f0HHvMFDt0dNXZeYg
+102	41	80	1	999.00	paid	confirmed	2025-07-29 19:11:15.820233	2025-07-29 19:11:15.820233	1	0	tompayan1710@gmail.com	Iphone	+33765594097	pi_3RqH3N2f0HHvMFDt1qWuWNmY
+63	32	44	1	500.00	paid	confirmed	2025-07-28 10:32:51.21376	2025-07-28 10:32:51.21376	1	0	tompayan1710@gmail.com	Tom Payan	+33765594097	\N
+68	42	51	4	2000.00	paid	confirmed	2025-07-28 12:27:31.733281	2025-07-28 12:27:31.733281	3	1	tompayan1710@gmail.com	C’est quoi tom	+33765584864	\N
+73	32	56	3	1500.00	paid	confirmed	2025-07-28 14:14:37.045485	2025-07-28 14:14:37.045485	2	1	tompayan1710@gmail.com	LacarteClara	+33888888888	\N
+78	32	61	3	1500.00	paid	confirmed	2025-07-28 21:48:00.129304	2025-07-28 21:48:00.129304	2	1	tompayan1710@gmail.com	Carnet	+33765594097	pi_3Rpx1R2f0HHvMFDt0NSXOd8z
+83	41	63	1	60.00	paid	confirmed	2025-07-29 10:16:25.26801	2025-07-29 10:16:25.26801	1	0	clarascipione1@gmail.com	Souris	+33765594097	pi_3Rq8hf2f0HHvMFDt13EIxxyI
+88	41	69	3	597.00	paid	confirmed	2025-07-29 11:01:03.945289	2025-07-29 11:01:03.945289	2	1	tompayan1710@gmail.com	Clés	+33765594097	pi_3Rq9Oz2f0HHvMFDt12cekcl8
+93	41	71	1	199.00	paid	confirmed	2025-07-29 11:22:45.786745	2025-07-29 11:22:45.786745	1	0	tompayan1710@gmail.com	Pause	+33765594097	pi_3Rq9jx2f0HHvMFDt1EeFNEyi
+98	41	77	3	1500.00	paid	confirmed	2025-07-29 18:54:02.266496	2025-07-29 18:54:02.266496	2	1	tompayan1710@gmail.com	Avion	+33765594097	pi_3RqGmd2f0HHvMFDt1BB7uc7r
+103	41	81	3	225.00	paid	confirmed	2025-07-29 19:13:18.759187	2025-07-29 19:13:18.759187	2	1	tompayan1710@gmail.com	Cabriolet	+33765594097	pi_3RqH5N2f0HHvMFDt0LMWnLHB
+34	32	19	6	3000.00	paid	confirmed	2025-07-10 08:45:04.761597	2025-07-10 08:45:04.761597	3	1	\N	\N	\N	\N
+35	32	20	6	3000.00	paid	confirmed	2025-07-10 08:50:50.972323	2025-07-10 08:50:50.972323	3	1	\N	\N	\N	\N
+36	32	21	4	2000.00	paid	confirmed	2025-07-10 08:51:47.694385	2025-07-10 08:51:47.694385	3	1	\N	\N	\N	\N
+37	32	21	4	2000.00	paid	confirmed	2025-07-10 08:52:13.463512	2025-07-10 08:52:13.463512	3	1	\N	\N	\N	\N
+38	32	22	5	2500.00	paid	confirmed	2025-07-10 09:15:19.173118	2025-07-10 09:15:19.173118	3	1	\N	\N	\N	\N
+39	32	23	2	1000.00	paid	confirmed	2025-07-10 09:18:39.40762	2025-07-10 09:18:39.40762	3	1	\N	\N	\N	\N
+40	32	24	1	500.00	paid	confirmed	2025-07-10 11:30:49.962962	2025-07-10 11:30:49.962962	3	1	\N	\N	\N	\N
+41	32	25	2	1000.00	paid	confirmed	2025-07-11 10:10:52.730855	2025-07-11 10:10:52.730855	3	1	\N	\N	\N	\N
+42	32	26	5	2500.00	paid	confirmed	2025-07-11 13:24:14.387202	2025-07-11 13:24:14.387202	3	1	\N	\N	\N	\N
+43	32	27	3	1500.00	paid	confirmed	2025-07-11 13:24:39.798575	2025-07-11 13:24:39.798575	3	1	\N	\N	\N	\N
+44	32	28	6	3000.00	paid	confirmed	2025-07-11 13:24:59.263823	2025-07-11 13:24:59.263823	3	1	\N	\N	\N	\N
+45	32	29	6	210.00	paid	confirmed	2025-07-11 19:20:26.278489	2025-07-11 19:20:26.278489	3	1	\N	\N	\N	\N
+64	32	48	3	1500.00	paid	confirmed	2025-07-28 11:04:19.000958	2025-07-28 11:04:19.000958	2	1	tompayan1710@gmail.com	Tom Payan	+33765594097	\N
+69	32	52	3	1500.00	paid	confirmed	2025-07-28 13:41:59.985403	2025-07-28 13:41:59.985403	2	1	tompayan1710@gmail.com	BigtomClara	+33765594097	\N
+74	32	57	3	1500.00	paid	confirmed	2025-07-28 14:18:56.401283	2025-07-28 14:18:56.401283	2	1	tompayan1710@gmail.com	LECHAT clara	+33777777777	\N
+79	41	62	4	300.00	paid	confirmed	2025-07-29 07:36:48.029109	2025-07-29 07:36:48.029109	4	0	tompayan1710@gmail.com	Stabilot	+33676767676	pi_3Rq6DE2f0HHvMFDt13lvkTdK
+84	41	66	1	199.00	paid	confirmed	2025-07-29 10:19:58.499942	2025-07-29 10:19:58.499942	1	0	clarascipione1@gmail.com	Montre	+33232323232	pi_3Rq8lA2f0HHvMFDt1vJAz4FG
+89	41	69	1	199.00	paid	confirmed	2025-07-29 11:03:02.86171	2025-07-29 11:03:02.86171	1	0	tompayan1710@gmail.com	MarquePage	+33765594097	pi_3Rq9Qs2f0HHvMFDt0KKoOTQD
+94	41	73	3	597.00	paid	confirmed	2025-07-29 11:26:29.387086	2025-07-29 11:26:29.387086	2	1	tompayan1710@gmail.com	PageLivres	+33765594097	pi_3Rq9na2f0HHvMFDt1vic8zLu
+99	41	78	3	225.00	paid	confirmed	2025-07-29 18:57:35.725524	2025-07-29 18:57:35.725524	2	1	tompayan1710@gmail.com	Pc	+33765594097	pi_3RqGq92f0HHvMFDt0jsPmo57
+104	41	82	3	180.00	paid	confirmed	2025-07-29 21:56:36.826965	2025-07-29 21:56:36.826965	2	1	tompayan1710@gmail.com	Aquajet tom	+33765594097	pi_3RqJdK2f0HHvMFDt0e5s787z
+46	32	30	2	1000.00	paid	confirmed	2025-07-11 19:37:35.146882	2025-07-11 19:37:35.146882	3	1	\N	\N	\N	\N
+47	32	31	3	105.00	paid	confirmed	2025-07-12 08:02:41.11307	2025-07-12 08:02:41.11307	3	1	\N	\N	\N	\N
+48	32	32	3	105.00	paid	confirmed	2025-07-12 08:03:02.028147	2025-07-12 08:03:02.028147	3	1	\N	\N	\N	\N
+49	32	33	5	175.00	paid	confirmed	2025-07-12 08:03:23.961446	2025-07-12 08:03:23.961446	3	1	\N	\N	\N	\N
+50	32	34	6	210.00	paid	confirmed	2025-07-12 08:03:40.966863	2025-07-12 08:03:40.966863	3	1	\N	\N	\N	\N
+51	32	35	3	1500.00	paid	confirmed	2025-07-12 08:04:02.408694	2025-07-12 08:04:02.408694	3	1	\N	\N	\N	\N
+52	32	36	5	2500.00	paid	confirmed	2025-07-12 08:04:23.696759	2025-07-12 08:04:23.696759	3	1	\N	\N	\N	\N
+53	32	25	4	2000.00	paid	confirmed	2025-07-12 08:48:51.236175	2025-07-12 08:48:51.236175	3	1	\N	\N	\N	\N
+54	32	37	5	2500.00	paid	confirmed	2025-07-15 15:34:46.881426	2025-07-15 15:34:46.881426	3	1	\N	\N	\N	\N
+55	32	38	3	1500.00	paid	confirmed	2025-07-15 15:35:10.03184	2025-07-15 15:35:10.03184	3	1	\N	\N	\N	\N
+56	32	39	3	2997.00	paid	confirmed	2025-07-17 18:50:06.913252	2025-07-17 18:50:06.913252	3	1	\N	\N	\N	\N
+65	32	49	3	1500.00	paid	confirmed	2025-07-28 11:06:10.934016	2025-07-28 11:06:10.934016	2	1	tompayan1710@gmail.com	Tom Payan	+33765594097	\N
+70	32	53	3	1500.00	paid	confirmed	2025-07-28 13:46:51.575581	2025-07-28 13:46:51.575581	2	1	tompayan1710@gmail.com	Lacarte Céline	+33765594097	\N
+75	32	58	4	2000.00	paid	confirmed	2025-07-28 15:00:37.526333	2025-07-28 15:00:37.526333	3	1	tompayan1710@gmail.com	Stylot	+33444444444	\N
+57	32	40	3	4797.00	paid	confirmed	2025-07-23 16:31:20.363593	2025-07-23 16:31:20.363593	3	1	\N	\N	\N	\N
+58	32	41	3	1500.00	paid	confirmed	2025-07-25 22:50:16.91027	2025-07-25 22:50:16.91027	3	1	\N	\N	\N	\N
+59	41	24	3	1500.00	paid	confirmed	2025-07-25 23:48:06.321012	2025-07-25 23:48:06.321012	3	1	\N	\N	\N	\N
+80	41	63	3	180.00	paid	confirmed	2025-07-29 07:45:30.865783	2025-07-29 07:45:30.865783	2	1	tompayan1710@gmail.com	Barquet	+33898989898	pi_3Rq6Le2f0HHvMFDt1OYrUaZ7
+85	41	66	3	597.00	paid	confirmed	2025-07-29 10:34:53.598556	2025-07-29 10:34:53.598556	2	1	tompayan1710@gmail.com	Pochette	+33765594097	pi_3Rq8ze2f0HHvMFDt1Dsx45SK
+90	41	70	4	796.00	paid	confirmed	2025-07-29 11:05:44.989784	2025-07-29 11:05:44.989784	2	2	tompayan1710@gmail.com	Combat	+33765594097	pi_3Rq9TS2f0HHvMFDt1xZk6d7j
+95	41	74	3	597.00	paid	confirmed	2025-07-29 11:29:19.052571	2025-07-29 11:29:19.052571	2	1	tompayan1710@gmail.com	Ecran	+33765594097	pi_3Rq9qK2f0HHvMFDt0dyJewr8
+100	41	79	3	180.00	paid	confirmed	2025-07-29 19:05:25.489678	2025-07-29 19:05:25.489678	2	1	tompayan1710@gmail.com	Empreinte	+33765594097	pi_3RqGxh2f0HHvMFDt1JWeeWWp
+105	41	72	1	999.00	paid	confirmed	2025-07-29 22:03:21.729018	2025-07-29 22:03:21.729018	1	0	tompayan1710@gmail.com	Tom Payan	+33765594097	pi_3RqJjt2f0HHvMFDt180NJoAs
 \.
 
 
@@ -1296,31 +1441,32 @@ COPY public.reservations_individuals (id, user_id, slot_id, total_participants, 
 -- Data for Name: users; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
-COPY public.users (id, first_name, last_name, email, password, role, created_at, provider_id, provider) FROM stdin;
-38	\N	\N	lechatbigtom@gmail.com	$2b$10$2sy4avgaJoAaf3MFQEoLju/5/qaZuvKnifSvRd4vq4HEbdRh/xm86	member	2025-07-17 07:38:31.621378	\N	password-email
-39	\N	\N	testitest@gmail.com	$2b$10$tQnHU4fP1KateVIG/RFIM.XbDnKvjBxRy.p/CzyrWqRL67T6jvDti	member	2025-07-17 07:51:48.268333	\N	password-email
-40	\N	\N	ffisjfijs@gmail.com	$2b$10$jP3oPtnmGozTdndqb2WtuuQfxpY/7M3cuPlnY.qmv8mR6T383zc5.	member	2025-07-17 07:53:30.133655	\N	password-email
-41	\N	\N	tomchat10@gmail.com	$2b$10$fpnHV0vQqTsmo.d3FBG5yejhd6dLGDR8yvvnFRHaUL6ioyrbz03AW	member	2025-07-20 09:16:29.345317	\N	password-email
-1	Tom	Payan	tom@localspot.fr	hashed_password_placeholder	admin	2025-04-22 20:49:19.76597	\N	\N
-6	\N	\N	FSF@gmail.com	$2b$10$eEVbrXQa.vZ9C5Msr0YxM.bz0RU4eogOu2szwAetOFbw2yzWwhiJC	member	2025-05-08 07:34:13.938055	\N	\N
-7	\N	\N	exemple@gmail.com	$2b$10$GiphyRWFGxjeBhdPdT3HV.s4Rq/J137vl7uLWQMHdBEgLlqRJswkW	member	2025-05-08 07:40:09.272636	\N	\N
-8	\N	\N	test@gmail.com	$2b$10$C8dtvNSijBZ34j9SSRSuFe002s2Rym0.PFq3lB3FsFUM8oSZlnQfe	member	2025-05-08 07:41:20.065282	\N	\N
-9	\N	\N	tomtest@gmail.com	$2b$10$sTEwerl97nw0TIejTnYfZOcpfdhyZ0v.2H4QCF.rN.SNIbyai9wem	member	2025-05-08 08:12:26.501359	\N	\N
-10	\N	\N	tomchat@gmail.com	$2b$10$y2F.Cg01CGRGa49zt/l8AeP9tk327r65999jgzfUxDScV5ybhOi72	member	2025-05-08 10:01:51.173949	\N	\N
-11	\N	\N	tomchat2@gmail.com	$2b$10$efIe1JaYPQkWQ1m.EJ0.wuyLjtFuEFTszFabLgOfCRnwlv85SCefe	member	2025-05-08 10:04:06.732231	\N	\N
-14	\N	\N	tombigboss@gmail.com	$2b$10$QRSRoQtIdxPgneul5p/D2ekStxeC.eFZQFrH4J62w6StCi.24nt9y	member	2025-05-10 17:07:08.695414	\N	\N
-16	\N	\N	lechateau@gmail.com	$2b$10$r.pjgoOWw1Ne8FqlPx3UJeTHL/6DbmnAtneGvdw4KZ2W0Bo96fiWa	member	2025-05-10 17:13:27.736425	\N	\N
-18	\N	\N	echo@gmail.com	$2b$10$V/8nkVbBuPFCIjGRg3HDxeDPYmQxQZmNXc/sVh.4x.KEtXtQG/Vqu	member	2025-05-10 17:17:26.635492	\N	\N
-19	\N	\N	ecole@gmail.com	$2b$10$s9T0emPWvdMupsXfmKuq5OnV6Rvu1iOzoxWNQGA5lnr5vnvbDa1K6	member	2025-05-10 17:19:42.654329	\N	\N
-26	\N	\N	lolita@gmail.com	$2b$10$YKmtkhg8AI4pDms9makOAOtYJ4gqezoIsxTRaiyEBYmegu9ttZDAi	member	2025-05-11 09:13:38.598332	\N	\N
-27	\N	\N	lolo@gmail.com	$2b$10$ScmAqWWPk1JlO9UZ3dJip.CDq7DASk3HYmZhb.h7sh6KBIbvYyr/u	member	2025-05-11 09:18:14.548882	\N	\N
-28	\N	\N	lilarilo@gmail.com	$2b$10$cb3HXsqPxACIfqQUg/CMc.NjP123G24K/1yGZQDs68x9tjMbeO6ym	member	2025-05-11 09:42:59.848526	\N	\N
-33	\N	\N	lebigtom@gmail.com	$2b$10$2ntO/mTH9Ztao/rOdrr7w.Vqsx7qwLHh4TAurBssYYiXY9gdXYhXK	member	2025-06-13 10:07:27.823409	\N	password-email
-32	\N	\N	tompayan1710@gmail.com	\N	member	2025-05-11 17:20:09.47826	5	\N
-34	\N	\N	t23590527@gmail.com	\N	member	2025-06-29 21:08:59.068803	6	google
-35	\N	\N	tomtestmdp@gmail.com	$2b$10$l6kSTrXpmAFjWZzokwpInODDGxrGrTagP4XIYBf3Vg/Uq5KQMyO8i	member	2025-07-16 23:14:20.301282	\N	password-email
-36	\N	\N	lebigtom2@gmail.com	$2b$10$OXiZ9jGDa0qzJBOsrjdH2eQVL2WgfNAQdFrVUX2QDEr0.WOloxn5G	member	2025-07-17 07:23:50.594806	\N	password-email
-37	\N	\N	lebigtom3@gmail.com	$2b$10$JPBOkjvDUmeB4Y.PiB2Q1.o8WTEs6zAv3JmlYKISNs8Tk8FSZJYx.	member	2025-07-17 07:29:07.522063	\N	password-email
+COPY public.users (id, email, password, role, created_at, provider_id, provider, name, phone, profil_picture, receive_booking_emails, receive_activity_suggestions) FROM stdin;
+38	lechatbigtom@gmail.com	$2b$10$2sy4avgaJoAaf3MFQEoLju/5/qaZuvKnifSvRd4vq4HEbdRh/xm86	member	2025-07-17 07:38:31.621378	\N	password-email	\N	\N	\N	t	t
+39	testitest@gmail.com	$2b$10$tQnHU4fP1KateVIG/RFIM.XbDnKvjBxRy.p/CzyrWqRL67T6jvDti	member	2025-07-17 07:51:48.268333	\N	password-email	\N	\N	\N	t	t
+40	ffisjfijs@gmail.com	$2b$10$jP3oPtnmGozTdndqb2WtuuQfxpY/7M3cuPlnY.qmv8mR6T383zc5.	member	2025-07-17 07:53:30.133655	\N	password-email	\N	\N	\N	t	t
+1	tom@localspot.fr	hashed_password_placeholder	admin	2025-04-22 20:49:19.76597	\N	\N	\N	\N	\N	t	t
+6	FSF@gmail.com	$2b$10$eEVbrXQa.vZ9C5Msr0YxM.bz0RU4eogOu2szwAetOFbw2yzWwhiJC	member	2025-05-08 07:34:13.938055	\N	\N	\N	\N	\N	t	t
+7	exemple@gmail.com	$2b$10$GiphyRWFGxjeBhdPdT3HV.s4Rq/J137vl7uLWQMHdBEgLlqRJswkW	member	2025-05-08 07:40:09.272636	\N	\N	\N	\N	\N	t	t
+8	test@gmail.com	$2b$10$C8dtvNSijBZ34j9SSRSuFe002s2Rym0.PFq3lB3FsFUM8oSZlnQfe	member	2025-05-08 07:41:20.065282	\N	\N	\N	\N	\N	t	t
+9	tomtest@gmail.com	$2b$10$sTEwerl97nw0TIejTnYfZOcpfdhyZ0v.2H4QCF.rN.SNIbyai9wem	member	2025-05-08 08:12:26.501359	\N	\N	\N	\N	\N	t	t
+10	tomchat@gmail.com	$2b$10$y2F.Cg01CGRGa49zt/l8AeP9tk327r65999jgzfUxDScV5ybhOi72	member	2025-05-08 10:01:51.173949	\N	\N	\N	\N	\N	t	t
+11	tomchat2@gmail.com	$2b$10$efIe1JaYPQkWQ1m.EJ0.wuyLjtFuEFTszFabLgOfCRnwlv85SCefe	member	2025-05-08 10:04:06.732231	\N	\N	\N	\N	\N	t	t
+14	tombigboss@gmail.com	$2b$10$QRSRoQtIdxPgneul5p/D2ekStxeC.eFZQFrH4J62w6StCi.24nt9y	member	2025-05-10 17:07:08.695414	\N	\N	\N	\N	\N	t	t
+16	lechateau@gmail.com	$2b$10$r.pjgoOWw1Ne8FqlPx3UJeTHL/6DbmnAtneGvdw4KZ2W0Bo96fiWa	member	2025-05-10 17:13:27.736425	\N	\N	\N	\N	\N	t	t
+18	echo@gmail.com	$2b$10$V/8nkVbBuPFCIjGRg3HDxeDPYmQxQZmNXc/sVh.4x.KEtXtQG/Vqu	member	2025-05-10 17:17:26.635492	\N	\N	\N	\N	\N	t	t
+19	ecole@gmail.com	$2b$10$s9T0emPWvdMupsXfmKuq5OnV6Rvu1iOzoxWNQGA5lnr5vnvbDa1K6	member	2025-05-10 17:19:42.654329	\N	\N	\N	\N	\N	t	t
+26	lolita@gmail.com	$2b$10$YKmtkhg8AI4pDms9makOAOtYJ4gqezoIsxTRaiyEBYmegu9ttZDAi	member	2025-05-11 09:13:38.598332	\N	\N	\N	\N	\N	t	t
+27	lolo@gmail.com	$2b$10$ScmAqWWPk1JlO9UZ3dJip.CDq7DASk3HYmZhb.h7sh6KBIbvYyr/u	member	2025-05-11 09:18:14.548882	\N	\N	\N	\N	\N	t	t
+28	lilarilo@gmail.com	$2b$10$cb3HXsqPxACIfqQUg/CMc.NjP123G24K/1yGZQDs68x9tjMbeO6ym	member	2025-05-11 09:42:59.848526	\N	\N	\N	\N	\N	t	t
+33	lebigtom@gmail.com	$2b$10$2ntO/mTH9Ztao/rOdrr7w.Vqsx7qwLHh4TAurBssYYiXY9gdXYhXK	member	2025-06-13 10:07:27.823409	\N	password-email	\N	\N	\N	t	t
+34	t23590527@gmail.com	\N	member	2025-06-29 21:08:59.068803	6	google	\N	\N	\N	t	t
+35	tomtestmdp@gmail.com	$2b$10$l6kSTrXpmAFjWZzokwpInODDGxrGrTagP4XIYBf3Vg/Uq5KQMyO8i	member	2025-07-16 23:14:20.301282	\N	password-email	\N	\N	\N	t	t
+36	lebigtom2@gmail.com	$2b$10$OXiZ9jGDa0qzJBOsrjdH2eQVL2WgfNAQdFrVUX2QDEr0.WOloxn5G	member	2025-07-17 07:23:50.594806	\N	password-email	\N	\N	\N	t	t
+37	lebigtom3@gmail.com	$2b$10$JPBOkjvDUmeB4Y.PiB2Q1.o8WTEs6zAv3JmlYKISNs8Tk8FSZJYx.	member	2025-07-17 07:29:07.522063	\N	password-email	\N	\N	\N	t	t
+41	tomchat10@gmail.com	$2b$10$fpnHV0vQqTsmo.d3FBG5yejhd6dLGDR8yvvnFRHaUL6ioyrbz03AW	member	2025-07-20 09:16:29.345317	\N	password-email	Payan Tom Manua234	+33765704097	https://knswskkdaimyrcstijsm.supabase.co/storage/v1/object/public/profil-picture/user_41_1753862811771.jpg	f	f
+32	tompayan1710@gmail.com	\N	member	2025-05-11 17:20:09.47826	5	\N	Tom Payan	+33765594097	https://knswskkdaimyrcstijsm.supabase.co/storage/v1/object/public/profil-picture/user_32_1753952824665.jpg	t	t
+42	sapiens@gmail.com	$2b$10$UmaAP3yz6I.uEEmGnjn2bueaKSXk03az.xVH8CRM/P40YZhdaytva	member	2025-07-30 10:20:12.208764	5	password-email	\N	\N	\N	t	t
 \.
 
 
@@ -1359,7 +1505,7 @@ SELECT pg_catalog.setval('public.categories_id_seq', 1, false);
 -- Name: cities_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
 
-SELECT pg_catalog.setval('public.cities_id_seq', 18, true);
+SELECT pg_catalog.setval('public.cities_id_seq', 19, true);
 
 
 --
@@ -1373,7 +1519,7 @@ SELECT pg_catalog.setval('public.comments_id_seq', 4, true);
 -- Name: departments_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
 
-SELECT pg_catalog.setval('public.departments_id_seq', 18, true);
+SELECT pg_catalog.setval('public.departments_id_seq', 19, true);
 
 
 --
@@ -1422,28 +1568,28 @@ SELECT pg_catalog.setval('public.provider_booking_integrations_id_seq', 6, true)
 -- Name: providers_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
 
-SELECT pg_catalog.setval('public.providers_id_seq', 6, true);
+SELECT pg_catalog.setval('public.providers_id_seq', 8, true);
 
 
 --
 -- Name: qr_codes_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
 
-SELECT pg_catalog.setval('public.qr_codes_id_seq', 57, true);
+SELECT pg_catalog.setval('public.qr_codes_id_seq', 58, true);
 
 
 --
 -- Name: refresh_tokens_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
 
-SELECT pg_catalog.setval('public.refresh_tokens_id_seq', 176, true);
+SELECT pg_catalog.setval('public.refresh_tokens_id_seq', 227, true);
 
 
 --
 -- Name: reservation_slots_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
 
-SELECT pg_catalog.setval('public.reservation_slots_id_seq', 47, true);
+SELECT pg_catalog.setval('public.reservation_slots_id_seq', 82, true);
 
 
 --
@@ -1457,14 +1603,14 @@ SELECT pg_catalog.setval('public.reservations_creneaux_google_calendar_id_seq', 
 -- Name: reservations_individuals_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
 
-SELECT pg_catalog.setval('public.reservations_individuals_id_seq', 62, true);
+SELECT pg_catalog.setval('public.reservations_individuals_id_seq', 105, true);
 
 
 --
 -- Name: users_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
 
-SELECT pg_catalog.setval('public.users_id_seq', 41, true);
+SELECT pg_catalog.setval('public.users_id_seq', 42, true);
 
 
 --
@@ -1546,6 +1692,22 @@ ALTER TABLE ONLY public.hotes
 
 
 --
+-- Name: invitation_tokens invitation_tokens_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.invitation_tokens
+    ADD CONSTRAINT invitation_tokens_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: invitation_tokens invitation_tokens_token_key; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.invitation_tokens
+    ADD CONSTRAINT invitation_tokens_token_key UNIQUE (token);
+
+
+--
 -- Name: offer_cancel_slots offer_cancel_slots_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -1591,6 +1753,14 @@ ALTER TABLE ONLY public.provider_booking_integrations
 
 ALTER TABLE ONLY public.provider_booking_integrations
     ADD CONSTRAINT provider_booking_integrations_provider_id_key UNIQUE (provider_id);
+
+
+--
+-- Name: providers providers_invitation_token_key; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.providers
+    ADD CONSTRAINT providers_invitation_token_key UNIQUE (invitation_token);
 
 
 --
@@ -1719,6 +1889,14 @@ ALTER TABLE ONLY public.comments
 
 ALTER TABLE ONLY public.hotes
     ADD CONSTRAINT hotes_city_id_fkey FOREIGN KEY (city_id) REFERENCES public.cities(id);
+
+
+--
+-- Name: invitation_tokens invitation_tokens_provider_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.invitation_tokens
+    ADD CONSTRAINT invitation_tokens_provider_id_fkey FOREIGN KEY (provider_id) REFERENCES public.providers(id) ON DELETE CASCADE;
 
 
 --

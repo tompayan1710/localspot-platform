@@ -16,8 +16,8 @@
   /* height: calc(100% - 40px); */
   height: fit-content;
   border-top: 1px solid var(--greysemidark);
-  display: flex;
-  flex-direction: column;
+  /* display: flex;
+  flex-direction: column; */
 }
 
 
@@ -27,7 +27,7 @@
 .PopUpBottom.fullHeight .bodyPopUpBottom{
   max-height: 100%;
   overflow: auto;
-  flex: 1;
+  /* flex: 1; */
 }
 
 .PopUpBottom.open {
@@ -97,11 +97,11 @@
 .PopUpBottom .bodyPopUpBottom{
   width: 100%;
   padding: 15px;
-  max-height: calc(100% - 200px);
+  max-height: calc(100% - 70px);
   display: flex;
   flex-direction: column;
   height: fit-content;
-  overflow: scroll;
+  /* overflow: scroll; */
 }
 
 
