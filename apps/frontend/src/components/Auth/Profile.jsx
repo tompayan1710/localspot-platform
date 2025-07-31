@@ -21,6 +21,7 @@ import { useTranslation } from "react-i18next";
 
 import { getOffersProvider } from "../../services/offers"
 import FadeInImage from "../Utils/FadeInImage";
+import { getProviderById } from "../../services/provider";
 
 export default function Profile() {
   const navigate = useNavigate();
@@ -30,6 +31,7 @@ export default function Profile() {
   const { authState, logout, checkAuth } = useContext(AuthContext);
    
   const [providerOffers, setProviderOffers] = useState([]);
+  const [providerInfo, setProviderInfo] = useState({});
   const [loading, setLoading] = useState(true);
   
 
@@ -41,6 +43,21 @@ export default function Profile() {
     }
     setLoading(false);
   }
+
+  const getProviderInfo = async (provider_id) => {
+    const data = await getProviderById(provider_id);
+    console.error(data)
+    if(data.success){        
+      console.warn(data.provider);
+      setProviderInfo(data.provider);
+    }
+    setLoading(false);
+  }
+
+  useEffect(() => {
+    console.error("Provider Info");
+    console.error(providerInfo);
+  }, [providerInfo])
   
   useEffect(() => {
         const queryParams = new URLSearchParams(window.location.search);
@@ -76,6 +93,7 @@ export default function Profile() {
 
     if (authState.user?.provider_id && authState.user?.provider?.is_validated) {
       getOfferOfProvider(authState.user.provider_id);
+      getProviderInfo(authState.user?.provider_id);
     }  
   }, [authState.loading, authState.isAuth, navigate]); // ✅ Suivre loading et isAuth
 
@@ -119,17 +137,34 @@ export default function Profile() {
         )}
 
          
-        
-        <div className="ProfileEditContainer" onClick={() => navigate("/edit-profile")}>
-        <div>
-          <div className="ProfilPictureContainer">
-            <img src={userIconRelief} alt="profil picture"/>
+        {
+          Object.keys(providerInfo).length > 0 && 
+          <div className="ProfileEditContainer">
+            <div>
+              <div className={`ProfilPictureContainer ${providerInfo?.logo_url  ? "with-picture" : ""}`}>
+                <FadeInImage src={providerInfo?.logo_url ? providerInfo?.logo_url : userIconRelief} alt="profil picture"/>
+              </div>
+              {
+                
+              }
+              <div className="ColumnName">
+                <p className="t4">{providerInfo?.name ? providerInfo?.name : authState.user?.first_name ? t(authState.user?.first_name) : t('User')}</p>            </div>
+            </div>
           </div>
-          <div className="ColumnName">
-            <p className="t4">{authState.user?.first_name ? t(authState.user?.first_name) : t('User')}</p>
-            <p className="t6">Show profile</p>
+        }
+       <div className="ProfileEditContainer" onClick={() => navigate("/edit-profile")}>
+          <div>
+            <div className={`ProfilPictureContainer ${authState.user.profil_picture  ? "with-picture" : ""}`}>
+              <FadeInImage src={authState.user.profil_picture ? authState.user.profil_picture : userIconRelief} alt="profil picture"/>
+            </div>
+            {
+              
+            }
+            <div className="ColumnName">
+              <p className="t4">{authState.user?.name ? authState.user?.name : t('Compte personnel')}</p>
+              <p className="t6">Voir le profile</p>
+            </div>
           </div>
-        </div>
         <img src={arrowRight} alt="arrow right"/>
       </div>
       <div className="hline"></div>
@@ -138,8 +173,8 @@ export default function Profile() {
           <>
           <div className="BecomProviderBig">
               <div className="BecomProviderContainer">
-                <FadeInImage src={templateOffer} alt="template photo"/>
-                <FadeInImage src={templateOffer} alt="template photo"/>
+                <FadeInImage src={providerOffers[0]?.image_urls[1] ? providerOffers[0]?.image_urls[1] : templateOffer} alt="template photo"/>
+                <FadeInImage src={providerOffers[0]?.image_urls[0] ? providerOffers[0]?.image_urls[0] : templateOffer} alt="template photo"/>
               </div>
               {/* <p className="t4">Mes annonces</p> */}
               <p className="t6">Gérez facilement vos activités, suivez vos réservations et mettez à jour vos offres en temps réel.</p>
@@ -198,7 +233,7 @@ export default function Profile() {
       </>
     }
 
-          <div className="hline"></div>
+          <div className="hline"></div> 
           <p className="t3">Settings</p>
           <div className="SettingsListContainer">
             <div className="SettingsListItem" onClick={() => navigate("/settings")}>

@@ -110,8 +110,9 @@ export function classifyOffers(offers, userLocation = null) {
 
   // Toutes les offres restantes (pas encore utilisées)
   const nonAdd = sortedOffers.filter(o => !usedSlugs.has(o.slug)).slice(0, 5);
-  const popular = nonAdd.slice(0, 3);
-  const all_remaining = nonAdd.slice(3);
+  const selected_today = nonAdd[0];
+  const popular = nonAdd.slice(1, 4);
+  const all_remaining = nonAdd.slice(4);
 
   
   return {
@@ -120,7 +121,8 @@ export function classifyOffers(offers, userLocation = null) {
     evenning,
     nearby,
     popular,
-    all_remaining
+    selected_today,
+    all_remaining,
   };
 }
 

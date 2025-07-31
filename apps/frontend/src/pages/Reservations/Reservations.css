@@ -134,9 +134,14 @@ p.truncate-multiline {
     justify-content: center;
     align-items: center;
     margin-bottom: 50px;
+    min-height: 600px;
 }
-.NoReservation .MessageNone>img{
+.NoReservation .MessageNone>.ImageWrapper{
     width: 80%;
+    aspect-ratio: 2.5; 
+}
+.NoReservation .MessageNone>.ImageWrapper>img{
+    width: 100%;
 }
 .NoReservation .MessageNone>p{
     opacity: 0.6;

@@ -62,6 +62,7 @@ import WhiteButton from "../components/Buttons/WhiteButton/WhiteButton";
     const [homeOffersByCategory, setHomeOffersByCategory] = useState({
       thisAfternoon: [],
       tonight: [],
+      selected_today: {},
       popular: [],
       nearby: [],
     });
@@ -284,20 +285,20 @@ import WhiteButton from "../components/Buttons/WhiteButton/WhiteButton";
         <div ref={HomePageRef} className="HomeContainer">
           <div  className={`SelectingToday ${loading && "loading shimmer"}`}>
             {
-              !loading && homeOffersByCategory.popular.length > 1 &&
+              !loading && homeOffersByCategory.selected_today &&
               <>
-              <FadeInImage src={homeOffersByCategory.popular[0].image_urls[0]} alt="selecting activity" onClick={() => {navigate(`/offer-page/${homeOffersByCategory.popular[0].slug}`);}}/>
+              <FadeInImage src={homeOffersByCategory.selected_today.image_urls[0]} alt="selecting activity" onClick={() => {navigate(`/offer-page/${homeOffersByCategory.selected_today.slug}`);}}/>
               <button 
-                onClick={() => {navigate(`/offer-page/${homeOffersByCategory.popular[0].slug}`);}}
+                onClick={() => {navigate(`/offer-page/${homeOffersByCategory.selected_today.slug}`);}}
               >
                 <img src={extendIcon} alt="extend Icon"/>
               </button>
-              <div className="InfoOffer row" onClick={() => {navigate(`/offer-page/${homeOffersByCategory.popular[0].slug}`);}}>
+              <div className="InfoOffer row" onClick={() => {navigate(`/offer-page/${homeOffersByCategory.selected_today.slug}`);}}>
                 <div className="column">
-                  <p className="t5 maxLine">{homeOffersByCategory.popular[0].title}</p>
+                  <p className="t5 maxLine">{homeOffersByCategory.selected_today.title}</p>
                   <div className="row adresse">
                     <img src={Map2dPinWhite} alt="map 2d pin white"/>
-                    <p className="t6 maxLine">{homeOffersByCategory.popular[0].adresse}</p>
+                    <p className="t6 maxLine">{homeOffersByCategory.selected_today.adresse}</p>
                   </div>
                 </div>
                 <div className="GoTo">

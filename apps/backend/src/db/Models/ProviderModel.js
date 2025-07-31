@@ -16,22 +16,23 @@ async function createProvider({
         type,
         sizes,
         moredetails,
-        is_validated
+        is_validated,
+        invitation_token
     ) 
     VALUES (
-        $1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12
+        $1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13
     )
     RETURNING id;
     `);
 
 
-    const values = [name, bio, logo_url, tel, email, instagram, facebook, website, type, sizes, moredetails, false];
+    const values = [name, bio, logo_url, tel, email, instagram, facebook, website, type, sizes, moredetails, false, null];
 
     const result = await db.query(query, values);
     return result.rows[0];
 }
 
-async function insertUserProvider(id_user, id_provider) {
+async function UpdateUserProvider(id_user, id_provider) {
   const query = `
     UPDATE users
     SET provider_id = $2
@@ -44,7 +45,30 @@ async function insertUserProvider(id_user, id_provider) {
 }
 
 
+async function getProviderById(id_provider) {
+  const query = `
+    SELECT * FROM providers
+    WHERE id = $1
+  `;
+  const values = [id_provider];
+  const result = await db.query(query, values);
+  return result.rows[0];
+}
+
+
+async function getProviderByToken(token) {
+  const query = `
+    SELECT * FROM providers
+    WHERE invitation_token = $1
+  `;
+  const values = [token];
+  const result = await db.query(query, values);
+  return result.rows[0];
+}
+
 module.exports = {
     createProvider,
-    insertUserProvider,
+    UpdateUserProvider,
+    getProviderById,
+    getProviderByToken // ⬅️ ajoute cette ligne si elle n'y est pas !
 };

@@ -1,0 +1,33 @@
+.BottomBar{
+    position: fixed;
+    bottom: 0;
+    max-width: var(--maxsize);
+    width: 100%;
+    border-top: 1px solid var(--greysemidark);
+    box-shadow: 0px 0px 20px rgba(0, 0, 0, 0.03);
+    background-color: white;
+    z-index: 3;
+    padding: 20px;
+}
+
+.BottomBar .ContainerButtons{
+    display: flex;
+    flex-direction: space-between;
+}
+
+.BottomBar .FillButton {
+    background: linear-gradient(180deg, #545454, #373737);
+    font-weight: lighter;
+    border: none;
+    border-radius: 100px;
+    cursor: pointer;
+    width: fit-content;
+    color: white;
+    padding: 15px 10px;
+    width: 100%;
+    font-weight: 500;
+    margin: auto;
+}
+.BottomBar .FillButton>p {
+    color: white;
+}

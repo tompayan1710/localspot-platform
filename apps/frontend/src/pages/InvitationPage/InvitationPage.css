@@ -1,0 +1,138 @@
+.InvitationPage{
+    flex: 1;
+}
+.InvitationPage>p:first-of-type{
+    text-align: center;
+    margin-top: 60px;
+    margin-bottom: 40px;
+}
+.InvitationPage>p:first-of-type>strong{
+    font-family: 'Cookie';
+    font-weight: 100;
+    font-size: 3rem;
+}
+.InvitationPage .ProviderOffer{
+    box-shadow: var(--boxshadow);
+    border-radius: 30px;
+    width: 88%;
+    margin: 0 auto;
+    padding: 25px 10px;
+    padding-top: 15px;
+    position: relative;
+}
+
+.InvitationPage .BecomProviderBig{
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+.InvitationPage .BecomProviderBig>p:first-of-type{
+    margin-bottom: 15px;
+}
+.InvitationPage .BecomProviderBig>.BecomProviderContainer{
+  position: relative;
+  height: 140px;
+  width: 180px;
+  /* background-color: red; */
+}
+.InvitationPage .BecomProviderBig>.BecomProviderContainer>.ImageWrapper{
+  position: absolute;
+  top: 0;
+  border: 3px solid white;
+  border-radius: 10px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+}
+.InvitationPage .BecomProviderBig>.BecomProviderContainer>.ImageWrapper>img{
+  position: absolute;
+  height: 100%;
+  width: 100%;
+  object-fit: cover;
+  border-radius: 7px;
+}
+.InvitationPage .BecomProviderBig>.t4{
+  font-weight: bold;
+  margin-bottom: 2px;
+}
+.InvitationPage .BecomProviderBig>p{
+  width: 90%;
+  text-align: center;
+}
+
+.InvitationPage .BecomProviderBig>.BecomProviderContainer>.ImageWrapper:first-of-type{
+  width: 100px;
+  height: 120px;
+  left: 0;
+  transform: rotate(-10deg);
+}
+.InvitationPage .BecomProviderBig>.BecomProviderContainer>.ImageWrapper:last-of-type{
+  width: 120px;
+  height: 100px;
+  right: 0;
+  top: 25px;
+  transform: rotate(5deg);
+}
+.InvitationPage .EditButton{
+    position: absolute;
+    top: 12px;
+    right: 12px;
+    padding: 8px;
+    background-color: var(--greylight);
+    border-radius: 40px;
+    display: flex;
+    flex-direction: column;
+    border: none;
+}
+.InvitationPage .EditButton>img{
+    height: 12px;
+    width: 12px;
+    opacity: 0.6;
+}   
+
+
+.InvitationPage .Important{
+    width: 85%;
+    margin: auto;
+    text-align: center;
+    margin-top: 20px;
+    gap: 2px;
+}
+
+
+/* .InvitationPage .hline88{
+    margin-top: 40px;
+    margin-bottom: 10px;
+} */
+.InvitationPage .infoText{
+    width: 88%;
+    margin: auto;
+    display: flex;
+    flex-direction: column;
+    gap: 3px;
+    text-align: center;
+    margin-top: 80px;
+    margin-bottom: 180px;
+}
+
+
+.InvitationPage .Protected {    
+    display: flex;
+    align-items: start;
+    gap: 5px;
+    max-width: var(--maxsize); /* ✅ la variable fonctionne maintenant */
+    position: fixed;
+    bottom: 100px;
+    margin: auto;
+    padding: 0 15px;
+}
+
+
+.InvitationPage .Protected > img {
+    height: 18px;
+    width: 18px;
+}
+
+.InvitationPage .Protected > p {
+    color: var(--greennormal);
+    width: 100%;
+}

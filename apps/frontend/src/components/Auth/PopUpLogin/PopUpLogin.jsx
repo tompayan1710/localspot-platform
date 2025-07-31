@@ -44,10 +44,10 @@ const PopUpLogin = forwardRef(({ setIsOccultView, state={}, googleRedirectRoute=
         setMessage("");
 
         if (password.length < 6) {
-        setMessage("Veuillez rentrer un mot de passe de plus de 6 caractères");
-        setLoading(false);
-        setIsSuccess(false);
-        return;
+            setMessage("Veuillez rentrer un mot de passe de plus de 6 caractères");
+            setLoading(false);
+            setIsSuccess(false);
+            return;
         }
 
 

@@ -1,0 +1,92 @@
+.LoginContainer{
+    width: 100%;
+    height: fit-content;
+}
+
+.ConfirmLink{
+    /* background-color: red; */
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    height: 100%;
+    width: 100%;
+    /* background-color: rebeccapurple; */
+}
+.ConfirmLink>.column:first-of-type{
+    /* padding-bottom: 400px; */
+    /* background-color: red; */
+}
+.ConfirmLink p{
+    text-align: center;
+}
+.ConfirmLink .ImageWrapper{
+    background-color: var(--greylight);
+    width: 90%;
+    margin: auto;
+    display: flex;
+    flex-direction: column;
+    margin-top: 20px;
+}
+.ConfirmLink .ImageWrapper>img{
+    height: 100%;
+    width: 100%;
+    object-fit: cover;
+}
+.ConfirmLink .ImageWrapper+p{
+    text-align: center;
+    /* color: var(--greymiddledark); */
+    margin-top: 10px;
+    margin-bottom: 20px;
+    opacity: 0.5;
+}
+.InvitationPage .ButtonConfirmLink{
+    /* border-top: 1px solid var(--greysemidark); */
+    padding-bottom: 7px;
+    gap: 5px;
+}
+.InvitationPage .ButtonConfirmLink .ConfirmButton {
+    background: linear-gradient(180deg, #545454, #373737);
+    font-weight: lighter;
+    border: none;
+    border-radius: 100px;
+    cursor: pointer;
+    width: fit-content;
+    color: white;
+    padding: 15px 10px;
+    width: 100%;
+    font-weight: 500;
+    margin: auto;
+}
+.InvitationPage .ButtonConfirmLink .ConfirmButton>p {
+    color: white;
+}
+
+.InvitationPage .CancelButton {
+    background: white;
+    padding: 15px;
+    border: none;
+    border-radius: 100px;
+    width: 100%;
+    cursor: pointer;
+    /* border: 1px solid #fcafab; */
+    border: 1px solid var(--greysemidark);
+}
+.InvitationPage .CancelButton>p {
+    color: var(--rednormal);
+}
+
+
+.InvitationPage .QuestionContainer{
+    padding: 20px 10px;
+    border-radius: 20px;
+    box-shadow: var(--boxshadow);
+    gap: 8px;
+    margin-bottom: 50px;
+}
+
+.InvitationPage .End{
+    margin-top: 40px;
+    text-align: center;
+    opacity: 0.5;
+}

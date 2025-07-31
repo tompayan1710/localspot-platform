@@ -4,7 +4,8 @@ const { sendAdminAlertEmail } = require("../../../utils/email");
 
 const multer = require("multer");
 const { createClient } = require("@supabase/supabase-js");
-const { createProvider, insertUserProvider } = require("../../../../src/db/Models/ProviderModel")
+const { createProvider, UpdateUserProvider, getProviderById, getProviderByToken } = require("../../../../src/db/Models/ProviderModel");
+
 const supabase = createClient(
   process.env.SUPABASE_URL,
   process.env.SUPABASE_SERVICE_ROLE_KEY 
@@ -73,8 +74,7 @@ router.post("/create", async (req, res) => {
       email, tel, website, instagram, facebook, moredetails
     });
     const id_provider = result.id;
-    
-    await insertUserProvider(id_user, id_provider);
+    await UpdateUserProvider(id_user, id_provider);
 
      // ✅ Envoi de l’alerte email
     // ✅ Envoi de l’e-mail d’alerte à l’admin
@@ -106,5 +106,44 @@ router.post("/create", async (req, res) => {
 });
 
 
+router.get("/get", async (req, res) => {
+  const { id } = req.query
+  try {
+    
+    const provider = await getProviderById(id);
+    res.status(200).json({ success: true, provider });
+
+  } catch (error) {
+    console.error("Erreur dans /provider/get?id= :", error.message);
+    res.status(500).json({ success: false, message: "Erreur serveur lors de la récupération du prestataire." });
+  }
+});
+
+router.get("/get_by_token", async (req, res) => {
+  const { token } = req.query
+  try {
+    
+    const provider = await getProviderByToken(token);
+    res.status(200).json({ success: true, provider });
+
+  } catch (error) {
+    console.error("Erreur dans /provider/get_by_token?token= :", error.message);
+    res.status(500).json({ success: false, message: "Erreur serveur lors de la récupération du prestataire." });
+  }
+});
+
+
+router.patch("/update_provider", async (req, res) => {
+  const { id_user, id_provider } = req.query
+  try {
+    
+    await UpdateUserProvider(id_user, id_provider);
+    res.status(200).json({ success: true });
+
+  } catch (error) {
+    console.error("Erreur dans /provider/get_by_token?token= :", error.message);
+    res.status(500).json({ success: false, message: "Erreur serveur lors de la récupération du prestataire." });
+  }
+});
 
 module.exports = router;

@@ -49,6 +49,7 @@ import NotificationSettings from "./components/Auth/ProfilPage/SettingsPage/Noti
 import FormInfoPayement from "./pages/OfferPage/Payment/FormInfoPayement/FormInfoPayement";
 import AnnonceEditInfos from "./pages/AnnoncePage/AnnonceEditInfos/AnnonceEditInfos";
 import AnnonceEditPhotos from "./pages/AnnoncePage/AnnonceEditPhotos/AnnonceEditPhotos";
+import InvitationPage from "./pages/InvitationPage/InvitationPage";
 
 export default function BrowserRouterAll(){
     const location = useLocation();
@@ -84,7 +85,8 @@ export default function BrowserRouterAll(){
         "/testpage",
         "/currency",
         "/confirm-payment", 
-        "/settings"
+        "/settings",
+        "/invitation"
     ];
     
     //offer-page/b2f3a4ae-6cc4-4353-824e-65de72035d68/availibility
@@ -164,7 +166,8 @@ export default function BrowserRouterAll(){
             <Route path="/booking-system" element={<BookingSystem />} />
             <Route path="/settings" element={<SettingsPage />} />
             <Route path="/settings/notification" element={<NotificationSettings />} />
-        
+
+            <Route path="/invitation" element={<InvitationPage />} />
 
             <Route path="/currency" element={<CurrencyPage />} />
     

@@ -147,7 +147,9 @@ export default function Reservations(){
                     :
                     <div className="NoReservation">
                         <div className="MessageNone">
-                            <img src={noReservations} alt="no reservations image"/>
+                            <div className="ImageWrapper">
+                                <FadeInImage src={noReservations} alt="no reservations image"/>
+                            </div>
                             <p className="t6">Vous n'avez aucune réservation pour <br></br>le moment.</p>
                             <WhiteButton text={"Rechercher des annonces"} onClick={() => navigate("/")} img={loupeicon} alt={"loupe icon"}/>
                         </div>
