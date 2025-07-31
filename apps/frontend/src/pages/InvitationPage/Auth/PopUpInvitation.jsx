@@ -16,6 +16,7 @@ const PopUpInvitation = forwardRef(({ setIsOccultView, googleRedirectRoute="/", 
     const [loading, setLoading] = useState(false);
     const [isSuccess, setIsSuccess] = useState(false);
 
+    const [ userId, setUserId ] = useState();
     const [isConfirmOccult, setIsConfirmOccult] = useState(false);
 
     const PopUpConfirmRef = confirmLinkRef;
@@ -79,14 +80,24 @@ const PopUpInvitation = forwardRef(({ setIsOccultView, googleRedirectRoute="/", 
             // ref.current.classList.remove("open");
             // setIsOccultView(false);
             setLoading(false);
+            setUserId(userId);
             return;
         }
 
         await linkUserToProvider(user_id, idProvider);
         
+
         checkAuth(); 
         setLoading(false);
         closePopUp();
+        
+        setTimeout(() => {
+            navigate("/profile")
+        }, [1000])
+    }
+
+    const LinkUser = async (user_id) => {
+        await linkUserToProvider(user_id, idProvider);
     }
 
 
@@ -193,6 +204,13 @@ const PopUpInvitation = forwardRef(({ setIsOccultView, googleRedirectRoute="/", 
                             //     setIsOccultView(false);
                             //     navigate(navigateAfterTo);
                             // }}
+                            onClick={() => {
+                                LinkUser();
+                                setTimeout(() => {
+                                    setLoading(true);
+                                    navigate("/profile")
+                                }, [1000])
+                            }}
                             >
                             <p className="t6">Lier le compte</p>
                             </button>

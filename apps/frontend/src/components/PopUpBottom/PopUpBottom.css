@@ -9,15 +9,16 @@
   width: 100%;
   border-top-left-radius: 30px;
   border-top-right-radius: 30px;
-  /* box-shadow: 0 -4px 15px rgba(0, 0, 0, 0.05);  */
   transition: transform 0.5s ease-out; /* 👈 C'est ça qu'on anime maintenant */
   max-width: 500px;
   padding-top: 55px;
-  /* height: calc(100% - 40px); */
-  height: fit-content;
+  height: auto;
   border-top: 1px solid var(--greysemidark);
   /* display: flex;
   flex-direction: column; */
+    max-height: calc(100% - 40px); /* 👈 limite haute */
+  overflow: visible; /* 👈 pas besoin de scroll ici */
+
 }
 
 
@@ -97,11 +98,14 @@
 .PopUpBottom .bodyPopUpBottom{
   width: 100%;
   padding: 15px;
-  max-height: calc(100% - 70px);
+  /* max-height: calc(100% - 40px); */
   display: flex;
   flex-direction: column;
-  height: fit-content;
-  /* overflow: scroll; */
+  height: auto;
+  max-height: inherit; /* 👈 récupère le max du parent */
+  overflow-y: auto;    /* 👈 scroll uniquement si nécessaire */
+
+
 }
 
 
