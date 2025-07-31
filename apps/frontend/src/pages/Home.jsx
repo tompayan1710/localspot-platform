@@ -149,58 +149,6 @@ import WhiteButton from "../components/Buttons/WhiteButton/WhiteButton";
 
       }, [i18n.language])
 
-      const AnnimationWhitoutLogo = () => {
-        setTimeout(() => {
-          HomePageRef.current.style.top = "0";
-          HomePageRef.current.style.opacity = "1";
-          HomePageRef.current.style.overflowY = "auto";
-        }, 500);
-
-        setTimeout(() => {
-          navBarRef.current.classList.add("sliderInBottomNav");
-          searchBarRef.current.classList.add("slideInSearch")
-          // searchBarRef.current.style.top = "0";
-          setTimeout(() => {
-            offerContainerRef.current.style.overflowY = "scroll";
-          }, 0)
-
-        }, 1000)
-      }
-
-      const OfferAnimationShow = () => {
-        // LogoContainerAnimationRef.current.style.top = "-100vh";
-        const logo = LogoContainerAnimationRef.current;
-
-        if (!logo) return;
-
-        // logo.classList.add("appear");
-
-        setTimeout(() => {
-          // logo.classList.remove("appear");
-          logo.classList.add("disappear");
-          setTimeout(() => {
-            logo.style.top = "-100vh";
-          }, 1000);
-        }, 2000)
-        setTimeout(() => {
-          
-          HomePageRef.current.style.top = "0";
-          HomePageRef.current.style.opacity = "1";
-          HomePageRef.current.style.overflowY = "auto";
-        }, 2500);
-        
-        
-        setTimeout(() => {
-          navBarRef.current.classList.add("sliderInBottomNav");
-          searchBarRef.current.classList.add("slideInSearch")
-          // searchBarRef.current.style.top = "0";
-          setTimeout(() => {
-            offerContainerRef.current.style.overflowY = "scroll";
-          }, 500)
-
-        }, 3000)
-    }
-    
 
 
 

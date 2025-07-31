@@ -1,4 +1,4 @@
-import { forwardRef, useContext, useRef, useState } from "react";
+import { forwardRef, useContext, useId, useRef, useState } from "react";
 import PopUpBottom from "../../../components/PopUpBottom/PopUpBottom";
 import { GoogleInvitationButton } from "./GoogleInvitationButton";
 import Spinner from "../../../components/Spinner/Spinner";
@@ -9,7 +9,7 @@ import "./style.css"
 import { linkUserToProvider } from "../../../services/provider";
 import UserFind from "../../../assets/images/UserFind.png"
 
-const PopUpInvitation = forwardRef(({ setIsOccultView, googleRedirectRoute="/", navigateAfterTo, idProvider, confirmLinkRef }, ref) => {
+const PopUpInvitation = forwardRef(({ setIsOccultView, googleRedirectRoute="/", idProvider, confirmLinkRef }, ref) => {
     const [email, setEmail] = useState(""); 
     const [password, setPassword] = useState("");
     const [message, setMessage] = useState("");
@@ -31,10 +31,8 @@ const PopUpInvitation = forwardRef(({ setIsOccultView, googleRedirectRoute="/", 
         setTimeout(() => {
             setIsOccultView(false);
             ref.current.classList.remove("open");
-
-            navigate(navigateAfterTo);
             return;
-        }, 1000)
+        }, 0)
     }
 
     const handleContinue = async (e) => {
@@ -74,30 +72,24 @@ const PopUpInvitation = forwardRef(({ setIsOccultView, googleRedirectRoute="/", 
         console.error(user_id);
         
         // if()
-        if(is_already){
+        if (is_already) {
             console.warn("L'utilisateur existe déjà");
+            setUserId(user_id); // ✅ FIX
             PopUpConfirmRef.current.classList.add("open");
-            // ref.current.classList.remove("open");
-            // setIsOccultView(false);
             setLoading(false);
-            setUserId(userId);
             return;
+        }else {
+            await linkUserToProvider(user_id, idProvider);
+            
+
+            checkAuth(); 
+            setLoading(false);
+            closePopUp();
+            
+            setTimeout(() => {
+                navigate("/profile")
+            }, 500)
         }
-
-        await linkUserToProvider(user_id, idProvider);
-        
-
-        checkAuth(); 
-        setLoading(false);
-        closePopUp();
-        
-        setTimeout(() => {
-            navigate("/profile")
-        }, [1000])
-    }
-
-    const LinkUser = async (user_id) => {
-        await linkUserToProvider(user_id, idProvider);
     }
 
 
@@ -166,7 +158,7 @@ const PopUpInvitation = forwardRef(({ setIsOccultView, googleRedirectRoute="/", 
                         <div className="ImageWrapper">
                             <img src={UserFind} alt="User find illustration"/> 
                         </div>
-                        <p className="t4">Un compte existant à était détecté</p>
+                        <p className="t4">Un compte existant a été détecté</p>
 
                         <div className="QuestionContainer column">
                             <p className="t32 bold">
@@ -195,25 +187,22 @@ const PopUpInvitation = forwardRef(({ setIsOccultView, googleRedirectRoute="/", 
                             </button>
                             <button
                             className="ConfirmButton"
-                            // onClick={async () => {
-                            //     await linkUserToProvider(user_id, idProvider);
-                            //     checkAuth();
-                            //     setIsConfirmOccult(false);
-                            //     PopUpConfirmRef.current.classList.remove("open");
-                            //     ref.current.classList.remove("open");
-                            //     setIsOccultView(false);
-                            //     navigate(navigateAfterTo);
-                            // }}
-                            onClick={() => {
-                                LinkUser();
+                            onClick={async () => {
+                                await linkUserToProvider(userId, idProvider);        // ✅ Lier
+                                checkAuth();                   // ✅ Refresh Auth
+                                setIsConfirmOccult(false);     
+                                PopUpConfirmRef.current.classList.remove("open");
+                                ref.current.classList.remove("open");
+                                setIsOccultView(false);
+
                                 setTimeout(() => {
-                                    setLoading(true);
-                                    navigate("/profile")
-                                }, [1000])
+                                navigate("/profile");        // ✅ Redirection après
+                                }, 500);
                             }}
                             >
                             <p className="t6">Lier le compte</p>
                             </button>
+
                         </div>
                     </div>
                 </div>

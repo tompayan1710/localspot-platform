@@ -121,7 +121,7 @@
     gap: 5px;
     max-width: var(--maxsize); /* ✅ la variable fonctionne maintenant */
     position: fixed;
-    bottom: 100px;
+    bottom: 110px;
     margin: auto;
     padding: 0 15px;
 }

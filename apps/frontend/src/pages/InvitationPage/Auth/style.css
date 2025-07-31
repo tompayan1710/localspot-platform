@@ -78,10 +78,10 @@
 
 
 .InvitationPage .QuestionContainer{
-    padding: 20px 10px;
+    padding: 30px 15px;
     border-radius: 20px;
     box-shadow: var(--boxshadow);
-    gap: 8px;
+    gap: 15px;
     margin-bottom: 50px;
 }
 

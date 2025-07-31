@@ -29,6 +29,7 @@ import ReviewItem from "./Comments/ReviewItem";
 import { useNavigate, useLocation } from "react-router-dom";
 import PopUpBottom from "../../components/PopUpBottom/PopUpBottom";
 import OfferComments from "./Comments/OfferComments";
+import { linearTheme } from "../../services/themeModifier";
 
 export default function OfferPage() {
   const { slug } = useParams();
@@ -151,11 +152,6 @@ function allRefsReady() {
   return R * c;
 }
 
-
-
-  const getMaximumParticipants = async () => {
-    
-  }
     
   useEffect(() => {
     async function loadData(slug) {
@@ -271,6 +267,15 @@ function allRefsReady() {
     }
   }, [isLoading]);
 
+
+
+    useEffect(() => {
+      const from = [255, 255, 255]; 
+      const to = [55, 55, 55]; 
+      const cleanup = linearTheme(from, to);
+
+      return cleanup; // ✅ on nettoie l'écouteur au démontage du composant
+    }, []);
 
 
     return (

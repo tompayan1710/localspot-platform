@@ -154,8 +154,8 @@ export default function Profile() {
         }
        <div className="ProfileEditContainer" onClick={() => navigate("/edit-profile")}>
           <div>
-            <div className={`ProfilPictureContainer ${authState.user.profil_picture  ? "with-picture" : ""}`}>
-              <FadeInImage src={authState.user.profil_picture ? authState.user.profil_picture : userIconRelief} alt="profil picture"/>
+            <div className={`ProfilPictureContainer ${authState?.user?.profil_picture  ? "with-picture" : ""}`}>
+              <FadeInImage src={authState?.user?.profil_picture ? authState?.user?.profil_picture : userIconRelief} alt="profil picture"/>
             </div>
             {
               
