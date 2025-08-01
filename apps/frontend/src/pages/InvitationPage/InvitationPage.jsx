@@ -107,7 +107,7 @@ export default function InvitationPage(){
             </div>
             <div className="Important column">
                 <p className="t6">
-                    Votre compte a déjà été créé par notre équipe.<br></br>
+                    Votre espace prestataire a déjà été créé par notre équipe mais n'est lié à aucun compte.<br></br>
                 </p>
                 <p className="t6">
                     Votre annonce n’est pour le moment pas publiée. Connectez-vous et ajoutez des créneaux pour l'activer.

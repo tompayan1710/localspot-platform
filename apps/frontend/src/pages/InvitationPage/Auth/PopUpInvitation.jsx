@@ -20,6 +20,7 @@ const PopUpInvitation = forwardRef(({ setIsOccultView, googleRedirectRoute="/", 
     const [isConfirmOccult, setIsConfirmOccult] = useState(false);
 
     const PopUpConfirmRef = confirmLinkRef;
+    const hasLinkedRef = useRef(false); // ⛳ utilisé pour bloquer la boucle
 
     const navigate = useNavigate();
     const location = useLocation();
@@ -32,6 +33,7 @@ const PopUpInvitation = forwardRef(({ setIsOccultView, googleRedirectRoute="/", 
     const closePopUp = () => {
         setTimeout(() => {
             setIsOccultView(false);
+            PopUpConfirmRef.current.classList.remove("open")
             ref.current.classList.remove("open");
             return;
         }, 0)
@@ -119,32 +121,47 @@ const PopUpInvitation = forwardRef(({ setIsOccultView, googleRedirectRoute="/", 
 
     useEffect(() => {
         const params = new URLSearchParams(location.search);
-        // console.warn(params)
-        // console.error("isExistingUser: ", isExistingUser )
-        // console.error(authState);
-        if (params.get("existingUser") === "true" && authState.isAuth) {
 
+        const isExistingUser = params.get("existingUser");
+
+        if (isExistingUser === "true" && authState.isAuth) {
+            console.warn("🟡 Ouverture du PopUpInvitation");
             setUserId(authState.user.id);
-            PopUpConfirmRef.current.classList.add("open");
+            PopUpConfirmRef.current?.classList.add("open");
             setIsOccultView(true);
         }
-        if(params.get("existingUser") === "false" && authState.isAuth){
-            linkUser()
+
+        if (isExistingUser === "false" && authState.isAuth && !hasLinkedRef.current) {
+            console.warn("🟡 Tentative de lien automatique");
+
+            if (authState.user?.id && idProvider) {
+                hasLinkedRef.current = true; // ✅ empêche de relancer à chaque render
+                linkUser(authState.user.id, idProvider);
+            }
         }
     }, [authState, location.search]);
+
 
     useEffect(() => {
         console.error(authState)
     }, [authState])
 
-    const linkUser = async () => {
+    const linkUser = async (userId, idProvider) => {
+        if (!userId || !idProvider) return;
         setLoading(true)
         await linkUserToProvider(userId, idProvider);        // ✅ Lier
 
         checkAuth(); 
-        setIsConfirmOccult(false);     
-        PopUpConfirmRef.current.classList.remove("open");
-        ref.current.classList.remove("open");
+        setIsConfirmOccult(false); 
+        
+
+        if (PopUpConfirmRef.current) {
+            PopUpConfirmRef.current.classList.remove("open");
+        }
+        if (ref.current) {
+            ref.current.classList.remove("open");
+        }
+
         setIsOccultView(false);
 
         setTimeout(() => {
@@ -249,7 +266,7 @@ const PopUpInvitation = forwardRef(({ setIsOccultView, googleRedirectRoute="/", 
                             <button
                             className="ConfirmButton"
                             onClick={async () => {
-                                linkUser();
+                                linkUser(userId, idProvider);
                             }}
                             >
                             {
@@ -259,7 +276,6 @@ const PopUpInvitation = forwardRef(({ setIsOccultView, googleRedirectRoute="/", 
                                 <p className="t6">Lier le compte</p>
                             }
                             </button>
-
                         </div>
                     </div>
                 </div>

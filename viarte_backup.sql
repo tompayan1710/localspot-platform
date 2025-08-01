@@ -499,8 +499,7 @@ CREATE TABLE public.providers (
     sizes character varying(30),
     moredetails text,
     is_validated boolean DEFAULT false,
-    stripe_account_id text,
-    invitation_token text DEFAULT (gen_random_uuid())::text
+    stripe_account_id text
 );
 
 
@@ -1171,14 +1170,14 @@ COPY public.provider_booking_integrations (id, provider_id, platform, access_tok
 -- Data for Name: providers; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
-COPY public.providers (id, name, bio, logo_url, tel, email, instagram, facebook, website, type, sizes, moredetails, is_validated, stripe_account_id, invitation_token) FROM stdin;
-2	MonNomOfficial	Ma biographie official	https://knswskkdaimyrcstijsm.supabase.co/storage/v1/object/public/providers-images/logo/1749129298417_TestRename.jpg	+33765594098	lechat@gmail.com	MonInstagram	Monfacebook	monbigsite.fr	Company	3 - 10	Il est vrai que tout parti politique moderne temps inexorablement à l'oligarchie et au désir de haine	f	\N	\N
-3	Monbignom	oijfs	https://knswskkdaimyrcstijsm.supabase.co/storage/v1/object/public/providers-images/logo/1749129562611_TestRename.jpg	+33765594020	lebigchat@gmail.com	mlfjsfs		siteweb.fr	Independent	seul		f	\N	\N
-1	localspot-db	FLJSOFJSOIFJS	https://knswskkdaimyrcstijsm.supabase.co/storage/v1/object/public/providers-images/logo/1749127966506_images.jpg	+33765594097	tompayan1710@gmail.com	insta	okfoskfosokfoks	SFS.fr	Company	11 - 20	fsfsfsfsfs	t	\N	\N
-4	LocalSpot	Ma desctiption	https://knswskkdaimyrcstijsm.supabase.co/storage/v1/object/public/providers-images/logo/1749227206471_images.jpg	+33765594097	tompayan1710@gmail.com	moninsta	fac	siteweb	Company	3 - 10	Mon détail à ajouter	t	\N	\N
-6	PrestataireNoOffers	Je suis un prestataire qui n'as pas d'offre	https://knswskkdaimyrcstijsm.supabase.co/storage/v1/object/public/providers-images/logo/1752309836503_ViarteLogo.png	+33765594097	tompayan1710@gmail.com	moninsta	monfacebo	monsite.fr	Company	3 - 10	Ceci est mon détail à ajouter	t	acct_1Rk1sUGfNWv7XEni	\N
-8	Studio Yoga Azur	Un espace détente pour tous les niveaux.	https://knsws...yoga1.jpg	+33611223344	contact@yogaazur.com	yoga_azur	facebook.com/yogaazur	yogaazur.fr	Independent	1 - 3	Cours de yoga en petit groupe face mer.	t	\N	
-5	BigTomRappel	FSIOSJF	https://knswskkdaimyrcstijsm.supabase.co/storage/v1/object/public/providers-images/logo/1751118905743_starIcon.png	+33765594097	tompayan1710@gmail.com	moninsta	fac	monsite.fr	Independent	en équipe	,k	t	\N	7a692e3a-ff1e-49e3-aefa-23da87d6d3ff
+COPY public.providers (id, name, bio, logo_url, tel, email, instagram, facebook, website, type, sizes, moredetails, is_validated, stripe_account_id) FROM stdin;
+2	MonNomOfficial	Ma biographie official	https://knswskkdaimyrcstijsm.supabase.co/storage/v1/object/public/providers-images/logo/1749129298417_TestRename.jpg	+33765594098	lechat@gmail.com	MonInstagram	Monfacebook	monbigsite.fr	Company	3 - 10	Il est vrai que tout parti politique moderne temps inexorablement à l'oligarchie et au désir de haine	f	\N
+3	Monbignom	oijfs	https://knswskkdaimyrcstijsm.supabase.co/storage/v1/object/public/providers-images/logo/1749129562611_TestRename.jpg	+33765594020	lebigchat@gmail.com	mlfjsfs		siteweb.fr	Independent	seul		f	\N
+1	localspot-db	FLJSOFJSOIFJS	https://knswskkdaimyrcstijsm.supabase.co/storage/v1/object/public/providers-images/logo/1749127966506_images.jpg	+33765594097	tompayan1710@gmail.com	insta	okfoskfosokfoks	SFS.fr	Company	11 - 20	fsfsfsfsfs	t	\N
+4	LocalSpot	Ma desctiption	https://knswskkdaimyrcstijsm.supabase.co/storage/v1/object/public/providers-images/logo/1749227206471_images.jpg	+33765594097	tompayan1710@gmail.com	moninsta	fac	siteweb	Company	3 - 10	Mon détail à ajouter	t	\N
+6	PrestataireNoOffers	Je suis un prestataire qui n'as pas d'offre	https://knswskkdaimyrcstijsm.supabase.co/storage/v1/object/public/providers-images/logo/1752309836503_ViarteLogo.png	+33765594097	tompayan1710@gmail.com	moninsta	monfacebo	monsite.fr	Company	3 - 10	Ceci est mon détail à ajouter	t	acct_1Rk1sUGfNWv7XEni
+8	Studio Yoga Azur	Un espace détente pour tous les niveaux.	https://knsws...yoga1.jpg	+33611223344	contact@yogaazur.com	yoga_azur	facebook.com/yogaazur	yogaazur.fr	Independent	1 - 3	Cours de yoga en petit groupe face mer.	t	\N
+5	BigTomRappel	FSIOSJF	https://knswskkdaimyrcstijsm.supabase.co/storage/v1/object/public/providers-images/logo/1751118905743_starIcon.png	+33765594097	tompayan1710@gmail.com	moninsta	fac	monsite.fr	Independent	en équipe	,k	t	\N
 \.
 
 
@@ -1318,7 +1317,9 @@ COPY public.refresh_tokens (id, user_id, refresh_token, expires_at, created_at) 
 253	32	eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MzIsImVtYWlsIjoidG9tcGF5YW4xNzEwQGdtYWlsLmNvbSIsImlhdCI6MTc1NDAzMzA3MSwiZXhwIjoxNzY5NTg1MDcxfQ.P3Wh7tk42zRmBTyigUyAGa4ScNJ3q5paxmml5-qB_tY	2026-01-28 08:24:31.627	2025-08-01 09:22:31.969807
 254	32	eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MzIsImVtYWlsIjoidG9tcGF5YW4xNzEwQGdtYWlsLmNvbSIsImlhdCI6MTc1NDAzMzA3MSwiZXhwIjoxNzY5NTg1MDcxfQ.P3Wh7tk42zRmBTyigUyAGa4ScNJ3q5paxmml5-qB_tY	2026-01-28 08:24:31.644	2025-08-01 09:24:31.648875
 258	32	eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MzIsImVtYWlsIjoidG9tcGF5YW4xNzEwQGdtYWlsLmNvbSIsImlhdCI6MTc1NDA0NzA3NSwiZXhwIjoxNzY5NTk5MDc1fQ.7Np3UyATMk_1HW6effCPH7DjCjKGBrPunFcMgA9zhoA	2026-01-28 12:17:55.447	2025-08-01 13:17:55.451879
-259	42	eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6NDIsImVtYWlsIjoic2FwaWVuc0BnbWFpbC5jb20iLCJpYXQiOjE3NTQwNDcxNTYsImV4cCI6MTc2OTU5OTE1Nn0.TdpnRmNbre3WifZ_oS1EIYwmJNbCQsfgGnKbPsjgbVY	2026-01-28 12:19:16.861	2025-08-01 13:19:16.864494
+259	42	eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6NDIsImVtYWlsIjoic2FwaWVuc0BnbWFpbC5jb20iLCJpYXQiOjE3NTQwNTA2NDQsImV4cCI6MTc2OTYwMjY0NH0.EnKRg21VONNSkq-mNnmG7cmEUipg_3vC-L22IVEdQNc	2026-01-28 13:17:24.116	2025-08-01 13:19:16.864494
+270	54	eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6NTQsImVtYWlsIjoidDA3Njc3OTc0QGdtYWlsLmNvbSIsImlhdCI6MTc1NDA1MzM2OSwiZXhwIjoxNzY5NjA1MzY5fQ.6-JZqVqJhI03Y8DMVgfkQr_x6DEeS42lXlVQ1HwkxnM	2026-01-28 14:02:49.659	2025-08-01 15:02:49.659786
+271	54	eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6NTQsImVtYWlsIjoidDA3Njc3OTc0QGdtYWlsLmNvbSIsImlhdCI6MTc1NDA1MzQ5NywiZXhwIjoxNzY5NjA1NDk3fQ.HxofJIP7m6yCKTcoBWYn7_mtRPU7teCFcAwOZlP2Fn8	2026-01-28 14:04:57.129	2025-08-01 15:04:57.133831
 \.
 
 
@@ -1519,8 +1520,9 @@ COPY public.users (id, email, password, role, created_at, provider_id, provider,
 36	lebigtom2@gmail.com	$2b$10$OXiZ9jGDa0qzJBOsrjdH2eQVL2WgfNAQdFrVUX2QDEr0.WOloxn5G	member	2025-07-17 07:23:50.594806	\N	password-email	\N	\N	\N	t	t
 37	lebigtom3@gmail.com	$2b$10$JPBOkjvDUmeB4Y.PiB2Q1.o8WTEs6zAv3JmlYKISNs8Tk8FSZJYx.	member	2025-07-17 07:29:07.522063	\N	password-email	\N	\N	\N	t	t
 41	tomchat10@gmail.com	$2b$10$fpnHV0vQqTsmo.d3FBG5yejhd6dLGDR8yvvnFRHaUL6ioyrbz03AW	member	2025-07-20 09:16:29.345317	\N	password-email	Payan Tom Manua234	+33765704097	https://knswskkdaimyrcstijsm.supabase.co/storage/v1/object/public/profil-picture/user_41_1753862811771.jpg	f	f
-32	tompayan1710@gmail.com	\N	member	2025-05-11 17:20:09.47826	5	google	Tom Payan	+33765594097	https://knswskkdaimyrcstijsm.supabase.co/storage/v1/object/public/profil-picture/user_32_1753952824665.jpg	t	t
-42	sapiens@gmail.com	$2b$10$UmaAP3yz6I.uEEmGnjn2bueaKSXk03az.xVH8CRM/P40YZhdaytva	member	2025-07-30 10:20:12.208764	5	password-email	Saplins	+3355555555555	https://knswskkdaimyrcstijsm.supabase.co/storage/v1/object/public/profil-picture/user_42_1753991023778.png	t	t
+32	tompayan1710@gmail.com	\N	member	2025-05-11 17:20:09.47826	\N	google	Tom Payan	+33765594097	https://knswskkdaimyrcstijsm.supabase.co/storage/v1/object/public/profil-picture/user_32_1753952824665.jpg	t	t
+42	sapiens@gmail.com	$2b$10$UmaAP3yz6I.uEEmGnjn2bueaKSXk03az.xVH8CRM/P40YZhdaytva	member	2025-07-30 10:20:12.208764	\N	password-email	Saplins	+3355555555555	https://knswskkdaimyrcstijsm.supabase.co/storage/v1/object/public/profil-picture/user_42_1753991023778.png	t	t
+54	t07677974@gmail.com	\N	member	2025-08-01 15:02:49.64018	5	google	mail teste	+33988888888	\N	t	t
 \.
 
 
@@ -1643,7 +1645,7 @@ SELECT pg_catalog.setval('public.qr_codes_id_seq', 58, true);
 -- Name: refresh_tokens_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
 
-SELECT pg_catalog.setval('public.refresh_tokens_id_seq', 259, true);
+SELECT pg_catalog.setval('public.refresh_tokens_id_seq', 271, true);
 
 
 --
@@ -1671,7 +1673,7 @@ SELECT pg_catalog.setval('public.reservations_individuals_id_seq', 105, true);
 -- Name: users_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
 
-SELECT pg_catalog.setval('public.users_id_seq', 44, true);
+SELECT pg_catalog.setval('public.users_id_seq', 54, true);
 
 
 --
@@ -1814,14 +1816,6 @@ ALTER TABLE ONLY public.provider_booking_integrations
 
 ALTER TABLE ONLY public.provider_booking_integrations
     ADD CONSTRAINT provider_booking_integrations_provider_id_key UNIQUE (provider_id);
-
-
---
--- Name: providers providers_invitation_token_key; Type: CONSTRAINT; Schema: public; Owner: postgres
---
-
-ALTER TABLE ONLY public.providers
-    ADD CONSTRAINT providers_invitation_token_key UNIQUE (invitation_token);
 
 
 --
