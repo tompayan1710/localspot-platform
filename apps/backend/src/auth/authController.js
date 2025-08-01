@@ -297,7 +297,7 @@ async function googleCallback(req, res) {
 
 
 
-
+    let isExistingUser = false;
     const user = await pool.query('SELECT * FROM users WHERE email = $1', [email]);
 
     if (user.rowCount === 0) {
@@ -310,6 +310,7 @@ async function googleCallback(req, res) {
         console.log("Utilisateur créé avec succés")
       }
     } else {
+      isExistingUser=true;
       console.log("Utilisateur Google déjà existant.");
     }
 
@@ -345,7 +346,13 @@ async function googleCallback(req, res) {
 
     // ✅ Option 1 — Rediriger avec le JWT en **fragment**
     // Cela évite qu’il soit loggé par les serveurs/proxies car il n’est pas envoyé en requête
-    return res.redirect(`${redirectAfterLogin}?token=${loginResponse.token}`);
+    // return res.redirect(`${redirectAfterLogin}?token=${loginResponse.token}&existingUser=${isExistingUser}`);
+    const redirectUrl = addQueryParams(redirectAfterLogin, {
+      token: loginResponse.token,
+      existingUser: isExistingUser
+    });
+
+    return res.redirect(redirectUrl);
 
 
     // return res.redirect(`${FRONTEND_URL}/login?token=${loginResponse.token}`);
@@ -357,6 +364,17 @@ async function googleCallback(req, res) {
     return res.status(400).json({ message: "Erreur lors de l'authentification Google" });
   }
 };
+
+
+
+function addQueryParams(url, params) {
+  const hasQuery = url.includes("?");
+  const separator = hasQuery ? "&" : "?";
+  const query = Object.entries(params)
+    .map(([key, val]) => `${key}=${encodeURIComponent(val)}`)
+    .join("&");
+  return `${url}${separator}${query}`;
+}
 
 
 

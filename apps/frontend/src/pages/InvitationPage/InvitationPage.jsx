@@ -7,14 +7,21 @@ import BottomBar from "../../components/BottomBar/BottomBar"
 import templateOffer from "../../assets/images/templateOffer.png"
 import LockGreen from "../../assets/images/LockGreen.png"
 import editPenIcon from "../../assets/images/editPenIcon.png"
-import { useEffect, useRef, useState } from "react"
+import { useContext, useEffect, useRef, useState } from "react"
 import PopUpLogin from "../../components/Auth/PopUpLogin/PopUpLogin"
 import PopUpInvitation from "./Auth/PopUpInvitation"
 import { getOffersProvider } from "../../services/offers"
 import { getProviderIdByToken, linkUserToProvider } from "../../services/provider"
+import { AuthContext } from "../../components/Auth/authContext/authContext"
 
 export default function InvitationPage(){
     const navigate = useNavigate();
+    const { checkAuth } = useContext(AuthContext);
+
+    const queryParams = new URLSearchParams(window.location.search);
+    const token_invitation = queryParams.get("token_invitation");
+
+
     const [ isOccultView, setIsOccultView ] = useState(false);
     const PopUpLoginRef = useRef(null);
     const PopUpConfirmRef = useRef(null);
@@ -31,12 +38,11 @@ export default function InvitationPage(){
     }
 
     useEffect(() => {
-        const queryParams = new URLSearchParams(window.location.search);
-        const token = queryParams.get("token");
 
-        const fetchData = async (token) => {
+
+        const fetchData = async (token_invitation) => {
             try {
-                const providerResponse = await getProvider(token);
+                const providerResponse = await getProvider(token_invitation);
                 if (!providerResponse.success || !providerResponse.provider) {
                 console.error("❌ Provider introuvable ou erreur");
                 return;
@@ -57,7 +63,7 @@ export default function InvitationPage(){
         };
 
 
-        if (token) fetchData(token);
+        if (token_invitation) fetchData(token_invitation);
     }, []);
 
 
@@ -66,6 +72,7 @@ export default function InvitationPage(){
     // useEffect(() => {
     //     console.error(offerProvider);
     // }, [offerProvider])
+
 
     return (
         <div className="InvitationPage">
@@ -129,12 +136,11 @@ export default function InvitationPage(){
 
 
             <PopUpInvitation 
-                googleRedirectRoute="/profile" 
+                googleRedirectRoute= {`/invitation?token_invitation=${token_invitation}&`}
                 ref={PopUpLoginRef} 
                 setIsOccultView={setIsOccultView}
                 idProvider={offerProvider?.provider_id} // <-- ou autre selon structure
                 confirmLinkRef={PopUpConfirmRef}
-
             />
             <div className={`occultView ${isOccultView ? "open" : ""}`}  
                 onClick={(e) => {

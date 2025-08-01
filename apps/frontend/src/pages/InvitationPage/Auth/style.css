@@ -20,13 +20,18 @@
 .ConfirmLink p{
     text-align: center;
 }
+
+.FindMessage{
+    margin-top: 30px;
+    margin-bottom: 10px;
+}
 .ConfirmLink .ImageWrapper{
     background-color: var(--greylight);
     width: 90%;
     margin: auto;
     display: flex;
     flex-direction: column;
-    margin-top: 20px;
+    margin-bottom: 30px;
 }
 .ConfirmLink .ImageWrapper>img{
     height: 100%;
@@ -52,14 +57,17 @@
     border-radius: 100px;
     cursor: pointer;
     width: fit-content;
-    color: white;
-    padding: 15px 10px;
-    width: 100%;
+    color: white;    width: 100%;
     font-weight: 500;
     margin: auto;
 }
 .InvitationPage .ButtonConfirmLink .ConfirmButton>p {
     color: white;
+    margin: 15px 10px;
+}
+.InvitationPage .ButtonConfirmLink .ConfirmButton>div {
+    color: white;
+    margin: 11px 10px;
 }
 
 .InvitationPage .CancelButton {
@@ -82,11 +90,12 @@
     border-radius: 20px;
     box-shadow: var(--boxshadow);
     gap: 15px;
-    margin-bottom: 50px;
+    margin-bottom: 30px;
 }
 
 .InvitationPage .End{
     margin-top: 40px;
     text-align: center;
+    width: 96%;
     opacity: 0.5;
 }
