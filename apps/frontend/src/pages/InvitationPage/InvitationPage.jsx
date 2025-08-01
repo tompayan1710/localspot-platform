@@ -16,6 +16,8 @@ import { getInvitationByToken } from "../../services/invitation"
 import { AuthContext } from "../../components/Auth/authContext/authContext"
 
 import ProtectedIllustration from "../../assets/images/ProtectedIllustration.png"
+import Spinner from "../../components/Spinner/Spinner"
+
 
 export default function InvitationPage(){
     const navigate = useNavigate();
@@ -25,6 +27,7 @@ export default function InvitationPage(){
     const token_invitation = queryParams.get("token_invitation");
 
 
+    const [ loading, setLoading ] = useState(true);
     const [ isOccultView, setIsOccultView ] = useState(false);
     const [ isValidInvitationToken, setIsValidInvitationToken ] = useState(true);
     const PopUpLoginRef = useRef(null);
@@ -45,6 +48,18 @@ export default function InvitationPage(){
                 }
 
                 const invitation = InvitationResponse.invitation;
+                if(invitation.is_used){
+                    console.error("❌ Le lien à déjà était utilisé et est donc invalide");
+                    setIsValidInvitationToken(false);
+                    return;
+                }
+                if (invitation.expires_at && new Date(invitation.expires_at) < new Date()) {
+                    console.error("❌ Le lien a expiré");
+                    setIsValidInvitationToken(false);
+                    return;
+                }
+
+
                 const offerResponse = await getOffersProvider(invitation.provider_id);
                 if (!offerResponse.success) {
                 console.error("❌ Erreur lors de la récupération des offres");
@@ -55,10 +70,15 @@ export default function InvitationPage(){
             } catch (error) {
                 console.error("❌ Erreur générale dans fetchData :", error);
             }
+            
         };
 
 
         if (token_invitation) fetchData(token_invitation);
+
+        setTimeout(() =>{
+            setLoading(false);
+        }, 500)
     }, []);
 
 
@@ -67,7 +87,7 @@ export default function InvitationPage(){
     // useEffect(() => {
     //     console.error(offerProvider);
     // }, [offerProvider])
-
+    if(loading) return <Spinner centerPage={true} />
 
     return (
         <div className="InvitationPage">
@@ -139,6 +159,7 @@ export default function InvitationPage(){
                 setIsOccultView={setIsOccultView}
                 idProvider={offerProvider?.provider_id} // <-- ou autre selon structure
                 confirmLinkRef={PopUpConfirmRef}
+                tokenInvitation={token_invitation}
             />
             <div className={`occultView ${isOccultView ? "open" : ""}`}  
                 onClick={(e) => {
@@ -150,9 +171,9 @@ export default function InvitationPage(){
                 :
                 <div className="InvalideContainer">
                     <img src={ProtectedIllustration} alt="Protected Illustration"/>
-                    <p className="t3 bold">Oups, ce lien n’est plus valide</p>
+                    <p className="t3 bold">Oups, ce lien n’est pas valide</p>
                     <p className="t5">
-                        Il semble que ce lien d’invitation ait expiré ou ne soit plus disponible.
+                        Il semble que ce lien d’invitation ait expiré ou ait été utilisé.
                         Vérifiez que vous avez bien utilisé le lien le plus récent ou contacte notre équipe pour obtenir un nouveau lien.
                     </p>
                     <div className="NavigateButton column">

@@ -6,10 +6,10 @@ import { useLocation, useNavigate } from "react-router-dom";
 import { AuthContext } from "../../../components/Auth/authContext/authContext";
 import { login, signup } from "../../../services/auth";
 import "./style.css"
-import { linkUserToProvider } from "../../../services/provider";
+import { linkUserToProvider } from "../../../services/invitation";
 import UserFind from "../../../assets/images/UserFind.png"
 
-const PopUpInvitation = forwardRef(({ setIsOccultView, googleRedirectRoute="/", idProvider, confirmLinkRef }, ref) => {
+const PopUpInvitation = forwardRef(({ setIsOccultView, googleRedirectRoute="/", idProvider, confirmLinkRef, tokenInvitation }, ref) => {
     const [email, setEmail] = useState(""); 
     const [password, setPassword] = useState("");
     const [message, setMessage] = useState("");
@@ -148,8 +148,9 @@ const PopUpInvitation = forwardRef(({ setIsOccultView, googleRedirectRoute="/", 
 
     const linkUser = async (userId, idProvider) => {
         if (!userId || !idProvider) return;
+        console.warn("✅ Entre Dans linkUser");
         setLoading(true)
-        await linkUserToProvider(userId, idProvider);        // ✅ Lier
+        await linkUserToProvider(tokenInvitation, userId, idProvider);        // ✅ Lier
 
         checkAuth(); 
         setIsConfirmOccult(false); 
