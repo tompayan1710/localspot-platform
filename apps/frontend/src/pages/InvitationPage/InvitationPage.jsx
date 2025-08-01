@@ -11,8 +11,11 @@ import { useContext, useEffect, useRef, useState } from "react"
 import PopUpLogin from "../../components/Auth/PopUpLogin/PopUpLogin"
 import PopUpInvitation from "./Auth/PopUpInvitation"
 import { getOffersProvider } from "../../services/offers"
-import { getProviderIdByToken, linkUserToProvider } from "../../services/provider"
+// import { getProviderIdByToken, linkUserToProvider } from "../../services/provider"
+import { getInvitationByToken } from "../../services/invitation"
 import { AuthContext } from "../../components/Auth/authContext/authContext"
+
+import ProtectedIllustration from "../../assets/images/ProtectedIllustration.png"
 
 export default function InvitationPage(){
     const navigate = useNavigate();
@@ -23,39 +26,31 @@ export default function InvitationPage(){
 
 
     const [ isOccultView, setIsOccultView ] = useState(false);
+    const [ isValidInvitationToken, setIsValidInvitationToken ] = useState(true);
     const PopUpLoginRef = useRef(null);
     const PopUpConfirmRef = useRef(null);
 
     const [ offerProvider, setOfferProvider ] = useState({})
-
-    const getProvider = async (token) => {
-        const provider = await getProviderIdByToken(token);
-        return provider
-    }
-    const getOffer = async (provider_id) => {
-        const offers = await getOffersProvider(provider_id)
-        return offers;
-    }
 
     useEffect(() => {
 
 
         const fetchData = async (token_invitation) => {
             try {
-                const providerResponse = await getProvider(token_invitation);
-                if (!providerResponse.success || !providerResponse.provider) {
+                const InvitationResponse =  await getInvitationByToken(token_invitation);
+                if (!InvitationResponse.success || !InvitationResponse.invitation) {
                 console.error("❌ Provider introuvable ou erreur");
+                setIsValidInvitationToken(false);
                 return;
                 }
 
-                const provider = providerResponse.provider;
-
-                const offerResponse = await getOffer(provider.id);
+                const invitation = InvitationResponse.invitation;
+                const offerResponse = await getOffersProvider(invitation.provider_id);
                 if (!offerResponse.success) {
                 console.error("❌ Erreur lors de la récupération des offres");
                 return;
                 }
-
+                setIsValidInvitationToken(true);
                 setOfferProvider(offerResponse.offers[0]);
             } catch (error) {
                 console.error("❌ Erreur générale dans fetchData :", error);
@@ -76,7 +71,10 @@ export default function InvitationPage(){
 
     return (
         <div className="InvitationPage">
-            <p className="t3">Bienvenue sur<br></br><strong>Viarte</strong></p>
+            {
+                isValidInvitationToken ?
+                <>
+                <p className="t3">Bienvenue sur<br></br><strong>Viarte</strong></p>
             <div className="ProviderOffer">
                 <button className="EditButton" onClick={() =>{
                     console.log("Cliqué")
@@ -148,6 +146,25 @@ export default function InvitationPage(){
                     PopUpLoginRef.current.classList.remove("open");
                     setIsOccultView(false);
             }}></div>
+                </>
+                :
+                <div className="InvalideContainer">
+                    <img src={ProtectedIllustration} alt="Protected Illustration"/>
+                    <p className="t3 bold">Oups, ce lien n’est plus valide</p>
+                    <p className="t5">
+                        Il semble que ce lien d’invitation ait expiré ou ne soit plus disponible.
+                        Vérifiez que vous avez bien utilisé le lien le plus récent ou contacte notre équipe pour obtenir un nouveau lien.
+                    </p>
+                    <div className="NavigateButton column">
+                        <button onClick={() => navigate("/")}>
+                            <p className="t4">Retour à l’accueil</p>
+                        </button>
+                        <button onClick={() => navigate("/")}>
+                            <p className="t4">Contacter le support</p>
+                        </button>
+                    </div>
+                </div>
+            }
 
         </div>
     )

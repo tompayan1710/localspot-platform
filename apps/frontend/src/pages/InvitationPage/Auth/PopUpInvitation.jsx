@@ -152,6 +152,7 @@ const PopUpInvitation = forwardRef(({ setIsOccultView, googleRedirectRoute="/", 
         }, 500)
     }
 
+    
     return(
         <>
         <PopUpBottom

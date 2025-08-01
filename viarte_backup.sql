@@ -245,8 +245,8 @@ ALTER SEQUENCE public.hotes_id_seq OWNED BY public.hotes.id;
 --
 
 CREATE TABLE public.invitation_tokens (
-    id uuid DEFAULT gen_random_uuid() NOT NULL,
-    token text DEFAULT (gen_random_uuid())::text NOT NULL,
+    id integer NOT NULL,
+    invitation_token uuid DEFAULT gen_random_uuid() NOT NULL,
     provider_id integer NOT NULL,
     created_at timestamp without time zone DEFAULT now(),
     expires_at timestamp without time zone,
@@ -256,6 +256,28 @@ CREATE TABLE public.invitation_tokens (
 
 
 ALTER TABLE public.invitation_tokens OWNER TO postgres;
+
+--
+-- Name: invitation_tokens_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
+--
+
+CREATE SEQUENCE public.invitation_tokens_id_seq
+    AS integer
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER SEQUENCE public.invitation_tokens_id_seq OWNER TO postgres;
+
+--
+-- Name: invitation_tokens_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
+--
+
+ALTER SEQUENCE public.invitation_tokens_id_seq OWNED BY public.invitation_tokens.id;
+
 
 --
 -- Name: offer_cancel_slots; Type: TABLE; Schema: public; Owner: postgres
@@ -872,6 +894,13 @@ ALTER TABLE ONLY public.hotes ALTER COLUMN id SET DEFAULT nextval('public.hotes_
 
 
 --
+-- Name: invitation_tokens id; Type: DEFAULT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.invitation_tokens ALTER COLUMN id SET DEFAULT nextval('public.invitation_tokens_id_seq'::regclass);
+
+
+--
 -- Name: offer_cancel_slots id; Type: DEFAULT; Schema: public; Owner: postgres
 --
 
@@ -1065,7 +1094,8 @@ COPY public.hotes (id, name, location, type, created_at, updated_at, latitude, l
 -- Data for Name: invitation_tokens; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
-COPY public.invitation_tokens (id, token, provider_id, created_at, expires_at, used_at, is_used) FROM stdin;
+COPY public.invitation_tokens (id, invitation_token, provider_id, created_at, expires_at, used_at, is_used) FROM stdin;
+1	68271bdd-70d7-4bee-a4a4-7e6afe015c2a	5	2025-08-01 10:45:23.683645	\N	\N	f
 \.
 
 
@@ -1265,6 +1295,30 @@ COPY public.refresh_tokens (id, user_id, refresh_token, expires_at, created_at) 
 225	42	eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6NDIsImVtYWlsIjoic2FwaWVuc0BnbWFpbC5jb20iLCJpYXQiOjE3NTM5ODM2MzUsImV4cCI6MTc2OTUzNTYzNX0.ggk5sAjtgnOIBc4OFDbdk3NrQv4c3sQNt4ch6BM3I5I	2026-01-27 18:40:35.52	2025-07-31 19:40:35.525063
 226	42	eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6NDIsImVtYWlsIjoic2FwaWVuc0BnbWFpbC5jb20iLCJpYXQiOjE3NTM5ODM2NjYsImV4cCI6MTc2OTUzNTY2Nn0.j1N_PWDp3nbg3OQMT83atwmwYfFHZVq__G1Z0pf_npc	2026-01-27 18:41:06.632	2025-07-31 19:41:06.633483
 227	42	eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6NDIsImVtYWlsIjoic2FwaWVuc0BnbWFpbC5jb20iLCJpYXQiOjE3NTM5ODM2NzUsImV4cCI6MTc2OTUzNTY3NX0.lNyIzt91X2sC_bAn9aEE1s5AqiMa7sqKTShdLfbZqrA	2026-01-27 18:41:15.951	2025-07-31 19:41:15.955638
+228	42	eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6NDIsImVtYWlsIjoic2FwaWVuc0BnbWFpbC5jb20iLCJpYXQiOjE3NTM5ODU3ODMsImV4cCI6MTc2OTUzNzc4M30.o23nrVldOIhOnXz4Sy_e6_98dg8Vz0S_DjJu2q5Qpb0	2026-01-27 19:16:23.289	2025-07-31 20:16:23.291109
+229	42	eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6NDIsImVtYWlsIjoic2FwaWVuc0BnbWFpbC5jb20iLCJpYXQiOjE3NTM5ODc3OTksImV4cCI6MTc2OTUzOTc5OX0.LIx-4ZgP-vVeOZVSYY-eeKyg85Ux8tfA7q-_mTk1zQQ	2026-01-27 19:49:59.112	2025-07-31 20:49:59.11533
+230	42	eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6NDIsImVtYWlsIjoic2FwaWVuc0BnbWFpbC5jb20iLCJpYXQiOjE3NTM5ODgwNzcsImV4cCI6MTc2OTU0MDA3N30.fbw5Mz2oMgAFB238KRz8dj1KPIrdaxf_1Lq1ZYR90lk	2026-01-27 19:54:37.349	2025-07-31 20:54:37.352445
+231	42	eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6NDIsImVtYWlsIjoic2FwaWVuc0BnbWFpbC5jb20iLCJpYXQiOjE3NTM5ODkwNDIsImV4cCI6MTc2OTU0MTA0Mn0.IsciRnfaRXIOFKCR3QtCpyUSfb90qt5KJmIIVtKrcVs	2026-01-27 20:10:42.552	2025-07-31 21:10:42.554084
+232	42	eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6NDIsImVtYWlsIjoic2FwaWVuc0BnbWFpbC5jb20iLCJpYXQiOjE3NTM5ODk0MjgsImV4cCI6MTc2OTU0MTQyOH0.jW-1geLm66cSpWGZei_Ywjl0z1jeEExbjxno1jKTeLg	2026-01-27 20:17:08.048	2025-07-31 21:17:08.049838
+233	42	eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6NDIsImVtYWlsIjoic2FwaWVuc0BnbWFpbC5jb20iLCJpYXQiOjE3NTM5OTAxMDUsImV4cCI6MTc2OTU0MjEwNX0.d4bPXjRaAq5kxWDXPYYYRHAtWgTq7iibmytYcbXJorY	2026-01-27 20:28:25.792	2025-07-31 21:28:25.793909
+234	42	eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6NDIsImVtYWlsIjoic2FwaWVuc0BnbWFpbC5jb20iLCJpYXQiOjE3NTM5OTAyODksImV4cCI6MTc2OTU0MjI4OX0.I4-Ame7RdGF9OdcMOcMjTibOsh_2Op-XKDJVKJsINXs	2026-01-27 20:31:29.76	2025-07-31 21:31:29.762768
+239	42	eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6NDIsImVtYWlsIjoic2FwaWVuc0BnbWFpbC5jb20iLCJpYXQiOjE3NTM5OTEwNjMsImV4cCI6MTc2OTU0MzA2M30.ZXg44wTZt8pxLpEg5SJV1n2RAAH2LaWhch86R0XKHXs	2026-01-27 20:44:23.28	2025-07-31 21:44:23.283575
+240	42	eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6NDIsImVtYWlsIjoic2FwaWVuc0BnbWFpbC5jb20iLCJpYXQiOjE3NTQwMjc3NDMsImV4cCI6MTc2OTU3OTc0M30.9Td_Qy-Iu1UdBpSLJCuy_6rD8vnE-YqYe6UxgxMxEqk	2026-01-28 06:55:43.649	2025-07-31 21:46:16.255848
+241	42	eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6NDIsImVtYWlsIjoic2FwaWVuc0BnbWFpbC5jb20iLCJpYXQiOjE3NTQwMjgzMzEsImV4cCI6MTc2OTU4MDMzMX0.-8QQcIaxnRStEBFb07FdLMHCHj93HlHcNedYcIUMEcI	2026-01-28 07:05:31.741	2025-08-01 08:05:31.744308
+242	42	eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6NDIsImVtYWlsIjoic2FwaWVuc0BnbWFpbC5jb20iLCJpYXQiOjE3NTQwMjg0NDksImV4cCI6MTc2OTU4MDQ0OX0.sPAvN-1viQ5Mv2Qi6sN7dJayhfK9RavfIBZDWXQLfKw	2026-01-28 07:07:29.013	2025-08-01 08:07:29.015998
+243	42	eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6NDIsImVtYWlsIjoic2FwaWVuc0BnbWFpbC5jb20iLCJpYXQiOjE3NTQwMjg1MDgsImV4cCI6MTc2OTU4MDUwOH0.mEzW3FEz61fogWlXFZ5SPrCag0m2NTblCDYMFENEzXo	2026-01-28 07:08:28.944	2025-08-01 08:08:28.945892
+244	42	eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6NDIsImVtYWlsIjoic2FwaWVuc0BnbWFpbC5jb20iLCJpYXQiOjE3NTQwMjg1NjEsImV4cCI6MTc2OTU4MDU2MX0.2DBzFiskEM0T2KRZTDH0wbJNL_PKoO_bHaQnPqMFzlY	2026-01-28 07:09:21.417	2025-08-01 08:09:21.421437
+245	42	eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6NDIsImVtYWlsIjoic2FwaWVuc0BnbWFpbC5jb20iLCJpYXQiOjE3NTQwMjk2MDQsImV4cCI6MTc2OTU4MTYwNH0.HY1qmix44d0UgqXsUA8IMpTxIBPH22Ivver5yWn1R-4	2026-01-28 07:26:44.134	2025-08-01 08:10:18.040097
+246	32	eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MzIsImVtYWlsIjoidG9tcGF5YW4xNzEwQGdtYWlsLmNvbSIsImlhdCI6MTc1NDAyOTk2MiwiZXhwIjoxNzY5NTgxOTYyfQ.NWLu9Ze8aadT1zg9xyjw0Gmb70hX36KKyZMRxlf3_j0	2026-01-28 07:32:42.588	2025-08-01 08:32:42.590644
+247	32	eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MzIsImVtYWlsIjoidG9tcGF5YW4xNzEwQGdtYWlsLmNvbSIsImlhdCI6MTc1NDAzMDQ0OCwiZXhwIjoxNzY5NTgyNDQ4fQ.OWwSMP-sNeDbGEMg9UYnm35C2Tb46Bg_JL8kE1KdfzI	2026-01-28 07:40:48.404	2025-08-01 08:40:48.409048
+248	32	eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MzIsImVtYWlsIjoidG9tcGF5YW4xNzEwQGdtYWlsLmNvbSIsImlhdCI6MTc1NDAzMDU1MywiZXhwIjoxNzY5NTgyNTUzfQ.Vwg78-NqVPZxpaJX5fFqvkS8VmZrDfLxey_AWRCgI6U	2026-01-28 07:42:33.426	2025-08-01 08:42:33.429583
+249	32	eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MzIsImVtYWlsIjoidG9tcGF5YW4xNzEwQGdtYWlsLmNvbSIsImlhdCI6MTc1NDAzMDU3OCwiZXhwIjoxNzY5NTgyNTc4fQ.Ax9xUPZeRMkkJ9LGAh1SrH06NM7yCPlPBCtfrTgBSkY	2026-01-28 07:42:58.434	2025-08-01 08:42:58.441397
+251	32	eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MzIsImVtYWlsIjoidG9tcGF5YW4xNzEwQGdtYWlsLmNvbSIsImlhdCI6MTc1NDAzMTYyMywiZXhwIjoxNzY5NTgzNjIzfQ.caEqSbAjCLXPRNLFjdC9L2jIIxPZaXO1qNonRlYwsqQ	2026-01-28 08:00:23.366	2025-08-01 09:00:23.372366
+252	32	eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MzIsImVtYWlsIjoidG9tcGF5YW4xNzEwQGdtYWlsLmNvbSIsImlhdCI6MTc1NDAzMTYzMSwiZXhwIjoxNzY5NTgzNjMxfQ.8BT3e9l9-SFzol_Lq9cRmAh7fyn0-UxwuQI1XnlD9VE	2026-01-28 08:00:31.799	2025-08-01 09:00:31.804243
+253	32	eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MzIsImVtYWlsIjoidG9tcGF5YW4xNzEwQGdtYWlsLmNvbSIsImlhdCI6MTc1NDAzMzA3MSwiZXhwIjoxNzY5NTg1MDcxfQ.P3Wh7tk42zRmBTyigUyAGa4ScNJ3q5paxmml5-qB_tY	2026-01-28 08:24:31.627	2025-08-01 09:22:31.969807
+254	32	eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MzIsImVtYWlsIjoidG9tcGF5YW4xNzEwQGdtYWlsLmNvbSIsImlhdCI6MTc1NDAzMzA3MSwiZXhwIjoxNzY5NTg1MDcxfQ.P3Wh7tk42zRmBTyigUyAGa4ScNJ3q5paxmml5-qB_tY	2026-01-28 08:24:31.644	2025-08-01 09:24:31.648875
+258	32	eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MzIsImVtYWlsIjoidG9tcGF5YW4xNzEwQGdtYWlsLmNvbSIsImlhdCI6MTc1NDA0NzA3NSwiZXhwIjoxNzY5NTk5MDc1fQ.7Np3UyATMk_1HW6effCPH7DjCjKGBrPunFcMgA9zhoA	2026-01-28 12:17:55.447	2025-08-01 13:17:55.451879
+259	42	eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6NDIsImVtYWlsIjoic2FwaWVuc0BnbWFpbC5jb20iLCJpYXQiOjE3NTQwNDcxNTYsImV4cCI6MTc2OTU5OTE1Nn0.TdpnRmNbre3WifZ_oS1EIYwmJNbCQsfgGnKbPsjgbVY	2026-01-28 12:19:16.861	2025-08-01 13:19:16.864494
 \.
 
 
@@ -1465,8 +1519,8 @@ COPY public.users (id, email, password, role, created_at, provider_id, provider,
 36	lebigtom2@gmail.com	$2b$10$OXiZ9jGDa0qzJBOsrjdH2eQVL2WgfNAQdFrVUX2QDEr0.WOloxn5G	member	2025-07-17 07:23:50.594806	\N	password-email	\N	\N	\N	t	t
 37	lebigtom3@gmail.com	$2b$10$JPBOkjvDUmeB4Y.PiB2Q1.o8WTEs6zAv3JmlYKISNs8Tk8FSZJYx.	member	2025-07-17 07:29:07.522063	\N	password-email	\N	\N	\N	t	t
 41	tomchat10@gmail.com	$2b$10$fpnHV0vQqTsmo.d3FBG5yejhd6dLGDR8yvvnFRHaUL6ioyrbz03AW	member	2025-07-20 09:16:29.345317	\N	password-email	Payan Tom Manua234	+33765704097	https://knswskkdaimyrcstijsm.supabase.co/storage/v1/object/public/profil-picture/user_41_1753862811771.jpg	f	f
-32	tompayan1710@gmail.com	\N	member	2025-05-11 17:20:09.47826	5	\N	Tom Payan	+33765594097	https://knswskkdaimyrcstijsm.supabase.co/storage/v1/object/public/profil-picture/user_32_1753952824665.jpg	t	t
-42	sapiens@gmail.com	$2b$10$UmaAP3yz6I.uEEmGnjn2bueaKSXk03az.xVH8CRM/P40YZhdaytva	member	2025-07-30 10:20:12.208764	5	password-email	\N	\N	\N	t	t
+32	tompayan1710@gmail.com	\N	member	2025-05-11 17:20:09.47826	5	google	Tom Payan	+33765594097	https://knswskkdaimyrcstijsm.supabase.co/storage/v1/object/public/profil-picture/user_32_1753952824665.jpg	t	t
+42	sapiens@gmail.com	$2b$10$UmaAP3yz6I.uEEmGnjn2bueaKSXk03az.xVH8CRM/P40YZhdaytva	member	2025-07-30 10:20:12.208764	5	password-email	Saplins	+3355555555555	https://knswskkdaimyrcstijsm.supabase.co/storage/v1/object/public/profil-picture/user_42_1753991023778.png	t	t
 \.
 
 
@@ -1530,6 +1584,13 @@ SELECT pg_catalog.setval('public.hotes_id_seq', 3, true);
 
 
 --
+-- Name: invitation_tokens_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('public.invitation_tokens_id_seq', 3, true);
+
+
+--
 -- Name: offer_cancel_slots_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
 
@@ -1582,7 +1643,7 @@ SELECT pg_catalog.setval('public.qr_codes_id_seq', 58, true);
 -- Name: refresh_tokens_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
 
-SELECT pg_catalog.setval('public.refresh_tokens_id_seq', 227, true);
+SELECT pg_catalog.setval('public.refresh_tokens_id_seq', 259, true);
 
 
 --
@@ -1610,7 +1671,7 @@ SELECT pg_catalog.setval('public.reservations_individuals_id_seq', 105, true);
 -- Name: users_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
 
-SELECT pg_catalog.setval('public.users_id_seq', 42, true);
+SELECT pg_catalog.setval('public.users_id_seq', 44, true);
 
 
 --
@@ -1704,7 +1765,7 @@ ALTER TABLE ONLY public.invitation_tokens
 --
 
 ALTER TABLE ONLY public.invitation_tokens
-    ADD CONSTRAINT invitation_tokens_token_key UNIQUE (token);
+    ADD CONSTRAINT invitation_tokens_token_key UNIQUE (invitation_token);
 
 
 --

@@ -1,5 +1,7 @@
 .InvitationPage{
-    flex: 1;
+  display: flex;
+  flex-direction: column;
+  flex: 1;
 }
 .InvitationPage>p:first-of-type{
     text-align: center;
@@ -135,4 +137,56 @@
 .InvitationPage .Protected > p {
     color: var(--greennormal);
     width: 100%;
+}
+
+
+
+.InvitationPage .InvalideContainer{
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  flex: 1;
+  justify-content: center;
+  align-items: center;
+  gap: 10px;
+  /* background-color: red; */
+  margin-bottom: 100px;
+}
+.InvitationPage .InvalideContainer>img{
+  width: 100px;
+
+}
+.InvitationPage .InvalideContainer>p{
+  text-align: center;
+  width: 90%;
+}
+
+
+.InvitationPage .InvalideContainer .NavigateButton{
+    gap: 10px;    
+    position: fixed;
+    width: 100%;
+    bottom: 0;
+    max-width: calc(500px);
+    align-items: center;
+    margin-bottom: 20px;
+}
+.InvitationPage .InvalideContainer .NavigateButton>button{
+    width: 88%;
+    border-radius: 100px;
+    cursor: pointer;
+    padding: 15px 50px;
+}
+.InvitationPage .InvalideContainer .NavigateButton>button:first-of-type{
+    background: linear-gradient(180deg, #545454, #373737);
+    font-weight: lighter;
+    border: none;
+}
+.InvitationPage .InvalideContainer .NavigateButton>button:first-of-type>p{
+    color: white;
+}
+
+.InvitationPage .InvalideContainer .NavigateButton>button:last-of-type{
+    background-color: transparent;
+    border: 1px solid var(--greysemidark);
 }

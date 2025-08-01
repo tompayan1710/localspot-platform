@@ -119,19 +119,6 @@ router.get("/get", async (req, res) => {
   }
 });
 
-router.get("/get_by_token", async (req, res) => {
-  const { token } = req.query
-  try {
-    
-    const provider = await getProviderByToken(token);
-    res.status(200).json({ success: true, provider });
-
-  } catch (error) {
-    console.error("Erreur dans /provider/get_by_token?token= :", error.message);
-    res.status(500).json({ success: false, message: "Erreur serveur lors de la récupération du prestataire." });
-  }
-});
-
 
 router.patch("/update_provider", async (req, res) => {
   const { id_user, id_provider } = req.query

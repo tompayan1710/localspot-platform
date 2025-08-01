@@ -21,11 +21,11 @@ export const getProviderById = async (provider_id) => {
     }
 }
 
-export const getProviderIdByToken = async (token) => {
+export const getProviderIdByToken = async (invitation_token) => {
     console.log("Récupération de l'id du provider");
     try {
         // ✅ Requête pour obtenir un nouveau token (Refresh Token doit être dans les cookies)
-        const response = await fetch(`${process.env.REACT_APP_API_URL}/api/provider/get_by_token?token=${token}`, {
+        const response = await fetch(`${process.env.REACT_APP_API_URL}/api/invitation/get_provider_by_token?invitation_token=${invitation_token}`, {
             method: "GET",
         });
 
