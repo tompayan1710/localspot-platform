@@ -50,6 +50,7 @@ import FormInfoPayement from "./pages/OfferPage/Payment/FormInfoPayement/FormInf
 import AnnonceEditInfos from "./pages/AnnoncePage/AnnonceEditInfos/AnnonceEditInfos";
 import AnnonceEditPhotos from "./pages/AnnoncePage/AnnonceEditPhotos/AnnonceEditPhotos";
 import InvitationPage from "./pages/InvitationPage/InvitationPage";
+import Favoris from "./pages/Favoris/Favoris";
 
 export default function BrowserRouterAll(){
     const location = useLocation();
@@ -125,6 +126,9 @@ export default function BrowserRouterAll(){
             <Route path="/offer-page/:slug/payment" element={<PaymentPage />} />
             <Route path="/confirm-payment" element={<ConfirmPaymentPage />} />
             <Route path="/offer-page/:slug/add-comment" element={<AddComment />} />
+
+
+            <Route path="/favoris" element={<Favoris />} />
 
             <Route path="/activity" element={<Activity />} />
 

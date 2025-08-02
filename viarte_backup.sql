@@ -1094,7 +1094,7 @@ COPY public.hotes (id, name, location, type, created_at, updated_at, latitude, l
 --
 
 COPY public.invitation_tokens (id, invitation_token, provider_id, created_at, expires_at, used_at, is_used) FROM stdin;
-1	68271bdd-70d7-4bee-a4a4-7e6afe015c2a	5	2025-08-01 10:45:23.683645	\N	\N	f
+8	14c14dec-7b78-4b04-8c58-978c5564106c	5	2025-08-01 16:20:42.260969	2025-08-03 16:20:42.139	\N	f
 \.
 
 
@@ -1318,8 +1318,6 @@ COPY public.refresh_tokens (id, user_id, refresh_token, expires_at, created_at) 
 254	32	eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MzIsImVtYWlsIjoidG9tcGF5YW4xNzEwQGdtYWlsLmNvbSIsImlhdCI6MTc1NDAzMzA3MSwiZXhwIjoxNzY5NTg1MDcxfQ.P3Wh7tk42zRmBTyigUyAGa4ScNJ3q5paxmml5-qB_tY	2026-01-28 08:24:31.644	2025-08-01 09:24:31.648875
 258	32	eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MzIsImVtYWlsIjoidG9tcGF5YW4xNzEwQGdtYWlsLmNvbSIsImlhdCI6MTc1NDA0NzA3NSwiZXhwIjoxNzY5NTk5MDc1fQ.7Np3UyATMk_1HW6effCPH7DjCjKGBrPunFcMgA9zhoA	2026-01-28 12:17:55.447	2025-08-01 13:17:55.451879
 259	42	eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6NDIsImVtYWlsIjoic2FwaWVuc0BnbWFpbC5jb20iLCJpYXQiOjE3NTQwNTA2NDQsImV4cCI6MTc2OTYwMjY0NH0.EnKRg21VONNSkq-mNnmG7cmEUipg_3vC-L22IVEdQNc	2026-01-28 13:17:24.116	2025-08-01 13:19:16.864494
-270	54	eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6NTQsImVtYWlsIjoidDA3Njc3OTc0QGdtYWlsLmNvbSIsImlhdCI6MTc1NDA1MzM2OSwiZXhwIjoxNzY5NjA1MzY5fQ.6-JZqVqJhI03Y8DMVgfkQr_x6DEeS42lXlVQ1HwkxnM	2026-01-28 14:02:49.659	2025-08-01 15:02:49.659786
-271	54	eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6NTQsImVtYWlsIjoidDA3Njc3OTc0QGdtYWlsLmNvbSIsImlhdCI6MTc1NDA1MzQ5NywiZXhwIjoxNzY5NjA1NDk3fQ.HxofJIP7m6yCKTcoBWYn7_mtRPU7teCFcAwOZlP2Fn8	2026-01-28 14:04:57.129	2025-08-01 15:04:57.133831
 \.
 
 
@@ -1522,7 +1520,6 @@ COPY public.users (id, email, password, role, created_at, provider_id, provider,
 41	tomchat10@gmail.com	$2b$10$fpnHV0vQqTsmo.d3FBG5yejhd6dLGDR8yvvnFRHaUL6ioyrbz03AW	member	2025-07-20 09:16:29.345317	\N	password-email	Payan Tom Manua234	+33765704097	https://knswskkdaimyrcstijsm.supabase.co/storage/v1/object/public/profil-picture/user_41_1753862811771.jpg	f	f
 32	tompayan1710@gmail.com	\N	member	2025-05-11 17:20:09.47826	\N	google	Tom Payan	+33765594097	https://knswskkdaimyrcstijsm.supabase.co/storage/v1/object/public/profil-picture/user_32_1753952824665.jpg	t	t
 42	sapiens@gmail.com	$2b$10$UmaAP3yz6I.uEEmGnjn2bueaKSXk03az.xVH8CRM/P40YZhdaytva	member	2025-07-30 10:20:12.208764	\N	password-email	Saplins	+3355555555555	https://knswskkdaimyrcstijsm.supabase.co/storage/v1/object/public/profil-picture/user_42_1753991023778.png	t	t
-54	t07677974@gmail.com	\N	member	2025-08-01 15:02:49.64018	5	google	mail teste	+33988888888	\N	t	t
 \.
 
 
@@ -1589,7 +1586,7 @@ SELECT pg_catalog.setval('public.hotes_id_seq', 3, true);
 -- Name: invitation_tokens_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
 
-SELECT pg_catalog.setval('public.invitation_tokens_id_seq', 3, true);
+SELECT pg_catalog.setval('public.invitation_tokens_id_seq', 9, true);
 
 
 --
@@ -1645,7 +1642,7 @@ SELECT pg_catalog.setval('public.qr_codes_id_seq', 58, true);
 -- Name: refresh_tokens_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
 
-SELECT pg_catalog.setval('public.refresh_tokens_id_seq', 271, true);
+SELECT pg_catalog.setval('public.refresh_tokens_id_seq', 278, true);
 
 
 --
@@ -1673,7 +1670,7 @@ SELECT pg_catalog.setval('public.reservations_individuals_id_seq', 105, true);
 -- Name: users_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
 
-SELECT pg_catalog.setval('public.users_id_seq', 54, true);
+SELECT pg_catalog.setval('public.users_id_seq', 59, true);
 
 
 --

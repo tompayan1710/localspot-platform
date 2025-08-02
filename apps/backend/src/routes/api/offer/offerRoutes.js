@@ -3,6 +3,9 @@ const router = express.Router();
 
 const { createOffer, getAllOffers, getOfferBySlug, getOffersProvider } = require("../../../db/Models/offerModel");
 const { findOrCreateCityByName } = require("../../../db/Models/AdresseModel");
+const { toggleFavorite, isFavorite } = require("../../../db/Models/FavoritesModel");
+
+
 const db = require("../../../db/index");
 
 // ➕ Route pour créer une nouvelle offre
@@ -399,5 +402,39 @@ router.patch("/update-photos", upload.array("new_photos"), async (req, res) => {
 });
 
 
+
+router.patch("/toggle-like", async (req, res) => {
+  const { user_id, offer_slug } = req.body;
+  console.log("Je Toggle l'offer");
+
+  if (!user_id || !offer_slug) {
+    return res.status(400).json({ success: false, message: "user_id et offer_slug sont requis." });
+  }
+
+  try {
+    const result = await toggleFavorite(user_id, offer_slug);
+    return res.status(200).json({ success: true, action: result.action });
+  } catch (error) {
+    console.error("Erreur dans /offer/toggle-like :", error);
+    return res.status(500).json({ success: false, message: "Erreur serveur." });
+  }
+});
+
+router.post("/is-favorite", async (req, res) => {
+  const { user_id, offer_slug } = req.body;
+  console.log("Je Toggle l'offer");
+
+  if (!user_id || !offer_slug) {
+    return res.status(400).json({ success: false, message: "user_id et offer_slug sont requis." });
+  }
+
+  try {
+    const result = await isFavorite(user_id, offer_slug);
+    return res.status(200).json({ success: true, isFavorite: result });
+  } catch (error) {
+    console.error("Erreur dans /offer/is-favorite :", error);
+    return res.status(500).json({ success: false, message: "Erreur serveur." });
+  }
+});
 
 module.exports = router;

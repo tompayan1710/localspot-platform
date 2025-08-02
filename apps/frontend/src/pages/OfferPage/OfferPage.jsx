@@ -11,16 +11,21 @@ import customerKing from "../../assets/images/customerKing.png"
 import arrowRight from "../../assets/images/arrowRight.png" 
 import extendMap from "../../assets/images/extendMap.png" 
 import crossiconBlack from "../../assets/images/crossiconBlack.png" 
-import Map2D from "../../components/Maps/Map2D";
+import favoris from "../../assets/images/favoris.png" 
+import favoris_selected from "../../assets/images/favoris_selected.png" 
+import allImageIcon from "../../assets/images/allImageIcon.png" 
+import Map2D from "../../components/Maps/Map2D"; 
 import { getOfferBySlug } from "../../services/offers"
+import { toggleFavorite, IsOfferFavorite } from "../../services/favorites.js"
 import { getQRCodeById } from "../../services/QRCodeService"
 import { getHoteById } from "../../services/hotes"
 import "../../components/GoBack/GoBack.css"
 import React from "react";
 import { getDurations } from "../../services/map2D";
+import { AuthContext } from "../../components/Auth/authContext/authContext.js";
 
 import "./OfferPage.css";
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState, useContext } from "react";
 import { useParams } from "react-router-dom";
 import Carrousel from "../../components/Carrousel/Carrousel";
 import Footer from "../../components/Footer/Footer";
@@ -30,11 +35,13 @@ import { useNavigate, useLocation } from "react-router-dom";
 import PopUpBottom from "../../components/PopUpBottom/PopUpBottom";
 import OfferComments from "./Comments/OfferComments";
 import { linearTheme } from "../../services/themeModifier";
+import PopUpLogin from "../../components/Auth/PopUpLogin/PopUpLogin.jsx";
 
 export default function OfferPage() {
   const { slug } = useParams();
   const location = useLocation();
   const isAnimation = location.state?.isAnimation || false;
+  const { checkAuth, authState } = useContext(AuthContext);
 
   const queryParams = new URLSearchParams(location.search);
   const id_qrcode = queryParams.get('id');
@@ -51,6 +58,7 @@ export default function OfferPage() {
   const ParticipantBottomRef = useRef(null);
   const refOfferMapContainer = useRef(null);
   const refAdresse = useRef(null);
+  const PopUpLoginRef = useRef(null);
 
   const [offer, setOffer] = useState({});
   const [qrcode, setQRCode] = useState({});
@@ -63,38 +71,17 @@ export default function OfferPage() {
   const [participantReduced, setParticipantReduced] = useState(1);      
   const [isLoading, setIsLoading] = useState(true);      
   const [isExtendMap, setIsExtendMap] = useState(false);  
+  const [isFavorite, setIsFavorite] = useState(false);  
   
-  
-
-      /*
-      const getQRCodesAndHote = async (slug) => {
-        const qrcodeData = await getQRCodeBySlug(slug);
-        if(qrcodeData.success){
-          setQRCode(qrcodeData.qrcode);
-          console.log("LLLLLLLLLLLLLLLLLLL");
-          console.log(qrcodeData);
-
-          const hoteData = await getHoteById(qrcodeData.qrcode.id_hote);
-
-          if(hoteData.success){
-            setHote(hoteData.hote);
-            console.log(hoteData);
-            console.log("Récuperation de l'hote avec la latitdue : ", hoteData.hote.latitude, hoteData.hote.longitude);
-
-            fetchDurations(offer, hoteData.hote)
-          }
-
-        }
-      }*/
     
-function allRefsReady() {
-  return (
-    OfferPageAnimationRef.current &&
-    OfferPageRef.current &&
-    ReserveButtonRef.current &&
-    offerContainerRef.current
-  );
-}
+  function allRefsReady() {
+    return (
+      OfferPageAnimationRef.current &&
+      OfferPageRef.current &&
+      ReserveButtonRef.current &&
+      offerContainerRef.current
+    );
+  }
 
   const OfferAnimationShow = () => {
     console.error("Voici mon isAnimation : ", isAnimation);
@@ -130,6 +117,20 @@ function allRefsReady() {
         }
   }
       
+
+  useEffect(() => {
+    const getFavoricity = async () => {
+      if (authState.user?.id && slug) {
+        const result = await IsOfferFavorite(authState.user.id, slug);
+        if (result.success) {
+          setIsFavorite(result.isFavorite);
+        }
+      }
+    };
+
+    getFavoricity();
+  }, [authState.user?.id, slug]);
+
   // const fetchDurations = async (offer, hote) => {////////////////////////////////////A remetre
   //   if (!offer.latitude || !hote.latitude) return;
   //   const res = await getDurations({
@@ -153,7 +154,14 @@ function allRefsReady() {
 }
 
     
+
   useEffect(() => {
+    checkAuth();
+  }, [])
+
+  useEffect(() => {
+
+     //Pour les likes, pour réinitialisé l'état après que l'utilisateur se soit connecter
     async function loadData(slug) {
       try {
         setIsLoading(true);
@@ -278,6 +286,17 @@ function allRefsReady() {
     }, []);
 
 
+    useEffect(() => {
+      const queryParams = new URLSearchParams(window.location.search);
+      const token = queryParams.get("token");
+
+      if (token) {
+        localStorage.setItem("jwtToken", token);
+        checkAuth(); // ✅ ici tu réinitialises authState
+      }
+    }, []);
+
+
     return (
       <div className="offerContainer" ref={offerContainerRef}>
         <div className={`OfferPageAnimation ${!isAnimation ? "Without" : ""}`} ref={OfferPageAnimationRef}>
@@ -296,9 +315,31 @@ function allRefsReady() {
         <div className={`ContainerOfferPageAll ${!isAnimation ? "Without" : ""}`} ref={OfferPageRef}>
           <GoBack nagigation={"/"} scrollTo={""} text={"revenir"}/> 
           {/* <TopDivOpacity /> */}
-          <button className="AllImages" onClick={() => {console.log("Appuie")}}>
-            <img src={copieIcon} alt="copie Icon"/>
-          </button>
+          <div className="InteractionContainer row">
+            <div className="likeContainer">
+              <button className="AllImages" onClick={() => {
+                
+                console.warn(authState)
+                console.warn(slug);
+                console.warn(authState.user);
+                if(authState?.user?.id && slug){
+                  console.log("Can liked")
+                  setIsFavorite((prev) => !prev)
+                  toggleFavorite(authState.user.id, slug)
+                }else{
+                  setIsOccultView(true);
+                  PopUpLoginRef.current.classList.add("open");
+                  console.log("Could not like");
+                }
+              }}>
+                <img src={favoris} alt="favoris Icon"/>
+                <img className={`${isFavorite ? "appear" : "disappear"}`} src={favoris_selected} alt="favoris selected Icon"/>
+              </button>
+            </div>
+            <button className="AllImages" onClick={() => {console.log("Appuie")}}>
+              <img src={allImageIcon} alt="copie Icon"/>
+            </button>
+          </div>
           <Carrousel isLoading={isLoading}  photos={offer.image_urls}  setNavigationSelected={setNavigationSelected} ref={CarrouselRef} scrollSyncEnabled={scrollSyncEnabled}/>
           <div className="pointNavigationContainer">
             {
@@ -661,11 +702,21 @@ function allRefsReady() {
             <p className="t6">Après avoir vécu l’expérience, les voyageurs sont invités à partager leur ressenti : des avis fiables et authentiques. Vous êtes certain de lire un retour d’expérience réel.</p>
           </div> */}
 
+          <PopUpLogin googleRedirectRoute={`/offer-page/${slug}`} ref={PopUpLoginRef} setIsOccultView={setIsOccultView}/>
+
+          {/* <div className={`occultView ${isOccultView ? "open" : ""}`}  
+          onClick={(e) => {
+            console.warn("IsOccult 1")
+            searchBarRef.current.classList.remove("open");
+            PopUpLoginRef.current.classList.remove("open");
+            setIsOccultView(false);
+          }}></div> */}
+
           <div className={`occultView ${isOccultView ? "open" : ""}`} onClick={() => {
             PopUpBottomRef.current.classList.remove("open");
             CancelBottomRef.current.classList.remove("open");
             ParticipantBottomRef.current.classList.remove("open");
-
+            PopUpLoginRef.current.classList.remove("open");
             // PopUpBottomRef.current.style.bottom = "-100%";
             // CancelBottomRef.current.style.bottom = "-100%";
             // ParticipantBottomRef.current.style.bottom = "-100%";

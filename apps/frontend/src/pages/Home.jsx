@@ -228,7 +228,7 @@ import WhiteButton from "../components/Buttons/WhiteButton/WhiteButton";
               }
             </div>
           </div>
-          <p className="t32">Because <strong>memories</strong><br></br> deserve to be more than<br></br>just words!</p>
+          <p className="t32">Des expériences uniques<br></br>proche de vous !</p>
         </div>
         <div ref={HomePageRef} className="HomeContainer">
           <div  className={`SelectingToday ${loading && "loading shimmer"}`}>

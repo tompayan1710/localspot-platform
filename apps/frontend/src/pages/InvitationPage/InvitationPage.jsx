@@ -29,7 +29,7 @@ export default function InvitationPage(){
 
     const [ loading, setLoading ] = useState(true);
     const [ isOccultView, setIsOccultView ] = useState(false);
-    const [ isValidInvitationToken, setIsValidInvitationToken ] = useState(true);
+    const [ isValidInvitationToken, setIsValidInvitationToken ] = useState(false);
     const PopUpLoginRef = useRef(null);
     const PopUpConfirmRef = useRef(null);
 
@@ -62,8 +62,9 @@ export default function InvitationPage(){
 
                 const offerResponse = await getOffersProvider(invitation.provider_id);
                 if (!offerResponse.success) {
-                console.error("❌ Erreur lors de la récupération des offres");
-                return;
+                    console.error("❌ Erreur lors de la récupération des offres");
+                    setIsValidInvitationToken(false)
+                    return;
                 }
                 setIsValidInvitationToken(true);
                 setOfferProvider(offerResponse.offers[0]);
@@ -81,8 +82,12 @@ export default function InvitationPage(){
         }, 500)
     }, []);
 
+    
+    useEffect(() => {
+        console.log(isValidInvitationToken);
+    }, [isValidInvitationToken])
 
-
+    
 //  "7a692e3a-ff1e-49e3-aefa-23da87d6d3ff"
     // useEffect(() => {
     //     console.error(offerProvider);
@@ -170,7 +175,9 @@ export default function InvitationPage(){
                 </>
                 :
                 <div className="InvalideContainer">
-                    <img src={ProtectedIllustration} alt="Protected Illustration"/>
+                    <div className="ImageWrapper">
+                        <img src={ProtectedIllustration} alt="Protected Illustration"/>
+                    </div>
                     <p className="t3 bold">Oups, ce lien n’est pas valide</p>
                     <p className="t5">
                         Il semble que ce lien d’invitation ait expiré ou ait été utilisé.
@@ -180,7 +187,8 @@ export default function InvitationPage(){
                         <button onClick={() => navigate("/")}>
                             <p className="t4">Retour à l’accueil</p>
                         </button>
-                        <button onClick={() => navigate("/")}>
+
+                        <button onclick="window.location.href='tel:+330765594097'">
                             <p className="t4">Contacter le support</p>
                         </button>
                     </div>

@@ -134,7 +134,7 @@ p.truncate-multiline {
     justify-content: center;
     align-items: center;
     margin-bottom: 50px;
-    min-height: 600px;
+    /* min-height: 600px; */
 }
 .NoReservation .MessageNone>.ImageWrapper{
     width: 80%;

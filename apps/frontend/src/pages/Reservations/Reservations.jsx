@@ -86,7 +86,7 @@ export default function Reservations(){
 
     return (
         <div className="Reservations">
-            <p className="t32">Mes reservation</p>
+            <p className="t32">Reservation</p>
             <div className="AllReservations">
                 {
                     false && Object.entries(AllReservations).length > 0 ? Object.entries(AllReservations).map(([date, reservations]) => {

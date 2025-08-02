@@ -3,6 +3,7 @@ const express = require("express");
 const router = express.Router();
 const multer = require("multer");
 const pool = require("../../../db/index"); // ← ta config PostgreSQL
+const  { getAllFavorites }  = require("../../../db/Models/FavoritesModel"); // ← ta config PostgreSQL
 const supabase = require("../../../utils/supabaseClient");
 
 const upload = multer({ storage: multer.memoryStorage() });
@@ -59,6 +60,25 @@ router.patch("/update-profile", upload.single("profil_picture"), async (req, res
   } catch (err) {
     console.error("❌ Erreur SQL :", err);
     return res.status(500).json({ message: "Erreur serveur" });
+  }
+});
+
+
+
+
+router.get("/getall-favorites", async (req, res) => {
+  const user_id = req.query.user_id;
+
+  if (!user_id) {
+    return res.status(400).json({ success: false, message: "user_id requis" });
+  }
+
+  try {
+    const favorites = await getAllFavorites(user_id);
+    return res.json({ success: true, favorites });
+  } catch (error) {
+    console.error("Erreur dans /offer/favorites :", error);
+    return res.status(500).json({ success: false, message: "Erreur serveur." });
   }
 });
 

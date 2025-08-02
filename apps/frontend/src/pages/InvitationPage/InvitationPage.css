@@ -98,6 +98,7 @@
     text-align: center;
     margin-top: 20px;
     gap: 2px;
+    padding-bottom: 200px;
 }
 
 
@@ -152,9 +153,15 @@
   /* background-color: red; */
   margin-bottom: 100px;
 }
-.InvitationPage .InvalideContainer>img{
+.InvitationPage .InvalideContainer>.ImageWrapper{
   width: 100px;
-
+  height: 100px;
+  display: flex;
+  flex-direction: column;
+}
+.InvitationPage .InvalideContainer>.ImageWrapper>img{
+  width: 100px;
+  height: 100px;
 }
 .InvitationPage .InvalideContainer>p{
   text-align: center;

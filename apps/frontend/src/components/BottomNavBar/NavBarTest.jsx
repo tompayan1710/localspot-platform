@@ -11,6 +11,7 @@ import OffersNav from "../../assets/images/OffersNav.png"
 import EuroNav from "../../assets/images/EuroNav.png"
 import ReservationsIcon from "../../assets/images/ReservationsIcon.png"
 import ExploreIcon from "../../assets/images/ExploreIcon.png"
+import favoris from "../../assets/images/favoris.png"
 import Today from "../../assets/images/Today.png"
 import { AuthContext } from "../Auth/authContext/authContext"
 
@@ -38,28 +39,9 @@ const NavBarTest = forwardRef(({ isMap }, ref) => {
     if (currentPath.startsWith("/profile")) return "profile";
     if (currentPath.startsWith("/my-earnings")) return "my-earnings";
     if (currentPath.startsWith("/reservation")) return "reservations";
+    if (currentPath.startsWith("/favoris")) return "favoris";
     return "explorer";
   };
-
-    // const [activeTab, setActiveTab] = useState(props.activeTab || "explorer");
-
-
-  //  useEffect(() => {
-  //   const handleScroll = () => {
-  //     const currentScrollY = window.scrollY;
-
-  //     if (currentScrollY > lastScrollY && currentScrollY > 100) {
-  //       setHidden(true); // scroll vers le bas ⇒ cacher
-  //     } else {
-  //       setHidden(false); // scroll vers le haut ⇒ montrer
-  //     }
-
-  //     setLastScrollY(currentScrollY);
-  //   };
-
-  //   window.addEventListener("scroll", handleScroll);
-  //   return () => window.removeEventListener("scroll", handleScroll);
-  // }, [lastScrollY]);
 
   useEffect(() => {
     setActiveTab(getActiveTab());
@@ -98,6 +80,20 @@ const NavBarTest = forwardRef(({ isMap }, ref) => {
             <div className={`IconWrapper ${activeTab === "explorer" ? "active" : ""}`}>
               <img src={ExploreIcon} alt="explore icon"/>
               <p className="t6">Explorer</p>
+            </div>
+                         
+          </button>
+
+          <button className="NavBarButton" 
+            onClick={() => {
+              // setActiveTab("explorer");
+              
+              navigate("/favoris");
+            }}
+          >
+            <div className={`IconWrapper ${activeTab === "favoris" ? "active" : ""}`}>
+              <img src={favoris} alt="favoris icon"/>
+              <p className="t6">favoris</p>
             </div>
                          
           </button>
