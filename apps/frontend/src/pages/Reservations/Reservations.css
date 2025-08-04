@@ -137,8 +137,9 @@ p.truncate-multiline {
     /* min-height: 600px; */
 }
 .NoReservation .MessageNone>.ImageWrapper{
-    width: 80%;
-    aspect-ratio: 2.5; 
+    width: 90%;
+    aspect-ratio: 2.5;
+    /* background-color: red; */
 }
 .NoReservation .MessageNone>.ImageWrapper>img{
     width: 100%;

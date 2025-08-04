@@ -100,7 +100,7 @@ body{
   --greylight: #F3F4F6;
   --greyverylight: #FBFBFB;
   --bluelight: #F1F6FE;
-  --bluenormal: #5D82EE;
+  --bluenormal: #0099CC;
   --redlight: #FFD2D2;
   --rednormal: #ED332A;
   --violetlight: #F3EDFE;
@@ -116,6 +116,9 @@ body{
   /* --lineargradientblack: linear-gradient(180deg, #535353, #373737); */
   --lineargradientblack: linear-gradient(180deg, rgb(83, 83, 83), rgb(55, 55, 55));
   --lineargradientblackRight: linear-gradient(to right, rgb(83, 83, 83), rgb(55, 55, 55));
+  --lineargradientgrey: linear-gradient(to right, var(--greyverylight), rgb(243, 244, 246));
+
+
   --lineargradientgreen: linear-gradient(to bottom, #c4f5c1, #7de276);
   --lineargradientgreenRight: linear-gradient(to right, #b5edb1, var(--greennormal));
   --lineargradientred: linear-gradient(180deg, #fcb3b3, var(--rednormal));
@@ -200,6 +203,13 @@ a{
 .hline88{
   background-color: var(--greysemidark);
   width: 88%;
+  height: 1px;
+  margin: 0 auto;
+}
+
+.hline15{
+  background-color: var(--greysemidark);
+  width: calc(100% - 15px);
   height: 1px;
   margin: 0 auto;
 }

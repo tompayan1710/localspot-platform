@@ -199,6 +199,42 @@ ALTER SEQUENCE public.departments_id_seq OWNED BY public.departments.id;
 
 
 --
+-- Name: favorites; Type: TABLE; Schema: public; Owner: postgres
+--
+
+CREATE TABLE public.favorites (
+    id integer NOT NULL,
+    user_id integer NOT NULL,
+    offer_slug text NOT NULL,
+    created_at timestamp without time zone DEFAULT now()
+);
+
+
+ALTER TABLE public.favorites OWNER TO postgres;
+
+--
+-- Name: favorites_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
+--
+
+CREATE SEQUENCE public.favorites_id_seq
+    AS integer
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER SEQUENCE public.favorites_id_seq OWNER TO postgres;
+
+--
+-- Name: favorites_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
+--
+
+ALTER SEQUENCE public.favorites_id_seq OWNED BY public.favorites.id;
+
+
+--
 -- Name: hotes; Type: TABLE; Schema: public; Owner: postgres
 --
 
@@ -249,7 +285,7 @@ CREATE TABLE public.invitation_tokens (
     invitation_token uuid DEFAULT gen_random_uuid() NOT NULL,
     provider_id integer NOT NULL,
     created_at timestamp without time zone DEFAULT now(),
-    expires_at timestamp without time zone,
+    expires_at timestamp without time zone DEFAULT (now() + '1 day'::interval),
     used_at timestamp without time zone,
     is_used boolean DEFAULT false
 );
@@ -886,6 +922,13 @@ ALTER TABLE ONLY public.departments ALTER COLUMN id SET DEFAULT nextval('public.
 
 
 --
+-- Name: favorites id; Type: DEFAULT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.favorites ALTER COLUMN id SET DEFAULT nextval('public.favorites_id_seq'::regclass);
+
+
+--
 -- Name: hotes id; Type: DEFAULT; Schema: public; Owner: postgres
 --
 
@@ -1079,6 +1122,15 @@ COPY public.departments (id, name) FROM stdin;
 
 
 --
+-- Data for Name: favorites; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+COPY public.favorites (id, user_id, offer_slug, created_at) FROM stdin;
+13	42	be82fc03-325c-4453-96b8-2ae7fd028222	2025-08-02 16:29:40.991471
+\.
+
+
+--
 -- Data for Name: hotes; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
@@ -1095,6 +1147,8 @@ COPY public.hotes (id, name, location, type, created_at, updated_at, latitude, l
 
 COPY public.invitation_tokens (id, invitation_token, provider_id, created_at, expires_at, used_at, is_used) FROM stdin;
 8	14c14dec-7b78-4b04-8c58-978c5564106c	5	2025-08-01 16:20:42.260969	2025-08-03 16:20:42.139	\N	f
+10	cb6a5d91-3563-4e56-baa4-928d8dcce953	5	2025-08-01 16:48:19.831147	2025-08-02 16:48:19.831147	\N	f
+11	63da90c0-a548-48a7-a394-7fdae72cff1f	5	2025-08-01 20:32:23.936178	2025-08-03 20:32:23.809	\N	f
 \.
 
 
@@ -1318,6 +1372,13 @@ COPY public.refresh_tokens (id, user_id, refresh_token, expires_at, created_at) 
 254	32	eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MzIsImVtYWlsIjoidG9tcGF5YW4xNzEwQGdtYWlsLmNvbSIsImlhdCI6MTc1NDAzMzA3MSwiZXhwIjoxNzY5NTg1MDcxfQ.P3Wh7tk42zRmBTyigUyAGa4ScNJ3q5paxmml5-qB_tY	2026-01-28 08:24:31.644	2025-08-01 09:24:31.648875
 258	32	eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MzIsImVtYWlsIjoidG9tcGF5YW4xNzEwQGdtYWlsLmNvbSIsImlhdCI6MTc1NDA0NzA3NSwiZXhwIjoxNzY5NTk5MDc1fQ.7Np3UyATMk_1HW6effCPH7DjCjKGBrPunFcMgA9zhoA	2026-01-28 12:17:55.447	2025-08-01 13:17:55.451879
 259	42	eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6NDIsImVtYWlsIjoic2FwaWVuc0BnbWFpbC5jb20iLCJpYXQiOjE3NTQwNTA2NDQsImV4cCI6MTc2OTYwMjY0NH0.EnKRg21VONNSkq-mNnmG7cmEUipg_3vC-L22IVEdQNc	2026-01-28 13:17:24.116	2025-08-01 13:19:16.864494
+290	32	eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MzIsImVtYWlsIjoidG9tcGF5YW4xNzEwQGdtYWlsLmNvbSIsImlhdCI6MTc1NDE0NTQzOCwiZXhwIjoxNzY5Njk3NDM4fQ.RSmvj2MnUkEAgGgNYTA55eDSJCtCUirUezVgtfxrric	2026-01-29 15:37:18.991	2025-08-02 16:37:18.999112
+291	32	eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MzIsImVtYWlsIjoidG9tcGF5YW4xNzEwQGdtYWlsLmNvbSIsImlhdCI6MTc1NDE1NDQwMiwiZXhwIjoxNzY5NzA2NDAyfQ.WO1gHr0Mj1f-FWda9RzcHZ66lnMzObgnZTfzAEWAPxg	2026-01-29 18:06:42.692	2025-08-02 17:04:05.160469
+281	32	eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MzIsImVtYWlsIjoidG9tcGF5YW4xNzEwQGdtYWlsLmNvbSIsImlhdCI6MTc1NDE0NDYwMywiZXhwIjoxNzY5Njk2NjAzfQ.YUJkT8JDu0zS3y4O5q0ESQQ6UxENNpN0dGw0hSxqLAs	2026-01-29 15:23:23.447	2025-08-02 16:23:23.457433
+282	32	eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MzIsImVtYWlsIjoidG9tcGF5YW4xNzEwQGdtYWlsLmNvbSIsImlhdCI6MTc1NDE0NDczMywiZXhwIjoxNzY5Njk2NzMzfQ.QboWtWE1sL1rFr6FTiJJFjMXoacR83eypIJmaqidynI	2026-01-29 15:25:33.359	2025-08-02 16:25:33.36303
+283	32	eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MzIsImVtYWlsIjoidG9tcGF5YW4xNzEwQGdtYWlsLmNvbSIsImlhdCI6MTc1NDE0NDgwMiwiZXhwIjoxNzY5Njk2ODAyfQ.zE-GNoVbftewWRXxAiV8LrqbMUET1s_Q9siCIyoiQ64	2026-01-29 15:26:42.944	2025-08-02 16:26:42.94771
+285	32	eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MzIsImVtYWlsIjoidG9tcGF5YW4xNzEwQGdtYWlsLmNvbSIsImlhdCI6MTc1NDE0NDkzOSwiZXhwIjoxNzY5Njk2OTM5fQ.hjko4SZz84pBVbhYCUuuL4QfuSG2DB0BFXuVa896-0s	2026-01-29 15:28:59.628	2025-08-02 16:28:59.63695
+286	32	eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MzIsImVtYWlsIjoidG9tcGF5YW4xNzEwQGdtYWlsLmNvbSIsImlhdCI6MTc1NDE0NDk1OCwiZXhwIjoxNzY5Njk2OTU4fQ.554v4AAm2_E3KNmnmlQRUL31v3s-5y3lldjyXAlfhZA	2026-01-29 15:29:18.129	2025-08-02 16:29:18.139534
 \.
 
 
@@ -1520,6 +1581,7 @@ COPY public.users (id, email, password, role, created_at, provider_id, provider,
 41	tomchat10@gmail.com	$2b$10$fpnHV0vQqTsmo.d3FBG5yejhd6dLGDR8yvvnFRHaUL6ioyrbz03AW	member	2025-07-20 09:16:29.345317	\N	password-email	Payan Tom Manua234	+33765704097	https://knswskkdaimyrcstijsm.supabase.co/storage/v1/object/public/profil-picture/user_41_1753862811771.jpg	f	f
 32	tompayan1710@gmail.com	\N	member	2025-05-11 17:20:09.47826	\N	google	Tom Payan	+33765594097	https://knswskkdaimyrcstijsm.supabase.co/storage/v1/object/public/profil-picture/user_32_1753952824665.jpg	t	t
 42	sapiens@gmail.com	$2b$10$UmaAP3yz6I.uEEmGnjn2bueaKSXk03az.xVH8CRM/P40YZhdaytva	member	2025-07-30 10:20:12.208764	\N	password-email	Saplins	+3355555555555	https://knswskkdaimyrcstijsm.supabase.co/storage/v1/object/public/profil-picture/user_42_1753991023778.png	t	t
+60	t07677974@gmail.com	\N	member	2025-08-02 16:22:03.400219	\N	google	\N	\N	\N	t	t
 \.
 
 
@@ -1576,6 +1638,13 @@ SELECT pg_catalog.setval('public.departments_id_seq', 19, true);
 
 
 --
+-- Name: favorites_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('public.favorites_id_seq', 16, true);
+
+
+--
 -- Name: hotes_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
 
@@ -1586,7 +1655,7 @@ SELECT pg_catalog.setval('public.hotes_id_seq', 3, true);
 -- Name: invitation_tokens_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
 
-SELECT pg_catalog.setval('public.invitation_tokens_id_seq', 9, true);
+SELECT pg_catalog.setval('public.invitation_tokens_id_seq', 11, true);
 
 
 --
@@ -1642,7 +1711,7 @@ SELECT pg_catalog.setval('public.qr_codes_id_seq', 58, true);
 -- Name: refresh_tokens_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
 
-SELECT pg_catalog.setval('public.refresh_tokens_id_seq', 278, true);
+SELECT pg_catalog.setval('public.refresh_tokens_id_seq', 291, true);
 
 
 --
@@ -1670,7 +1739,7 @@ SELECT pg_catalog.setval('public.reservations_individuals_id_seq', 105, true);
 -- Name: users_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
 
-SELECT pg_catalog.setval('public.users_id_seq', 59, true);
+SELECT pg_catalog.setval('public.users_id_seq', 60, true);
 
 
 --
@@ -1741,6 +1810,14 @@ ALTER TABLE ONLY public.comments
 
 ALTER TABLE ONLY public.departments
     ADD CONSTRAINT departments_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: favorites favorites_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.favorites
+    ADD CONSTRAINT favorites_pkey PRIMARY KEY (id);
 
 
 --
@@ -1933,6 +2010,22 @@ ALTER TABLE ONLY public.comments
 
 ALTER TABLE ONLY public.comments
     ADD CONSTRAINT comments_user_id_fkey FOREIGN KEY (user_id) REFERENCES public.users(id);
+
+
+--
+-- Name: favorites favorites_offer_slug_fkey; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.favorites
+    ADD CONSTRAINT favorites_offer_slug_fkey FOREIGN KEY (offer_slug) REFERENCES public.offers(slug) ON DELETE CASCADE;
+
+
+--
+-- Name: favorites favorites_user_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.favorites
+    ADD CONSTRAINT favorites_user_id_fkey FOREIGN KEY (user_id) REFERENCES public.users(id) ON DELETE CASCADE;
 
 
 --

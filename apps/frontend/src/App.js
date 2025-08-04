@@ -30,6 +30,11 @@ END $$;
 //Pour envoyer depuis cmd : cd C:\Users\tompa\Documents\LocalSpot\localspot-platform
 // psql "postgresql://localspot_db_user:L9F2Y94DgXgIJmseoNngbbo0Hajqidlr@dpg-d058idc9c44c738g2kt0-a.oregon-postgres.render.com/localspot_db" < viarte_backup.sql
 
+
+
+//stripe trigger payment_intent.succeeded
+//stripe listen --forward-to localhost:3000/api/stripe/webhook
+
 const LIBRARIES = ["places"];
 
 
@@ -38,39 +43,6 @@ export default function App() {
 
   return (
     <div id="AppWrapper">
-    {/* <button onClick={() =>{
-      const meta = document.querySelector("meta[name='theme-color']");
-      if (meta) {
-        console.log("Meta ai chargé !!!")
-        meta.setAttribute("content", "373838"); // vert
-      } else{
-        console.log("Non le meta n'ai pas chargé")
-      }
-    }}>
-      Change big black...
-    </button>
-    <button onClick={() =>{
-      const meta = document.querySelector("meta[name='theme-color']");
-      if (meta) {
-        console.log("Meta ai chargé !!!")
-        meta.setAttribute("content", "535353"); // vert
-      } else{
-        console.log("Non le meta n'ai pas chargé")
-      }
-    }}>
-      Change black...
-    </button>
-    <button onClick={() =>{
-      const meta = document.querySelector("meta[name='theme-color']");
-      if (meta) {
-        console.log("Meta ai chargé !!!")
-        meta.setAttribute("content", "ffffff"); // vert
-      } else{
-        console.log("Non le meta n'ai pas chargé")
-      }
-    }}>
-      Change white...
-    </button> */}
     <LoadScript googleMapsApiKey={process.env.REACT_APP_GOOGLE_MAPS_KEY}   
               loadingElement={<div className="skeleton" style={{ width: "100%", height: "100%" }}></div>}
               libraries={LIBRARIES}

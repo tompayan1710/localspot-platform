@@ -55,13 +55,14 @@ const AuthProvider = ({ children }) => {
 
 
     const logout = async () => {
-    await logoutService(); // ✅ Appelle la fonction logout de auth.js
-    setAuthState({
-        user: null,
-        isAuth: false,
-        message: "Déconnecté",
-        loading: false
-    });
+        localStorage.removeItem("userMode");
+        await logoutService(); // ✅ Appelle la fonction logout de auth.js
+        setAuthState({
+            user: null,
+            isAuth: false,
+            message: "Déconnecté",
+            loading: false
+        });
     };
 
     const updateUser = (newUserData) => {

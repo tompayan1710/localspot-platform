@@ -5,6 +5,7 @@ import "./EditProfile.css";
 import { AuthContext } from "../authContext/authContext"
 import { useTranslation } from "react-i18next";
 import PhoneInput from 'react-phone-number-input'
+import { isValidPhoneNumber } from 'react-phone-number-input';
 
 import Spinner from "../../Spinner/Spinner";
 
@@ -21,6 +22,17 @@ export default function EditProfil() {
 
 
   const { authState, updateUser } = useContext(AuthContext);
+    const [errors, setErrors] = useState({});
+
+  // const validateForm = () => {
+  //       const newErrors = {};
+  //       if (!name.trim()) newErrors.name = "Le nom complet est requis";
+  //       if (!email.trim()) newErrors.email = "L'email est requis";
+  //       else if (!/\S+@\S+\.\S+/.test(email)) newErrors.email = "L'email est invalide";
+  //       if (!phone || phone.length < 8) newErrors.phone = "Le numéro de téléphone est invalide";
+  //       setErrors(newErrors);
+  //       return Object.keys(newErrors).length === 0;
+  // };
 
   console.log(authState)
   const [form, setform] = useState({
@@ -55,13 +67,24 @@ export default function EditProfil() {
     e.preventDefault();
 
     const updates = {};
+    const newErrors = {};
 
     if (form.name !== authState.user.name) {
       updates.name = form.name.trim() === "" ? null : form.name.trim();
     }
 
+    
     if (form.phone !== authState.user.phone) {
       updates.phone = form.phone?.trim() === "" ? null : form.phone?.trim();
+    }
+
+    if (!form.phone || !isValidPhoneNumber(form.phone)) {
+      newErrors.phone = "Le numéro de téléphone est invalide";
+    }
+
+    if(Object.keys(newErrors).length !== 0){
+      setErrors(newErrors);
+      return;
     }
 
     if (Object.keys(updates).length === 0 && !form.profil_picture) {
@@ -88,6 +111,7 @@ export default function EditProfil() {
 
       const data = await res.json();
       if (res.ok) {
+        setErrors({})  
         alert("Profil mis à jour !");
         updateUser(data); 
       } else {
@@ -98,6 +122,13 @@ export default function EditProfil() {
       alert("Erreur serveur.");
     }
   };
+
+
+  useEffect(() => {
+    if (errors.phone && isValidPhoneNumber(form.phone)) {
+      setErrors((prev) => ({ ...prev, phone: null }));
+    }
+  }, [form.phone]);
 
 
     
@@ -132,7 +163,7 @@ export default function EditProfil() {
     <>
       {authState.loading ? <Spinner centerPage={true}/> : 
       <div className="EditProfilContainer">
-        <GoBack nagigation={"/profile"} text={"revenir"}/>
+        <GoBack nagigation={"/profile"} text={"revenir"} refresh={true}/>
         <p className="t2">{t('editprofil')}</p> 
         <div className="ListInformation">
             <form onSubmit={handleSubmit}>
@@ -208,8 +239,28 @@ export default function EditProfil() {
                     maxLength={200}
                 />
                 <p className={`${form.bio.length >0 ? "" : "error"} RightInfo t6`}>{form.bio ? form.bio.length : "0"}/200</p> */}
+                <label className="t5 label">Numéro de téléphone*</label>
+                {/* react-phone-number-input transmet les props non reconnues à l’<input> interne. Donc ajoute name et autoComplete="tel" : */}
+                <PhoneInput
+                    defaultCountry="FR"
+                    international
+                    withCountryCallingCode
+                    value={form.phone}
+                    autoComplete="tel"
+                    name="tel"
+                    required
+                    onChange={(value) =>
+                      setform((prev) => ({ ...prev, phone: value }))
+                    }
+                    className={`PhoneInput ${errors.phone ? "error" : ""}`}
+                    placeholder="Entrez votre numéro"
+                />
 
-                <label className="t4">Numéro de téléphone</label>
+                {errors.phone  && 
+                  <p className="t6 error-message">{errors.phone}</p>
+                }
+
+                {/* <label className="t4">Numéro de téléphone</label>
                 <PhoneInput
                   placeholder=". . .   . . .   . . ."
                   value={form.phone}
@@ -217,7 +268,7 @@ export default function EditProfil() {
                     setform((prev) => ({ ...prev, phone: value }));
                   }}
                   defaultCountry="FR"
-                />
+                /> */}
 
 
                 <button type="submit" className="SaveButton"><img src={SaveIconFillWhite}/><p>Enregistrer</p></button>

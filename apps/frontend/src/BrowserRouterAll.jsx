@@ -51,6 +51,7 @@ import AnnonceEditInfos from "./pages/AnnoncePage/AnnonceEditInfos/AnnonceEditIn
 import AnnonceEditPhotos from "./pages/AnnoncePage/AnnonceEditPhotos/AnnonceEditPhotos";
 import InvitationPage from "./pages/InvitationPage/InvitationPage";
 import Favoris from "./pages/Favoris/Favoris";
+import CancellationPolicy from "./pages/DocumentOfficiel/CancellationPolicy/CancellationPolicy";
 
 export default function BrowserRouterAll(){
     const location = useLocation();
@@ -78,6 +79,7 @@ export default function BrowserRouterAll(){
         "/create-offer",
         "/create-offer-address",
         "/create-offer-informations",
+        "/cancellation-policy",
         "/legal-notice",
         "/privacy-policy",
         "/terms-of-service",
@@ -87,7 +89,7 @@ export default function BrowserRouterAll(){
         "/currency",
         "/confirm-payment", 
         "/settings",
-        "/invitation"
+        "/invitation",
     ];
     
     //offer-page/b2f3a4ae-6cc4-4353-824e-65de72035d68/availibility
@@ -179,7 +181,7 @@ export default function BrowserRouterAll(){
             <Route path="/become-provider/add-info" element={<BecomeProviderAddInfo/>} />
             <Route path="/become-provider/add-contact" element={<BecomeProviderAddContact/>} />
 
-
+            <Route path="/cancellation-policy" element={<CancellationPolicy />} />
             <Route path="/content-policy" element={<ContentPolicy />} />
             <Route path="/legal-notice" element={<LegalNotice />} />
             <Route path="/privacy-policy" element={<PrivacyPolicy />} />

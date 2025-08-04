@@ -2,7 +2,7 @@
 #AnnoncesPage{
     width: 100%;
     min-height: 100vh;
-    padding-top: 10px;
+    padding-top: 30px;
     padding-bottom: 90px;
 }
 
@@ -16,7 +16,8 @@
 }
 #AnnoncesPage>.row{
     justify-content: space-between;
-    padding: 20px 6%;
+    padding: 0 15px;
+    padding-bottom: 20px;
 }
 #AnnoncesPage>.row>button{
     padding: 6px;
@@ -34,7 +35,7 @@
 
 #AnnoncesPage>.allAnnonces{
     width: 100%;
-    padding: 0 6%;
+    padding: 0 15px;
     display: flex;
     flex-direction: column;
     margin-top: 10px;
@@ -47,7 +48,6 @@
   align-items: center;
   border: none;
   border-radius: 20px;
-  /* box-shadow: 0 0px 20px rgba(0, 0, 0, 0.08); */
   gap: 10px;
   background-color: transparent;
   cursor: pointer;
@@ -58,6 +58,9 @@
   height: var(--dim); 
   border-radius: 15px;
   background-color: var(--greylight);
+  /* box-shadow: 0 0px 20px rgba(0, 0, 0, 0.1); */
+  /* border: 3px solid white; */
+
 }
 #AnnoncesPage>.allAnnonces .AnnonceItem>.ImageWrapper>img{
   width: var(--dim);
@@ -65,6 +68,7 @@
   min-width: var(--dim);
   border-radius: 8px;
   object-fit: cover;
+  /* border: 3px solid white;  */
 }
 #AnnoncesPage .AnnonceItem .columnAnnonceOffer{
   display: flex;

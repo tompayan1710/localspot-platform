@@ -11,6 +11,9 @@ import { CardCvcElement, CardExpiryElement, CardNumberElement, Elements } from "
 import Spinner from "../../../components/Spinner/Spinner";
 import ProgressBar from "../../../components/ProgressBar/ProgressBar";
 
+//stripe trigger payment_intent.succeeded
+//stripe listen --forward-to localhost:3000/api/stripe/webhook
+
 
 export default function PaymentPage() {
     const { slug } = useParams();

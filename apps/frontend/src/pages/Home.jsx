@@ -228,7 +228,7 @@ import WhiteButton from "../components/Buttons/WhiteButton/WhiteButton";
               }
             </div>
           </div>
-          <p className="t32">Des expériences uniques<br></br>proche de vous !</p>
+          <p className="t32">Des expériences uniques,<br></br>proche de vous !</p>
         </div>
         <div ref={HomePageRef} className="HomeContainer">
           <div  className={`SelectingToday ${loading && "loading shimmer"}`}>
@@ -340,7 +340,9 @@ import WhiteButton from "../components/Buttons/WhiteButton/WhiteButton";
               {/* <button>
                 <p className="t6">Politique d'annulation</p>
               </button> */}
-              <WhiteButton text={"Politique d'annulation"}/>
+              <WhiteButton text={"Politique d'annulation"} onClick={() => {
+                navigate("/cancellation-policy");
+              }}/>
               <div className="hline"></div>
             </div>
 

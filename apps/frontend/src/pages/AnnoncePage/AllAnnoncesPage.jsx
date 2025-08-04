@@ -45,7 +45,7 @@ export default function AllAnnoncesPage(){
             {/* <div className="StatistiqueAnnonces"></div> */}
             {/* <CahierTexte /> */}
             <div className="row">
-                <p className="t3">Mes annonces :</p>
+                <p className="t32">Mes annonces :</p>
                 <button onClick={() => {
                     navigate("/create-offer", {
                         state: {

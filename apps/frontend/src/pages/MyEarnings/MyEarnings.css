@@ -1,0 +1,110 @@
+.MyEarnings{
+    padding-top: 30px;
+    padding-bottom: 90px;
+}
+.MyEarnings>p:first-of-type{
+    padding: 0 15px;
+    padding-bottom: 20px;
+}
+.RetiredGainButton{
+    position: fixed;
+    bottom: 90px;
+    left: 50%;
+    transform: translateX(-50%);
+    /* box-shadow: 0 2px 15px rgba(0, 0, 0, 0.3); */
+    /* border: none; */
+    border: 1px solid var(--greysemidark);
+    padding: 18px 25px;
+    border-radius: 100px;
+    /* background: var(--lineargradientgrey); */
+    background-color: white;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 5px;
+    white-space: nowrap;
+    box-shadow: 0 2px 20px rgba(0, 0, 0, 0.05);
+}
+.RetiredGainButton>p{
+    /* color: ); */
+}
+.RetiredGainButton>img {
+    height: 15px;
+    opacity: 0.8;
+}
+
+.MyEarnings .Transactions{
+    gap: 10px;
+    padding: 0 15px;
+    margin-top: 30px;
+}
+.MyEarnings .Transactions .MonthSeparation{
+    gap: 10px;
+}
+.MyEarnings .Transactions>p:first-of-type{
+    /* padding-bottom: 5px; */
+}
+.MyEarnings .transactionItem {
+    width: 100%;
+    justify-content: space-between;
+    box-shadow: var(--boxshadow);
+    padding: 15px 15px;
+    border-radius: 10px;
+}
+.MyEarnings .transactionItem .TypeArrow{
+    padding: 8px;
+    background-color: var(--greylight);
+    border-radius: 100px;
+    display: flex;
+    flex-direction: column;
+    margin-right: 10px;
+}
+.MyEarnings .transactionItem .TypeArrow>img{
+    height: 18px;
+}
+.MyEarnings .transactionItem .greenColor{
+    color: var(--greenflash);
+}
+.MyEarnings .transactionItem .orangeColor{
+    color: orange;
+}
+.MyEarnings .transactionItem .column{
+    gap: 4px;
+}
+.MyEarnings .transactionItem>.column:last-of-type>p{
+    text-align: end;
+}
+.MyEarnings .Transactions>.row{
+    justify-content: space-between;
+}
+.MyEarnings .SeeMoreHistorique{
+    background-color: transparent;
+    border: none;
+}
+.MyEarnings .SeeMoreHistorique>p{
+    color: var(--bluenormal);
+}
+
+
+.MyEarnings .VersementContainer{
+    padding: 0 20px;
+    width: 100%;
+    max-width: 400px;
+}
+.MyEarnings .AddVersementButton{
+    /* box-shadow: 0 2px 15px rgba(0, 0, 0, 0.3); */
+    border: none;
+    padding: 12px 20px;
+    border-radius: 8px;
+    background: var(--lineargradientblack);
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 10px;
+    white-space: nowrap;
+    margin-top: 10px;
+    margin-bottom: 30px;
+}
+.MyEarnings .AddVersementButton>p{
+    color: white;
+}

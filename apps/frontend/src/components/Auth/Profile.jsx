@@ -13,11 +13,15 @@ import EuroIcon from "../../assets/images/EuroIcon.png"
 import CreditCard from "../../assets/images/CreditCard.png"
 import Calendar from "../../assets/images/Calendar.png"
 import crossWhite from "../../assets/images/crossWhite.png"
+import NiceIntro1 from "../../assets/images/NiceIntro1.png"
+import NiceIntro2 from "../../assets/images/NiceIntro2.png"
 import templateOffer from "../../assets/images/templateOffer.png"
 import yoga3 from "../../assets/images/yoga3.jpg"
 import Cuisto from "../../assets/images/Cuisto.jpg"
 import CalendarBorder from "../../assets/images/CalendarBorder.png"
+import Switch from "../../assets/images/Switch.png"
 import { useTranslation } from "react-i18next"; 
+import { useLocation } from "react-router-dom"
 
 import { getOffersProvider } from "../../services/offers"
 import FadeInImage from "../Utils/FadeInImage";
@@ -26,6 +30,7 @@ import { getProviderById } from "../../services/provider";
 export default function Profile() {
   const navigate = useNavigate();
   const { t } = useTranslation();
+  const location = useLocation();
 
  
   const { authState, logout, checkAuth } = useContext(AuthContext);
@@ -33,7 +38,23 @@ export default function Profile() {
   const [providerOffers, setProviderOffers] = useState([]);
   const [providerInfo, setProviderInfo] = useState({});
   const [loading, setLoading] = useState(true);
-  
+
+  const MODE_KEY = "userMode"; // Valeur : "voyageur" ou "provider"
+  const [selectedMode, setSelectedMode] = useState(() => {
+    const stored = localStorage.getItem(MODE_KEY);
+    return stored === "provider" ? "provider" : "voyageur"; // fallback = voyageur
+  });
+
+  const toggleMode = () => {
+    const newMode = selectedMode === "provider" ? "voyageur" : "provider";
+    setSelectedMode(newMode);
+    localStorage.setItem(MODE_KEY, newMode);
+
+    // ✅ Forcer la propagation comme si c'était un autre onglet
+    window.dispatchEvent(new Event("storage"));
+  };
+
+
 
   const getOfferOfProvider = async (provider_id) => {
     const data = await getOffersProvider(provider_id);
@@ -95,7 +116,7 @@ export default function Profile() {
       getOfferOfProvider(authState.user.provider_id);
       getProviderInfo(authState.user?.provider_id);
     }  
-  }, [authState.loading, authState.isAuth, navigate]); // ✅ Suivre loading et isAuth
+  }, [authState.loading, authState.isAuth, navigate, location.search]); // ✅ Suivre loading et isAuth
 
 
 
@@ -121,16 +142,68 @@ export default function Profile() {
   return (
     <>
       {authState.loading ? <Spinner centerPage={true}/> : 
-      <div className="profile-container">
+      <>
+      {/* {
+        authState.user && (
+          authState.user.provider_id && (
+            <>
+              <div className="row ModeButtonContainer">
+                <button className={`ButtonMode ${selectedMode === 1 ? "selected" : ""}`}
+                onClick={() => setSelectedMode(1)}>
+                  <p className="t5">Prestataire</p>
+                </button>
+                <button className={`ButtonMode ${selectedMode === 2 ? "selected" : ""}`}
+                onClick={() => setSelectedMode(2)}>
+                  <p className="t5">Voyageur</p>
+                </button>
+              </div>
+            </>
+          )
+        )} */}
+      {
+        authState.user?.provider_id && authState.user?.provider?.is_validated &&(
+          <button className="ModeButton" onClick={toggleMode}>
+            <img src={Switch} alt="Switch" />
+            <p className="t5">
+              {selectedMode === "provider"
+                ? "Basculer en mode voyageur"
+                : "Basculer en mode prestataire"}
+            </p>
+          </button>
+        )
+      }
+      <div
+            className={`
+              profile-container ${authState.user?.provider_id && 
+                authState.user?.provider?.is_validated ? "increase" : ""}`}
+      >
+        
         {/* <BottomNavBarNotAnimate key="annonces" activeTab={"profile"}/> */}
         <div className="principalcolumn">  
         {
         authState.user && (
-          authState.user.provider_id ? (
+          authState.user.provider_id && authState.user?.provider?.is_validated ? (
+            <>
+            {/* <div className="row ModeButtonContainer">
+              <button className="ButtonMode">
+                <p className="t5">Prestataire</p>
+              </button>
+              <button className="ButtonMode">
+                <p className="t5">Voyageur</p>
+              </button>
+            </div> */}
             <div className="ProviderOrNormalContainer">
-              <p className="t1">{t('Profile')}</p>
-              <p className="t3">{t('(provider)')}</p>
+              {selectedMode === "provider" ? 
+                <p className="t2">{t('Espace Prestataire')}</p>
+                :
+                <p className="t1">{t('Profile')}</p>
+              }
+              {/* <p className="t3">
+                {selectedMode === "provider" ? t('prestataire') : t('voyageur')}
+              </p> */}
             </div>
+
+            </>
           ) : (
             <p className="t1">{t('profile')}</p>
           )
@@ -138,7 +211,7 @@ export default function Profile() {
 
          
         {
-          Object.keys(providerInfo).length > 0 && 
+          selectedMode === "provider" && Object.keys(providerInfo).length > 0 && 
           <div className="ProfileEditContainer">
             <div>
               <div className={`ProfilPictureContainer ${providerInfo?.logo_url  ? "with-picture" : ""}`}>
@@ -171,7 +244,10 @@ export default function Profile() {
       {authState.user?.provider_id ? (
         authState.user?.provider?.is_validated ? (
           <>
-          <div className="BecomProviderBig">
+          {
+            selectedMode === "provider" ?
+            <>
+            <div className="BecomProviderBig">
               <div className="BecomProviderContainer">
                 <FadeInImage src={providerOffers[0]?.image_urls[1] ? providerOffers[0]?.image_urls[1] : templateOffer} alt="template photo"/>
                 <FadeInImage src={providerOffers[0]?.image_urls[0] ? providerOffers[0]?.image_urls[0] : templateOffer} alt="template photo"/>
@@ -179,38 +255,25 @@ export default function Profile() {
               {/* <p className="t4">Mes annonces</p> */}
               <p className="t6">Gérez facilement vos activités, suivez vos réservations et mettez à jour vos offres en temps réel.</p>
             </div>
-        <button className="whiteButton" onClick={() => {navigate("/annonces")}}>
-            <p className="t5">Voir mes annonces</p>
-        </button>
-          {/* <div className="OfferListContainer">
-            { providerOffers.length > 0 ? providerOffers.map((offer) => (
-              <div key={offer.id} className="OfferListItem">
-                <div className="OfferImageContainer"><img src={offer.image_urls[0]}/></div>
-                <div className="columnInfoOffer">
-                  <p className="t5">{offer.title}</p>
-                  <p className="t6">{offer.description}</p>
-                </div> 
+          <button className="whiteButton" onClick={() => {navigate("/annonces")}}>
+              <p className="t5">Voir mes annonces</p>
+          </button>
+          </>
+          : 
+          <>
+          <div className="BecomProviderBig">
+              <div className="BecomProviderContainer">
+                <FadeInImage src={NiceIntro2} alt="template photo"/>
+                <FadeInImage src={NiceIntro1} alt="template photo"/>
               </div>
-            )) : 
-            <div className="NoOffersBig">
-              <div className="NoOffersContainer">
-                <div className="Illutrate"></div>
-                <div className="Illutrate"></div>
-                <div className="Illutrate"></div>
-                <span className="BackgroundLinear"></span>
-                <span className="PlusButton">
-                  <img src={crossWhite} alt="cross white"/>
-                </span>
-              </div>
-              <p className="t4">Aucune offre</p>
-              <p className="t6">Chaque offre sera soumise à une évaluation afin de garantir un service de haute qualité.</p>
+              {/* <p className="t4">Mes annonces</p> */}
+              <p className="t6">Gérez facilement vos activités, suivez vos réservations et mettez à jour vos offres en temps réel.</p>
             </div>
-            }
-          </div>
-            
-          <button className="ProfileAddOffertContainer" onClick={() => {navigate("/create-offer")}}>
-            Ajouter une offre
-          </button> */}
+          <button className="whiteButton" onClick={() => {navigate("/annonces")}}>
+              <p className="t5">Recherchez des annonces</p>
+          </button>
+          </>
+          }
         </>
       ) : (
       <p className="t32 IsValidateMessage">
@@ -235,7 +298,13 @@ export default function Profile() {
 
           <div className="hline"></div> 
           <p className="t3">Settings</p>
-          <div className="SettingsListContainer">
+          <div
+            className={`
+              SettingsListContainer ${authState.user?.provider_id && 
+                authState.user?.provider?.is_validated ? "increase" : ""}`
+              }
+          >
+
             <div className="SettingsListItem" onClick={() => navigate("/settings")}>
               <div className="SettingsRow">
                 <div className="RowFirst"><img src={parametres} alt="settings icon"/><p className="t4">Account settings</p></div>
@@ -266,13 +335,15 @@ export default function Profile() {
               authState.user?.provider_id && (
                 authState.user?.provider?.is_validated && (
                   <>
-                    <div className="SettingsListItem" onClick={() => navigate("/booking-system")}>
-                      <div className="SettingsRow">
-                        <div className="RowFirst"><img src={CalendarBorder} alt="currenncy icon"/><p className="t4">Booking system</p></div>
-                        <img src={arrowRight} alt="arrow right"/>
+                    {selectedMode === "provider" &&
+                      <div className="SettingsListItem" onClick={() => navigate("/booking-system")}>
+                        <div className="SettingsRow">
+                          <div className="RowFirst"><img src={CalendarBorder} alt="currenncy icon"/><p className="t4">Booking system</p></div>
+                          <img src={arrowRight} alt="arrow right"/>
+                        </div>
+                        <div className="hline"></div>
                       </div>
-                      <div className="hline"></div>
-                    </div>
+                    }
                     <div className="SettingsListItem" onClick={() => navigate("/payment-methode")}>
                       <div className="SettingsRow">
                         <div className="RowFirst"><img src={CreditCard} alt="credit card icon"/><p className="t4">Payment methods</p></div>
@@ -294,6 +365,7 @@ export default function Profile() {
           </div>
         </div>
       </div>
+      </>
       }
   </>
   );

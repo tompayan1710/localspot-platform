@@ -2,7 +2,7 @@ import { useNavigate } from "react-router-dom";
 import "./GoBack.css";
 import arrowLeft from "../../assets/images/arrowLeft.png"
 
-export default function GoBack({nagigation, scrollTo, text, state = {}, conditionFn = () => true}){
+export default function GoBack({nagigation, scrollTo, text, state = {}, conditionFn = () => true, refresh}){
     const navigate = useNavigate();
 
     const handleClick = () => {
@@ -13,7 +13,11 @@ export default function GoBack({nagigation, scrollTo, text, state = {}, conditio
         }
 
         if(conditionFn()){
-            navigate(nagigation, options);
+            if(!refresh){
+                navigate(nagigation, options);
+            } else {
+                window.location.href = "/profile?refresh=" + Date.now();
+            }
         }
     };
 

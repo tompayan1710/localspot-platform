@@ -166,7 +166,7 @@ export default function FormInfoPayement(){
                     value={phone}
                     autoComplete="tel"
                     name="tel"
-                    required
+                    required 
                     onChange={setPhone}
                     className={`PhoneInput ${errors.phone ? "error" : ""}`}
                     placeholder="Entrez votre numéro"

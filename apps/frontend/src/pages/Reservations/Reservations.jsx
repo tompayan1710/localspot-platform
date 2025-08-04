@@ -25,6 +25,7 @@ export default function Reservations(){
             });
 
             const data = await res.json();
+            console.warn("DATA RESERVATION : ", data)
             if(data.success){
                 return(data.reservations);
             }else{
@@ -43,6 +44,7 @@ export default function Reservations(){
 
         const fetchData = async () => {
             const reservations = await getAllReservations();
+            console.warn("Réservations : ", reservations);
             if (reservations) {
                 const objectReservation = {};
                 reservations.map((reservation) => {
@@ -80,8 +82,10 @@ export default function Reservations(){
 
 
     useEffect(() => {
-        console.log(AllReservations)
-        console.log(offers);
+        console.warn("AllReservations")
+        console.warn(AllReservations)
+        console.warn("offers");
+        console.warn(offers);
     }, [AllReservations, offers])
 
     return (
@@ -89,7 +93,7 @@ export default function Reservations(){
             <p className="t32">Reservation</p>
             <div className="AllReservations">
                 {
-                    false && Object.entries(AllReservations).length > 0 ? Object.entries(AllReservations).map(([date, reservations]) => {
+                    Object.entries(AllReservations).length > 0 ? Object.entries(AllReservations).map(([date, reservations]) => {
                         return (
                             <React.Fragment key={`${date}`}>
                             <p className="t6">{date}</p>

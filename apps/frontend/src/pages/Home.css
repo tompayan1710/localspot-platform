@@ -372,8 +372,9 @@ animation: slideUpHome 0.8s ease forwards;
   margin-top: 20px;
 }
 
-.freeConcelation p{
+.freeConcelation>p{
   text-align: center;
+  width: 90%;
 }
 /* .freeConcelation button{
   background: var(--lineargradientgreen);
@@ -423,7 +424,8 @@ animation: slideUpHome 0.8s ease forwards;
   flex-direction: row;
   justify-content: space-between;
   align-items: center;
-  padding: 4px 0;
+  padding: 5px 0;
+  padding-top: 15px;
 }
 .ViarteIntro>img{
   height: 35px;

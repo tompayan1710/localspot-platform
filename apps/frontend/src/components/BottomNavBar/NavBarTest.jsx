@@ -43,6 +43,20 @@ const NavBarTest = forwardRef(({ isMap }, ref) => {
     return "explorer";
   };
 
+  const [userMode, setUserMode] = useState(localStorage.getItem("userMode") || "voyageur");
+
+  useEffect(() => {
+    const handleStorageChange = () => {
+      console.warn("Le localStorage : ", localStorage.getItem("userMode"))
+      setUserMode(localStorage.getItem("userMode") || "voyageur");
+    };
+
+    window.addEventListener("storage", handleStorageChange);
+    return () => window.removeEventListener("storage", handleStorageChange);
+  }, []);
+
+
+
   useEffect(() => {
     setActiveTab(getActiveTab());
   }, [location.pathname]);
@@ -55,7 +69,7 @@ const NavBarTest = forwardRef(({ isMap }, ref) => {
   return (
     <div  ref={ref} 
           className={`BottomNavBarNotAnimate Test ${hidden ? "hidden" : ""} ${authState.user?.provider_id && 
-          authState.user?.provider?.is_validated ? "Multiple" : ""}`}>
+          authState.user?.provider?.is_validated && userMode === "provider" ? "Multiple" : ""}`}>
       {
         isMap?
         <button className="MapButton" onClick={() => console.log("Clique on map")}>
@@ -68,7 +82,9 @@ const NavBarTest = forwardRef(({ isMap }, ref) => {
        
 
         {/* CLIENT */}
-        {!authState.user?.provider_id && !authState.user?.provider?.is_validated && (
+        {/* {!authState.user?.provider_id && !authState.user?.provider?.is_validated && ( */}
+        {(!authState.user?.provider?.is_validated || userMode === "voyageur") && (
+
           <>
           {/* <button className="NavBarButton" onClick={() => setActiveTab("explorer")}> */}
           <button className="NavBarButton" 
@@ -97,6 +113,18 @@ const NavBarTest = forwardRef(({ isMap }, ref) => {
             </div>
                          
           </button>
+
+          <button className="NavBarButton"
+            onClick={() => {
+                    // setActiveTab("restauration");
+                navigate("/reservations");
+            }}
+          >
+            <div className={`IconWrapper ${activeTab === "reservations" ? "active" : ""}`}>
+              <img src={ReservationsIcon} alt="reservations icon"/>
+                <p className="t6">Reservations</p>
+            </div>
+          </button>
            {/* <button className="NavBarButton" onClick={() =>  setActiveTab("activity")}>  */}
            {/* <button className="NavBarButton" 
               onClick={() => {
@@ -122,7 +150,7 @@ const NavBarTest = forwardRef(({ isMap }, ref) => {
               </div>
             </button> */}
 
-            {
+            {/* {
               authState.isAuth &&
               <button className="NavBarButton"
                   onClick={() => {
@@ -135,13 +163,15 @@ const NavBarTest = forwardRef(({ isMap }, ref) => {
                     <p className="t6">Reservations</p>
                   </div>
               </button>
-            }
+            } */}
           </>
         )}
 
         {/* PROVIDER    */}
-        {authState.user?.provider_id ? (
-          authState.user?.provider?.is_validated ? (
+        {/* {authState.user?.provider_id ? (
+          authState.user?.provider?.is_validated ? ( */}
+        {userMode === "provider" && authState.user?.provider_id && authState.user?.provider?.is_validated && (
+
             <>
             <button className="NavBarButton" onClick={() => {
               // setActiveTab("today");
@@ -179,12 +209,12 @@ const NavBarTest = forwardRef(({ isMap }, ref) => {
               <div className={`IconWrapper ${activeTab === "my-earnings" ? "active" : ""}`}>
                 <img src={EuroNav} alt="My Earnings icon"/>
                 {/* My Earnings */}
-                <p className="t6">Mes&nbsp;Revenus</p>
+                {/* <p className="t6">Mes&nbsp;Revenus</p> */}
+                <p className="t6">Paiements</p>
               </div>
             </button>       
           </>
-          ):<></>)
-        :<></>}
+        )}
         {/* <button className="NavBarButton" onClick={() => setActiveTab("profile")}>  */}
         <button className="NavBarButton" onClick={() => {
               // setActiveTab("profile");

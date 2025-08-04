@@ -194,3 +194,7 @@
 .EditProfilContainer .ConnexionInfoBox>.row{
   justify-content: space-between;
 }
+.EditProfilContainer .error-message{
+  color: red;
+  margin-top: 10px;
+}
