@@ -853,8 +853,8 @@ ALTER SEQUENCE public.withdrawal_methods_id_seq OWNED BY public.withdrawal_metho
 
 CREATE TABLE public.withdrawals (
     id integer NOT NULL,
-    provider_id uuid NOT NULL,
-    amount integer NOT NULL,
+    provider_id integer NOT NULL,
+    amount numeric(10,2) NOT NULL,
     method text NOT NULL,
     details text,
     status text DEFAULT 'pending'::text,
@@ -1092,9 +1092,6 @@ COPY public.cities (id, name, department_id) FROM stdin;
 --
 
 COPY public.comments (id, user_id, offer_slug, reservation_id, rating, comment, created_at) FROM stdin;
-2	41	07782d1c-50b9-477e-9114-2a9892c08800	56	3	cela est bien !!!	2025-07-23 09:04:24.32888
-3	41	07782d1c-50b9-477e-9114-2a9892c08800	39	5	Deuxième commentaire trop bien	2025-07-23 11:01:27.769757
-4	41	07782d1c-50b9-477e-9114-2a9892c08800	40	3	vOICIm on flsfsofjsi FjE FPSOI	2025-07-23 11:43:57.122657
 \.
 
 
@@ -1126,7 +1123,6 @@ COPY public.departments (id, name) FROM stdin;
 --
 
 COPY public.favorites (id, user_id, offer_slug, created_at) FROM stdin;
-13	42	be82fc03-325c-4453-96b8-2ae7fd028222	2025-08-02 16:29:40.991471
 \.
 
 
@@ -1149,6 +1145,7 @@ COPY public.invitation_tokens (id, invitation_token, provider_id, created_at, ex
 8	14c14dec-7b78-4b04-8c58-978c5564106c	5	2025-08-01 16:20:42.260969	2025-08-03 16:20:42.139	\N	f
 10	cb6a5d91-3563-4e56-baa4-928d8dcce953	5	2025-08-01 16:48:19.831147	2025-08-02 16:48:19.831147	\N	f
 11	63da90c0-a548-48a7-a394-7fdae72cff1f	5	2025-08-01 20:32:23.936178	2025-08-03 20:32:23.809	\N	f
+12	07c49a0e-d7ff-4dd5-8370-b4f333b85081	5	2025-08-02 19:49:06.641214	2025-08-03 19:49:06.641214	2025-08-02 19:50:12.740257	t
 \.
 
 
@@ -1179,9 +1176,6 @@ COPY public.offer_exceptional_slots (id, slug_offer, date, slots, created_at) FR
 
 COPY public.offer_recurring_slots (id, slug_offer, day_of_week, slots, created_at) FROM stdin;
 47	6e7830e6-fd73-4ae1-9419-f47777fa6f95	tuesday	{{13:00:00,14:45:00},{20:30:00,21:45:00},{05:00:00,09:00:00}}	2025-07-22 14:05:11.139858
-46	147f15ce-3b5d-4dc2-bf4e-f0775c7fa726	tuesday	{{07:00:00,08:00:00},{08:00:00,09:00:00},{22:00:00,22:15:00},{14:00:00,16:00:00}}	2025-07-22 12:01:05.930004
-49	77b2f91a-8d54-402a-93af-43e743dd13a5	tuesday	{{07:00:00,08:00:00},{22:15:00,23:30:00}}	2025-07-23 14:36:49.642029
-50	77b2f91a-8d54-402a-93af-43e743dd13a5	wednesday	{{13:00:00,14:00:00},{21:45:00,23:30:00}}	2025-07-23 14:38:10.104902
 45	01bd532b-0eac-4c79-a2a2-bbdb6a98b172	wednesday	{{07:00:00,08:00:00}}	2025-07-16 07:46:50.351613
 31	be82fc03-325c-4453-96b8-2ae7fd028222	wednesday	{{18:00:00,20:00:00}}	2025-07-03 14:53:41.442061
 42	be82fc03-325c-4453-96b8-2ae7fd028222	thursday	{{07:00:00,08:00:00},{08:00:00,09:00:00},{09:00:00,10:00:00}}	2025-07-15 15:50:43.266484
@@ -1191,7 +1185,6 @@ COPY public.offer_recurring_slots (id, slug_offer, day_of_week, slots, created_a
 44	d1eec0ec-f975-4b72-9fd9-b52b1ab964d2	tuesday	{{07:00:00,08:00:00},{08:00:00,09:00:00},{12:30:00,14:30:00},{21:30:00,23:30:00}}	2025-07-15 16:33:57.649887
 35	d1eec0ec-f975-4b72-9fd9-b52b1ab964d2	friday	{{18:00:00,23:45:00}}	2025-07-11 19:19:58.194224
 36	d1eec0ec-f975-4b72-9fd9-b52b1ab964d2	saturday	{{04:00:00,05:45:00},{06:30:00,08:15:00},{08:15:00,09:15:00},{09:15:00,10:15:00}}	2025-07-12 07:49:13.147839
-40	07782d1c-50b9-477e-9114-2a9892c08800	thursday	{{07:00:00,08:00:00}}	2025-07-14 08:33:51.843481
 \.
 
 
@@ -1200,14 +1193,10 @@ COPY public.offer_recurring_slots (id, slug_offer, day_of_week, slots, created_a
 --
 
 COPY public.offers (id, title, description, type, price, image_urls, created_at, updated_at, provider_id, latitude, longitude, city_id, adresse, categories, priceper, duration, qrcode_url, slug, cancellable, total_capacity) FROM stdin;
-33	MyBigTile	fisfjsiofisf	Activite	199.00	{https://knswskkdaimyrcstijsm.supabase.co/storage/v1/object/public/offers-images/offers/1752411572995_allImages.png,https://knswskkdaimyrcstijsm.supabase.co/storage/v1/object/public/offers-images/offers/1752411573529_Appartement1.jpg,https://knswskkdaimyrcstijsm.supabase.co/storage/v1/object/public/offers-images/offers/1752411574245_Appartement2.jpg}	2025-07-13 14:59:53.813864	2025-07-13 14:59:53.813864	5	48.85837009999999	2.2944813	3	Av. Gustave Eiffel, 75007 Paris, France	{Bien-être,"Sports & Sensations Fortes","Culture & Patrimoine","Loisirs & Divertissement","Nature & Aventure"}	personne	1 h	https://knswskkdaimyrcstijsm.supabase.co/storage/v1/object/public/offers-images/qrcodes/1752411575166_147f15ce-3b5d-4dc2-bf4e-f0775c7fa726.png	147f15ce-3b5d-4dc2-bf4e-f0775c7fa726	t	4
-34	I'm in love of my women	LOVE YOU MY CLARA	Activite	999.00	{https://knswskkdaimyrcstijsm.supabase.co/storage/v1/object/public/offers-images/offers/1752471346165_Appartement1.jpg,https://knswskkdaimyrcstijsm.supabase.co/storage/v1/object/public/offers-images/offers/1752471347449_Appartement2.jpg}	2025-07-14 07:42:23.081774	2025-07-14 07:42:23.081774	5	48.8673858	2.783593	17	Bd de Parc, 77700 Coupvray, France	{Nautiques,Bien-être,"Loisirs & Divertissement"}	personne	2 h	https://knswskkdaimyrcstijsm.supabase.co/storage/v1/object/public/offers-images/qrcodes/1752471348026_07782d1c-50b9-477e-9114-2a9892c08800.png	07782d1c-50b9-477e-9114-2a9892c08800	f	4
 19	Tour privé en voilier - Baignade et paddle - Cap d'Antibes	Vous profiterez du voilier exclusivement pour vous, en famille ou entre amis. Nous vous ferons découvrir les beautés cachées du Cap d’Antibes, où les plus belles eaux turquoise vous attendent pour la baignade.	Activite	150.00	{https://knswskkdaimyrcstijsm.supabase.co/storage/v1/object/public/offers-images/offers/1751537255707_61efb929594d8b30cba4d79f526844001364976b6e9bec936a9deebe6a9d16e3.avif,https://knswskkdaimyrcstijsm.supabase.co/storage/v1/object/public/offers-images/offers/1751537256574_5eb4fa25de905fd2a618f17f7d153c72eab379176f7c61fe430d7681b7955ee2.webp,https://knswskkdaimyrcstijsm.supabase.co/storage/v1/object/public/offers-images/offers/1751537257059_384c8532541d482dc0c4c4b775fb7569a6ace5aec7ce32de50406a3bf2e4628f.png,https://knswskkdaimyrcstijsm.supabase.co/storage/v1/object/public/offers-images/offers/1751537260004_7f4689fd4793fc3ca058ea13051472abf287fc7a8d5930b50498a328563bde59.webp,https://knswskkdaimyrcstijsm.supabase.co/storage/v1/object/public/offers-images/offers/1751537260371_38ab5c434e14ae3290b72ab2c72389a303a909f140e24efd40c8f89701f5fdcd.webp}	2025-07-03 12:12:57.592375	2025-07-03 12:12:57.592375	5	43.586667	7.126944	14	Port Vauban, 06600 Antibes Juan les Pins, France	{"Nature & Aventure","Loisirs & Divertissement","En Famille"}	personne	15 min	https://knswskkdaimyrcstijsm.supabase.co/storage/v1/object/public/offers-images/qrcodes/1751537260792_2c09a43a-c524-4dbb-bbfa-6b7598ca950b.png	2c09a43a-c524-4dbb-bbfa-6b7598ca950b	t	4
 22	Expérience Aquajet au Cap d’Antibes	Nagez comme un dauphin sur le célèbre Cap d'Antibes, de 7 à 77 ans !\nVotre Aquajet 100% sécurisé vous procurera des sensations uniques et inoubliables.\nIl suffit d’être à l’aise dans l’eau	Activite	60.00	{https://knswskkdaimyrcstijsm.supabase.co/storage/v1/object/public/offers-images/offers/1751539922898_caption_1.jpg,https://knswskkdaimyrcstijsm.supabase.co/storage/v1/object/public/offers-images/offers/1751539923540_caption.jpg,https://knswskkdaimyrcstijsm.supabase.co/storage/v1/object/public/offers-images/offers/1751539923806_caption_5.jpg,https://knswskkdaimyrcstijsm.supabase.co/storage/v1/object/public/offers-images/offers/1751539924129_caption_2.jpg,https://knswskkdaimyrcstijsm.supabase.co/storage/v1/object/public/offers-images/offers/1751539924578_caption_3.jpg}	2025-07-03 12:52:29.368044	2025-07-03 12:52:29.368044	5	43.5891473	7.123715499999999	4	Port Vauban, Antibes, France	{Nautiques,"Sports & Sensations Fortes"}	personne	15 min	https://knswskkdaimyrcstijsm.supabase.co/storage/v1/object/public/offers-images/qrcodes/1751539924911_6e7830e6-fd73-4ae1-9419-f47777fa6f95.png	6e7830e6-fd73-4ae1-9419-f47777fa6f95	t	4
 20	Survoler la Côte d'Azur en avion privé	Vivez une expérience inoubliable en survolant la splendide Côte d'Azur à bord d’un avion privé. Admirez depuis le ciel les paysages époustouflants de la Méditerranée, les plages dorées, les villages perchés et les montagnes environnantes. 	Activite	500.00	{https://knswskkdaimyrcstijsm.supabase.co/storage/v1/object/public/offers-images/offers/1751539185273_15305892-86c3-4d18-8a4b-2880b2ded338.avif,https://knswskkdaimyrcstijsm.supabase.co/storage/v1/object/public/offers-images/offers/1751539186042_be85b758-ee24-43ac-97cd-ad6ed301f31f.avif,https://knswskkdaimyrcstijsm.supabase.co/storage/v1/object/public/offers-images/offers/1751539186290_dd4bd889-c77a-4a34-b3a3-cb9f12425ac6.avif,https://knswskkdaimyrcstijsm.supabase.co/storage/v1/object/public/offers-images/offers/1751539186666_eb3f00e3-a14c-4737-9772-aa7c2a92f020.avif}	2025-07-03 12:40:52.753928	2025-07-03 12:40:52.753928	5	43.5486286	6.9554298	15	Aéroport de Cannes Mandelieu, 245 Av. Francis Tonner, 06400 Cannes, France	{"Nature & Aventure","Culture & Patrimoine","Sports & Sensations Fortes"}	personne	15 min	https://knswskkdaimyrcstijsm.supabase.co/storage/v1/object/public/offers-images/qrcodes/1751539186999_be82fc03-325c-4453-96b8-2ae7fd028222.png	be82fc03-325c-4453-96b8-2ae7fd028222	t	4
 21	Conduire un cabriolet d'Antibes à Monaco	Profitez de paysages époustouflants à bord d'un cabriolet électrique que vous conduisez et visitez des sites emblématiques.	Activite	75.00	{https://knswskkdaimyrcstijsm.supabase.co/storage/v1/object/public/offers-images/offers/1751539509661_f38c43a6-87fa-43d5-8569-9e5dae0d5cde.avif,https://knswskkdaimyrcstijsm.supabase.co/storage/v1/object/public/offers-images/offers/1751539510372_5c6bd7af-a6db-4404-8845-4d5353862748.avif,https://knswskkdaimyrcstijsm.supabase.co/storage/v1/object/public/offers-images/offers/1751539510793_0b1a09f6-6a1f-4e86-8c26-5cc01871b51a.avif,https://knswskkdaimyrcstijsm.supabase.co/storage/v1/object/public/offers-images/offers/1751539511147_9bdee7b9-0322-4be4-a4b9-3eb442700c44.avif,https://knswskkdaimyrcstijsm.supabase.co/storage/v1/object/public/offers-images/offers/1751539511460_737110c7-a7c0-4636-bd9a-bfe3f0b0e47f.avif}	2025-07-03 12:47:08.879574	2025-07-03 12:47:08.879574	5	43.57850560000001	7.1200497	4	7 Bd du Président Wilson, 06600 Antibes, France	{"En Famille","Loisirs & Divertissement","Nature & Aventure","Sports & Sensations Fortes"}	personne	15 min	https://knswskkdaimyrcstijsm.supabase.co/storage/v1/object/public/offers-images/qrcodes/1751539511879_01bd532b-0eac-4c79-a2a2-bbdb6a98b172.png	01bd532b-0eac-4c79-a2a2-bbdb6a98b172	t	4
-24			Food	12.00	{https://knswskkdaimyrcstijsm.supabase.co/storage/v1/object/public/offers-images/offers/1752400435594_Calendar.png,https://knswskkdaimyrcstijsm.supabase.co/storage/v1/object/public/offers-images/offers/1752400436226_carRedIcon.png,https://knswskkdaimyrcstijsm.supabase.co/storage/v1/object/public/offers-images/offers/1752400437103_clickicon.png}	2025-07-13 11:58:30.464934	2025-07-13 11:58:30.464934	5	46.5011991	-1.7781025	16	Les Sables-d'Olonne, France	{"Nourriture asiatique","Spécialité local"}	personne	15 min	https://knswskkdaimyrcstijsm.supabase.co/storage/v1/object/public/offers-images/qrcodes/1752400437524_aa1d1250-ce49-4488-99d6-18f6ff911376.png	aa1d1250-ce49-4488-99d6-18f6ff911376	t	4
-35	Test Capacité2	ceci este le teste pour ma capacitéfsf	Activite	1599.00	{https://knswskkdaimyrcstijsm.supabase.co/storage/v1/object/public/offers-images/offers/1753273709927_ViarteLogoGoogle.png,https://knswskkdaimyrcstijsm.supabase.co/storage/v1/object/public/offers-images/offers/77b2f91a-8d54-402a-93af-43e743dd13a5-1753888693146.jpg,https://knswskkdaimyrcstijsm.supabase.co/storage/v1/object/public/offers-images/offers/77b2f91a-8d54-402a-93af-43e743dd13a5-1753888693840.png,https://knswskkdaimyrcstijsm.supabase.co/storage/v1/object/public/offers-images/offers/77b2f91a-8d54-402a-93af-43e743dd13a5-1753888694396.png}	2025-07-23 14:29:25.996118	2025-07-23 14:29:25.996118	5	43.5691905	7.1123854	4	Juan-les-Pins, 06160 Antibes, France	{"Sports & Sensations Fortes","Loisirs & Divertissement","Nature & Aventure"}	personne	2 h	https://knswskkdaimyrcstijsm.supabase.co/storage/v1/object/public/offers-images/qrcodes/1753273710713_77b2f91a-8d54-402a-93af-43e743dd13a5.png	77b2f91a-8d54-402a-93af-43e743dd13a5	t	18
 23	Explorez les calanques en kayak	Découvrez les calanques sauvages de la Côte Bleue en kayak de mer.	Activite	35.00	{https://knswskkdaimyrcstijsm.supabase.co/storage/v1/object/public/offers-images/offers/1751558949802_229c67d0-80fc-4fa2-8afc-e51cd0a59d9b.avif,https://knswskkdaimyrcstijsm.supabase.co/storage/v1/object/public/offers-images/offers/1751558950982_9735be50-2507-4857-b593-b0a02b7ab62b.avif,https://knswskkdaimyrcstijsm.supabase.co/storage/v1/object/public/offers-images/offers/1751558951868_aa1aa723-6472-4cf0-a53c-3faf24481322.avif,https://knswskkdaimyrcstijsm.supabase.co/storage/v1/object/public/offers-images/offers/d1eec0ec-f975-4b72-9fd9-b52b1ab964d2-1753888582810.jpg,https://knswskkdaimyrcstijsm.supabase.co/storage/v1/object/public/offers-images/offers/d1eec0ec-f975-4b72-9fd9-b52b1ab964d2-1753888583585.png,https://knswskkdaimyrcstijsm.supabase.co/storage/v1/object/public/offers-images/offers/d1eec0ec-f975-4b72-9fd9-b52b1ab964d2-1753888638608.jpg,https://knswskkdaimyrcstijsm.supabase.co/storage/v1/object/public/offers-images/offers/d1eec0ec-f975-4b72-9fd9-b52b1ab964d2-1753888654838.jpg}	2025-07-03 18:11:20.98421	2025-07-03 18:11:20.98421	5	43.7157607	7.351195100000001	11	11 Av. de la Liberté, 06360 Èze, France	{Nautiques,"Loisirs & Divertissement","Nature & Aventure","En Famille"}	personne	15 min	https://knswskkdaimyrcstijsm.supabase.co/storage/v1/object/public/offers-images/qrcodes/1751558953513_d1eec0ec-f975-4b72-9fd9-b52b1ab964d2.png	d1eec0ec-f975-4b72-9fd9-b52b1ab964d2	t	4
 \.
 
@@ -1370,15 +1359,16 @@ COPY public.refresh_tokens (id, user_id, refresh_token, expires_at, created_at) 
 252	32	eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MzIsImVtYWlsIjoidG9tcGF5YW4xNzEwQGdtYWlsLmNvbSIsImlhdCI6MTc1NDAzMTYzMSwiZXhwIjoxNzY5NTgzNjMxfQ.8BT3e9l9-SFzol_Lq9cRmAh7fyn0-UxwuQI1XnlD9VE	2026-01-28 08:00:31.799	2025-08-01 09:00:31.804243
 253	32	eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MzIsImVtYWlsIjoidG9tcGF5YW4xNzEwQGdtYWlsLmNvbSIsImlhdCI6MTc1NDAzMzA3MSwiZXhwIjoxNzY5NTg1MDcxfQ.P3Wh7tk42zRmBTyigUyAGa4ScNJ3q5paxmml5-qB_tY	2026-01-28 08:24:31.627	2025-08-01 09:22:31.969807
 254	32	eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MzIsImVtYWlsIjoidG9tcGF5YW4xNzEwQGdtYWlsLmNvbSIsImlhdCI6MTc1NDAzMzA3MSwiZXhwIjoxNzY5NTg1MDcxfQ.P3Wh7tk42zRmBTyigUyAGa4ScNJ3q5paxmml5-qB_tY	2026-01-28 08:24:31.644	2025-08-01 09:24:31.648875
+296	32	eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MzIsImVtYWlsIjoidG9tcGF5YW4xNzEwQGdtYWlsLmNvbSIsImlhdCI6MTc1NDMxNDI1MywiZXhwIjoxNzY5ODY2MjUzfQ.X95VIYlxSSmQ0caWb9Q5r8cjhbCZJmGfJfvb8zRdTwY	2026-01-31 14:30:53.597	2025-08-03 16:52:00.288237
 258	32	eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MzIsImVtYWlsIjoidG9tcGF5YW4xNzEwQGdtYWlsLmNvbSIsImlhdCI6MTc1NDA0NzA3NSwiZXhwIjoxNzY5NTk5MDc1fQ.7Np3UyATMk_1HW6effCPH7DjCjKGBrPunFcMgA9zhoA	2026-01-28 12:17:55.447	2025-08-01 13:17:55.451879
 259	42	eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6NDIsImVtYWlsIjoic2FwaWVuc0BnbWFpbC5jb20iLCJpYXQiOjE3NTQwNTA2NDQsImV4cCI6MTc2OTYwMjY0NH0.EnKRg21VONNSkq-mNnmG7cmEUipg_3vC-L22IVEdQNc	2026-01-28 13:17:24.116	2025-08-01 13:19:16.864494
 290	32	eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MzIsImVtYWlsIjoidG9tcGF5YW4xNzEwQGdtYWlsLmNvbSIsImlhdCI6MTc1NDE0NTQzOCwiZXhwIjoxNzY5Njk3NDM4fQ.RSmvj2MnUkEAgGgNYTA55eDSJCtCUirUezVgtfxrric	2026-01-29 15:37:18.991	2025-08-02 16:37:18.999112
-291	32	eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MzIsImVtYWlsIjoidG9tcGF5YW4xNzEwQGdtYWlsLmNvbSIsImlhdCI6MTc1NDE1NDQwMiwiZXhwIjoxNzY5NzA2NDAyfQ.WO1gHr0Mj1f-FWda9RzcHZ66lnMzObgnZTfzAEWAPxg	2026-01-29 18:06:42.692	2025-08-02 17:04:05.160469
 281	32	eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MzIsImVtYWlsIjoidG9tcGF5YW4xNzEwQGdtYWlsLmNvbSIsImlhdCI6MTc1NDE0NDYwMywiZXhwIjoxNzY5Njk2NjAzfQ.YUJkT8JDu0zS3y4O5q0ESQQ6UxENNpN0dGw0hSxqLAs	2026-01-29 15:23:23.447	2025-08-02 16:23:23.457433
 282	32	eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MzIsImVtYWlsIjoidG9tcGF5YW4xNzEwQGdtYWlsLmNvbSIsImlhdCI6MTc1NDE0NDczMywiZXhwIjoxNzY5Njk2NzMzfQ.QboWtWE1sL1rFr6FTiJJFjMXoacR83eypIJmaqidynI	2026-01-29 15:25:33.359	2025-08-02 16:25:33.36303
 283	32	eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MzIsImVtYWlsIjoidG9tcGF5YW4xNzEwQGdtYWlsLmNvbSIsImlhdCI6MTc1NDE0NDgwMiwiZXhwIjoxNzY5Njk2ODAyfQ.zE-GNoVbftewWRXxAiV8LrqbMUET1s_Q9siCIyoiQ64	2026-01-29 15:26:42.944	2025-08-02 16:26:42.94771
 285	32	eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MzIsImVtYWlsIjoidG9tcGF5YW4xNzEwQGdtYWlsLmNvbSIsImlhdCI6MTc1NDE0NDkzOSwiZXhwIjoxNzY5Njk2OTM5fQ.hjko4SZz84pBVbhYCUuuL4QfuSG2DB0BFXuVa896-0s	2026-01-29 15:28:59.628	2025-08-02 16:28:59.63695
 286	32	eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MzIsImVtYWlsIjoidG9tcGF5YW4xNzEwQGdtYWlsLmNvbSIsImlhdCI6MTc1NDE0NDk1OCwiZXhwIjoxNzY5Njk2OTU4fQ.554v4AAm2_E3KNmnmlQRUL31v3s-5y3lldjyXAlfhZA	2026-01-29 15:29:18.129	2025-08-02 16:29:18.139534
+292	32	eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MzIsImVtYWlsIjoidG9tcGF5YW4xNzEwQGdtYWlsLmNvbSIsImlhdCI6MTc1NDE1NjgzMSwiZXhwIjoxNzY5NzA4ODMxfQ.2beBT_3-3n--k0ctw6CnUo04QghVRVXToKUqPl97UqU	2026-01-29 18:47:12.003	2025-08-02 19:47:12.009311
 \.
 
 
@@ -1454,6 +1444,7 @@ COPY public.reservation_slots (id, provider_id, offer_slug, date, start_hour, en
 81	5	01bd532b-0eac-4c79-a2a2-bbdb6a98b172	2025-08-13	07:00	08:00	3	75.00	available	2025-07-29 19:13:18.7518	2025-07-29 19:13:18.7518
 82	5	6e7830e6-fd73-4ae1-9419-f47777fa6f95	2025-07-29	13:00	14:45	3	60.00	available	2025-07-29 21:56:36.820063	2025-07-29 21:56:36.820063
 72	5	07782d1c-50b9-477e-9114-2a9892c08800	2025-08-21	07:00	08:00	4	999.00	full	2025-07-29 11:13:58.953348	2025-07-29 22:03:21.722451
+83	5	6e7830e6-fd73-4ae1-9419-f47777fa6f95	2025-08-05	20:30	21:45	3	60.00	available	2025-08-03 16:29:43.477182	2025-08-03 16:29:43.477182
 \.
 
 
@@ -1480,6 +1471,7 @@ COPY public.reservations_individuals (id, user_id, slot_id, total_participants, 
 91	41	71	3	597.00	paid	confirmed	2025-07-29 11:06:47.283546	2025-07-29 11:06:47.283546	2	1	tompayan1710@gmail.com	Page	+33765594097	pi_3Rq9UT2f0HHvMFDt1FfjImLa
 96	41	75	3	597.00	paid	confirmed	2025-07-29 11:41:30.366233	2025-07-29 11:41:30.366233	2	1	tompayan1710@gmail.com	Tom Payan	+33765594097	pi_3RqA282f0HHvMFDt1b16JzUV
 101	41	80	3	2997.00	paid	confirmed	2025-07-29 19:06:58.654559	2025-07-29 19:06:58.654559	2	1	tompayan1710@gmail.com	Taxerlesriches	+33765594097	pi_3RqGzC2f0HHvMFDt0YMus4Fw
+106	60	83	3	180.00	paid	confirmed	2025-08-03 16:29:43.485036	2025-08-03 16:29:43.485036	2	1	tompayan1710@gmail.com	Tom Payan && clara big box	+33765594097	pi_3Rs2ul2f0HHvMFDt0dkkrmtY
 62	41	47	4	2000.00	paid	confirmed	2025-07-26 11:21:30.808917	2025-07-26 11:21:30.808917	2	2	tompayan1710@gmail.com	Clara BigBoss	+33765594097	\N
 67	32	50	3	1500.00	paid	confirmed	2025-07-28 11:55:18.56468	2025-07-28 11:55:18.56468	2	1	tompayan1710@gmail.com	Tom Payan	+33765594097	\N
 72	32	55	3	1500.00	paid	confirmed	2025-07-28 14:08:44.908178	2025-07-28 14:08:44.908178	2	1	tompayan1710@gmail.com	LeClara Jean Luc	+33999999999	\N
@@ -1579,8 +1571,8 @@ COPY public.users (id, email, password, role, created_at, provider_id, provider,
 36	lebigtom2@gmail.com	$2b$10$OXiZ9jGDa0qzJBOsrjdH2eQVL2WgfNAQdFrVUX2QDEr0.WOloxn5G	member	2025-07-17 07:23:50.594806	\N	password-email	\N	\N	\N	t	t
 37	lebigtom3@gmail.com	$2b$10$JPBOkjvDUmeB4Y.PiB2Q1.o8WTEs6zAv3JmlYKISNs8Tk8FSZJYx.	member	2025-07-17 07:29:07.522063	\N	password-email	\N	\N	\N	t	t
 41	tomchat10@gmail.com	$2b$10$fpnHV0vQqTsmo.d3FBG5yejhd6dLGDR8yvvnFRHaUL6ioyrbz03AW	member	2025-07-20 09:16:29.345317	\N	password-email	Payan Tom Manua234	+33765704097	https://knswskkdaimyrcstijsm.supabase.co/storage/v1/object/public/profil-picture/user_41_1753862811771.jpg	f	f
-32	tompayan1710@gmail.com	\N	member	2025-05-11 17:20:09.47826	\N	google	Tom Payan	+33765594097	https://knswskkdaimyrcstijsm.supabase.co/storage/v1/object/public/profil-picture/user_32_1753952824665.jpg	t	t
 42	sapiens@gmail.com	$2b$10$UmaAP3yz6I.uEEmGnjn2bueaKSXk03az.xVH8CRM/P40YZhdaytva	member	2025-07-30 10:20:12.208764	\N	password-email	Saplins	+3355555555555	https://knswskkdaimyrcstijsm.supabase.co/storage/v1/object/public/profil-picture/user_42_1753991023778.png	t	t
+32	tompayan1710@gmail.com	\N	member	2025-05-11 17:20:09.47826	5	google	Tom Payan	+33121212222	https://knswskkdaimyrcstijsm.supabase.co/storage/v1/object/public/profil-picture/user_32_1753952824665.jpg	t	t
 60	t07677974@gmail.com	\N	member	2025-08-02 16:22:03.400219	\N	google	\N	\N	\N	t	t
 \.
 
@@ -1599,6 +1591,7 @@ COPY public.withdrawal_methods (id, provider_id, method, details, created_at) FR
 --
 
 COPY public.withdrawals (id, provider_id, amount, method, details, status, created_at) FROM stdin;
+1	5	300.00	virement bancaire	Retrait vers IBAN FR7630006000011234567890189	completed	2025-08-04 13:30:48.970226
 \.
 
 
@@ -1627,7 +1620,7 @@ SELECT pg_catalog.setval('public.cities_id_seq', 19, true);
 -- Name: comments_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
 
-SELECT pg_catalog.setval('public.comments_id_seq', 4, true);
+SELECT pg_catalog.setval('public.comments_id_seq', 1, false);
 
 
 --
@@ -1641,7 +1634,7 @@ SELECT pg_catalog.setval('public.departments_id_seq', 19, true);
 -- Name: favorites_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
 
-SELECT pg_catalog.setval('public.favorites_id_seq', 16, true);
+SELECT pg_catalog.setval('public.favorites_id_seq', 1, true);
 
 
 --
@@ -1655,7 +1648,7 @@ SELECT pg_catalog.setval('public.hotes_id_seq', 3, true);
 -- Name: invitation_tokens_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
 
-SELECT pg_catalog.setval('public.invitation_tokens_id_seq', 11, true);
+SELECT pg_catalog.setval('public.invitation_tokens_id_seq', 12, true);
 
 
 --
@@ -1711,14 +1704,14 @@ SELECT pg_catalog.setval('public.qr_codes_id_seq', 58, true);
 -- Name: refresh_tokens_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
 
-SELECT pg_catalog.setval('public.refresh_tokens_id_seq', 291, true);
+SELECT pg_catalog.setval('public.refresh_tokens_id_seq', 296, true);
 
 
 --
 -- Name: reservation_slots_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
 
-SELECT pg_catalog.setval('public.reservation_slots_id_seq', 82, true);
+SELECT pg_catalog.setval('public.reservation_slots_id_seq', 83, true);
 
 
 --
@@ -1732,7 +1725,7 @@ SELECT pg_catalog.setval('public.reservations_creneaux_google_calendar_id_seq', 
 -- Name: reservations_individuals_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
 
-SELECT pg_catalog.setval('public.reservations_individuals_id_seq', 105, true);
+SELECT pg_catalog.setval('public.reservations_individuals_id_seq', 106, true);
 
 
 --
@@ -1753,7 +1746,7 @@ SELECT pg_catalog.setval('public.withdrawal_methods_id_seq', 1, true);
 -- Name: withdrawals_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
 
-SELECT pg_catalog.setval('public.withdrawals_id_seq', 1, false);
+SELECT pg_catalog.setval('public.withdrawals_id_seq', 1, true);
 
 
 --
@@ -1993,7 +1986,7 @@ ALTER TABLE ONLY public.cities
 --
 
 ALTER TABLE ONLY public.comments
-    ADD CONSTRAINT comments_offer_slug_fkey FOREIGN KEY (offer_slug) REFERENCES public.offers(slug);
+    ADD CONSTRAINT comments_offer_slug_fkey FOREIGN KEY (offer_slug) REFERENCES public.offers(slug) ON DELETE CASCADE;
 
 
 --
@@ -2001,7 +1994,7 @@ ALTER TABLE ONLY public.comments
 --
 
 ALTER TABLE ONLY public.comments
-    ADD CONSTRAINT comments_reservation_id_fkey FOREIGN KEY (reservation_id) REFERENCES public.reservations_individuals(id);
+    ADD CONSTRAINT comments_reservation_id_fkey FOREIGN KEY (reservation_id) REFERENCES public.reservations_individuals(id) ON DELETE CASCADE;
 
 
 --
@@ -2009,7 +2002,7 @@ ALTER TABLE ONLY public.comments
 --
 
 ALTER TABLE ONLY public.comments
-    ADD CONSTRAINT comments_user_id_fkey FOREIGN KEY (user_id) REFERENCES public.users(id);
+    ADD CONSTRAINT comments_user_id_fkey FOREIGN KEY (user_id) REFERENCES public.users(id) ON DELETE CASCADE;
 
 
 --

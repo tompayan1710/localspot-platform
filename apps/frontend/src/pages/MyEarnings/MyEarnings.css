@@ -7,12 +7,14 @@
     padding-bottom: 20px;
 }
 .RetiredGainButton{
-    position: fixed;
+    /* position: fixed;
     bottom: 90px;
     left: 50%;
-    transform: translateX(-50%);
+    transform: translateX(-50%); */
     /* box-shadow: 0 2px 15px rgba(0, 0, 0, 0.3); */
     /* border: none; */
+    margin-left: 15px;
+    /* margin-bottom: 30px; */
     border: 1px solid var(--greysemidark);
     padding: 18px 25px;
     border-radius: 100px;
@@ -23,7 +25,9 @@
     align-items: center;
     gap: 5px;
     white-space: nowrap;
-    box-shadow: 0 2px 20px rgba(0, 0, 0, 0.05);
+    /* box-shadow: 0 2px 20px rgba(0, 0, 0, 0.05); */
+    box-shadow: 0 2px 20px rgba(0, 0, 0, 0.03);
+    cursor: pointer;
 }
 .RetiredGainButton>p{
     /* color: ); */
@@ -31,6 +35,11 @@
 .RetiredGainButton>img {
     height: 15px;
     opacity: 0.8;
+}
+.RetiredGainButton+p{
+    padding: 0 15px;
+    margin-top: 10px;
+    margin-bottom: 30px;
 }
 
 .MyEarnings .Transactions{
@@ -49,7 +58,7 @@
     justify-content: space-between;
     box-shadow: var(--boxshadow);
     padding: 15px 15px;
-    border-radius: 10px;
+    border-radius: 15px;
 }
 .MyEarnings .transactionItem .TypeArrow{
     padding: 8px;
@@ -80,6 +89,7 @@
 .MyEarnings .SeeMoreHistorique{
     background-color: transparent;
     border: none;
+    cursor: pointer;
 }
 .MyEarnings .SeeMoreHistorique>p{
     color: var(--bluenormal);
@@ -90,6 +100,12 @@
     padding: 0 20px;
     width: 100%;
     max-width: 400px;
+    gap: 5px;
+    margin-top: 30px;
+    margin-bottom: 30px;
+}
+.MyEarnings .VersementContainer>p:first-of-type{
+    /* margin-bottom: 5px; */
 }
 .MyEarnings .AddVersementButton{
     /* box-shadow: 0 2px 15px rgba(0, 0, 0, 0.3); */
@@ -101,10 +117,120 @@
     flex-direction: row;
     align-items: center;
     gap: 10px;
-    white-space: nowrap;
+    /* white-space: nowrap; */
     margin-top: 10px;
-    margin-bottom: 30px;
+    width: fit-content;
+    cursor: pointer;
 }
 .MyEarnings .AddVersementButton>p{
     color: white;
+    text-align: start;
+}
+
+.MyEarnings .whiteButton{
+    margin-top: 10px;
+    margin-bottom: 20px;
+}
+
+
+.MyEarnings .squelletteTransactionItem{
+    width: 100%;
+    justify-content: space-between;
+    box-shadow: var(--boxshadow);
+    padding: 15px 15px;
+    border-radius: 15px;
+}
+.MyEarnings .roundSquellette{
+    height: 34px;
+    width: 34px;
+    background-color: var(--greylight);
+    border-radius: 100px;
+    display: flex;
+    flex-direction: column;
+    margin-right: 10px;
+}
+
+.MyEarnings .squelletteTransactionItem .column{
+    gap: 4px;
+}
+.MyEarnings .squelletteTransactionItem .Title{
+    height: 1rem;
+    width: 170px;
+    background-color: var(--greylight);
+    border-radius: 4px;
+}
+.MyEarnings .squelletteTransactionItem .Date{
+    height: 0.8rem;
+    width: 100px;
+    background-color: var(--greylight);
+    border-radius: 4px;
+}
+.MyEarnings .squelletteTransactionItem .Amount{
+    height: 1rem;
+    width: 60px;
+    background-color: var(--greylight);
+    border-radius: 4px;
+}
+.MyEarnings .squelletteTransactionItem .Type{
+    height: 0.8rem;
+    width: 40px;
+    background-color: var(--greylight);
+    border-radius: 4px;
+}
+
+.MyEarnings .squelletteTransactionItem>.column:last-of-type {
+    align-items: end;
+}
+.MonthSeparationSquellette{
+    width: 100px;
+    height: 1rem;
+    margin: 5px 0;
+    background-color: var(--greylight);
+    border-radius: 3px;
+}
+.MonthSeparationSquellette.elarging{
+    margin-top: 14px;
+}
+
+.MyEarnings>.t4{
+    margin-left: 15px;
+    margin-bottom: 8px;
+    margin-top: 30px;
+}
+.MyEarnings .NoVersementMethode{
+    width: calc(100% - 30px);
+    margin: 0 15px;
+}
+
+.MyEarnings .AddVersementMethode{
+    gap: 3px;
+    margin-top: 10px;
+    cursor: pointer;
+    width: fit-content;
+    background-color: white;
+    border: none;
+    margin-left: 15px;
+    margin-bottom: 30px;
+}
+.MyEarnings .AddVersementMethode>img{
+    height: 10px;
+    width: 10px;
+}
+
+
+.NoVersementMethode{
+    border-radius: 14px;
+    border: 1px solid var(--greysemidark);
+    display: flex;
+    flex-direction: row;
+    justify-content: start;
+    gap: 10px;
+    padding: 10px 10px;
+}
+.NoVersementMethode>img{
+    height: 30px;
+    width: 30px;
+}
+.NoVersementMethode>.column{
+    gap: 2px;
 }

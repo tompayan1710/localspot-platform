@@ -214,6 +214,25 @@ a{
   margin: 0 auto;
 }
 
+
+.hlinedashed {
+    height: 1px;
+    border-bottom: 1px dashed var(--greysemidark);
+    border-image: repeating-linear-gradient(to right, var(--greysemidark) 0, var(--greysemidark) 5px, transparent 5px, transparent 10px);
+    border-image-slice: 1;
+    margin: 0 auto;
+    width: 100%;
+}
+
+
+
+.vline{
+  background-color: var(--greysemidark);
+  width: 1px;
+  height: 100%;
+  min-height: 100%;
+}
+
 .TopDivOpacity{
   position: fixed;
   top: 0;
@@ -274,4 +293,19 @@ img.loaded{
 
 .noScroll::-webkit-scrollbar {
   display: none;
+}
+
+
+
+.InputText {
+  border: 1px solid #ddd;
+  padding: 12px 10px;
+  color: var(--greydark);
+  border-radius: 10px;
+  margin-top: 10px;
+  /* width: 40%; */
+  width: 100%;
+  flex: 1;
+  margin-bottom: 8px;
+  font-size: 16px;
 }

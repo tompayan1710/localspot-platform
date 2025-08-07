@@ -3,38 +3,72 @@ import ReactECharts from 'echarts-for-react';
 
 import "./MonthlyRevenueChart.css"
 
-export default function MonthlyRevenueBarChart({ data = [], labels = [], currentBalance }) {
-    
+export default function MonthlyRevenueBarChart({ data = [], labels = [], solde, loading }) {
+  // Placeholder data pour affichage initial
+  const now = new Date();
+  const placeholderLabels = [];
+  const formatter = new Intl.DateTimeFormat("fr-FR", {
+    month: "short",
+  });
+
+  for (let i = 6 - 1; i >= 0; i--) {
+    const month = new Date(now.getFullYear(), now.getMonth() - i, 1);
+    const key = formatter.format(month); // exemple : "juil." pour juillet
+    placeholderLabels.push(key);
+  }
+  const placeholderData = new Array(6).fill(0);
+  // const placeholderLabels = ['févr.', 'mars', 'avr.', 'mai', 'juin', 'juil.'];
+
   const option = {
+    // tooltip: {
+    //   trigger: 'axis',
+    //   formatter: (params) => {
+    //     const val = params[0].value.toFixed(2).replace('.', ',');
+    //     return `${params[0].axisValue}<br/>Revenus : $${val}`;
+    //   },
+    // },
     tooltip: {
       trigger: 'axis',
+      backgroundColor: '#ffffff',
+      borderRadius: 8,
+      extraCssText: `
+        box-shadow: 0px 0px 0px 1px rgba(0,0,0,0.02),0px 5px 20px 0px rgba(0,0,0,0.058);
+        padding: 10px;
+      `,
       formatter: (params) => {
-        const val = params[0].value.toFixed(2).replace('.', ',');
-        return `${params[0].axisValue}<br/>Revenus : $${val}`;
+        const { axisValue, value } = params[0];
+        const formattedValue = value.toFixed(2).replace('.', ',');
+        return `
+          <div style="color:#333; font-family: sans-serif;">
+            <p style="font-size: 14px;">${axisValue}</p>
+            <span>Revenus : <strong>${formattedValue}€</strong></span>
+          </div>
+        `;
       },
     },
-    
-    grid: { left: '1%', right: '4%', bottom: '0%',top: '10%', containLabel: true },
+
+
+    grid: { left: '1%', right: '4%', bottom: '0%', top: '10%', containLabel: true },
     xAxis: {
       type: 'category',
-      data: labels,
+      data: loading ? placeholderLabels : labels,
       axisTick: { show: false },
       axisLine: { show: false },
-        axisLabel: {
-        margin: 16, // ✅ espace entre les labels (mois) et les barres
-      },
+      axisLabel: { margin: 16 },
     },
     yAxis: {
       type: 'value',
-    //   max: 'auto',
-      splitNumber: 2, 
+      splitNumber: 2,
+      min: 0,
+      max: loading ? 300 : undefined,  // ⬅️ Forcé à 200 quand loading
+      interval: loading ? 100 : undefined,
       axisLabel: {
         formatter: (value) => `${value}€ `,
       },
       splitLine: {
         show: true,
         lineStyle: {
-          type: 'solid', // ✅ ligne continue
+          type: 'solid',
           color: '#edeff1ff',
         },
       },
@@ -43,18 +77,15 @@ export default function MonthlyRevenueBarChart({ data = [], labels = [], current
       {
         name: 'Revenus',
         type: 'bar',
-        barWidth: '90%', // ✅ barres plus proches
-        data: data,
-        
+        barWidth: '90%',
+        data: loading ? placeholderData : data,
         itemStyle: {
           color: {
             type: 'linear',
-            x: 0,
-            y: 0,
-            x2: 0,
-            y2: 1,
+            x: 0, y: 0, x2: 0, y2: 1,
+            // linear-gradient(180deg, rgb(83, 83, 83), rgb(55, 55, 55))
             colorStops: [
-              { offset: 0, color: 'rgb(83, 83, 83)' },
+              { offset: 0, color: 'rgb(83, 83, 83)' }, // Gris clair pendant le loading
               { offset: 1, color: 'rgb(55, 55, 55)' },
             ],
           },
@@ -66,18 +97,24 @@ export default function MonthlyRevenueBarChart({ data = [], labels = [], current
 
   return (
     <div className='MonthlyChart'>
-        <div>
-            <p className='t3 bold'>Gains disponibles :</p>
-        <p className='t3 GainsEuro'>
-            {currentBalance.toFixed(2).replace('.', ',')}€
-        </p>
-        </div>
-        <ReactECharts
-            option={option}
-            style={{ height: '300px', width: '100%' }}
-            notMerge={true}
-            lazyUpdate={true}
-        />
+      <div>
+        <p className='t3 bold'>Gains disponibles :</p>
+        {!loading ? (
+          <p className='t3 GainsEuro'>
+            {solde.toFixed(2).replace('.', ',')}€
+          </p>
+        ) : (
+          <div className='GainsSquellette shimmer'></div>
+        )}
+      </div>
+
+      <ReactECharts
+        option={option}
+        style={{ height: '300px', width: '100%' }}
+        notMerge={true}
+        lazyUpdate={true}
+      />
     </div>
   );
 }
+

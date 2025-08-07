@@ -1,0 +1,113 @@
+.NumberPicker {
+  padding: 0 5px;
+  gap: 16px;
+  align-items: center;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  flex: 1;
+}
+.NumberPicker>.column{
+    width: 100%;
+}
+.NumberPicker>p:first-of-type{
+    padding-top: 15px;
+    padding-bottom: 30px;
+}
+.NumberPicker .AmountContainer{
+    justify-content: center;
+    align-items: center;
+    gap: 5px;
+}
+.NumberPicker .AmountContainer .DisplayAmount {
+}
+.NumberPicker .AmountContainer .DisplayAmount .Cursor {
+  width: 2px;
+  height: 1.5rem;
+  background-color: var(--greydark);
+  margin-left: 3px;
+  margin-right: 2px;
+  animation: blink 1s step-start infinite;
+}
+
+@keyframes blink {
+  0%   { opacity: 0; }
+  50%  { opacity: 1; }
+  100% { opacity: 0; }
+}
+
+
+.NumberPicker .SecondaryText {
+  color: #888;
+}
+
+.NumberPicker .QuickButtons {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 8px;
+}
+
+.QuickButtons button {
+  padding: 6px 12px;
+  border-radius: 20px;
+  border: 1px solid #ccc;
+  background: #f5f5f5;
+  font-size: 14px;
+  cursor: pointer;
+}
+
+.NumberPicker .Numpad {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 12px;
+  margin-top: 16px;
+  width: 100%;
+}
+
+.NumberPicker .Numpad button {
+  height: 50px;
+  border: none;
+  cursor: pointer;
+  background-color: white;
+}
+
+.NumberPicker .DeleteIcon>img{
+    height: 30px;
+    width: 30px;
+}
+.NumberPicker .Numpad .point{
+    position: relative;
+    top: -0.3rem;
+}
+.NumberPicker .NavButtons{
+    display: flex;
+    flex-direction: row;
+    width: 100%;
+    gap: 10px;
+    margin-top: 20px;
+}
+.NumberPicker .NavButtons button {
+  flex: 1;
+  padding: 15px 24px;
+  color: white;
+  font-size: 16px;
+  border-radius: 100px;
+  cursor: pointer;
+  border: none;
+  
+}
+.NumberPicker .NavButtons>.Cancellable{
+    border: 1px solid var(--greysemidark);
+    background-color: white;
+}
+.NumberPicker .NavButtons>.Validate{
+    background: var(--lineargradientblack);
+}
+.NumberPicker .NavButtons>.Validate>p{
+    color: white;
+}
+
+.NumberPicker .error-text {
+  color: red;
+}

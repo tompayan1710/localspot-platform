@@ -1,0 +1,24 @@
+.CancelConfirmButton{
+    width: 100%;
+    gap: 10px;
+    display: flex;
+    flex-direction: row;
+    justify-content: stretch;
+}
+
+.CancelConfirmButton .CancelButton{
+    padding: 12px 0;
+    border: 1px solid var(--greysemidark);
+    background-color: white;
+    border-radius: 100px;
+    flex: 1;
+}
+.CancelConfirmButton .ConfirmButton{
+    padding: 12px 0;
+    border-radius: 100px;
+    background: var(--lineargradientblack);
+    flex: 1;
+}
+.CancelConfirmButton .ConfirmButton>p{
+    color: white;
+}

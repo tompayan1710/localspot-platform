@@ -1,0 +1,164 @@
+.AddVersement{
+    flex: 1;
+    padding: 0 15px;
+    padding-top: 50px;
+    padding-bottom: 80px;
+}
+.AddVersement>p:first-of-type{
+    
+}
+
+.AddVersement .bodyVersement{
+    margin-top: 40px;
+}
+.AddVersement .bodyVersement>.row{
+    width: 100%;
+    justify-content: space-between;
+    gap: 10px;
+}
+.AddVersement .bodyVersement .InputText {
+    border: 1px solid #ddd;
+    padding: 12px 10px;
+    color: var(--greydark);
+    border-radius: 10px;
+    margin-top: 10px;
+    /* width: 40%; */
+    width: 100%;
+    flex: 1;
+    margin-bottom: 8px;
+    font-size: 16px;
+}
+
+.AddVersement .bodyVersement input.IBAN-input {
+    border-bottom-left-radius: 0;
+    border-bottom-right-radius: 0;
+    border-bottom: none;
+    margin-bottom: 0;
+}
+.AddVersement .bodyVersement input.IBAN-input:focus {
+    outline: none;
+    border: 1px solid var(--greysemidark);
+    border-color: var(--greysemidark);
+    border-bottom: none;
+    box-shadow: none;
+}
+
+.AddVersement .bodyVersement .InputText:focus {
+    outline: none;
+    /* border: 1px solid var(--greysemidark);
+    border-color: var(--greymiddledark);
+    padding: 12px 10px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1); */
+}
+
+.AddVersement .NavigateButton{
+    position: fixed;
+    bottom: 15px;
+    padding: 15px 15px;
+    /* background-color: white; */
+    background: var(--lineargradientblack);
+    border: 1px solid var(--greysemidark);
+    border-radius: 100px;
+    max-width: calc(var(--maxsize) - 30px);
+    width: calc(100% - 30px);
+    cursor: pointer;
+}
+.AddVersement .NavigateButton>p{
+    color: white;
+}
+
+
+
+
+.IbanCheckerWrapper{
+    position: relative;
+    padding: 12px 10px;
+    color: var(--greydark);
+    border-radius: 10px;
+    border-top-left-radius: 0px;
+    border-top-right-radius: 0px;
+    border: 1px solid #ddd;
+    /* width: 40%; */
+    width: 100%;
+    flex: 1;
+    margin-bottom: 8px;
+    font-size: 16px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    height: 45px;
+    min-height: 40px;
+}
+
+.IbanCheckerWrapper .RealInput {
+  position: absolute;
+  top: 0;
+  left: 10px;
+  width: calc(100% - 20px);
+  height: 45px;
+  opacity: 1;
+  color: transparent;
+  caret-color: black;
+  background-color: transparent;
+  border: none;
+  font-size: 16px;
+  letter-spacing: 2px;
+}
+
+.IbanCheckerWrapper .RealInput:focus {
+  outline: none;
+}
+
+
+.IbanCheckerWrapper .IbanVisual{
+    position: absolute;
+    left: 10px;
+    display: flex;
+    flex-direction: row;
+
+}.char-block.first-letter {
+  border-top-left-radius: 3px;
+  border-bottom-left-radius: 3px;
+}
+
+.char-block.last-letter {
+  border-top-right-radius: 3px;
+  border-bottom-right-radius: 3px;
+}
+
+
+.IbanCheckerWrapper .char-block {
+    font-size: 16px;
+    letter-spacing: normal;
+
+    width: fit-content; /* agrandi un peu si besoin */
+    height: 20px;
+    padding: 0 1px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    /* border-radius: 4px; */
+}
+.IbanCheckerWrapper .char-block.valid{
+    background-color: rgba(0, 255, 17, 0.4);
+}
+.IbanCheckerWrapper .char-block.invalid{
+    background-color: rgba(255, 9, 9, 0.288);
+}
+
+.Iban input {
+    font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    font-size: 16px;
+    letter-spacing: 2px;
+    line-height: 1.2;
+}
+.Iban input {
+    font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    font-size: 16px;
+    letter-spacing: 2px;
+    line-height: 1.2;
+}
+.Iban input::placeholder {
+  letter-spacing: 0;
+}
+

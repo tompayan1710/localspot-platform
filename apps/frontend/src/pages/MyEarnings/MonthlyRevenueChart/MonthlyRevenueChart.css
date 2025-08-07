@@ -4,7 +4,14 @@
     padding: 0 15px;
     padding-bottom: 40px;
 }
-
 .MonthlyChart .GainsEuro{
     opacity: 0.7;
+    margin-top: 3px;
+}
+.MonthlyChart .GainsSquellette{
+    margin-top: 3px;
+    height: 1.85rem;
+    background-color: var(--greylight);
+    width: 150px;
+    border-radius: 6px;
 }

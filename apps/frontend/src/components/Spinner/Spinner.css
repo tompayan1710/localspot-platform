@@ -37,3 +37,9 @@
     100% { transform: rotate(360deg); }
   }
   
+.replaceText{
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+}

@@ -52,6 +52,11 @@ import AnnonceEditPhotos from "./pages/AnnoncePage/AnnonceEditPhotos/AnnonceEdit
 import InvitationPage from "./pages/InvitationPage/InvitationPage";
 import Favoris from "./pages/Favoris/Favoris";
 import CancellationPolicy from "./pages/DocumentOfficiel/CancellationPolicy/CancellationPolicy";
+import AllHistoryTransaction from "./pages/MyEarnings/AllHistoryTransaction/AllHistoryTransaction";
+import PayoutRequest from "./pages/MyEarnings/PayoutRequest/PayoutRequest";
+import AddTitulaireForm from "./pages/AddVersementMethode/AddTitulaireForm";
+import AddIBANForm from "./pages/AddVersementMethode/AddIBANForm";
+import AddVersementHome from "./pages/AddVersementMethode/AddVersementHome";
 
 export default function BrowserRouterAll(){
     const location = useLocation();
@@ -90,6 +95,9 @@ export default function BrowserRouterAll(){
         "/confirm-payment", 
         "/settings",
         "/invitation",
+        "/all-history-transactions",
+        "/payout-request"
+
     ];
     
     //offer-page/b2f3a4ae-6cc4-4353-824e-65de72035d68/availibility
@@ -103,6 +111,7 @@ export default function BrowserRouterAll(){
     /^\/annonces\/[^\/]+\/edit-photos$/,
     /^\/reservations\/[^\/]+$/,
     /^\/offer-page\/[^\/]+\/add-comment$/,
+    /^\/versement\/.*/,
     ];
 
     return(
@@ -146,6 +155,13 @@ export default function BrowserRouterAll(){
             <Route path="/calendar" element={<Calendar />} />
  
             <Route path="/my-earnings" element={<MyEarnings />} />
+            <Route path="/all-history-transactions" element={<AllHistoryTransaction />} />
+            <Route path="/payout-request" element={<PayoutRequest />} />
+            <Route path="/versement/new" element={<AddVersementHome />} />
+            <Route path="/versement/new/titulaire" element={<AddTitulaireForm />} />
+            <Route path="/versement/new/iban" element={<AddIBANForm />} />
+
+
 
             <Route path="/annonces" element={<AllAnnoncesPage />} />
             <Route path="/annonces/:slug" element={<AnnoncePage />} />

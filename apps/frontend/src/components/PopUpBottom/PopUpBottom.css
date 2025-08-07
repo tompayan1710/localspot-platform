@@ -24,6 +24,10 @@
 .PopUpBottom.fullHeight{
 
 }
+
+.PopUpBottom.NoHeader{
+  padding-top: 0px;
+}
 .PopUpBottom.fullHeight .bodyPopUpBottom{
   max-height: 100%;
   overflow: auto;

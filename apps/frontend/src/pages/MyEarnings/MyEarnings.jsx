@@ -1,19 +1,38 @@
 import "./MyEarnings.css"
-import { useContext, useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { AuthContext } from "../../components/Auth/authContext/authContext";
 
+import plus from "../../assets/images/plus.png";
 import ArrowDownRetired from "../../assets/images/ArrowDownRetired.png";
 import ArrowUpRetired from "../../assets/images/ArrowUpRetired.png";
 import MonthlyRevenueChart from "./MonthlyRevenueChart/MonthlyRevenueChart";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
+import WhiteButton from "../../components/Buttons/WhiteButton/WhiteButton";
+import warningRed from "../../assets/images/warningRed.png"
 
 export default function MyEarnings() {
   const { authState } = useContext(AuthContext);
   const navigate = useNavigate();
+  const location = useLocation();
 
   const [ transactions, setTransactions ] = useState([]);
-  const [currentBalance, setCurrentBalance] = useState(0);
   const [monthlyChartData, setMonthlyChartData] = useState([]);
+  const [loading, setLoading ] = useState(true);
+  const [total_revenue, setTotalRevenue] = useState(0);
+  const [solde, setSolde] = useState(0);
+  const [alreadyPaid, setAlreadyPaid] = useState(0);
+  const [waiting, setWaiting] = useState(0);
+
+  useEffect(() => {
+    if (location.state?.scrollTo) {
+      const el = document.getElementById(location.state.scrollTo);
+      if (el) {
+        setTimeout(() => {
+          el.scrollIntoView({ behavior: "smooth" });
+        }, 100); // petit délai pour que le DOM soit prêt
+      }
+    }
+  }, [location]);
 
 
   const getTransactionHistory = async () => {
@@ -92,49 +111,80 @@ export default function MyEarnings() {
           const history = data.history || [];
           setTransactions(history);
 
-          const balance = history.reduce((total, t) => total + parseFloat(t.amount), 0);
-          setCurrentBalance(balance);
+          setSolde(data.solde);
 
           const monthly = getMonthlyEarnings(history);
           setMonthlyChartData(monthly);
 
         }
       });
+      setTimeout(() => {
+        setLoading(false);
+      }, 500)
     }
   }, [authState]);
 
 
+  
   return (
     <div className="MyEarnings">
       <p className="t32">Paiements</p>
-      <button className="RetiredGainButton" onClick={() => {console.log("Je clique")}}>
-        <img src={ArrowDownRetired} alt="Arrow down retired"/>
-        <p className="t5">Retirer mes gains</p>
-      </button>
 
       <MonthlyRevenueChart
         data={monthlyChartData.map(m => m.total)}
         labels={monthlyChartData.map(m => m.month)}
         currentRevenue={monthlyChartData[monthlyChartData.length - 1] || 0}
-        currentBalance={currentBalance}
+        solde={solde}
+        loading={loading}
       />
 {/* const limitedHistory = fullHistory.slice(0, 9); */}
-      <div className="VersementContainer">
-        <p className="t4 bold">Mode de versement</p>
-        <p className="t6">Ajoutez au moins un mode de versement pour nous indiquer où envoyer votre argent.</p>
-        <button className="AddVersementButton">
-          <p className="t6">Configurer les versements</p>
-        </button>
-      </div>
+      <button className="RetiredGainButton" onClick={() => navigate("/payout-request")}>
+        <img src={ArrowDownRetired} alt="Arrow down retired"/>
+        <p className="t5">Retirer mes gains</p>
+      </button>
+      {/* À l’issue du virement, un document justificatif vous sera adressé par e-mail, vous permettant de conserver une preuve de l’opération." */}
+      <p className="t6">À l’issue du virement, une attestation de virement vous sera envoyer par e-mail.</p>
       <div className="hline15"></div>
-      <div className="Transactions column">
+      <p className="t4 ">Recevoir mes paiements</p>
+      <div className="NoVersementMethode">
+        <img src={warningRed} alt="warning red icon"/>
+        <div className="column">
+          <p className="t5">Ajouter un mode de versement</p>
+          <p className="t6">Ajouter mode de versement vous permet de recevoir vos gains.</p>
+          {/* <button>
+            <p className="t6">Configurer les versements</p>
+          </button> */}
+        </div>
+      </div>
+      <button className="AddVersementMethode row" onClick={() => {
+          navigate("/versement/new/titulaire", {
+              state: {
+                origin: "/payout-request"
+              }
+            })
+          }}>
+            <img src={plus} alt="plus icon"/>
+            <p className="t6">Ajouter un mode de versement</p>
+        </button>
+
+      {/* <div className="VersementContainer column">
+        <p className="t4 bold">Recevoir mes paiements</p>
+        <p className="t6">Afin de recevoir vos gains, merci de renseigner un mode de versement valide.</p>
+        <button className="AddVersementButton">
+          <p className="t6">Configurer un compte de versement</p>
+        </button>
+      </div> */}
+      <div className="hline15"></div>
+      <div className="Transactions column" id={"Transactions"}>
         <div className="row">
           <p className="t4">Historique</p>
-          <button className="SeeMoreHistorique row" onClick={() => {navigate("/history-transactions")}}>
+          <button className="SeeMoreHistorique row" onClick={() => {navigate("/all-history-transactions")}}>
             <p className="t6">voir plus</p>
           </button>
         </div>
         {
+          !loading ?
+        
           Object.entries(groupTransactionsByMonth(transactions.slice(0, 8))).map(([month, items]) => (
             <div className="MonthSeparation column" key={month} style={{ marginTop: "5px", marginBottom: "8px" }}>
               <p className="t5" style={{ marginBottom: "6px" }}>{month.charAt(0).toUpperCase() + month.slice(1)}</p>
@@ -165,7 +215,7 @@ export default function MyEarnings() {
                     </div>
                     <div className="column">
                       <p className={`t5 ${transaction.type === "earning" ? "greenColor" : "orangeColor"}`}>
-                        {transaction.amount}€
+                        {transaction.type === "earning" ? "" : "-"}{transaction.amount}€
                       </p>
                       <p className="t6">{transaction.type === "earning" ? "reçu" : "retrait"}</p>
                     </div>
@@ -174,8 +224,35 @@ export default function MyEarnings() {
               })}
             </div>
           ))
-        }
+        
+        : 
+        Array.from({ length: 5 }).map((_, i) => (
+          <React.Fragment key={i}>
+            {i % 3 === 0 && (
+              <div className={`MonthSeparationSquellette shimmer ${i>1 ? "elarging" : ""}`} ></div>
+            )}
 
+            <div className="squelletteTransactionItem row">
+              <div className="row">
+                <div className="roundSquellette shimmer"></div>
+                <div className="column">
+                  <div className="Title shimmer"></div>
+                  <div className="Date shimmer"></div>
+                </div>
+              </div>
+              <div className="column">
+                <div className="Amount shimmer"></div>
+                <div className="Type shimmer"></div>
+              </div>
+            </div>
+          </React.Fragment>
+        ))
+
+      }
+
+      {transactions.length > 8 && 
+      <WhiteButton text="Voir plus" onClick={() => {navigate("/all-history-transactions")}} />
+      }
       </div>
     </div>
   );
