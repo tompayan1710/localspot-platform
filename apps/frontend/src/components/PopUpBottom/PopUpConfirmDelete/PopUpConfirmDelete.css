@@ -1,0 +1,11 @@
+.PopUpConfirmDelete{
+    margin-top: 20px;
+}
+.PopUpConfirmDelete>p{
+    text-align: center;
+    width: 100%;
+}
+.PopUpConfirmDelete>p:last-of-type{
+    margin-top: 10px;
+    margin-bottom: 30px;
+}

@@ -1,0 +1,49 @@
+
+.ModifieVersement{
+    margin-bottom: 30px;
+    margin-top: 20px;
+}
+.ModifieVersement>.row{
+    gap: 10px;
+}
+.ModifieVersement input {
+    margin-bottom: 20px;
+    /* letter-spacing: 2px; */
+}
+.ModifieVersement>p:last-of-type{
+    color: var(--greymiddledark);
+    text-align: center;
+    width: 90%;
+}
+
+
+.ModifieVersement .InputText:focus {
+    outline: none;
+    /* border: 1px solid var(--greysemidark);
+    border-color: var(--greymiddledark);
+    padding: 12px 10px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1); */
+}
+
+
+.ModifieVersement input.IBAN-input {
+    border-bottom-left-radius: 0;
+    border-bottom-right-radius: 0;
+    border-bottom: none;
+    margin-bottom: 0;
+    letter-spacing: 2px;
+}
+.ModifieVersement input.IBAN-input:focus {
+    outline: none;
+    border: 1px solid var(--greysemidark);
+    border-color: var(--greysemidark);
+    border-bottom: none;
+    box-shadow: none;
+}
+
+.IbanCheckerWrapper input {
+    font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    font-size: 16px;
+    letter-spacing: 0px;
+    line-height: 1.2;
+}

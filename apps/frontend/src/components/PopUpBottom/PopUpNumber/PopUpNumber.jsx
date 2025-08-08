@@ -3,22 +3,29 @@ import PopUpBottom from "../PopUpBottom";
 import DeleteIcon from "../../../assets/images/RemoveIcon.png";
 import "./PopUpNumber.css";
 
-const PopUpNumber = forwardRef(({ title, smalltext = "", onClose, max, setReturnValue }, ref) => {
+const PopUpNumber = forwardRef(({ title, smalltext = "", onClose, min, errorMin, max, errorMax, setReturnValue}, ref) => {
   const [value, setValue] = useState("");
   const [error, setError] = useState("");
 
   const appendNumber = (num) => {
     setValue((prev) => {
-      const newValue = prev + num;
-
       // gestion du point
       if (num === "." && (prev === "" || prev === "0")) return "0.";
       if (num === "." && prev.includes(".")) return prev;
+      
+      const newValue = prev + num;
+
+      if (newValue.includes(".")) {
+        const [intPart, decimalPart] = newValue.split(".");
+        if (decimalPart.length > 2) return prev;
+      }
 
       // gestion max
       if (parseFloat(newValue) > max) {
-        setError(`Le montant ne peut pas dépasser ${max} €`);
+        setError(errorMax);
         return prev;
+      } else if(parseFloat(newValue) < min){
+        setError(errorMin)
       } else {
         setError(""); // reset l'erreur si valide
       }

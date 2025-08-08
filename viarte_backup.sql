@@ -817,9 +817,13 @@ ALTER SEQUENCE public.users_id_seq OWNED BY public.users.id;
 CREATE TABLE public.withdrawal_methods (
     id integer NOT NULL,
     provider_id integer,
-    method text,
-    details text,
-    created_at timestamp without time zone DEFAULT now()
+    method character varying(50),
+    iban character varying(34),
+    swift character varying(11),
+    first_name character varying(100),
+    last_name character varying(100),
+    paypal_email character varying(100),
+    created_at timestamp without time zone DEFAULT CURRENT_TIMESTAMP
 );
 
 
@@ -858,7 +862,12 @@ CREATE TABLE public.withdrawals (
     method text NOT NULL,
     details text,
     status text DEFAULT 'pending'::text,
-    created_at timestamp without time zone DEFAULT now()
+    created_at timestamp without time zone DEFAULT now(),
+    iban text,
+    swift text,
+    first_name text,
+    last_name text,
+    paypal_email text
 );
 
 
@@ -1355,11 +1364,12 @@ COPY public.refresh_tokens (id, user_id, refresh_token, expires_at, created_at) 
 247	32	eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MzIsImVtYWlsIjoidG9tcGF5YW4xNzEwQGdtYWlsLmNvbSIsImlhdCI6MTc1NDAzMDQ0OCwiZXhwIjoxNzY5NTgyNDQ4fQ.OWwSMP-sNeDbGEMg9UYnm35C2Tb46Bg_JL8kE1KdfzI	2026-01-28 07:40:48.404	2025-08-01 08:40:48.409048
 248	32	eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MzIsImVtYWlsIjoidG9tcGF5YW4xNzEwQGdtYWlsLmNvbSIsImlhdCI6MTc1NDAzMDU1MywiZXhwIjoxNzY5NTgyNTUzfQ.Vwg78-NqVPZxpaJX5fFqvkS8VmZrDfLxey_AWRCgI6U	2026-01-28 07:42:33.426	2025-08-01 08:42:33.429583
 249	32	eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MzIsImVtYWlsIjoidG9tcGF5YW4xNzEwQGdtYWlsLmNvbSIsImlhdCI6MTc1NDAzMDU3OCwiZXhwIjoxNzY5NTgyNTc4fQ.Ax9xUPZeRMkkJ9LGAh1SrH06NM7yCPlPBCtfrTgBSkY	2026-01-28 07:42:58.434	2025-08-01 08:42:58.441397
+296	32	eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MzIsImVtYWlsIjoidG9tcGF5YW4xNzEwQGdtYWlsLmNvbSIsImlhdCI6MTc1NDU2ODY1MSwiZXhwIjoxNzcwMTIwNjUxfQ.V1yYS-9I46jFGaPr2kRKFuTVxH0jNK7mXsygvnjTbcU	2026-02-03 13:10:51.899	2025-08-03 16:52:00.288237
 251	32	eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MzIsImVtYWlsIjoidG9tcGF5YW4xNzEwQGdtYWlsLmNvbSIsImlhdCI6MTc1NDAzMTYyMywiZXhwIjoxNzY5NTgzNjIzfQ.caEqSbAjCLXPRNLFjdC9L2jIIxPZaXO1qNonRlYwsqQ	2026-01-28 08:00:23.366	2025-08-01 09:00:23.372366
 252	32	eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MzIsImVtYWlsIjoidG9tcGF5YW4xNzEwQGdtYWlsLmNvbSIsImlhdCI6MTc1NDAzMTYzMSwiZXhwIjoxNzY5NTgzNjMxfQ.8BT3e9l9-SFzol_Lq9cRmAh7fyn0-UxwuQI1XnlD9VE	2026-01-28 08:00:31.799	2025-08-01 09:00:31.804243
 253	32	eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MzIsImVtYWlsIjoidG9tcGF5YW4xNzEwQGdtYWlsLmNvbSIsImlhdCI6MTc1NDAzMzA3MSwiZXhwIjoxNzY5NTg1MDcxfQ.P3Wh7tk42zRmBTyigUyAGa4ScNJ3q5paxmml5-qB_tY	2026-01-28 08:24:31.627	2025-08-01 09:22:31.969807
 254	32	eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MzIsImVtYWlsIjoidG9tcGF5YW4xNzEwQGdtYWlsLmNvbSIsImlhdCI6MTc1NDAzMzA3MSwiZXhwIjoxNzY5NTg1MDcxfQ.P3Wh7tk42zRmBTyigUyAGa4ScNJ3q5paxmml5-qB_tY	2026-01-28 08:24:31.644	2025-08-01 09:24:31.648875
-296	32	eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MzIsImVtYWlsIjoidG9tcGF5YW4xNzEwQGdtYWlsLmNvbSIsImlhdCI6MTc1NDMxNDI1MywiZXhwIjoxNzY5ODY2MjUzfQ.X95VIYlxSSmQ0caWb9Q5r8cjhbCZJmGfJfvb8zRdTwY	2026-01-31 14:30:53.597	2025-08-03 16:52:00.288237
+297	32	eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MzIsImVtYWlsIjoidG9tcGF5YW4xNzEwQGdtYWlsLmNvbSIsImlhdCI6MTc1NDY1OTg4MSwiZXhwIjoxNzcwMjExODgxfQ.yTxw9Tx-LI-KD-O3JurX5LSC2ctuTIVLMlSQceqRgQA	2026-02-04 14:31:21.374	2025-08-07 14:36:15.648815
 258	32	eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MzIsImVtYWlsIjoidG9tcGF5YW4xNzEwQGdtYWlsLmNvbSIsImlhdCI6MTc1NDA0NzA3NSwiZXhwIjoxNzY5NTk5MDc1fQ.7Np3UyATMk_1HW6effCPH7DjCjKGBrPunFcMgA9zhoA	2026-01-28 12:17:55.447	2025-08-01 13:17:55.451879
 259	42	eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6NDIsImVtYWlsIjoic2FwaWVuc0BnbWFpbC5jb20iLCJpYXQiOjE3NTQwNTA2NDQsImV4cCI6MTc2OTYwMjY0NH0.EnKRg21VONNSkq-mNnmG7cmEUipg_3vC-L22IVEdQNc	2026-01-28 13:17:24.116	2025-08-01 13:19:16.864494
 290	32	eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MzIsImVtYWlsIjoidG9tcGF5YW4xNzEwQGdtYWlsLmNvbSIsImlhdCI6MTc1NDE0NTQzOCwiZXhwIjoxNzY5Njk3NDM4fQ.RSmvj2MnUkEAgGgNYTA55eDSJCtCUirUezVgtfxrric	2026-01-29 15:37:18.991	2025-08-02 16:37:18.999112
@@ -1445,6 +1455,7 @@ COPY public.reservation_slots (id, provider_id, offer_slug, date, start_hour, en
 82	5	6e7830e6-fd73-4ae1-9419-f47777fa6f95	2025-07-29	13:00	14:45	3	60.00	available	2025-07-29 21:56:36.820063	2025-07-29 21:56:36.820063
 72	5	07782d1c-50b9-477e-9114-2a9892c08800	2025-08-21	07:00	08:00	4	999.00	full	2025-07-29 11:13:58.953348	2025-07-29 22:03:21.722451
 83	5	6e7830e6-fd73-4ae1-9419-f47777fa6f95	2025-08-05	20:30	21:45	3	60.00	available	2025-08-03 16:29:43.477182	2025-08-03 16:29:43.477182
+84	5	6e7830e6-fd73-4ae1-9419-f47777fa6f95	2025-08-12	13:00	14:45	3	60.00	available	2025-08-05 08:15:22.17113	2025-08-05 08:15:22.17113
 \.
 
 
@@ -1487,6 +1498,7 @@ COPY public.reservations_individuals (id, user_id, slot_id, total_participants, 
 92	41	72	3	2997.00	paid	confirmed	2025-07-29 11:13:58.958173	2025-07-29 11:13:58.958173	2	1	tompayan1710@gmail.com	Ecriture	+33765594097	pi_3Rq9bT2f0HHvMFDt06dACaRv
 97	41	76	3	2997.00	paid	confirmed	2025-07-29 18:49:09.054143	2025-07-29 18:49:09.054143	2	1	tompayan1710@gmail.com	Lacarte Céline	+33765594097	pi_3RqGhr2f0HHvMFDt0dNXZeYg
 102	41	80	1	999.00	paid	confirmed	2025-07-29 19:11:15.820233	2025-07-29 19:11:15.820233	1	0	tompayan1710@gmail.com	Iphone	+33765594097	pi_3RqH3N2f0HHvMFDt1qWuWNmY
+107	32	84	3	180.00	paid	confirmed	2025-08-05 08:15:22.183646	2025-08-05 08:15:22.183646	2	1	tompayan1710@gmail.com	Payan Tom Manua	+33765594097	pi_3Rse9M2f0HHvMFDt1Vsj2IDH
 63	32	44	1	500.00	paid	confirmed	2025-07-28 10:32:51.21376	2025-07-28 10:32:51.21376	1	0	tompayan1710@gmail.com	Tom Payan	+33765594097	\N
 68	42	51	4	2000.00	paid	confirmed	2025-07-28 12:27:31.733281	2025-07-28 12:27:31.733281	3	1	tompayan1710@gmail.com	C’est quoi tom	+33765584864	\N
 73	32	56	3	1500.00	paid	confirmed	2025-07-28 14:14:37.045485	2025-07-28 14:14:37.045485	2	1	tompayan1710@gmail.com	LacarteClara	+33888888888	\N
@@ -1581,8 +1593,8 @@ COPY public.users (id, email, password, role, created_at, provider_id, provider,
 -- Data for Name: withdrawal_methods; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
-COPY public.withdrawal_methods (id, provider_id, method, details, created_at) FROM stdin;
-1	5	paypal	l'email de paypal	2025-07-12 16:14:24.524247
+COPY public.withdrawal_methods (id, provider_id, method, iban, swift, first_name, last_name, paypal_email, created_at) FROM stdin;
+21	5	iban	COORDE	\N	tim	2222	\N	2025-08-08 15:09:29.566883
 \.
 
 
@@ -1590,8 +1602,16 @@ COPY public.withdrawal_methods (id, provider_id, method, details, created_at) FR
 -- Data for Name: withdrawals; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
-COPY public.withdrawals (id, provider_id, amount, method, details, status, created_at) FROM stdin;
-1	5	300.00	virement bancaire	Retrait vers IBAN FR7630006000011234567890189	completed	2025-08-04 13:30:48.970226
+COPY public.withdrawals (id, provider_id, amount, method, details, status, created_at, iban, swift, first_name, last_name, paypal_email) FROM stdin;
+1	5	300.00	virement bancaire	Retrait vers IBAN FR7630006000011234567890189	completed	2025-08-04 13:30:48.970226	\N	\N	\N	\N	\N
+2	5	30000.00	iban	Retrait vers IBAN FR7630006000011234567890189	waiting	2025-08-07 13:28:26.669317	\N	\N	\N	\N	\N
+7	5	500.00	iban	Demande de versement par IBAN 	waiting	2025-08-07 15:31:05.056755	CLARACHIANTAVECTEL	\N	PAYAN	Tom	
+8	5	500.00	iban	Demande de versement par IBAN 	waiting	2025-08-07 15:36:06.033009	CLARACHIANTAVECTEL	\N	PAYAN	Tom	
+9	5	100.00	iban	Demande de versement par IBAN 	waiting	2025-08-07 15:44:25.814183	CLARACHIANTAVECTEL	\N	PAYAN	Tom	
+10	5	2222.00	IBAN	Demande de versement par IBAN 	waiting	2025-08-08 15:11:58.614982	COORDE	\N	\N	2222	
+11	5	1000.00	IBAN	Demande de versement par IBAN 	waiting	2025-08-08 15:34:25.602443	COORDE	\N	tim	2222	
+12	5	999.00	IBAN	Demande de versement par IBAN 	waiting	2025-08-08 15:35:17.94692	COORDE	\N	tim	2222	
+13	5	555.58	IBAN	Demande de versement par IBAN 	waiting	2025-08-08 15:36:15.881282	COORDE	\N	tim	2222	
 \.
 
 
@@ -1704,14 +1724,14 @@ SELECT pg_catalog.setval('public.qr_codes_id_seq', 58, true);
 -- Name: refresh_tokens_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
 
-SELECT pg_catalog.setval('public.refresh_tokens_id_seq', 296, true);
+SELECT pg_catalog.setval('public.refresh_tokens_id_seq', 297, true);
 
 
 --
 -- Name: reservation_slots_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
 
-SELECT pg_catalog.setval('public.reservation_slots_id_seq', 83, true);
+SELECT pg_catalog.setval('public.reservation_slots_id_seq', 84, true);
 
 
 --
@@ -1725,7 +1745,7 @@ SELECT pg_catalog.setval('public.reservations_creneaux_google_calendar_id_seq', 
 -- Name: reservations_individuals_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
 
-SELECT pg_catalog.setval('public.reservations_individuals_id_seq', 106, true);
+SELECT pg_catalog.setval('public.reservations_individuals_id_seq', 107, true);
 
 
 --
@@ -1739,14 +1759,14 @@ SELECT pg_catalog.setval('public.users_id_seq', 60, true);
 -- Name: withdrawal_methods_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
 
-SELECT pg_catalog.setval('public.withdrawal_methods_id_seq', 1, true);
+SELECT pg_catalog.setval('public.withdrawal_methods_id_seq', 21, true);
 
 
 --
 -- Name: withdrawals_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
 
-SELECT pg_catalog.setval('public.withdrawals_id_seq', 1, true);
+SELECT pg_catalog.setval('public.withdrawals_id_seq', 13, true);
 
 
 --
@@ -2138,7 +2158,7 @@ ALTER TABLE ONLY public.users
 --
 
 ALTER TABLE ONLY public.withdrawal_methods
-    ADD CONSTRAINT withdrawal_methods_provider_id_fkey FOREIGN KEY (provider_id) REFERENCES public.providers(id);
+    ADD CONSTRAINT withdrawal_methods_provider_id_fkey FOREIGN KEY (provider_id) REFERENCES public.providers(id) ON DELETE CASCADE;
 
 
 --

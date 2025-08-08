@@ -93,7 +93,7 @@ router.post("/create", async (req, res) => {
 
         Lien du logo : ${logo_url || "aucun"}
 
-        Accède au back-office pour valider.
+        Accède à la BD pour valider.
         `
     });
 

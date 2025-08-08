@@ -61,7 +61,7 @@
     margin-bottom: 50px;
     border-radius: 15px;
     gap: 5px;
-    background-color: var(--greylight);
+    /* background-color: var(--greylight); */
 }
 .PayoutRequest .MySolde p{
     text-align: center;
@@ -69,7 +69,10 @@
 .PayoutRequest .MySolde .SoldePricipal{
     padding: 30px 20px;
     background-color: white;
-    box-shadow: var(--boxshadow);
+    /* box-shadow: var(--boxshadow); */
+    /* border-bottom: 1px solid var(--greysemidark); */
+    box-shadow: 0px 0px 0px 1px rgba(0,0,0,0.05), 0 4px 8px rgba(0, 0, 0, 0.01);
+
     border-radius: 15px;
 }
 
@@ -135,186 +138,6 @@
 .PayoutRequest .VersementMethode>p:first-of-type{
     margin-bottom: 10px;
 }
-
-.PayoutRequest .VersementMethode .AddVersementMethode{
-    gap: 3px;
-    margin-top: 10px;
-    cursor: pointer;
-    width: fit-content;
-}
-.PayoutRequest .VersementMethode .AddVersementMethode>img{
-    height: 10px;
-    width: 10px;
-}
-
-.PayoutRequest .VersementMethode .VersementList{
-    gap: 10px;
-}
-.PayoutRequest .VersementItem{
-    justify-content: space-between;
-    padding: 10px;
-    border-radius: 13px;
-    border: 1px solid var(--greysemidark);
-    transition: all 0.2s ease-in-out;
-    align-items: start;
-    cursor: pointer;
-}
-
-.PayoutRequest .VersementItem>.row{
-    gap: 10px;
-    align-items: start;
-}
-.PayoutRequest .VersementItem.selected{
-    border: 1px solid var(--greydark);
-}
-.PayoutRequest .VersementItem.selected .selectedShow{
-    border: 1px solid var(--greydark);
-}
-.PayoutRequest .VersementItem.selected .selectedShow>img{
-    opacity: 1;
-}
-
-.PayoutRequest .VersementItem .selectedShow{
-    padding: 5px;
-    border-radius: 100px;
-    border: 1px solid var(--greysemidark);
-    display: flex;
-    flex-direction: column;
-    transition: all 0.2s ease-in-out;
-}
-.PayoutRequest .VersementItem .selectedShow>img{
-    height: 10px;
-    width: 10px;
-    opacity: 0;
-    transition: opacity 0.2s ease-in-out;
-}
-.PayoutRequest .VersementItem .ibanNumber{
-    gap: 2px;
-}
-.PayoutRequest .VersementItem .point{
-    height: 5px;
-    width: 5px;
-    border-radius: 100px;
-    background-color: var(--greydark);
-}
-
-
-.PayoutRequest .VersementItem .BankWrapper{
-    background-color: var(--greylight);
-    padding: 5px 10px;
-    border-radius: 7px;
-}
-.PayoutRequest .VersementItem .BankIcon{
-    height: 15px;
-    width: 15px;
-    opacity: 0.3;
-}
-
-.PayoutRequest .VersementItem .Name{
-    color: var(--greymiddledark);
-}
-.PayoutRequest .VersementItem .EditButton{
-    width: fit-content;
-    padding: 5px 10px;
-    /* border: 1px solid var(--greysemidark); */
-    border: none;
-    border-radius: 100px;
-    background-color: var(--greylight);
-    gap: 5px;
-    margin-top: 5px;
-    justify-content: center;
-    align-items: center;
-    cursor: pointer;
-}
-.PayoutRequest .VersementItem .EditButton>img{
-    height: 10px;
-    width: 10px;
-}
-
-
-.PayoutRequest .SkeletonVersement{
-    height: 77.5px;
-    width: 100%;
-    border: 1px solid var(--greysemidark);
-    border-radius: 13px;
-    display: flex;
-    flex-direction: row;
-    justify-content: space-between;
-    align-items: start;
-    padding: 10px;
-}
-
-.PayoutRequest .SkeletonVersement>.row{
-    width: fit-content;
-    gap: 10px;
-    align-items: start;
-}
-
-.PayoutRequest .SkeletonVersement .selectedShow{
-    padding: 5px;
-    border-radius: 100px;
-    border: 1px solid var(--greysemidark);
-    display: flex;
-    flex-direction: column;
-    transition: all 0.2s ease-in-out;
-    height: 22px;
-    width: 22px;
-}
-.PayoutRequest .SkeletonVersement .BankSkeleton{
-    height: 31px;
-    width: 35px;
-    border-radius: 7px;
-    background-color: var(--greylight);
-}
-.PayoutRequest .SkeletonVersement .IBANSkeleton{
-    height: 0.8rem;
-    width: 10rem;
-    border-radius: 4px;
-    background-color: var(--greylight);
-    margin-top: 0px;
-}
-.PayoutRequest .SkeletonVersement .TitulaireSkeleton{
-    height: 0.8rem;
-    width: 4rem;
-    border-radius: 4px;
-    background-color: var(--greylight);
-    margin-top: 4px;
-}
-.PayoutRequest .SkeletonVersement .ModifieSkeleton{
-    height: 22.5px;
-    width: 80px;
-    border-radius: 100px;
-    background-color: var(--greylight);
-    margin-top: 4px;
-}
-
-
-
-.ModifieVersement{
-    margin-bottom: 30px;
-    margin-top: 20px;
-}
-.ModifieVersement>.row{
-    gap: 10px;
-}
-.ModifieVersement input {
-    margin-bottom: 20px;
-}
-.ModifieVersement>p:last-of-type{
-    color: var(--greymiddledark);
-    text-align: center;
-    width: 90%;
-}
-
-
-.ModifieVersement .InputText:focus {
-    outline: none;
-    /* border: 1px solid var(--greysemidark);
-    border-color: var(--greymiddledark);
-    padding: 12px 10px;
-    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1); */
-}
-
 
 
 .PayoutRequest .InfoMessage{

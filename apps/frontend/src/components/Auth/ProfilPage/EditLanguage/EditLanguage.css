@@ -28,8 +28,8 @@
 }
 .EditLanguageContianer .LanguageButtonItem.selected{
     border: 1px solid var(--greymiddledark);
-    box-shadow: 0 0px 10px rgba(0, 0, 0, 0.08);
-    background-color: var(--greylight);
+    /* box-shadow: 0 0px 10px rgba(0, 0, 0, 0.08); */
+    /* background-color: var(--greylight); */
 }
 .EditLanguageContianer .LanguageButtonItem>img{
     width: 40px;

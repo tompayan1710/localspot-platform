@@ -1,45 +1,46 @@
 import "./PaymentMethode.css"
-import { useContext, useState } from "react";
+import { useContext, useEffect, useRef, useState } from "react";
 import { AuthContext } from "../../authContext/authContext";
 
+import editPenIcon from "../../../../assets/images/editPenIcon.png"
+import ValidateProgress from "../../../../assets/images/ValidateProgress.png"
+import warningRed from "../../../../assets/images/warningRed.png"
+import bankicon from "../../../../assets/images/bankicon.png"
+import plus from "../../../../assets/images/plus.png"
+
+import FadeInImage from "../../../Utils/FadeInImage";
+import { useLocation, useNavigate } from "react-router-dom";
+import GoBack from "../../../GoBack/GoBack";
+import EditVersement from "../../../PopUpBottom/EditVersement/EditVersement";
+import VersementList from "../../../PopUpBottom/EditVersement/VersementList/VersementList";
+
 export default function PaymentMethode() {
-  const { authState } = useContext(AuthContext);
-  const [method, setMethod] = useState("paypal");
-  const [details, setDetails] = useState("");
+  const [isOccultView, setIsOccultView] = useState(false);
+  const [versements, setVersements] = useState([]);
+  const [selectedVersement, setselectedVersement] = useState(0);
 
-  const handleSave = async () => {
-    const res = await fetch(`${process.env.REACT_APP_API_URL}/api/payment/payouts/method`, {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({
-        provider_id: authState.user.provider_id,
-        method,
-        details
-      }),
-    });
+  const editPopUp = useRef(null);
+  const deletePopUp = useRef(null);
 
-    const data = await res.json();
-    if (data.success) {
-      alert("✅ Moyen de retrait enregistré !");
-    } else {
-      alert("❌ Erreur : " + data.error);
-    }
-  };
 
   return (
-    <div>
-      <h2 className="t4">Choisir un moyen de retrait</h2>
-      <select value={method} onChange={(e) => setMethod(e.target.value)}>
-        <option value="paypal">PayPal</option>
-        <option value="iban">Virement bancaire (IBAN)</option>
-      </select>
-      <input
-        type="text"
-        placeholder={method === "paypal" ? "Email PayPal" : "IBAN"}
-        value={details}
-        onChange={(e) => setDetails(e.target.value)}
-      />
-      <button onClick={handleSave}>Enregistrer</button>
+    <div className="PaymentMethode">
+      <GoBack nagigation={"/"} text={"retour"}/>
+      <p className="t4">Methode de versements</p>
+      <VersementList setIsOccultView={setIsOccultView} editPopUp={editPopUp} deletePopUp={deletePopUp} selectedVersement={selectedVersement} setselectedVersement={setselectedVersement} versements={versements} setVersements={setVersements} selectionnable={false} origin={"/payment-methode"}/>
+
+
+
+      <div className={`occultView ${isOccultView ? "open" : ""}`}  
+        onClick={(e) => {
+          setIsOccultView(false);
+
+          // Fermer les deux si elles sont ouvertes
+          if (editPopUp.current) editPopUp.current.classList.remove("open");
+          if (deletePopUp.current) deletePopUp.current.classList.remove("open");
+      }}></div>
+
     </div>
+    
   );
 }

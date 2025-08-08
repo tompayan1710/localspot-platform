@@ -1,0 +1,192 @@
+.fixedTop{
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    z-index: 100000;
+}
+
+.VersementList{
+    gap: 10px;
+}
+.VersementItem{
+    justify-content: space-between;
+    padding: 10px;
+    border-radius: 13px;
+    border: 1px solid var(--greysemidark);
+    transition: all 0.2s ease-in-out;
+    align-items: start;
+    cursor: pointer;
+    align-items: stretch;
+}
+
+.VersementItem>.row{
+    gap: 10px;
+    align-items: start;
+}
+.VersementItem.selected{
+    border: 1px solid var(--greydark);
+}
+.VersementItem.selected .selectedShow{
+    border: 1px solid var(--greydark);
+}
+.VersementItem.selected .selectedShow>img{
+    opacity: 1;
+}
+
+.VersementItem .selectedShow{
+    padding: 5px;
+    border-radius: 100px;
+    border: 1px solid var(--greysemidark);
+    display: flex;
+    flex-direction: column;
+    transition: all 0.2s ease-in-out;
+    height: fit-content;
+    width: fit-content;
+}
+.VersementItem .selectedShow>img{
+    height: 10px;
+    width: 10px;
+    opacity: 0;
+    transition: opacity 0.2s ease-in-out;
+}
+.VersementItem .ibanNumber{
+    gap: 2px;
+}
+.VersementItem .point{
+    height: 5px;
+    width: 5px;
+    border-radius: 100px;
+    background-color: var(--greydark);
+}
+
+
+.VersementItem .BankWrapper{
+    background-color: var(--greylight);
+    padding: 5px 10px;
+    border-radius: 7px;
+}
+.VersementItem .BankIcon{
+    height: 15px;
+    width: 15px;
+    opacity: 0.3;
+}
+
+.VersementItem .Name{
+    color: var(--greymiddledark);
+}
+.VersementItem .EditButton{
+    width: fit-content;
+    padding: 5px 10px;
+    /* border: 1px solid var(--greysemidark); */
+    border: none;
+    border-radius: 100px;
+    background-color: var(--greylight);
+    gap: 5px;
+    margin-top: 5px;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+}
+.VersementItem .EditButton>img{
+    height: 10px;
+    width: 10px;
+}
+
+
+
+.AddVersementMethode{
+    gap: 10px;
+    margin-top: 10px;
+    cursor: pointer;
+    width: fit-content;
+    background-color: white;
+    border: none;
+    border: 1px solid var(--greysemidark);
+    border-radius: 7px;
+    padding: 10px;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    width: 100%;
+}
+.AddVersementMethode>img{
+    height: 10px;
+    width: 10px;
+}
+
+
+
+.VersementItem .RightColumn{
+    /* background-color: red; */
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: end;
+}
+.VersementItem .RightColumn .DeleteVersement{
+    background-color: white;
+    border: none;
+    cursor: pointer;
+}
+
+
+
+
+.SkeletonVersement{
+    height: 77.5px;
+    width: 100%;
+    border: 1px solid var(--greysemidark);
+    border-radius: 13px;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: start;
+    padding: 10px;
+}
+
+.SkeletonVersement>.row{
+    width: fit-content;
+    gap: 10px;
+    align-items: start;
+}
+
+.SkeletonVersement .selectedShow{
+    padding: 5px;
+    border-radius: 100px;
+    border: 1px solid var(--greysemidark);
+    display: flex;
+    flex-direction: column;
+    transition: all 0.2s ease-in-out;
+    height: 22px;
+    width: 22px;
+}
+.SkeletonVersement .BankSkeleton{
+    height: 31px;
+    width: 35px;
+    border-radius: 7px;
+    background-color: var(--greylight);
+}
+.SkeletonVersement .IBANSkeleton{
+    height: 0.8rem;
+    width: 10rem;
+    border-radius: 4px;
+    background-color: var(--greylight);
+    margin-top: 0px;
+}
+.SkeletonVersement .TitulaireSkeleton{
+    height: 0.8rem;
+    width: 4rem;
+    border-radius: 4px;
+    background-color: var(--greylight);
+    margin-top: 4px;
+}
+.SkeletonVersement .ModifieSkeleton{
+    height: 22.5px;
+    width: 80px;
+    border-radius: 100px;
+    background-color: var(--greylight);
+    margin-top: 4px;
+}
+
+
+

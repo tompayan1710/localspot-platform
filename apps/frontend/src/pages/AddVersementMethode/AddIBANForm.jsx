@@ -5,20 +5,24 @@ import { useLocation, useNavigate } from "react-router-dom";
 import "./AddVersement.css"
 import { useContext, useEffect, useState } from "react";
 import { useSSR } from "react-i18next";
+import IBANChecker from "./IBANChecker";
+import IBAN from "./IBAN/IBAN";
+import Spinner from "../../components/Spinner/Spinner";
+import TestLoading from "../../components/Utils/TestLoading";
 
 export default function AddIBANForm() {
     const navigate = useNavigate();
     const location = useLocation();
     const { authState } = useContext(AuthContext);
 
-    const { origin, name, last_name } = location.state || {};
+    const { origin, first_name, last_name } = location.state || {};
 
     const [ swift, setSwift ] = useState("");
     const [ iban, setIban ] = useState("");
     const [ loading, setLoading ] = useState("");
-
+    const [ isValidRepeat, setIsValidRepeat ] = useState(true);
     useEffect(() => {
-        console.log(name, last_name);
+        console.log(first_name, last_name);
     }, [])
 
 
@@ -27,7 +31,7 @@ export default function AddIBANForm() {
             const provider_id = authState.user?.provider_id;
             const body = {
                 provider_id,
-                name,
+                first_name,
                 last_name,
                 method: "iban",
                 iban,                
@@ -67,7 +71,9 @@ export default function AddIBANForm() {
         const res = await AddingVersementPayment();
 
         if (res.success) {
-            navigate(origin || "/"); // si origin n’est pas défini, redirige vers "/"
+            setTimeout(() => {
+                navigate(origin || "/"); // si origin n’est pas défini, redirige vers "/"
+            }, 1000)
         } else {
             alert("Erreur lors de l’ajout de la méthode de versement.");
             setLoading(false);
@@ -78,23 +84,11 @@ export default function AddIBANForm() {
 
     return (
         <div className="AddVersement Iban">
-            <GoBack nagigation={"/"} scrollTo={""} text={"retour"} />
+            <GoBack nagigation={-1} scrollTo={""} text={"retour"} />
             <p className="t3 bold">Veuillez saisir vos coordonnées bancaires</p>
             <div className="bodyVersement">
-                <p className="t4 bold">IBAN</p>
-                <input
-                    name="Iban"
-                    className="InputText IBAN-input"
-                    placeholder="Numéro IBAN"
-                    value={iban}
-                    onChange={(e) => {
-                        const cleaned = e.target.value.replace(/\s/g, "").toUpperCase();
-                        setIban(cleaned);
-                    }}
-                />
-                <IBANChecker referenceIban={iban}/>
-                <p className="t6" style={{paddingBottom: "30px"}}>Le numéro IBAN (International Bank Account Number) identifie votre compte bancaire. Il figure sur votre relevé d’identité bancaire (RIB).</p>
-
+            
+                <IBAN iban={iban} setIban={setIban} setIsValidRepeat={setIsValidRepeat} base={true}/>
                 
                 <p className="t4 bold">Code SWIFT/BIC</p>
                 <p className="t6" style={{paddingTop: "2px"}}>Facultatif pour les comptes européens (SEPA)</p>
@@ -110,63 +104,16 @@ export default function AddIBANForm() {
                 />
                 <p className="t6">Le code SWIFT (ou BIC) permet d’identifier votre établissement bancaire à l’international. Il comporte généralement 8 ou 11 caractères alphanumériques.</p>
             </div>
-            <button className="NavigateButton" onClick={handleSubmit}>
-              <p className="t5">Ajouter</p>
+            <button className="NavigateButton" onClick={handleSubmit}
+                disabled={!iban || !isValidRepeat}
+            >
+                {
+                    loading && <Spinner />
+                }
+                <p className={`${loading ? "disappear" : ""} t4`}>Ajouter</p>
             </button>
+
+            {/* <TestLoading setLoading={setLoading}/> */}
         </div>
     )
 }
-
-
-const IBANChecker = ({ referenceIban }) => {
-  const [value, setValue] = useState("");
-
-  const handleChange = (e) => {
-    const input = e.target.value.replace(/\s/g, ""); // enlever les espaces
-    if (input.length <= referenceIban.length) {
-      setValue(input.toUpperCase());
-    }
-  };
-
-  return (
-    <div className="IbanCheckerWrapper">
-      <div className="IbanVisual">
-        {referenceIban.split("").map((refChar, i) => {
-            const userChar = value[i];
-            const isCorrect = userChar === refChar;
-
-            const filledIndexes = [...value].map((c, idx) => c && idx).filter((v) => typeof v === "number");
-            const firstFilled = filledIndexes[0];
-            const lastFilled = filledIndexes[filledIndexes.length - 1];
-
-            const isFirst = i === firstFilled;
-            const isLast = i === lastFilled;
-
-            return (
-                <div
-                key={i}
-                className={`char-block 
-                            ${userChar ? (isCorrect ? "valid" : "invalid") : ""} 
-                            ${isFirst ? "first-letter" : ""} 
-                            ${isLast ? "last-letter" : ""}`}
-                >
-                {userChar ? userChar : ""}
-                </div>
-            );
-        })}
-
-      </div>
-
-      <input
-        type="text"
-        value={value}
-        placeholder="Confirmez le numéro IBAN"
-        onChange={handleChange}
-        className="RealInput"
-        maxLength={referenceIban.length}
-        autoComplete="off"
-        spellCheck={false}
-      />
-    </div>
-  );
-};

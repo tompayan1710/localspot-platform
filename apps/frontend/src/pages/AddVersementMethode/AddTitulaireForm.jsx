@@ -4,18 +4,18 @@ import GoBack from "../../components/GoBack/GoBack";
 import "./AddVersement.css";
 
 export default function AddTitulaireForm() {
-  const [name, setName] = useState("");
+  const [first_name, setFirstName] = useState("");
   const [last_name, setLastName] = useState("");
   const navigate = useNavigate();
   const location = useLocation();
 
 
   const handleContinue = () => {
-    if (name.trim() && last_name.trim()) {
-      const origin = location.state.origin || "/"
+    if (first_name.trim() && last_name.trim()) {
+      const origin = location?.state?.origin || "/"
       navigate("/versement/new/iban", {
         state: {
-          name,
+          first_name,
           last_name,
           origin
         }
@@ -28,7 +28,7 @@ export default function AddTitulaireForm() {
 
   return (
     <div className="AddVersement">
-        <GoBack nagigation={"/payout-request"} scrollTo={""} text={"retour"} />
+        <GoBack nagigation={location?.state?.origin ? location?.state?.origin : "/payout-request"} scrollTo={""} text={"retour"} />
 
         <p className="t3 bold">Indiquez le nom du titulaire du compte</p>
 
@@ -40,8 +40,8 @@ export default function AddTitulaireForm() {
                 name="name"
                 className="InputText"
                 placeholder="Nom"
-                value={name}
-                onChange={(e) => setName(e.target.value.toUpperCase())}
+                value={last_name}
+                onChange={(e) => setLastName(e.target.value.toUpperCase())}
                 // onChange={(e) => setName(e.target.value)}
                 />
 
@@ -49,14 +49,14 @@ export default function AddTitulaireForm() {
                 name="last_name"
                 className="InputText"
                 placeholder="Prénom"
-                value={last_name}
-                onChange={(e) => setLastName(e.target.value)}
+                value={first_name}
+                onChange={(e) => setFirstName(e.target.value)}
                 />
             </div>
         </div>
         <p className="t6">Le nom indiqué sera celui rattaché au payement effectué via cette méthode de versemment.</p>
         <button className="NavigateButton" onClick={handleContinue}>
-          <p className="t5">Continuer</p>
+          <p className="t4">Continuer</p>
         </button>
     </div>
   );

@@ -1,7 +1,10 @@
 import "./MyEarnings.css"
-import React, { useContext, useEffect, useState } from "react";
+import React, { useContext, useEffect, useRef, useState } from "react";
 import { AuthContext } from "../../components/Auth/authContext/authContext";
 
+import bankicon from "../../assets/images/bankicon.png";
+import editPenIcon from "../../assets/images/editPenIcon.png";
+import ValidateProgress from "../../assets/images/ValidateProgress.png";
 import plus from "../../assets/images/plus.png";
 import ArrowDownRetired from "../../assets/images/ArrowDownRetired.png";
 import ArrowUpRetired from "../../assets/images/ArrowUpRetired.png";
@@ -9,6 +12,8 @@ import MonthlyRevenueChart from "./MonthlyRevenueChart/MonthlyRevenueChart";
 import { useLocation, useNavigate } from "react-router-dom";
 import WhiteButton from "../../components/Buttons/WhiteButton/WhiteButton";
 import warningRed from "../../assets/images/warningRed.png"
+import FadeInImage from "../../components/Utils/FadeInImage";
+import EditVersement from "../../components/PopUpBottom/EditVersement/EditVersement";
 
 export default function MyEarnings() {
   const { authState } = useContext(AuthContext);
@@ -22,6 +27,21 @@ export default function MyEarnings() {
   const [solde, setSolde] = useState(0);
   const [alreadyPaid, setAlreadyPaid] = useState(0);
   const [waiting, setWaiting] = useState(0);
+  const [selectedVersement, setselectedVersement] = useState(0);
+
+
+  const [selectedModifie, setSelectedModifie] = useState(0);
+  const [modifiename, setModifieName] = useState("");  
+  const [modifielastname, setModifieLastName] = useState("");  
+  const [modifieIban, setModifieIban] = useState("");  
+  const [modifieSwift, setModifieSwift] = useState("");  
+  const [loadingModifie, setLoadingModifie] = useState(false);  
+  const [loadingRequest, setLoadingRequest] = useState(false);  
+    
+  const [isOccultView, setIsOccultView] = useState(false);
+  const [isWithdrawalMethod, setIsWithdrawalMethod] = useState([]);
+
+  const editPopUp = useRef(null);
 
   useEffect(() => {
     if (location.state?.scrollTo) {
@@ -35,29 +55,41 @@ export default function MyEarnings() {
   }, [location]);
 
 
-  const getTransactionHistory = async () => {
-    console.log("Récupération de l'historique du provider : ", authState.user?.provider_id);
-    try {
-        // ✅ Requête pour obtenir un nouveau token (Refresh Token doit être dans les cookies)
-        const response = await fetch(`${process.env.REACT_APP_API_URL}/api/payment/transactions/getall-by-provider?provider_id=${authState.user?.provider_id}`, {
-            method: "GET",
-        });
-
-        if (response.ok) {
-            const data = await response.json();
-            console.log(data);
-            setTransactions(data.history || []); // ✅ on met uniquement le tableau
-            return data;
-        } else {
-            console.error("❌ Échec Récupération des earnings et des payouts du provider");
-            return { success: false };
-
+    const getTransactionHistory = async () => {
+        const provider_id = authState.user?.provider_id;
+         
+        if(!provider_id){
+            return
         }
-    } catch (error) {
-        console.error("❌ Erreur Récupération des earnings et des payouts du provider : ", error);
-        return { success: false };
-    }
-  };
+        
+        console.log("Récupération de l'historique du provider : ", authState.user?.provider_id);
+
+        try {
+            // ✅ Requête pour obtenir un nouveau token (Refresh Token doit être dans les cookies)
+            const response = await fetch(`${process.env.REACT_APP_API_URL}/api/payment/transactions/getall-by-provider?provider_id=${authState.user?.provider_id}`, {
+                method: "GET",
+            });
+
+            if (response.ok) {
+                const data = await response.json();
+                console.log(data);
+                setTransactions(data.history || []); // ✅ on met uniquement le tableau
+                setTotalRevenue(data.total_revenue || 0);
+                setSolde(data.solde || 0);
+                setWaiting(data.waiting || 0)
+                setAlreadyPaid(data.already_paid || 0)
+                return data;
+            } else {
+                console.error("❌ Échec Récupération des earnings et des payouts du provider");
+                return { success: false };
+
+            }
+        } catch (error) {
+            console.error("❌ Erreur Récupération des earnings et des payouts du provider : ", error);
+            return { success: false };
+        }
+    };
+    
 
   function groupTransactionsByMonth(transactions) {
     const groups = {};
@@ -104,6 +136,24 @@ export default function MyEarnings() {
   }
 
 
+  // useEffect(() => {
+  //   if (authState.user?.provider_id) {
+  //     getTransactionHistory().then(data => {
+  //       if (data.success) {
+  //         const history = data.history || [];
+  //         setTransactions(history);
+
+          
+  //       }
+  //     });
+  //     setTimeout(() => {
+  //       setLoading(false);
+  //     }, 500)
+  //   }
+
+    
+  // }, [authState]);
+
   useEffect(() => {
     if (authState.user?.provider_id) {
       getTransactionHistory().then(data => {
@@ -121,11 +171,50 @@ export default function MyEarnings() {
       setTimeout(() => {
         setLoading(false);
       }, 500)
+
+      fetchIsWithdrawalMethod();
     }
-  }, [authState]);
+  },[ authState])
+
+  // useEffect(() => {
+  //   fetchVersements();
+  //   getTransactionHistory();
+  // }, [authState]);
+
+    const fetchIsWithdrawalMethod = async () => {
+        try {
+        const provider_id = authState.user?.provider_id;
+         
+        if(!provider_id){
+            return
+        }
+         
+        const response = await fetch(
+            `${process.env.REACT_APP_API_URL}/api/payment/payouts/is-withdrawal_method?provider_id=${provider_id}`, {
+                method: "GET"
+            }
+        );
+
+        if (!response.ok) throw new Error("Erreur serveur");
+
+        const data = await response.json();
+        console.error(data);
+
+        if (data.success) {
+          setIsWithdrawalMethod(data.is_withdrawal_method);
+        } else {
+          alert("Erreur lors de la récupération des méthodes.");
+        }
+        } catch (err) {
+        console.error("❌ Erreur fetchVersements:", err);
+        } finally {
+        setTimeout(() => {
+            setLoading(false);
+        }, 500)
+        }
+    };
 
 
-  
   return (
     <div className="MyEarnings">
       <p className="t32">Paiements</p>
@@ -138,42 +227,35 @@ export default function MyEarnings() {
         loading={loading}
       />
 {/* const limitedHistory = fullHistory.slice(0, 9); */}
-      <button className="RetiredGainButton" onClick={() => navigate("/payout-request")}>
-        <img src={ArrowDownRetired} alt="Arrow down retired"/>
-        <p className="t5">Retirer mes gains</p>
-      </button>
-      {/* À l’issue du virement, un document justificatif vous sera adressé par e-mail, vous permettant de conserver une preuve de l’opération." */}
-      <p className="t6">À l’issue du virement, une attestation de virement vous sera envoyer par e-mail.</p>
-      <div className="hline15"></div>
-      <p className="t4 ">Recevoir mes paiements</p>
-      <div className="NoVersementMethode">
+      {/* <div className="NoVersementMethode">
         <img src={warningRed} alt="warning red icon"/>
         <div className="column">
           <p className="t5">Ajouter un mode de versement</p>
           <p className="t6">Ajouter mode de versement vous permet de recevoir vos gains.</p>
-          {/* <button>
-            <p className="t6">Configurer les versements</p>
-          </button> */}
         </div>
-      </div>
-      <button className="AddVersementMethode row" onClick={() => {
-          navigate("/versement/new/titulaire", {
-              state: {
-                origin: "/payout-request"
-              }
-            })
-          }}>
-            <img src={plus} alt="plus icon"/>
-            <p className="t6">Ajouter un mode de versement</p>
-        </button>
-
-      {/* <div className="VersementContainer column">
-        <p className="t4 bold">Recevoir mes paiements</p>
-        <p className="t6">Afin de recevoir vos gains, merci de renseigner un mode de versement valide.</p>
-        <button className="AddVersementButton">
-          <p className="t6">Configurer un compte de versement</p>
-        </button>
       </div> */}
+
+
+      {
+        isWithdrawalMethod ?
+        <>
+        <button className="RetiredGainButton" onClick={() => navigate("/payout-request")}>
+          <img src={ArrowDownRetired} alt="Arrow down retired"/>
+          <p className="t5">Retirer mes gains</p>
+        </button>
+        <p className="t6">À l’issue du virement, une attestation de virement vous sera envoyer par e-mail.</p>
+        </>
+        : 
+        <div className="VersementContainer column">
+          <p className="t4 bold">Recevoir mes paiements</p>
+          <p className="t6">Afin de recevoir vos gains, merci de renseigner un mode de versement valide.</p>
+          <button className="AddVersementButton" onClick={() => {
+            navigate("/versement/new/titulaire")
+          }}>
+            <p className="t6">Configurer un compte de versement</p>
+          </button>
+        </div>
+      }
       <div className="hline15"></div>
       <div className="Transactions column" id={"Transactions"}>
         <div className="row">
@@ -254,6 +336,13 @@ export default function MyEarnings() {
       <WhiteButton text="Voir plus" onClick={() => {navigate("/all-history-transactions")}} />
       }
       </div>
+
+
+      
+      <div className={`occultView ${isOccultView ? "open" : ""}`}  
+        onClick={(e) => {
+          editPopUp.current.classList.remove("open");
+      }}></div>
     </div>
   );
 }

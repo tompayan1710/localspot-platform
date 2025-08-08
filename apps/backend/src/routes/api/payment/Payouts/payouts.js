@@ -4,24 +4,54 @@
 const express = require("express");
 const router = express.Router();
 const pool = require("../../../../db/index");
+const { sendAdminAlertEmail } = require("../../../../utils/email");
+
 
 router.post("/request", async (req, res) => {
-  const { provider_id, amount, method, details, iban, swift, name, last_name} = req.body;
+  const { provider_id, amount, method, details, iban, swift, first_name, last_name} = req.body;
+
+  console.log("/requestion ENREGISTREMENT d'un retrait")
+  console.log(provider_id, amount, method, details, iban, swift, first_name, last_name);
 
   const paypal_email = "";
-  if (!provider_id || !amount || !method || !details) {
+  if (!provider_id || !amount || !method || !details || !first_name || !last_name) {
+    console.log("Champs manquants ")
     return res.status(400).json({ error: "Champs manquants" });
   }
-
-  console.log(provider_id, amount, method, details, iban, swift, name, last_name);
 
   try {
     await pool.query(
       `INSERT INTO withdrawals 
-        (provider_id, amount, method, details, status, iban, swift, name, last_name, paypal_email)
+        (provider_id, amount, method, details, status, iban, swift, first_name, last_name, paypal_email)
       VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10)`,
-      [provider_id, amount, method, details, "waiting", iban, swift, name, last_name, paypal_email]
+      [provider_id, amount, method, details, "waiting", iban, swift, first_name, last_name, paypal_email]
     );
+
+
+    await sendAdminAlertEmail({
+      subject: "🆕 Nouvelle demande de virement",
+      to: process.env.ADMIN_EMAIL,
+      message: `
+        NOUVELLE DEMANDE DE RETRAIT :
+ :
+
+        Nom : ${last_name}
+        Prénom : ${first_name}
+        provider_id : ${provider_id}
+        montant: ${amount} €
+
+        Détails : ${details}
+        methode : ${method}
+
+        IBAN : ${iban ? iban : "non-renseigné"}
+        SWIFT : ${swift ? swift : "non-renseigné"}
+
+        paypal_email : ${paypal_email ? paypal_email : "non-renseigné"}
+
+        ➡️ Va dans la BD pour traiter cette demande.
+        `
+    });
+
 
     res.json({ success: true, message: "Demande de retrait enregistrée" });
   } catch (err) {
@@ -83,13 +113,13 @@ router.post("/getall-earnings", async (req, res) => {
 
 
 router.post("/add-versement", async (req, res) => {
-  const { provider_id, name, last_name, method, iban, swift } = req.body;
+  const { provider_id, first_name, last_name, method, iban, swift } = req.body;
 
-  if (!provider_id || !name || !last_name || !iban) {
+  if (!provider_id || !first_name || !last_name || !iban) {
     return res.status(400).json({ error: "Données manquantes" });
   }
 
-  console.log(provider_id, name, last_name, method, iban, swift);
+  console.log(provider_id, first_name, last_name, method, iban, swift);
 
   try {
     // (Optionnel) supprimer les anciennes méthodes du même type
@@ -100,9 +130,9 @@ router.post("/add-versement", async (req, res) => {
 
     // Insère la nouvelle méthode de retrait
     await pool.query(
-      `INSERT INTO withdrawal_methods (provider_id, method, iban, swift, name, last_name)
+      `INSERT INTO withdrawal_methods (provider_id, method, iban, swift, first_name, last_name)
        VALUES ($1, $2, $3, $4, $5, $6) `,
-      [provider_id, method, iban, swift || null, name, last_name]
+      [provider_id, method, iban, swift || null, first_name, last_name]
     );
 
     res.status(200).json({ success: true });
@@ -130,6 +160,29 @@ router.get("/getall-withdrawal_methods", async (req, res) => {
     res.status(500).json({ error: "Erreur serveur" });
   }
 });
+
+
+router.get("/is-withdrawal_method", async (req, res) => {
+  const { provider_id } = req.query;
+  console.log("/is-withdrawal_method - Provider ID reçu :", provider_id);
+
+  try {
+    const withdrawal_method = await pool.query(
+      `SELECT * FROM withdrawal_methods WHERE provider_id = $1 LIMIT 1`,
+      [provider_id]
+    );
+
+    res.status(200).json({
+      success: true,
+      is_withdrawal_method: withdrawal_method.rowCount > 0
+    });
+
+  } catch (err) {
+    console.error("❌ Erreur lors du test s'il y a au moins une méthode de versement enregistrée :", err.message);
+    res.status(500).json({ error: "Erreur serveur" });
+  }
+});
+
 
 
 
@@ -174,6 +227,37 @@ router.patch("/update-versement", async (req, res) => {
     res.status(500).json({ error: "Erreur serveur" });
   }
 });
+
+
+
+
+
+
+// DELETE /api/payment/payouts/delete-versement
+router.delete("/delete-versement", async (req, res) => {
+  const { provider_id, iban } = req.body;
+
+  if (!provider_id || !iban) {
+    return res.status(400).json({ success: false, error: "Champs manquants" });
+  }
+
+  try {
+    const result = await pool.query(
+      `DELETE FROM withdrawal_methods WHERE provider_id = $1 AND iban = $2`,
+      [provider_id, iban]
+    );
+
+    if (result.rowCount === 0) {
+      return res.status(404).json({ success: false, error: "Méthode introuvable" });
+    }
+
+    return res.json({ success: true, message: "Méthode supprimée" });
+  } catch (err) {
+    console.error("❌ Erreur lors de la suppression :", err);
+    return res.status(500).json({ success: false, error: "Erreur serveur" });
+  }
+});
+
 
 
 

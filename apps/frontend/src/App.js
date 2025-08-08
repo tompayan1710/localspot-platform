@@ -27,7 +27,7 @@ BEGIN
 END $$;
 */
 
-//Pour envoyer depuis cmd : cd C:\Users\tompa\Documents\LocalSpot\localspot-platform
+//Pour envoyer depuis cmd : c
 // psql "postgresql://localspot_db_user:L9F2Y94DgXgIJmseoNngbbo0Hajqidlr@dpg-d058idc9c44c738g2kt0-a.oregon-postgres.render.com/localspot_db" < viarte_backup.sql
 
 

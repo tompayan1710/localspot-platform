@@ -15,6 +15,8 @@ import PopUpBottom from "../../../components/PopUpBottom/PopUpBottom";
 import CancelConfirmButton from "../../../components/PopUpBottom/CancelConfirmButton/CancelConfirmButton";
 import FadeInImage from "../../../components/Utils/FadeInImage";
 import Spinner from "../../../components/Spinner/Spinner";
+import EditVersement from "../../../components/PopUpBottom/EditVersement/EditVersement";
+import VersementList from "../../../components/PopUpBottom/EditVersement/VersementList/VersementList";
 
 
 export default function PayoutRequest(){
@@ -33,17 +35,16 @@ export default function PayoutRequest(){
     const [alreadyPaid, setAlreadyPaid] = useState(0);
     const [waiting, setWaiting] = useState(0);
 
-    const [selectedModifie, setSelectedModifie] = useState(0);
-    const [modifiename, setModifieName] = useState("");  
-    const [modifielastname, setModifieLastName] = useState("");  
-    const [modifieIban, setModifieIban] = useState("");  
-    const [modifieSwift, setModifieSwift] = useState("");  
-    const [loadingModifie, setLoadingModifie] = useState(false);  
+
     const [loadingRequest, setLoadingRequest] = useState(false);  
+
+    const [errorMessage, setErrorMessage] = useState("");  
+
 
     const numberPickerRef = useRef(null);
     const editPopUp = useRef(null);
-    
+    const deletePopUp = useRef(null);
+
     const [isOccultView, setIsOccultView] = useState(false);
 
     useEffect(() => {
@@ -109,40 +110,8 @@ export default function PayoutRequest(){
     };
 
 
-    const fetchVersements = async () => {
-        try {
-        const provider_id = authState.user?.provider_id;
-         
-        if(!provider_id){
-            return
-        }
-         
-        const response = await fetch(
-            `${process.env.REACT_APP_API_URL}/api/payment/payouts/getall-withdrawal_methods?provider_id=${provider_id}`, {
-                method: "GET"
-            }
-        );
-
-        if (!response.ok) throw new Error("Erreur serveur");
-
-        const data = await response.json();
-
-        if (data.success) {
-            setVersements(data.versements);
-        } else {
-            alert("Erreur lors de la récupération des méthodes.");
-        }
-        } catch (err) {
-        console.error("❌ Erreur fetchVersements:", err);
-        } finally {
-        setTimeout(() => {
-            setLoading(false);
-        }, 500)
-        }
-    };
 
     useEffect(() => {
-        fetchVersements();
         getTransactionHistory();
     }, [authState]);
     
@@ -153,69 +122,6 @@ export default function PayoutRequest(){
 
 
 
-    const handleUpdateVersement = async () => {
-        setLoadingModifie(true);
-        const provider_id = authState.user?.provider_id;
-        const current = versements[selectedModifie];
-        if (!provider_id || !current) return;
-
-        const updates = {};
-
-        if (modifielastname && modifielastname !== current.last_name)
-            updates.last_name = modifielastname;
-
-        if (modifiename && modifiename !== current.name)
-            updates.name = modifiename;
-
-        if (modifieIban && modifieIban !== current.iban)
-            updates.iban = modifieIban;
-
-        if (modifieSwift && modifieSwift !== current.swift)
-            updates.swift = modifieSwift;
-
-        if (Object.keys(updates).length === 0) {
-            alert("Aucune modification détectée.");
-            return;
-        }
-
-        try {
-            const response = await fetch(`${process.env.REACT_APP_API_URL}/api/payment/payouts/update-versement`, {
-            method: "PATCH",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({
-                provider_id,
-                old_iban: current.iban,
-                updates
-            })
-            });
-
-            const data = await response.json();
-
-            if (data.success) { // refresh
-            setTimeout(() => {
-                setLoadingModifie(false);
-                editPopUp.current.classList.remove("open");
-                setIsOccultView(false);
-
-                setTimeout(() => {
-                    setModifieIban("");
-                    setModifieSwift("");
-                    setModifieLastName("");
-                    setModifieName("");
-                    fetchVersements();
-                }, 1000)
-            }, 500)
-            } else {
-            alert(data.error || "Erreur inconnue");
-            }
-
-        } catch (err) {
-            console.error("❌ Erreur lors de la requête PATCH :", err);
-            alert("Erreur serveur");
-        }
-    };
-
-
     const submitRequestWithdrawals = async () => {
         setLoadingRequest(true)
         try {
@@ -223,11 +129,11 @@ export default function PayoutRequest(){
             const body = {
                 provider_id: authState.user?.provider_id,
                 amount,
-                method: "iban",
+                method: "IBAN",
                 details: "Demande de versement par IBAN ",
                 iban: versements[selectedVersement].iban,
                 swift: versements[selectedVersement].swift,
-                name: versements[selectedVersement].name,
+                first_name: versements[selectedVersement].first_name,
                 last_name: versements[selectedVersement].last_name
             }
 
@@ -243,7 +149,7 @@ export default function PayoutRequest(){
                 const data = await response.json();
                 console.log("DEMANDE ENREGISTRE !");
                 setTimeout(()=> {
-                    navigate("/");
+                    navigate("/my-earnings");
                 }, 1500)
                 return data;
             } else {
@@ -284,87 +190,13 @@ export default function PayoutRequest(){
             <div className={`bodyPayoutRequest column ${isOccultView ? "noScroll" : ""}`}>
                 <div className="VersementMethode">
                     <p className="t5">Mode de versement</p>
-                    <div className="VersementList column">
-                        {   loading ?
-                            <>
-                            <div className="SkeletonVersement row">
-                                <div className="row">
-                                    <div className="BankSkeleton"></div>
-                                    <div className="column">
-                                        <div className="IBANSkeleton"></div>
-                                        <div className="TitulaireSkeleton"></div>
-                                        <div className="ModifieSkeleton"></div>
-                                    </div>
-                                </div>
-                                <div className="selectedShow"></div>
-                            </div>
-                            </>
-                            :
-                            (
-                                versements.length ? versements.map((versement, index) => {
-                                    return(
-                                        <div className={`VersementItem row ${selectedVersement === index ? "selected" : ""}`} key={index} onClick={() => setselectedVersement(index)}>
-                                            <div className="row">
-                                                <div className="BankWrapper">
-                                                    <FadeInImage className="BankIcon" src={bankicon} alt="bank icon"/>
-                                                </div>
-                                                <div className="column">
-                                                    <div className="ibanNumber row">
-                                                        {
-                                                            Array.from({length: versement.iban.length-4}).map((_, i) => {
-                                                                return (
-                                                                    <div key={i} className="point"></div>
-                                                                )
-                                                            })
-                                                        }
-                                                        <p className="t6">{versement.iban.slice(-4)}</p>
-                                                    </div>
-                                                    <p className="t6 Name">{versement.last_name} {versement.name}</p>
-                                                    <button className="EditButton row" onClick={() => {
-                                                        editPopUp.current.classList.add("open")
-                                                        setSelectedModifie(index);
-                                                        setIsOccultView(true);
-                                                    }}>
-                                                        <FadeInImage src={editPenIcon} alt="edit pen icon"/>
-                                                        <p className="t6">Modifier</p>
-                                                    </button>
-                                                </div>
-                                            </div>
-                                            <div className="selectedShow">
-                                                <img src={ValidateProgress} alt={"validate icon"}/>
-                                            </div>
-                                        </div>
-                                    )
-                                }) 
-                                : 
-                                <div className="NoVersementMethode">
-                                    <img src={warningRed} alt="warning red icon"/>
-                                    <div className="column">
-                                        <p className="t5 bold">Ajouter un mode de versement</p>
-                                        <p className="t6">Ajouter mode de versement vous permet de recevoir vos gains.</p>
-                                        {/* <button>
-                                            <p className="t6">Configurer les versements</p>
-                                        </button> */}
-                                    </div>
-                                </div>
-                            )
-                        }
-                    </div>
+                    <VersementList setIsOccultView={setIsOccultView} editPopUp={editPopUp} deletePopUp={deletePopUp} selectedVersement={selectedVersement} setselectedVersement={setselectedVersement} versements={versements} setVersements={setVersements} selectionnable={true} origin={"/payout-request"}/>
+                
                     {/* <button onClick={() => {
                         setLoading((prev) => !prev)
                     }}>
                         <p className="t4">HANGLE</p>
                     </button> */}
-                    <div className="AddVersementMethode row" onClick={() => {
-                        navigate("/versement/new/titulaire", {
-                            state: {
-                                origin: "/payout-request"
-                            }
-                        })
-                    }}>
-                        <img src={plus} alt="plus icon"/>
-                        <p className="t6">Ajouter un mode de versement</p>
-                    </div>
 
                 </div>
 
@@ -380,17 +212,19 @@ export default function PayoutRequest(){
                         </button>
                         <button className={`MontantItem ${selectedAmount === 1 ? "selected" : ""}`}
                             onClick={() => {
-                                setAmount(500.00)
+                                setAmount(300.00)
                                 setselectedAmout(1)
                                 }}>
-                            <p className="t5">500€</p>
+                            <p className="t5">300€</p>
                         </button>
                         <button className={`MontantItem ${selectedAmount === 2 ? "selected" : ""}`}
                             onClick={() => {
-                                setAmount(solde)
+                                // setAmount(solde)
+                                setAmount(1000.000)
                                 setselectedAmout(2)
                                 }}>
-                            <p className="t5">Tout&nbsp;retirer</p>
+                            {/* <p className="t5">Tout&nbsp;retirer</p> */}
+                            <p className="t5">1000€</p>
                         </button>
                         <button
                             className={`MontantItem ${selectedAmount === 3 ? "selected" : ""}`}
@@ -424,9 +258,17 @@ export default function PayoutRequest(){
                         <p className="t5">1 à 2 jours ouvrés</p>
                     </div>
                 </div> */}
-                <p className="t6 InfoMessage">
-                    Le virement sera effectué dans un délai de 1 à 3 jours ouvrés.
-                </p>
+                {
+                    errorMessage ?
+                    <p className="t6 InfoMessage redColor">
+                        Pour des raisons de sécurité, le montant maximum autorisé par virement est de 3000 €.
+                    </p>
+                    :
+                    <p className="t6 InfoMessage">
+                        Pour des raisons de sécurité, le montant maximum autorisé par virement est de 3000 €.
+                    </p>
+                }
+            
             </div>
 
             <div className="SendingNav">
@@ -453,84 +295,25 @@ export default function PayoutRequest(){
             <PopUpNumber 
                 ref={numberPickerRef} 
                 title={"Montant personnalisé"}
-                smalltext={`Montant maximum disponible : ${formatEuro(solde)} €`}
-                max={solde}
+                // smalltext={`Montant maximum disponible : ${formatEuro(solde)} €`}
+                // max={solde}
+                smalltext={`Montant maximum disponible : 3000,00€`}
+                min={1.00}
+                errorMin={`Le montant ne peut pas dépasser 1.00 €`}
+                max={3000.00}
+                errorMax={`Le montant ne peut pas dépasser 3000.00 €`}
                 onClose={closeNumberPicker} 
                 setReturnValue={setAmount}
             />
 
-
-            <PopUpBottom 
-                onClose={() => {
-                    editPopUp.current.classList.remove("open");
-                    setIsOccultView(false);
-                }}
-                isHeader={true}
-                ref={editPopUp}
-            >
-                <>
-                <div className="ModifieVersement">
-                    {/* <p className="t5">{versements[selectedModifie]?.iban}</p>
-                    <p className="t5">{versements[selectedModifie]?.last_name}</p> */}
-                    <p className="t4 bold">Titulaire du compte</p>
-                    <div className="row">
-                        <input
-                        name="last_name"
-                        className="InputText"
-                        placeholder={`${versements[selectedModifie]?.name || "Nom"}`}
-                        value={modifiename}
-                        onChange={(e) => setModifieName(e.target.value.toUpperCase())}
-                        />
-
-                        <input
-                        name="name"
-                        className="InputText"
-                        placeholder={`${versements[selectedModifie]?.last_name || "Prénom"}`}
-                        value={modifielastname}
-                        onChange={(e) => setModifieLastName(e.target.value)}
-                        />
-                    </div>
-                    {/* <div className="hline"></div> */}
-                    <p className="t4 bold">IBAN</p>
-                    <input
-                        name="Iban"
-                        className="InputText IBAN-input"
-                        placeholder={`${versements[selectedModifie]?.iban || "Numéro IBAN"}`}
-                        value={modifieIban}
-                        onChange={(e) => {
-                            const cleaned = e.target.value.replace(/\s/g, "").toUpperCase();
-                            setModifieIban(cleaned);
-                        }}
-                    />
-
-                    <p className="t4 bold">Code SWIFT/BIC</p>
-                    <p className="t6" style={{paddingTop: "2px"}}>Facultatif pour les comptes européens (SEPA)</p>
-                    <input
-                        name="Swift"
-                        className="InputText"
-                        placeholder={`${versements[selectedModifie]?.swift || "Code SWIFT/BIC"}`}
-                        value={modifieSwift}
-                        onChange={(e) => {
-                            const cleaned = e.target.value.replace(/\s/g, "").toUpperCase();
-                            setModifieSwift(cleaned);
-                        }}
-                    />
-                    <p className="t6">
-                        Assurez-vous que les informations saisies sont exactes avant de valider.
-                    </p>
-
-                </div>
-                <CancelConfirmButton cancelText={"Annuler"} laoding={loadingModifie} confirmText={"Modifer"} onCancel={() => {
-                    editPopUp.current.classList.remove("open");
-                }} onConfirm={handleUpdateVersement}/>
-                </>
-          </PopUpBottom>
-            
-
             <div className={`occultView ${isOccultView ? "open" : ""}`}  
             onClick={(e) => {
                 closeNumberPicker();
-                editPopUp.current.classList.remove("open");
+                setIsOccultView(false);
+
+                // Fermer les deux si elles sont ouvertes
+                if (editPopUp.current) editPopUp.current.classList.remove("open");
+                if (deletePopUp.current) deletePopUp.current.classList.remove("open");
             }}></div>
         </div>
     )
