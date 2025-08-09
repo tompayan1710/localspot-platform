@@ -49,12 +49,13 @@
 
 .HomeListPrestationItem{
   border-radius: 32px;
-  border: 1px solid var(--greysemidark);
+  /* border: 1px solid var(--greysemidark); */
   min-height: 250px; 
   height : 250px;
   
-  padding: 3px;
-  box-shadow: 0 2px 20px rgba(0, 0, 0, 0.07); 
+  padding: 4px;
+  /* box-shadow: 0 2px 20px rgba(0, 0, 0, 0.07);  */
+  box-shadow: var(--boxshadow);
   cursor: pointer;
   display: flex;
   flex-direction: column;

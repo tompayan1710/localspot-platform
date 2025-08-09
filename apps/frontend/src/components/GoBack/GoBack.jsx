@@ -2,7 +2,7 @@ import { useNavigate } from "react-router-dom";
 import "./GoBack.css";
 import arrowLeft from "../../assets/images/arrowLeft.png"
 
-export default function GoBack({nagigation, scrollTo, text, state = {}, conditionFn = () => true, refresh}){
+export default function GoBack({nagigation, scrollTo, text, state = {}, conditionFn = () => true, refresh, classToAdd="", style={}}){
     const navigate = useNavigate();
 
     const handleClick = () => {
@@ -26,7 +26,7 @@ export default function GoBack({nagigation, scrollTo, text, state = {}, conditio
              handleClick();
         }}>
             <img src={arrowLeft} alt="arrow left"/>
-            <p className="t6">{text}</p>
+            <p className={`${classToAdd ? classToAdd : "t6"}`} style={style}>{text}</p>
         </button>
     );
 }

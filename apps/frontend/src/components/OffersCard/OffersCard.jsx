@@ -16,7 +16,7 @@ export default function OffersCard({loading, offers, vertical=false}){
                   // const km = getDistanceInKm(hote.lat, hote.lng, offer.lat, offer.lng);
                   // const estimatedWalkTimeMinutes = km * 15; // 4 km/h ≈ 15 min/km
                   return(
-                    <div key={index} className={`HomeListPrestationItem ${!vertical && offers.length> 2 && index === offers.length - 1 ? "flou" : ""}  ${offer.isToday && "Today1"}`} 
+                    <div key={index} className={`HomeListPrestationItem ${!vertical && offers.length> 2 && index === offers.length - 1 ? "flou" : ""}  ${offer.isToday ? "Today1" : ""}`} 
                     onClick={() => {
                         navigate(`/offer-page/${offer.slug}`, {
                         state: {

@@ -7,6 +7,7 @@ import ArrowDownRetired from "../../../assets/images/ArrowDownRetired.png";
 import ArrowUpRetired from "../../../assets/images/ArrowUpRetired.png";
 import { useNavigate } from "react-router-dom";
 import GoBack from "../../../components/GoBack/GoBack";
+import WhiteButton from "../../../components/Buttons/WhiteButton/WhiteButton";
 
 export default function AllHistoryTransaction(){
       const { authState } = useContext(AuthContext);
@@ -77,7 +78,7 @@ export default function AllHistoryTransaction(){
             <div className="Transactions column">
                 {
                 !loading ?
-                
+                transactions.length > 0 ?
                 Object.entries(groupTransactionsByMonth(transactions)).map(([month, items]) => (
                     <div className="MonthSeparation column" key={month} style={{ marginTop: "5px", marginBottom: "8px" }}>
                     <p className="t5" style={{ marginBottom: "6px" }}>{month.charAt(0).toUpperCase() + month.slice(1)}</p>
@@ -117,7 +118,17 @@ export default function AllHistoryTransaction(){
                     })}
                     </div>
                 ))
-                
+                :
+                    <div className="no-transactions column">
+                        {/* <img src={NoTransactions} alt="no transactions"/> */}
+                        <p className="t5 bold">Actuellement aucune transactions</p>
+                        <p className="t6">
+                          Votre historique de transaction sera visible ici dès qu’une transaction aura été effectuée.
+                        </p>
+                        <WhiteButton text={"Voir mes annonces"} onClick={() => {
+                          navigate("/annonces")
+                        }}/>
+                    </div>
                 : 
                 Array.from({ length: 5 }).map((_, i) => (
                 <React.Fragment key={i}>

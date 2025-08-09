@@ -337,14 +337,14 @@ export default function Calendar(){
                                 //         origin: "/today"
                                 //     }
                                 // });
-                                navigate("/annonces", {
+                                navigate("/today", {
                                     state: {
                                         activeTab: "annonces"
                                     }
                                 })
                             }}>
                                 {/* <p className="t5">Mettre en avant mes offres</p> */}
-                                <p className="t5">Voir mes annonces</p>
+                                <p className="t5">Aujourd'hui</p>
                             </button>
                         </div>
                     )

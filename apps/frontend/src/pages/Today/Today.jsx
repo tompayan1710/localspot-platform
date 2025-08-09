@@ -336,14 +336,14 @@ export default function Today() {
                         //         origin: "/today"
                         //     }
                         // });
-                        navigate("/annonces", {
+                        navigate("/my-earnings", {
                             state: {
                                 activeTab: "annonces"
                             }
                         })
                     }}>
                         {/* <p className="t5">Mettre en avant mes offres</p> */}
-                        <p className="t5">Voir mes annonces</p>
+                        <p className="t5">Voir mes revenues</p>
                     </button>
                 </div>
             )

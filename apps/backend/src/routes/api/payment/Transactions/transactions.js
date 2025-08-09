@@ -19,8 +19,9 @@ router.get("/getall-by-provider", async (req, res) => {
 
     const earnings = await pool.query(
       `SELECT created_at, 'earning' as type, 
-              (total_reserved * price_per_person)::numeric as amount, 
-              CONCAT(total_reserved, ' places vendues - ', start_hour, ' à ', end_hour) as label 
+              (net_amount_total)::numeric as amount, 
+              CONCAT(total_reserved, ' places vendues - ', start_hour, ' à ', end_hour) as label,
+              id
        FROM reservation_slots 
        WHERE provider_id = $1`,
       [provider_id]
@@ -35,7 +36,8 @@ router.get("/getall-by-provider", async (req, res) => {
       `SELECT created_at, 'payout' as type, 
               amount,
               status,
-              CONCAT('Retrait via ', method) as label 
+              CONCAT('Retrait via ', method) as label ,
+              id
        FROM withdrawals 
        WHERE provider_id = $1`,
       [provider_id]
@@ -62,6 +64,40 @@ router.get("/getall-by-provider", async (req, res) => {
   }
 });
 
+
+
+
+
+router.get("/get", async (req, res) => {
+  const { id, provider_id } = req.query;
+
+  if (!id || !provider_id) {
+    return res.status(400).json({ error: "/transaction/get : id ou provider_id manquant" });
+  }
+
+  try {
+    const earning = await pool.query(
+      `SELECT r.*,         
+        o.title                      AS offer_title,
+        o.duration                   AS offer_duration,
+        o.adresse                    AS offer_address
+       FROM reservation_slots r
+       JOIN offers o ON o.slug = r.offer_slug
+       WHERE r.id = $1 AND r.provider_id = $2`,
+      [id, provider_id]
+    );
+
+    if(earning.rowCount <= 0 ){
+      res.json({ success: true, message: "Impossible to find reservation_slots with this id" });
+      return
+    }else{
+      res.json({ success: true, earning: earning.rows });
+    }
+  } catch (err) {
+    console.error("❌ Erreur /transactions/get :", err.message);
+    res.status(500).json({ error: "Erreur serveur" });
+  }
+});
 
 
 module.exports = router;

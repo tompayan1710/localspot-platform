@@ -261,4 +261,36 @@ router.delete("/delete-versement", async (req, res) => {
 
 
 
+
+
+
+router.get("/get", async (req, res) => {
+  const { id, provider_id } = req.query;
+  console.log("Je rendre dans payout/get");
+  if (!id || !provider_id) {
+    return res.status(400).json({ error: "/payout/get : id ou provider_id manquant" });
+  }
+
+  try {
+    const withdrawal = await pool.query(
+      `SELECT *
+       FROM withdrawals
+       WHERE id = $1 AND provider_id = $2`,
+      [id, provider_id]
+    );
+
+    if(withdrawal.rowCount <= 0 ){
+      res.json({ success: true, message: "Impossible to find reservation_slots with this id" });
+      return
+    }else{
+      res.json({ success: true, withdrawal: withdrawal.rows });
+    }
+  } catch (err) {
+    console.error("❌ Erreur /payout/get :", err.message);
+    res.status(500).json({ error: "Erreur serveur" });
+  }
+});
+
+
+
 module.exports = router;

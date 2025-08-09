@@ -208,11 +208,11 @@ export default function VersementList({setIsOccultView, editPopUp, deletePopUp, 
                     <>
                         <div className="SkeletonVersement row">
                             <div className="row">
-                              <div className="BankSkeleton"></div>
+                              <div className="BankSkeleton shimmer"></div>
                               <div className="column">
-                                <div className="IBANSkeleton"></div>
-                                <div className="TitulaireSkeleton"></div>
-                                <div className="ModifieSkeleton"></div>
+                                <div className="IBANSkeleton shimmer"></div>
+                                <div className="TitulaireSkeleton shimmer"></div>
+                                <div className="ModifieSkeleton shimmer"></div>
                               </div>
                             </div>
                             {

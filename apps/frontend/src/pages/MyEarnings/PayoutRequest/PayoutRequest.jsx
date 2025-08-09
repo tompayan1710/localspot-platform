@@ -121,6 +121,14 @@ export default function PayoutRequest(){
     }, [versements]);
 
 
+    useEffect(() => {
+      if (isOccultView) {
+        document.body.style.overflow = "hidden";   // bloque le scroll du body
+      } else {
+        document.body.style.overflow = "";         // réactive le scroll
+      }
+    }, [isOccultView]);
+
 
     const submitRequestWithdrawals = async () => {
         setLoadingRequest(true)

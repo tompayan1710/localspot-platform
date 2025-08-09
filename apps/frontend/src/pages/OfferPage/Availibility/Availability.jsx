@@ -22,7 +22,8 @@ export default function Availability() {
   const [selectedDate, setSelectedDate] = useState(location.state?.date || today);
 
   const price = location.state?.price;
-  const OfferIsCancellable = location.state?.OfferIsCancellable;
+  // const OfferIsCancellable = location.state?.OfferIsCancellable;
+  const OfferIsCancellable = false;
   const title = location.state?.title;
   const adresse = location.state?.adresse;
   const total_capacity = location.state?.total_capacity;
@@ -369,7 +370,7 @@ export default function Availability() {
           <p className="t5">Creneaux disponnibles : </p>
           {
             isTooFar ? <div className="NoneSlote">
-              <p className="t5">Clara ma copine d'amour</p>
+              <p className="t5">Vous ne pouvez réserver qu'un mois à l'avance</p>
             </div>
             :
             disponnibility[selectedDate] && Object.keys(disponnibility[selectedDate]).length > 0 ? (

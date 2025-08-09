@@ -12,6 +12,8 @@ import MonthlyRevenueChart from "./MonthlyRevenueChart/MonthlyRevenueChart";
 import { useLocation, useNavigate } from "react-router-dom";
 import WhiteButton from "../../components/Buttons/WhiteButton/WhiteButton";
 import warningRed from "../../assets/images/warningRed.png"
+import NoTransactions from "../../assets/images/NoTransactions.png"
+
 import FadeInImage from "../../components/Utils/FadeInImage";
 import EditVersement from "../../components/PopUpBottom/EditVersement/EditVersement";
 
@@ -215,6 +217,11 @@ export default function MyEarnings() {
     };
 
 
+  useEffect(() => {
+    console.log(solde);
+  }, [solde])
+
+
   return (
     <div className="MyEarnings">
       <p className="t32">Paiements</p>
@@ -250,7 +257,11 @@ export default function MyEarnings() {
           <p className="t4 bold">Recevoir mes paiements</p>
           <p className="t6">Afin de recevoir vos gains, merci de renseigner un mode de versement valide.</p>
           <button className="AddVersementButton" onClick={() => {
-            navigate("/versement/new/titulaire")
+            navigate("/versement/new/titulaire", {
+              state: {
+                origin: "/my-earnings"
+              }
+            })
           }}>
             <p className="t6">Configurer un compte de versement</p>
           </button>
@@ -266,7 +277,7 @@ export default function MyEarnings() {
         </div>
         {
           !loading ?
-        
+          transactions.length > 0 ?
           Object.entries(groupTransactionsByMonth(transactions.slice(0, 8))).map(([month, items]) => (
             <div className="MonthSeparation column" key={month} style={{ marginTop: "5px", marginBottom: "8px" }}>
               <p className="t5" style={{ marginBottom: "6px" }}>{month.charAt(0).toUpperCase() + month.slice(1)}</p>
@@ -282,7 +293,16 @@ export default function MyEarnings() {
                 });
 
                 return (
-                  <div className="transactionItem row" key={transaction.created_at + index}>
+                  <div className="transactionItem row" 
+                        key={transaction.created_at + index} 
+                        onClick={() => {
+                          navigate("/transaction-info", {
+                            state: {
+                              type: transaction.type,
+                              id: transaction.id
+                            }
+                          });
+                  }}>
                     <div className="row">
                       <div className="TypeArrow">
                         <img
@@ -306,9 +326,19 @@ export default function MyEarnings() {
               })}
             </div>
           ))
-        
+         :
+          <div className="no-transactions column">
+            {/* <img src={NoTransactions} alt="no transactions"/> */}
+            <p className="t5 bold">Actuellement aucune transactions</p>
+            <p className="t6">
+              Votre historique de transaction sera visible ici dès qu’une transaction aura été effectuée.
+            </p>
+            <WhiteButton text={"Voir mes annonces"} onClick={() => {
+              navigate("/annonces")
+            }}/>
+          </div>
         : 
-        Array.from({ length: 5 }).map((_, i) => (
+        Array.from({ length: 3 }).map((_, i) => (
           <React.Fragment key={i}>
             {i % 3 === 0 && (
               <div className={`MonthSeparationSquellette shimmer ${i>1 ? "elarging" : ""}`} ></div>

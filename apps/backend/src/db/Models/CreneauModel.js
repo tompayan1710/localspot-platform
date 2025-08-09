@@ -4,6 +4,9 @@ const fetch = require("node-fetch");
 const db = require("../index");
 require("dotenv").config();
 
+const hotelRate = parseFloat(process.env.HOTEL_COMMISSION_RATE);
+const platformRate = parseFloat(process.env.PLATFORM_COMMISSION_RATE);
+
 
 async function findExistingCreneauOrCreate(provider_id, offerSlug, date, start_hour, end_hour, total_participants, price_per_person) {
   const query = `
@@ -30,23 +33,49 @@ async function findExistingCreneauOrCreate(provider_id, offerSlug, date, start_h
   let slot_id;
   let newTotalReserved;
   let newStatus;
+  let grossAmount;
+  let hotelCommission;
+  let platformCommission;
+  let netAmount;
+    
   if (result.rowCount > 0) {
     slot_id = result.rows[0].id
-
 
     newTotalReserved = total_participants + result.rows[0].total_reserved;
     newStatus = newTotalReserved < total_capacity ? "available" : "full";
 
+    grossAmount = newTotalReserved * price_per_person;
+    hotelCommission = grossAmount * hotelRate;
+    platformCommission = grossAmount * platformRate;
+    netAmount = grossAmount - hotelCommission - platformCommission;
+
     await db.query(`
       UPDATE reservation_slots
-      SET total_reserved = $1, status = $2, updated_at = NOW()
-      WHERE id = $3
-    `, [newTotalReserved, newStatus, slot_id]);
+      SET total_reserved = $1, 
+          status = $2,
+          gross_amount_total  = $3,
+          hotel_commission_total = $4,
+          platform_commission_total = $5,
+          net_amount_total = $6,
+          updated_at = NOW()
+      WHERE id = $7
+    `, [newTotalReserved, newStatus, grossAmount, hotelCommission, platformCommission, netAmount, slot_id]);
 
   } else {
     newTotalReserved = total_participants;
-    newStatus = "available";
     newStatus = newTotalReserved < total_capacity ? "available" : "full";
+
+    grossAmount = newTotalReserved * price_per_person;
+    hotelCommission = grossAmount * hotelRate;
+    platformCommission = grossAmount * platformRate;
+    netAmount = grossAmount - hotelCommission - platformCommission;
+
+    console.log({
+      grossAmount,
+      hotelCommission,
+      platformCommission,
+      netAmount
+    });
 
     const { rows } = await db.query(`
       INSERT INTO reservation_slots (
@@ -57,16 +86,20 @@ async function findExistingCreneauOrCreate(provider_id, offerSlug, date, start_h
         end_hour, 
         total_reserved,
         price_per_person, 
-        status
-      ) VALUES ($1, $2, $3, $4, $5, $6, $7, $8)
+        status,
+        gross_amount_total, 
+        hotel_commission_total, 
+        platform_commission_total, 
+        net_amount_total
+      ) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12)
       RETURNING id
-    `, [provider_id, offerSlug, date, start_hour, end_hour, total_participants, price_per_person, newStatus]);
+    `, [provider_id, offerSlug, date, start_hour, end_hour, total_participants, price_per_person, newStatus, grossAmount, hotelCommission, platformCommission, netAmount]);
     
     if (!rows[0]?.id) throw new Error("Création du créneau échouée");
     slot_id = rows[0].id;
   }
 
-  return [ slot_id, newTotalReserved, newStatus ];
+  return [ slot_id, newTotalReserved, newStatus,  ];
 }
 
 
@@ -125,6 +158,13 @@ async function saveCreneau(params) {
     const [ slot_id, newTotalReserved, newStatus ] = await findExistingCreneauOrCreate(provider_id, offerSlug, date, start_hour, end_hour, total_participants, price_per_person);
 
 
+    
+    const grossAmount = total_participants * price_per_person;
+    const hotelCommission = grossAmount * hotelRate;
+    const platformCommission = grossAmount * platformRate;
+    const netAmount = grossAmount - hotelCommission - platformCommission;
+
+
     const reservation_individual = await db.query(`
       INSERT INTO reservations_individuals (
         user_id,
@@ -138,12 +178,29 @@ async function saveCreneau(params) {
         name, 
         email, 
         phone,
-        stripe_payment_intent_id
-      ) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12)
+        stripe_payment_intent_id,
+        
+        gross_amount,
+        hotel_commission,
+        platform_commission,
+        net_amount
+      ) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, $14, $15, $16)
       RETURNING *, id AS reservation_id;
-    `, [user_id, slot_id, nb_adult, nb_reduced, total_participants, price_per_person * (total_participants), "paid", "confirmed", name, email, phone, payment_intent_id]);
-
-
+    `, [user_id, 
+        slot_id, nb_adult, 
+        nb_reduced, 
+        total_participants, 
+        price_per_person * (total_participants), 
+        "paid", "confirmed", 
+        name, 
+        email, 
+        phone, 
+        payment_intent_id, 
+        grossAmount,
+        hotelCommission, 
+        platformCommission,
+        netAmount
+      ]);
 
     //Teste si le prestataire est sur google calendar
     const isBookingSystem = await db.query(`
@@ -170,7 +227,7 @@ async function saveCreneau(params) {
 
 
       
-      const participantsList = participants.map(p => `- ${p.firstName} ${p.lastName} (${p.type})`).join('\n');
+      // const participantsList = participants.map(p => `- ${p.firstName} ${p.lastName} (${p.type})`).join('\n');
 
       const eventObject = {
         summary: `${title.slice(0, 20)}... \n(${newStatus == "full" ? "COMPLET - " : ""}${newTotalReserved} participants)`,

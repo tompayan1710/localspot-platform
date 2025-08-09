@@ -1,0 +1,262 @@
+.TransactionInfo{
+    padding-top: 10px;
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+}
+
+.TransactionInfo .hline{
+    height: 0.4px;
+}
+.TransactionInfo>p{
+    text-align: center;
+    width: 90%;
+    margin: 0 5%;
+}
+
+.TransactionInfo .IconCarte{
+    padding: 10px;
+    /* background-color: var(--greylight); */
+    width: fit-content;
+    border-radius: 100px;
+    display: flex;
+    flex-direction: column;
+    border: 1px solid var(--greysemidark);
+    margin: 0 auto;
+    margin-top: 30px;
+    margin-bottom: 10px;
+}
+.TransactionInfo .IconCarte>img{
+    height: 50px;
+    width: 50px;
+}
+
+.TransactionInfo .TopInfo{
+    /* padding: 30px 20px;
+    box-shadow: var(--boxshadow);
+    border-radius: 15px;
+    width: calc(100% - 30px);
+    margin-left: 15px; */
+    text-align: center;
+    margin-top: 40px;
+}
+
+.TransactionInfo .AllInfo{
+    /* padding: 15px 0; */
+    margin-top: 60px;
+    box-shadow: var(--boxshadow);
+    border-radius: 15px;
+    width: calc(100% - 30px);
+    margin-left: 15px; 
+}
+.TransactionInfo .AllInfo>.row{
+    padding: 15px 15px;
+    align-items: start;
+
+}
+.TransactionInfo .AllInfo>.row>.firstP{
+    flex: 1;
+}
+
+.TransactionInfo .AllInfo .firstP{
+    opacity: 0.7;
+}
+
+.TransactionInfo .AllInfo .RowInfo{
+    gap: 6px;
+    flex: 1;
+}
+.TransactionInfo .AllInfo .IconWrapper{
+    padding: 4px;
+    background-color: var(--greylight);
+    border-radius: 100px;
+    display: flex;
+    flex-direction: column;
+}
+.TransactionInfo .AllInfo .IconWrapper>img{
+   height: 22px;
+   width: 22px;
+   opacity: 0.5;
+}
+
+.TransactionInfo .RowInfo:has(.IbanSwift){
+    align-items: start;
+}
+.TransactionInfo .IbanSwift{
+    gap: 5px;
+    margin-top: 8px;
+}
+
+
+.TransactionInfo .bottomInfo{
+    padding: 0 17px;
+    gap: 3px;
+    margin-top: 20px;
+    margin-bottom: 100px;
+}
+
+.TransactionInfo .bottomInfo>.row{
+    justify-content: space-between;
+}
+.TransactionInfo .bottomInfo>.row:last-of-type{
+    margin-top: 2px;
+}
+
+
+.TransactionInfo .EndContainer{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    margin-top: auto;
+    width: 100%;
+    margin-bottom: 15px;
+    gap: 25px;
+}
+
+.TransactionInfo .EndContainer .row{
+    align-items: center;
+    justify-content: center;
+}
+.TransactionInfo .EndContainer .secured{
+    gap: 4px;
+}
+.TransactionInfo .EndContainer .secured>img{
+    height: 13px;
+    width: 13px;
+}
+.TransactionInfo .EndContainer p{
+    text-align: center;
+}
+.TransactionInfo .learnMoreContainer{
+    gap: 5px;
+}
+.TransactionInfo .learnMore{
+    background-color: transparent;
+    border: none;
+    gap: 4px;
+}
+.TransactionInfo .learnMore>img{
+    height: 9px;
+    width: 9px;
+}
+
+
+
+
+
+.TransactionInfo .TypeSkeleton{
+    height: 1.23rem;
+    background-color: var(--greylight);
+    border-radius: 5px;
+    width: 5rem;
+    margin: 0 auto;
+}
+.TransactionInfo .CardIcon{
+    padding: 10px;
+    width: fit-content;
+    border-radius: 100px;
+    display: flex;
+    flex-direction: column;
+    border: 1px solid var(--greysemidark);
+    margin: 0 auto;
+    margin-top: 30px;
+    margin-bottom: 10px;
+}
+.TransactionInfo .CardIcon>img{
+    height: 50px;
+    width: 50px;
+}
+.TransactionInfo .RefSkeleton{
+    height: 1.23rem;
+    background-color: var(--greylight);
+    border-radius: 5px;
+    width: 90%;
+    max-width: 300px;
+    margin: 0 auto;
+}
+.TransactionInfo .RefSkeleton+.RefSkeleton{
+    margin-top: 4px;
+    width: 80%;
+    max-width: 100px;
+}
+
+.TransactionInfo .SoldeSkeleton{
+    margin-top: 36px;
+}
+.TransactionInfo .SoldeSkeleton>div:first-of-type{
+    height: 0.8rem;
+    background-color: var(--greylight);
+    border-radius: 3px;
+    width: 8rem;
+    margin: 0 auto;
+}
+.TransactionInfo .SoldeSkeleton>div:last-of-type{
+    height: 3rem;
+    background-color: var(--greylight);
+    border-radius: 10px;
+    width: 12rem;
+    margin: 0 auto;
+    margin-top: 7px;
+}
+
+.TransactionInfo .Skeleton .AllInfo{
+    /* height: 250px; */
+}
+.TransactionInfo .Skeleton .AllInfo>.row{
+    justify-content: space-between;
+    padding: 16px 15px;
+    gap: 10px;
+}
+.TransactionInfo .Skeleton .AllInfo>.row>div{
+    /* background-color: red; */
+    flex: 1;
+}
+.TransactionInfo .Skeleton .AllInfo>.row>div.firsColumn{
+    flex: 1;
+    margin-right: auto;
+}
+.TransactionInfo .Skeleton .AllInfo>.row>div.firsColumn>div{
+    flex: 1;
+    max-width: 50px;
+    height: 1rem;
+    background-color: var(--greylight);
+    border-radius: 5px;
+    width: 3rem;
+}
+
+.TransactionInfo .Skeleton .AllInfo>.row>div.lastColumn{
+    flex: 1;
+}
+.TransactionInfo .Skeleton .AllInfo>.row>div.lastColumn>div{
+    height: 1rem;
+    background-color: var(--greylight);
+    border-radius: 5px;
+}
+
+.TransactionInfo .Skeleton .AllInfo>.row>div.lastColumn.Big>div{
+    height: 2rem;
+}
+
+
+
+.TransactionInfo .Skeleton .AllInfo>.row.Big>div:last-of-type{
+    height: 4rem;
+}
+
+.TransactionInfo .InfoEuroSkeleton{
+    padding: 0 17px;
+    display: flex;
+    flex-direction: column;
+    gap: 3px;
+    margin-top: 20px;
+    margin-bottom: 100px;
+}
+.TransactionInfo .InfoEuroSkeleton>.row{
+    justify-content: space-between;
+}
+.TransactionInfo .InfoEuroSkeleton>.row>div{
+    height: 0.85rem;
+    background-color: var(--greylight);
+    border-radius: 5px;
+    width: 4rem;
+}

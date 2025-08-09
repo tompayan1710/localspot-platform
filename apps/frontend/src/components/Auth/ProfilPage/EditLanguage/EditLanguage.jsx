@@ -23,8 +23,8 @@ export default function EditLanguage(){
     return(
         <div className='EditLanguageContianer'>
             <GoBack nagigation={`${origin}`} scrollTo={`${scrollTo}`} text={"revenir"}/>
-            <p className="t2">Language</p> 
-            <div className='LanguageButtonList'>
+            <p className="t32">Language</p> 
+            {/* <div className='LanguageButtonList'>
             {[
                 { code: 'en', label: 'English', flag: United_Kingdom },
                 { code: 'fr', label: 'Français', flag: France },
@@ -40,8 +40,10 @@ export default function EditLanguage(){
                 <p className="t4">{label}</p>
                 </div>
             ))}
+            </div> */}
+            <div className="CenterDiv">
+                <p className="t6 CenterP">Le changement de langue n’est pas encore disponible. L’application est actuellement uniquement en français.</p>
             </div>
-
         </div>
     )
 }

@@ -1,5 +1,7 @@
 .EditLanguageContianer{
-    min-height: 100vh;
+    flex: 1;
+    margin-top: 50px;
+    padding: 0 15px;
 }
 .EditLanguageContianer>.t2{
     padding-top: 60px;
@@ -13,7 +15,6 @@
     margin-top: 10px;
     gap: 20px;
     row-gap: 15px;
-    padding: 10px;
 }
 .EditLanguageContianer .LanguageButtonItem{
     padding: 20px 20px 10px 20px;
@@ -35,6 +36,14 @@
     width: 40px;
     height: 25px;
     border-radius: 5px;
-    box-shadow: 0 0px 15px rgba(0, 0, 0, 0.15);
+    /* box-shadow: 0 0px 15px rgba(0, 0, 0, 0.15); */
 }
 
+.EditLanguageContianer .CenterDiv{
+    margin-top: 40px;
+}
+.EditLanguageContianer .CenterP{
+    margin: auto;
+    text-align: center;
+    width: 90%;
+}

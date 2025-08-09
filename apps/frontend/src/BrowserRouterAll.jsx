@@ -57,6 +57,8 @@ import PayoutRequest from "./pages/MyEarnings/PayoutRequest/PayoutRequest";
 import AddTitulaireForm from "./pages/AddVersementMethode/AddTitulaireForm";
 import AddIBANForm from "./pages/AddVersementMethode/AddIBANForm";
 import AddVersementHome from "./pages/AddVersementMethode/AddVersementHome";
+import TransactionInfo from "./pages/MyEarnings/TransactionInfo/TransactionInfo";
+import PaymentPolicy from "./pages/DocumentOfficiel/PaymentPolicy/PaymentPolicy";
 
 export default function BrowserRouterAll(){
     const location = useLocation();
@@ -96,8 +98,9 @@ export default function BrowserRouterAll(){
         "/settings",
         "/invitation",
         "/all-history-transactions",
-        "/payout-request"
-
+        "/payout-request",
+        "/transaction-info",
+        "/payment-policy"
     ];
     
     //offer-page/b2f3a4ae-6cc4-4353-824e-65de72035d68/availibility
@@ -160,7 +163,7 @@ export default function BrowserRouterAll(){
             <Route path="/versement/new" element={<AddVersementHome />} />
             <Route path="/versement/new/titulaire" element={<AddTitulaireForm />} />
             <Route path="/versement/new/iban" element={<AddIBANForm />} />
-
+            <Route path="/transaction-info" element={<TransactionInfo />} />
 
 
             <Route path="/annonces" element={<AllAnnoncesPage />} />
@@ -203,6 +206,7 @@ export default function BrowserRouterAll(){
             <Route path="/privacy-policy" element={<PrivacyPolicy />} />
             <Route path="/terms-and-conditions-of-sal" element={<TermsAndConditionsOfSale />} />
             <Route path="/terms-of-service" element={<TermsOfService />} />
+            <Route path="/payment-policy" element={<PaymentPolicy />} />
 
             {/* FIN : catch-all pour tout le reste → 404 client-side */}
             <Route path="*" element={<NotFound />} />
