@@ -751,3 +751,54 @@
   height: 15px;
   filter: invert(1)
 }
+
+
+
+.PhotoCommentContainer{
+  position: relative;
+  margin-bottom: 40px;
+}
+.PhotoCommentContainer>img{
+  height: 160px;
+  width: 200px;
+  border: 3px solid white;
+  border-radius: 30px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+  object-fit: cover;
+  position: relative;
+  z-index: 1;
+  display: block;
+}
+
+.PhotoCommentContainer .Comment {
+  position: absolute;
+  bottom: 0;
+  right: 0;
+  transform: translate(15%, 30%);
+  background: white;
+  padding: 10px;
+  border-radius: 10px;
+  box-shadow: var(--boxshadow);
+  z-index: 2;
+}
+.PhotoCommentContainer .Comment>.time{
+  margin-left: auto;
+  gap: 4px;
+  opacity: 0.5;
+  justify-self: flex-end;
+  margin-bottom: 5px;
+}
+.PhotoCommentContainer .Comment>.time>img{
+  height: 11px;
+  width: 11px;
+}
+
+.PhotoCommentContainer .Comment .profilPicture{
+  height: 40px;
+  width: 40px;
+  border-radius: 100px;
+  border: 2px solid white;
+  position: absolute;
+  top: -15px;
+  left: 10px;
+}

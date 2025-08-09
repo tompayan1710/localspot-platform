@@ -15,11 +15,14 @@ import Calendar from "../../assets/images/Calendar.png"
 import crossWhite from "../../assets/images/crossWhite.png"
 import NiceIntro1 from "../../assets/images/NiceIntro1.png"
 import NiceIntro2 from "../../assets/images/NiceIntro2.png"
+import clockIcon from "../../assets/images/clockIcon.png"
+import profilPicture from "../../assets/images/profilPictureFemal.png"
 import templateOffer from "../../assets/images/templateOffer.png"
 import yoga3 from "../../assets/images/yoga3.jpg"
 import Cuisto from "../../assets/images/Cuisto.jpg"
 import CalendarBorder from "../../assets/images/CalendarBorder.png"
 import Switch from "../../assets/images/Switch.png"
+import Kayak from "../../assets/images/Kayak.jpg"
 import { useTranslation } from "react-i18next"; 
 import { useLocation } from "react-router-dom"
 
@@ -262,12 +265,21 @@ export default function Profile() {
           : 
           <>
           <div className="BecomProviderBig">
-              <div className="BecomProviderContainer">
-                <FadeInImage src={NiceIntro2} alt="template photo"/>
-                <FadeInImage src={NiceIntro1} alt="template photo"/>
+              <div className="PhotoCommentContainer">
+                <FadeInImage src={Kayak} alt="template photo"/>
+                <div className="Comment">
+                  <img className="profilPicture" src={profilPicture} alt="profilPicture"/>
+                  <div className="row time">
+                    <img src={clockIcon} alt="clock icon"/>
+                    <p className="t6">1 mois</p>
+                  </div>
+                  <p className="t6">Camille a un cours prévu<br></br> ce week-end</p>
+                </div>
               </div>
+
               {/* <p className="t4">Mes annonces</p> */}
-              <p className="t6">Gérez facilement vos activités, suivez vos réservations et mettez à jour vos offres en temps réel.</p>
+              {/* <p className="t6">Gérez facilement vos activités, suivez vos réservations et mettez à jour vos offres en temps réel.</p> */}
+              <p className="t6">Découvrez les meilleures activités autour de vous, en toute simplicité.</p>
             </div>
           <button className="whiteButton" onClick={() => {navigate("/annonces")}}>
               <p className="t5">Recherchez des annonces</p>
