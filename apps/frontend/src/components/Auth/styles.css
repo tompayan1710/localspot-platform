@@ -319,6 +319,7 @@
   height: 60px;
   margin: 0px;
   border-radius: 100px;
+  object-fit: cover;
 } 
 
 .profile-container .ProfileEditContainer .ColumnName{

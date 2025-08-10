@@ -79,7 +79,7 @@ export default function AllAnnoncesPage(){
                         <p className="t32">Actuellement aucune réservations</p>
                         <p className="t6">Aucune offre actuellement</p>
                         <button className="blackButton" onClick={() => {
-                            navigate("/annonces", {
+                            navigate("/create-offer", {
                                 state: {
                                     activeTab: "annonces"
                                 }

@@ -207,12 +207,13 @@
   padding: 0px 18px;
   color: white;
   background: linear-gradient(180deg, #545454, #373737);
-  border-radius: 15px;
-  box-shadow:
+  border-radius: 100px;
+  /* box-shadow:
    -4px -4px 6px rgba(255, 255, 255, 0.3),
     5px 8px 20px rgba(0, 0, 0, 0.3),
     inset -4px -4px 20px rgba(0, 0, 0, 8),
-    inset 4px 4px 7px rgba(255, 255, 255, 0.5); 
+    inset 4px 4px 7px rgba(255, 255, 255, 0.5);  */
+  box-shadow: 0 2px 15px rgba(0, 0, 0, 0.3)
 }
 .seeMore strong {
   font-family: "Cookie";
@@ -259,4 +260,48 @@
   border-radius: 28px; 
   margin-top: 20px;
   margin-left: 10px;
+}
+
+
+
+.HomeListPrestation .GoFilterContainer{
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  margin: 0 15px;
+}
+.HomeListPrestation .GoFilterNull{
+  background-color: transparent;
+  border: none;
+}
+
+.HomeListPrestation .GoFilterNull{
+  display: flex;
+  align-items: center;
+  z-index: 2;
+  padding: 0px 18px;
+  background: linear-gradient(180deg, #545454, #373737);
+  border-radius: 100px;
+  box-shadow: 0 2px 15px rgba(0, 0, 0, 0.3);
+  height: fit-content;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  padding-bottom: 3px;
+  cursor: pointer;
+}
+.HomeListPrestation .GoFilterNull>p {
+  color: white;
+  font-family: "Playfaire Display";
+  text-align: center;
+
+}
+.HomeListPrestation .GoFilterNull strong {
+  font-family: "Cookie";
+  font-size: 2rem;
+  font-weight: 100;
+  position: relative;
+  top: 2px; /* ← retire ce que tu avais ici */
+  margin-left: 5px;
 }

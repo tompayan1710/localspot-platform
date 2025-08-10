@@ -1,4 +1,5 @@
 const db = require("../index");
+const { v4: uuidv4 } = require("uuid");
 
 // 🔹 Crée une nouvelle offre
 async function createOffer({
@@ -16,7 +17,7 @@ async function createOffer({
   provider_id,
   pricePer,
   total_capacity,
-  qrcode_url,
+  // qrcode_url,
   slug,
   cancellable
 }) {
@@ -36,11 +37,10 @@ async function createOffer({
       provider_id,
       pricePer,
       total_capacity,
-      qrcode_url,
       slug,
       cancellable     
     )
-    VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, $14, $15, $16, $17)
+    VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, $14, $15, $16)
     RETURNING *;
   `;
 
@@ -59,7 +59,7 @@ async function createOffer({
     provider_id,
     pricePer,
     total_capacity,
-    qrcode_url,
+    // qrcode_url,
     slug,
     cancellable
   ];
@@ -139,7 +139,7 @@ async function getAllOffers(whereClause = "", values = [], moment = "") {
         ) AS "isAfternoon",
         EXISTS (
           SELECT 1 FROM valid_slots vs
-          WHERE vs.offer_slug = o.slug AND vs.slot >= '18:00'
+          WHERE vs.offer_slug = o.slug AND vs.slot >= '18:00' OR vs.slot <= '03:00'
         ) AS "isEvening"
       FROM offers o
       ${whereClause ? `WHERE ${whereClause}` : ""}
@@ -194,6 +194,15 @@ async function getOffersProvider(provider_id) {
 
 
 
+async function createSlugOfferNotExist() {
+  let slug = uuidv4(); // identifiant unique pour ce QR code
+    while((await getOfferBySlug(slug)).rowCount > 0){
+      slug = uuidv4();
+  }
+
+  return slug;
+}
+
 
 
 
@@ -201,5 +210,6 @@ module.exports = {
   createOffer,
   getOfferBySlug,
   getAllOffers,
-  getOffersProvider
+  getOffersProvider,
+  createSlugOfferNotExist
 };

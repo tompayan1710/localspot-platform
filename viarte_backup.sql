@@ -655,7 +655,11 @@ CREATE TABLE public.reservation_slots (
     price_per_person numeric(10,2) NOT NULL,
     status character varying(50) DEFAULT 'available'::character varying,
     created_at timestamp without time zone DEFAULT now(),
-    updated_at timestamp without time zone DEFAULT now()
+    updated_at timestamp without time zone DEFAULT now(),
+    hotel_commission_total numeric(15,2) DEFAULT 0 NOT NULL,
+    platform_commission_total numeric(15,2) DEFAULT 0 NOT NULL,
+    net_amount_total numeric(15,2) DEFAULT 0 NOT NULL,
+    gross_amount_total numeric(15,2) DEFAULT 0 NOT NULL
 );
 
 
@@ -738,7 +742,11 @@ CREATE TABLE public.reservations_individuals (
     email text,
     name character varying(100),
     phone character varying(100),
-    stripe_payment_intent_id text
+    stripe_payment_intent_id text,
+    hotel_commission numeric(15,2) DEFAULT 0 NOT NULL,
+    platform_commission numeric(15,2) DEFAULT 0 NOT NULL,
+    net_amount numeric(15,2) DEFAULT 0 NOT NULL,
+    gross_amount numeric(15,2) DEFAULT 0 NOT NULL
 );
 
 
@@ -867,7 +875,8 @@ CREATE TABLE public.withdrawals (
     swift text,
     first_name text,
     last_name text,
-    paypal_email text
+    paypal_email text,
+    sent_at timestamp without time zone
 );
 
 
@@ -1369,7 +1378,7 @@ COPY public.refresh_tokens (id, user_id, refresh_token, expires_at, created_at) 
 252	32	eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MzIsImVtYWlsIjoidG9tcGF5YW4xNzEwQGdtYWlsLmNvbSIsImlhdCI6MTc1NDAzMTYzMSwiZXhwIjoxNzY5NTgzNjMxfQ.8BT3e9l9-SFzol_Lq9cRmAh7fyn0-UxwuQI1XnlD9VE	2026-01-28 08:00:31.799	2025-08-01 09:00:31.804243
 253	32	eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MzIsImVtYWlsIjoidG9tcGF5YW4xNzEwQGdtYWlsLmNvbSIsImlhdCI6MTc1NDAzMzA3MSwiZXhwIjoxNzY5NTg1MDcxfQ.P3Wh7tk42zRmBTyigUyAGa4ScNJ3q5paxmml5-qB_tY	2026-01-28 08:24:31.627	2025-08-01 09:22:31.969807
 254	32	eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MzIsImVtYWlsIjoidG9tcGF5YW4xNzEwQGdtYWlsLmNvbSIsImlhdCI6MTc1NDAzMzA3MSwiZXhwIjoxNzY5NTg1MDcxfQ.P3Wh7tk42zRmBTyigUyAGa4ScNJ3q5paxmml5-qB_tY	2026-01-28 08:24:31.644	2025-08-01 09:24:31.648875
-297	32	eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MzIsImVtYWlsIjoidG9tcGF5YW4xNzEwQGdtYWlsLmNvbSIsImlhdCI6MTc1NDY1OTg4MSwiZXhwIjoxNzcwMjExODgxfQ.yTxw9Tx-LI-KD-O3JurX5LSC2ctuTIVLMlSQceqRgQA	2026-02-04 14:31:21.374	2025-08-07 14:36:15.648815
+297	32	eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MzIsImVtYWlsIjoidG9tcGF5YW4xNzEwQGdtYWlsLmNvbSIsImlhdCI6MTc1NDc1MTA3MSwiZXhwIjoxNzcwMzAzMDcxfQ.711RcdNk8nF6VsdirXT6Bdd1u-ojRCsXsaha-CJ0r_Q	2026-02-05 15:51:11.543	2025-08-07 14:36:15.648815
 258	32	eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MzIsImVtYWlsIjoidG9tcGF5YW4xNzEwQGdtYWlsLmNvbSIsImlhdCI6MTc1NDA0NzA3NSwiZXhwIjoxNzY5NTk5MDc1fQ.7Np3UyATMk_1HW6effCPH7DjCjKGBrPunFcMgA9zhoA	2026-01-28 12:17:55.447	2025-08-01 13:17:55.451879
 259	42	eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6NDIsImVtYWlsIjoic2FwaWVuc0BnbWFpbC5jb20iLCJpYXQiOjE3NTQwNTA2NDQsImV4cCI6MTc2OTYwMjY0NH0.EnKRg21VONNSkq-mNnmG7cmEUipg_3vC-L22IVEdQNc	2026-01-28 13:17:24.116	2025-08-01 13:19:16.864494
 290	32	eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MzIsImVtYWlsIjoidG9tcGF5YW4xNzEwQGdtYWlsLmNvbSIsImlhdCI6MTc1NDE0NTQzOCwiZXhwIjoxNzY5Njk3NDM4fQ.RSmvj2MnUkEAgGgNYTA55eDSJCtCUirUezVgtfxrric	2026-01-29 15:37:18.991	2025-08-02 16:37:18.999112
@@ -1386,76 +1395,8 @@ COPY public.refresh_tokens (id, user_id, refresh_token, expires_at, created_at) 
 -- Data for Name: reservation_slots; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
-COPY public.reservation_slots (id, provider_id, offer_slug, date, start_hour, end_hour, total_reserved, price_per_person, status, created_at, updated_at) FROM stdin;
-15	5	be82fc03-325c-4453-96b8-2ae7fd028222	2025-07-21	09:00	12:00	6	500.00	full	2025-07-10 08:34:23.069271	2025-07-10 08:34:54.325918
-16	5	be82fc03-325c-4453-96b8-2ae7fd028222	2025-07-14	18:00	20:00	6	500.00	full	2025-07-10 08:35:30.85721	2025-07-10 08:35:30.85721
-17	5	be82fc03-325c-4453-96b8-2ae7fd028222	2025-07-21	18:00	20:00	6	500.00	full	2025-07-10 08:36:07.893438	2025-07-10 08:36:35.075608
-18	5	be82fc03-325c-4453-96b8-2ae7fd028222	2025-07-23	18:00	20:00	6	500.00	full	2025-07-10 08:42:59.235806	2025-07-10 08:42:59.235806
-19	5	be82fc03-325c-4453-96b8-2ae7fd028222	2025-07-30	18:00	20:00	6	500.00	full	2025-07-10 08:45:04.757455	2025-07-10 08:45:04.757455
-20	5	be82fc03-325c-4453-96b8-2ae7fd028222	2025-07-24	15:30	23:00	6	500.00	full	2025-07-10 08:50:50.967871	2025-07-10 08:50:50.967871
-21	5	be82fc03-325c-4453-96b8-2ae7fd028222	2025-07-31	12:30	17:15	8	500.00	full	2025-07-10 08:51:47.689815	2025-07-10 08:52:13.461179
-22	5	be82fc03-325c-4453-96b8-2ae7fd028222	2025-07-31	10:00	11:00	5	500.00	available	2025-07-10 09:15:19.168673	2025-07-10 09:15:19.168673
-23	5	be82fc03-325c-4453-96b8-2ae7fd028222	2025-07-26	01:45	04:15	2	500.00	available	2025-07-10 09:18:39.393154	2025-07-10 09:18:39.393154
-26	5	be82fc03-325c-4453-96b8-2ae7fd028222	2025-07-11	07:00	08:00	5	500.00	available	2025-07-11 13:24:14.381453	2025-07-11 13:24:14.381453
-27	5	be82fc03-325c-4453-96b8-2ae7fd028222	2025-07-11	12:30	16:00	3	500.00	available	2025-07-11 13:24:39.794938	2025-07-11 13:24:39.794938
-28	5	be82fc03-325c-4453-96b8-2ae7fd028222	2025-07-11	16:00	17:00	6	500.00	full	2025-07-11 13:24:59.257189	2025-07-11 13:24:59.257189
-29	5	d1eec0ec-f975-4b72-9fd9-b52b1ab964d2	2025-07-11	18:00	23:45	6	35.00	full	2025-07-11 19:20:26.273534	2025-07-11 19:20:26.273534
-30	5	be82fc03-325c-4453-96b8-2ae7fd028222	2025-07-11	18:00	23:45	2	500.00	available	2025-07-11 19:37:35.142073	2025-07-11 19:37:35.142073
-31	5	d1eec0ec-f975-4b72-9fd9-b52b1ab964d2	2025-07-12	04:00	05:45	3	35.00	available	2025-07-12 08:02:41.11108	2025-07-12 08:02:41.11108
-32	5	d1eec0ec-f975-4b72-9fd9-b52b1ab964d2	2025-07-12	06:30	08:15	3	35.00	available	2025-07-12 08:03:02.024069	2025-07-12 08:03:02.024069
-33	5	d1eec0ec-f975-4b72-9fd9-b52b1ab964d2	2025-07-12	08:15	09:15	5	35.00	available	2025-07-12 08:03:23.956042	2025-07-12 08:03:23.956042
-34	5	d1eec0ec-f975-4b72-9fd9-b52b1ab964d2	2025-07-12	09:15	10:15	6	35.00	full	2025-07-12 08:03:40.961986	2025-07-12 08:03:40.961986
-35	5	be82fc03-325c-4453-96b8-2ae7fd028222	2025-07-12	01:45	04:15	3	500.00	available	2025-07-12 08:04:02.404518	2025-07-12 08:04:02.404518
-36	5	be82fc03-325c-4453-96b8-2ae7fd028222	2025-07-12	08:15	09:15	5	500.00	available	2025-07-12 08:04:23.695231	2025-07-12 08:04:23.695231
-25	5	be82fc03-325c-4453-96b8-2ae7fd028222	2025-07-16	18:00	20:00	6	500.00	full	2025-07-11 10:10:52.726848	2025-07-12 08:48:51.231866
-37	5	be82fc03-325c-4453-96b8-2ae7fd028222	2025-07-15	07:00	08:00	5	500.00	available	2025-07-15 15:34:46.875568	2025-07-15 15:34:46.875568
-38	5	be82fc03-325c-4453-96b8-2ae7fd028222	2025-07-29	09:00	10:00	3	500.00	available	2025-07-15 15:35:10.026004	2025-07-15 15:35:10.026004
-39	5	07782d1c-50b9-477e-9114-2a9892c08800	2025-07-24	07:00	08:00	3	999.00	available	2025-07-17 18:50:06.9017	2025-07-17 18:50:06.9017
-40	5	77b2f91a-8d54-402a-93af-43e743dd13a5	2025-07-23	13:00	14:00	3	1599.00	available	2025-07-23 16:31:20.35374	2025-07-23 16:31:20.35374
-41	5	be82fc03-325c-4453-96b8-2ae7fd028222	2025-07-25	07:00	08:00	3	500.00	available	2025-07-25 22:50:16.899993	2025-07-25 22:50:16.899993
-24	5	be82fc03-325c-4453-96b8-2ae7fd028222	2025-07-31	08:00	09:00	4	500.00	full	2025-07-10 11:30:49.960711	2025-07-25 23:48:06.316447
-43	5	01bd532b-0eac-4c79-a2a2-bbdb6a98b172	2025-07-30	07:00	08:00	3	75.00	available	2025-07-26 10:32:12.751639	2025-07-26 10:32:12.751639
-45	5	be82fc03-325c-4453-96b8-2ae7fd028222	2025-07-26	08:15	09:15	3	500.00	available	2025-07-26 11:12:23.859596	2025-07-26 11:12:23.859596
-46	5	be82fc03-325c-4453-96b8-2ae7fd028222	2025-07-31	07:00	08:00	3	500.00	available	2025-07-26 11:14:46.705031	2025-07-26 11:14:46.705031
-47	5	be82fc03-325c-4453-96b8-2ae7fd028222	2025-07-31	09:00	10:00	4	500.00	full	2025-07-26 11:21:30.801781	2025-07-26 11:21:30.801781
-44	5	be82fc03-325c-4453-96b8-2ae7fd028222	2025-07-31	09:00	10:30	4	500.00	full	2025-07-26 11:03:30.356815	2025-07-28 10:32:51.208967
-48	5	be82fc03-325c-4453-96b8-2ae7fd028222	2025-08-01	07:00	08:00	3	500.00	available	2025-07-28 11:04:18.989902	2025-07-28 11:04:18.989902
-49	5	be82fc03-325c-4453-96b8-2ae7fd028222	2025-08-01	16:00	17:00	4	500.00	full	2025-07-28 11:06:10.926491	2025-07-28 11:32:06.440876
-50	5	be82fc03-325c-4453-96b8-2ae7fd028222	2025-08-01	12:30	16:00	3	500.00	available	2025-07-28 11:55:18.556358	2025-07-28 11:55:18.556358
-51	5	be82fc03-325c-4453-96b8-2ae7fd028222	2025-08-01	18:00	23:45	4	500.00	full	2025-07-28 12:27:31.729157	2025-07-28 12:27:31.729157
-52	5	be82fc03-325c-4453-96b8-2ae7fd028222	2025-08-02	01:45	04:15	3	500.00	available	2025-07-28 13:41:59.982783	2025-07-28 13:41:59.982783
-53	5	be82fc03-325c-4453-96b8-2ae7fd028222	2025-08-02	08:15	09:15	3	500.00	available	2025-07-28 13:46:51.569148	2025-07-28 13:46:51.569148
-54	5	be82fc03-325c-4453-96b8-2ae7fd028222	2025-08-03	07:00	08:00	3	500.00	available	2025-07-28 13:58:21.313012	2025-07-28 13:58:21.313012
-55	5	be82fc03-325c-4453-96b8-2ae7fd028222	2025-08-03	08:00	09:00	3	500.00	available	2025-07-28 14:08:44.901557	2025-07-28 14:08:44.901557
-56	5	be82fc03-325c-4453-96b8-2ae7fd028222	2025-08-03	09:00	10:00	3	500.00	available	2025-07-28 14:14:37.042267	2025-07-28 14:14:37.042267
-57	5	be82fc03-325c-4453-96b8-2ae7fd028222	2025-08-03	10:00	11:00	3	500.00	available	2025-07-28 14:18:56.393992	2025-07-28 14:18:56.393992
-58	5	be82fc03-325c-4453-96b8-2ae7fd028222	2025-08-24	07:00	08:00	4	500.00	full	2025-07-28 15:00:37.522716	2025-07-28 15:00:37.522716
-59	5	be82fc03-325c-4453-96b8-2ae7fd028222	2025-08-23	01:45	04:15	3	500.00	available	2025-07-28 15:10:46.515333	2025-07-28 15:10:46.515333
-60	5	be82fc03-325c-4453-96b8-2ae7fd028222	2025-08-14	07:00	08:00	4	500.00	full	2025-07-28 19:31:29.202247	2025-07-28 19:31:29.202247
-61	5	be82fc03-325c-4453-96b8-2ae7fd028222	2025-08-16	01:45	04:15	3	500.00	available	2025-07-28 21:48:00.121492	2025-07-28 21:48:00.121492
-62	5	01bd532b-0eac-4c79-a2a2-bbdb6a98b172	2025-08-27	07:00	08:00	4	75.00	full	2025-07-29 07:36:48.025019	2025-07-29 07:36:48.025019
-64	5	6e7830e6-fd73-4ae1-9419-f47777fa6f95	2025-07-29	20:30	21:45	3	60.00	available	2025-07-29 07:49:15.304473	2025-07-29 07:49:15.304473
-65	5	d1eec0ec-f975-4b72-9fd9-b52b1ab964d2	2025-07-29	07:00	08:00	4	35.00	full	2025-07-29 07:59:52.9328	2025-07-29 07:59:52.9328
-63	5	6e7830e6-fd73-4ae1-9419-f47777fa6f95	2025-07-29	05:00	09:00	4	60.00	full	2025-07-29 07:45:30.859108	2025-07-29 10:16:25.264684
-66	5	147f15ce-3b5d-4dc2-bf4e-f0775c7fa726	2025-07-29	22:00	22:15	4	199.00	full	2025-07-29 10:19:58.494538	2025-07-29 10:34:53.593569
-67	5	77b2f91a-8d54-402a-93af-43e743dd13a5	2025-07-29	07:00	08:00	7	1599.00	available	2025-07-29 10:40:12.734207	2025-07-29 10:40:12.734207
-68	5	07782d1c-50b9-477e-9114-2a9892c08800	2025-07-31	07:00	08:00	3	999.00	available	2025-07-29 10:49:15.074714	2025-07-29 10:49:15.074714
-69	5	147f15ce-3b5d-4dc2-bf4e-f0775c7fa726	2025-07-29	08:00	09:00	4	199.00	full	2025-07-29 11:01:03.938337	2025-07-29 11:03:02.857764
-70	5	147f15ce-3b5d-4dc2-bf4e-f0775c7fa726	2025-07-29	07:00	08:00	4	199.00	full	2025-07-29 11:05:44.985397	2025-07-29 11:05:44.985397
-71	5	147f15ce-3b5d-4dc2-bf4e-f0775c7fa726	2025-07-29	14:00	16:00	4	199.00	full	2025-07-29 11:06:47.278974	2025-07-29 11:22:45.780186
-73	5	147f15ce-3b5d-4dc2-bf4e-f0775c7fa726	2025-08-05	07:00	08:00	3	199.00	available	2025-07-29 11:26:29.385207	2025-07-29 11:26:29.385207
-74	5	147f15ce-3b5d-4dc2-bf4e-f0775c7fa726	2025-08-05	08:00	09:00	3	199.00	available	2025-07-29 11:29:19.047787	2025-07-29 11:29:19.047787
-75	5	147f15ce-3b5d-4dc2-bf4e-f0775c7fa726	2025-08-05	22:00	22:15	3	199.00	available	2025-07-29 11:41:30.364102	2025-07-29 11:41:30.364102
-76	5	07782d1c-50b9-477e-9114-2a9892c08800	2025-08-14	07:00	08:00	3	999.00	available	2025-07-29 18:49:09.041635	2025-07-29 18:49:09.041635
-77	5	be82fc03-325c-4453-96b8-2ae7fd028222	2025-08-06	18:00	20:00	3	500.00	available	2025-07-29 18:54:02.256707	2025-07-29 18:54:02.256707
-78	5	01bd532b-0eac-4c79-a2a2-bbdb6a98b172	2025-08-20	07:00	08:00	3	75.00	available	2025-07-29 18:57:35.717959	2025-07-29 18:57:35.717959
-79	5	6e7830e6-fd73-4ae1-9419-f47777fa6f95	2025-08-05	13:00	14:45	3	60.00	available	2025-07-29 19:05:25.483479	2025-07-29 19:05:25.483479
-80	5	07782d1c-50b9-477e-9114-2a9892c08800	2025-08-07	07:00	08:00	4	999.00	full	2025-07-29 19:06:58.646491	2025-07-29 19:11:15.813649
-81	5	01bd532b-0eac-4c79-a2a2-bbdb6a98b172	2025-08-13	07:00	08:00	3	75.00	available	2025-07-29 19:13:18.7518	2025-07-29 19:13:18.7518
-82	5	6e7830e6-fd73-4ae1-9419-f47777fa6f95	2025-07-29	13:00	14:45	3	60.00	available	2025-07-29 21:56:36.820063	2025-07-29 21:56:36.820063
-72	5	07782d1c-50b9-477e-9114-2a9892c08800	2025-08-21	07:00	08:00	4	999.00	full	2025-07-29 11:13:58.953348	2025-07-29 22:03:21.722451
-83	5	6e7830e6-fd73-4ae1-9419-f47777fa6f95	2025-08-05	20:30	21:45	3	60.00	available	2025-08-03 16:29:43.477182	2025-08-03 16:29:43.477182
-84	5	6e7830e6-fd73-4ae1-9419-f47777fa6f95	2025-08-12	13:00	14:45	3	60.00	available	2025-08-05 08:15:22.17113	2025-08-05 08:15:22.17113
+COPY public.reservation_slots (id, provider_id, offer_slug, date, start_hour, end_hour, total_reserved, price_per_person, status, created_at, updated_at, hotel_commission_total, platform_commission_total, net_amount_total, gross_amount_total) FROM stdin;
+89	5	d1eec0ec-f975-4b72-9fd9-b52b1ab964d2	2025-08-12	07:00	08:00	4	35.00	full	2025-08-09 11:17:58.323988	2025-08-09 11:17:58.323988	9.80	18.20	112.00	140.00
 \.
 
 
@@ -1471,87 +1412,8 @@ COPY public.reservations_creneaux_google_calendar (id, reservation_slots_id, pro
 -- Data for Name: reservations_individuals; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
-COPY public.reservations_individuals (id, user_id, slot_id, total_participants, total_price, payment_status, reservation_status, created_at, updated_at, nb_adult, nb_reduced, email, name, phone, stripe_payment_intent_id) FROM stdin;
-61	41	46	3	1500.00	paid	confirmed	2025-07-26 11:14:46.711256	2025-07-26 11:14:46.711256	1	2	tompayan1710@gmail.com	Survoler la Côte d'Azur en avion privé	+33765594097	\N
-60	41	43	3	225.00	paid	confirmed	2025-07-26 10:32:12.760143	2025-07-26 10:32:12.760143	3	1	\N	\N	\N	\N
-66	32	49	1	500.00	paid	confirmed	2025-07-28 11:32:06.444489	2025-07-28 11:32:06.444489	1	0	tompayan1710@gmail.com	Tom Payan	+33765594097	\N
-71	32	54	3	1500.00	paid	confirmed	2025-07-28 13:58:21.316215	2025-07-28 13:58:21.316215	2	1	tompayan1710@gmail.com	PAYAN jean luc	+33765594097	\N
-76	43	59	3	1500.00	paid	confirmed	2025-07-28 15:10:46.51707	2025-07-28 15:10:46.51707	2	1	tompayan1710@gmail.com	Bac Pro	+33333333333	\N
-81	41	64	3	180.00	paid	confirmed	2025-07-29 07:49:15.307932	2025-07-29 07:49:15.307932	2	1	tompayan1710@gmail.com	Tableau	+33121212121	pi_3Rq6PI2f0HHvMFDt0iJ7Y37N
-86	41	67	7	11193.00	paid	confirmed	2025-07-29 10:40:12.740136	2025-07-29 10:40:12.740136	6	1	tompayan1710@gmail.com	Files	+33765594097	pi_3Rq94n2f0HHvMFDt1kwdjm1Z
-91	41	71	3	597.00	paid	confirmed	2025-07-29 11:06:47.283546	2025-07-29 11:06:47.283546	2	1	tompayan1710@gmail.com	Page	+33765594097	pi_3Rq9UT2f0HHvMFDt1FfjImLa
-96	41	75	3	597.00	paid	confirmed	2025-07-29 11:41:30.366233	2025-07-29 11:41:30.366233	2	1	tompayan1710@gmail.com	Tom Payan	+33765594097	pi_3RqA282f0HHvMFDt1b16JzUV
-101	41	80	3	2997.00	paid	confirmed	2025-07-29 19:06:58.654559	2025-07-29 19:06:58.654559	2	1	tompayan1710@gmail.com	Taxerlesriches	+33765594097	pi_3RqGzC2f0HHvMFDt0YMus4Fw
-106	60	83	3	180.00	paid	confirmed	2025-08-03 16:29:43.485036	2025-08-03 16:29:43.485036	2	1	tompayan1710@gmail.com	Tom Payan && clara big box	+33765594097	pi_3Rs2ul2f0HHvMFDt0dkkrmtY
-62	41	47	4	2000.00	paid	confirmed	2025-07-26 11:21:30.808917	2025-07-26 11:21:30.808917	2	2	tompayan1710@gmail.com	Clara BigBoss	+33765594097	\N
-67	32	50	3	1500.00	paid	confirmed	2025-07-28 11:55:18.56468	2025-07-28 11:55:18.56468	2	1	tompayan1710@gmail.com	Tom Payan	+33765594097	\N
-72	32	55	3	1500.00	paid	confirmed	2025-07-28 14:08:44.908178	2025-07-28 14:08:44.908178	2	1	tompayan1710@gmail.com	LeClara Jean Luc	+33999999999	\N
-77	32	60	4	2000.00	paid	confirmed	2025-07-28 19:31:29.206541	2025-07-28 19:31:29.206541	4	0	tompayan1710@gmail.com	AirUp	+33199999999	pi_3RputK2f0HHvMFDt0fnuTV5U
-82	41	65	4	140.00	paid	confirmed	2025-07-29 07:59:52.939111	2025-07-29 07:59:52.939111	3	1	clarascipione1@gmail.com	QRcode	+33434343434	pi_3Rq6Zb2f0HHvMFDt0FEOiJ8K
-87	41	68	3	2997.00	paid	confirmed	2025-07-29 10:49:15.077586	2025-07-29 10:49:15.077586	2	1	tompayan1710@gmail.com	clavier	+33765594097	pi_3Rq9DY2f0HHvMFDt0J3WLdOG
-28	32	15	5	2500.00	paid	confirmed	2025-07-10 08:34:23.072957	2025-07-10 08:34:23.072957	3	1	\N	\N	\N	\N
-29	32	15	1	500.00	paid	confirmed	2025-07-10 08:34:54.331603	2025-07-10 08:34:54.331603	3	1	\N	\N	\N	\N
-30	32	16	6	3000.00	paid	confirmed	2025-07-10 08:35:30.869266	2025-07-10 08:35:30.869266	3	1	\N	\N	\N	\N
-31	32	17	4	2000.00	paid	confirmed	2025-07-10 08:36:07.898516	2025-07-10 08:36:07.898516	3	1	\N	\N	\N	\N
-32	32	17	2	1000.00	paid	confirmed	2025-07-10 08:36:35.081326	2025-07-10 08:36:35.081326	3	1	\N	\N	\N	\N
-33	32	18	6	3000.00	paid	confirmed	2025-07-10 08:42:59.238173	2025-07-10 08:42:59.238173	3	1	\N	\N	\N	\N
-92	41	72	3	2997.00	paid	confirmed	2025-07-29 11:13:58.958173	2025-07-29 11:13:58.958173	2	1	tompayan1710@gmail.com	Ecriture	+33765594097	pi_3Rq9bT2f0HHvMFDt06dACaRv
-97	41	76	3	2997.00	paid	confirmed	2025-07-29 18:49:09.054143	2025-07-29 18:49:09.054143	2	1	tompayan1710@gmail.com	Lacarte Céline	+33765594097	pi_3RqGhr2f0HHvMFDt0dNXZeYg
-102	41	80	1	999.00	paid	confirmed	2025-07-29 19:11:15.820233	2025-07-29 19:11:15.820233	1	0	tompayan1710@gmail.com	Iphone	+33765594097	pi_3RqH3N2f0HHvMFDt1qWuWNmY
-107	32	84	3	180.00	paid	confirmed	2025-08-05 08:15:22.183646	2025-08-05 08:15:22.183646	2	1	tompayan1710@gmail.com	Payan Tom Manua	+33765594097	pi_3Rse9M2f0HHvMFDt1Vsj2IDH
-63	32	44	1	500.00	paid	confirmed	2025-07-28 10:32:51.21376	2025-07-28 10:32:51.21376	1	0	tompayan1710@gmail.com	Tom Payan	+33765594097	\N
-68	42	51	4	2000.00	paid	confirmed	2025-07-28 12:27:31.733281	2025-07-28 12:27:31.733281	3	1	tompayan1710@gmail.com	C’est quoi tom	+33765584864	\N
-73	32	56	3	1500.00	paid	confirmed	2025-07-28 14:14:37.045485	2025-07-28 14:14:37.045485	2	1	tompayan1710@gmail.com	LacarteClara	+33888888888	\N
-78	32	61	3	1500.00	paid	confirmed	2025-07-28 21:48:00.129304	2025-07-28 21:48:00.129304	2	1	tompayan1710@gmail.com	Carnet	+33765594097	pi_3Rpx1R2f0HHvMFDt0NSXOd8z
-83	41	63	1	60.00	paid	confirmed	2025-07-29 10:16:25.26801	2025-07-29 10:16:25.26801	1	0	clarascipione1@gmail.com	Souris	+33765594097	pi_3Rq8hf2f0HHvMFDt13EIxxyI
-88	41	69	3	597.00	paid	confirmed	2025-07-29 11:01:03.945289	2025-07-29 11:01:03.945289	2	1	tompayan1710@gmail.com	Clés	+33765594097	pi_3Rq9Oz2f0HHvMFDt12cekcl8
-93	41	71	1	199.00	paid	confirmed	2025-07-29 11:22:45.786745	2025-07-29 11:22:45.786745	1	0	tompayan1710@gmail.com	Pause	+33765594097	pi_3Rq9jx2f0HHvMFDt1EeFNEyi
-98	41	77	3	1500.00	paid	confirmed	2025-07-29 18:54:02.266496	2025-07-29 18:54:02.266496	2	1	tompayan1710@gmail.com	Avion	+33765594097	pi_3RqGmd2f0HHvMFDt1BB7uc7r
-103	41	81	3	225.00	paid	confirmed	2025-07-29 19:13:18.759187	2025-07-29 19:13:18.759187	2	1	tompayan1710@gmail.com	Cabriolet	+33765594097	pi_3RqH5N2f0HHvMFDt0LMWnLHB
-34	32	19	6	3000.00	paid	confirmed	2025-07-10 08:45:04.761597	2025-07-10 08:45:04.761597	3	1	\N	\N	\N	\N
-35	32	20	6	3000.00	paid	confirmed	2025-07-10 08:50:50.972323	2025-07-10 08:50:50.972323	3	1	\N	\N	\N	\N
-36	32	21	4	2000.00	paid	confirmed	2025-07-10 08:51:47.694385	2025-07-10 08:51:47.694385	3	1	\N	\N	\N	\N
-37	32	21	4	2000.00	paid	confirmed	2025-07-10 08:52:13.463512	2025-07-10 08:52:13.463512	3	1	\N	\N	\N	\N
-38	32	22	5	2500.00	paid	confirmed	2025-07-10 09:15:19.173118	2025-07-10 09:15:19.173118	3	1	\N	\N	\N	\N
-39	32	23	2	1000.00	paid	confirmed	2025-07-10 09:18:39.40762	2025-07-10 09:18:39.40762	3	1	\N	\N	\N	\N
-40	32	24	1	500.00	paid	confirmed	2025-07-10 11:30:49.962962	2025-07-10 11:30:49.962962	3	1	\N	\N	\N	\N
-41	32	25	2	1000.00	paid	confirmed	2025-07-11 10:10:52.730855	2025-07-11 10:10:52.730855	3	1	\N	\N	\N	\N
-42	32	26	5	2500.00	paid	confirmed	2025-07-11 13:24:14.387202	2025-07-11 13:24:14.387202	3	1	\N	\N	\N	\N
-43	32	27	3	1500.00	paid	confirmed	2025-07-11 13:24:39.798575	2025-07-11 13:24:39.798575	3	1	\N	\N	\N	\N
-44	32	28	6	3000.00	paid	confirmed	2025-07-11 13:24:59.263823	2025-07-11 13:24:59.263823	3	1	\N	\N	\N	\N
-45	32	29	6	210.00	paid	confirmed	2025-07-11 19:20:26.278489	2025-07-11 19:20:26.278489	3	1	\N	\N	\N	\N
-64	32	48	3	1500.00	paid	confirmed	2025-07-28 11:04:19.000958	2025-07-28 11:04:19.000958	2	1	tompayan1710@gmail.com	Tom Payan	+33765594097	\N
-69	32	52	3	1500.00	paid	confirmed	2025-07-28 13:41:59.985403	2025-07-28 13:41:59.985403	2	1	tompayan1710@gmail.com	BigtomClara	+33765594097	\N
-74	32	57	3	1500.00	paid	confirmed	2025-07-28 14:18:56.401283	2025-07-28 14:18:56.401283	2	1	tompayan1710@gmail.com	LECHAT clara	+33777777777	\N
-79	41	62	4	300.00	paid	confirmed	2025-07-29 07:36:48.029109	2025-07-29 07:36:48.029109	4	0	tompayan1710@gmail.com	Stabilot	+33676767676	pi_3Rq6DE2f0HHvMFDt13lvkTdK
-84	41	66	1	199.00	paid	confirmed	2025-07-29 10:19:58.499942	2025-07-29 10:19:58.499942	1	0	clarascipione1@gmail.com	Montre	+33232323232	pi_3Rq8lA2f0HHvMFDt1vJAz4FG
-89	41	69	1	199.00	paid	confirmed	2025-07-29 11:03:02.86171	2025-07-29 11:03:02.86171	1	0	tompayan1710@gmail.com	MarquePage	+33765594097	pi_3Rq9Qs2f0HHvMFDt0KKoOTQD
-94	41	73	3	597.00	paid	confirmed	2025-07-29 11:26:29.387086	2025-07-29 11:26:29.387086	2	1	tompayan1710@gmail.com	PageLivres	+33765594097	pi_3Rq9na2f0HHvMFDt1vic8zLu
-99	41	78	3	225.00	paid	confirmed	2025-07-29 18:57:35.725524	2025-07-29 18:57:35.725524	2	1	tompayan1710@gmail.com	Pc	+33765594097	pi_3RqGq92f0HHvMFDt0jsPmo57
-104	41	82	3	180.00	paid	confirmed	2025-07-29 21:56:36.826965	2025-07-29 21:56:36.826965	2	1	tompayan1710@gmail.com	Aquajet tom	+33765594097	pi_3RqJdK2f0HHvMFDt0e5s787z
-46	32	30	2	1000.00	paid	confirmed	2025-07-11 19:37:35.146882	2025-07-11 19:37:35.146882	3	1	\N	\N	\N	\N
-47	32	31	3	105.00	paid	confirmed	2025-07-12 08:02:41.11307	2025-07-12 08:02:41.11307	3	1	\N	\N	\N	\N
-48	32	32	3	105.00	paid	confirmed	2025-07-12 08:03:02.028147	2025-07-12 08:03:02.028147	3	1	\N	\N	\N	\N
-49	32	33	5	175.00	paid	confirmed	2025-07-12 08:03:23.961446	2025-07-12 08:03:23.961446	3	1	\N	\N	\N	\N
-50	32	34	6	210.00	paid	confirmed	2025-07-12 08:03:40.966863	2025-07-12 08:03:40.966863	3	1	\N	\N	\N	\N
-51	32	35	3	1500.00	paid	confirmed	2025-07-12 08:04:02.408694	2025-07-12 08:04:02.408694	3	1	\N	\N	\N	\N
-52	32	36	5	2500.00	paid	confirmed	2025-07-12 08:04:23.696759	2025-07-12 08:04:23.696759	3	1	\N	\N	\N	\N
-53	32	25	4	2000.00	paid	confirmed	2025-07-12 08:48:51.236175	2025-07-12 08:48:51.236175	3	1	\N	\N	\N	\N
-54	32	37	5	2500.00	paid	confirmed	2025-07-15 15:34:46.881426	2025-07-15 15:34:46.881426	3	1	\N	\N	\N	\N
-55	32	38	3	1500.00	paid	confirmed	2025-07-15 15:35:10.03184	2025-07-15 15:35:10.03184	3	1	\N	\N	\N	\N
-56	32	39	3	2997.00	paid	confirmed	2025-07-17 18:50:06.913252	2025-07-17 18:50:06.913252	3	1	\N	\N	\N	\N
-65	32	49	3	1500.00	paid	confirmed	2025-07-28 11:06:10.934016	2025-07-28 11:06:10.934016	2	1	tompayan1710@gmail.com	Tom Payan	+33765594097	\N
-70	32	53	3	1500.00	paid	confirmed	2025-07-28 13:46:51.575581	2025-07-28 13:46:51.575581	2	1	tompayan1710@gmail.com	Lacarte Céline	+33765594097	\N
-75	32	58	4	2000.00	paid	confirmed	2025-07-28 15:00:37.526333	2025-07-28 15:00:37.526333	3	1	tompayan1710@gmail.com	Stylot	+33444444444	\N
-57	32	40	3	4797.00	paid	confirmed	2025-07-23 16:31:20.363593	2025-07-23 16:31:20.363593	3	1	\N	\N	\N	\N
-58	32	41	3	1500.00	paid	confirmed	2025-07-25 22:50:16.91027	2025-07-25 22:50:16.91027	3	1	\N	\N	\N	\N
-59	41	24	3	1500.00	paid	confirmed	2025-07-25 23:48:06.321012	2025-07-25 23:48:06.321012	3	1	\N	\N	\N	\N
-80	41	63	3	180.00	paid	confirmed	2025-07-29 07:45:30.865783	2025-07-29 07:45:30.865783	2	1	tompayan1710@gmail.com	Barquet	+33898989898	pi_3Rq6Le2f0HHvMFDt1OYrUaZ7
-85	41	66	3	597.00	paid	confirmed	2025-07-29 10:34:53.598556	2025-07-29 10:34:53.598556	2	1	tompayan1710@gmail.com	Pochette	+33765594097	pi_3Rq8ze2f0HHvMFDt1Dsx45SK
-90	41	70	4	796.00	paid	confirmed	2025-07-29 11:05:44.989784	2025-07-29 11:05:44.989784	2	2	tompayan1710@gmail.com	Combat	+33765594097	pi_3Rq9TS2f0HHvMFDt1xZk6d7j
-95	41	74	3	597.00	paid	confirmed	2025-07-29 11:29:19.052571	2025-07-29 11:29:19.052571	2	1	tompayan1710@gmail.com	Ecran	+33765594097	pi_3Rq9qK2f0HHvMFDt0dyJewr8
-100	41	79	3	180.00	paid	confirmed	2025-07-29 19:05:25.489678	2025-07-29 19:05:25.489678	2	1	tompayan1710@gmail.com	Empreinte	+33765594097	pi_3RqGxh2f0HHvMFDt1JWeeWWp
-105	41	72	1	999.00	paid	confirmed	2025-07-29 22:03:21.729018	2025-07-29 22:03:21.729018	1	0	tompayan1710@gmail.com	Tom Payan	+33765594097	pi_3RqJjt2f0HHvMFDt180NJoAs
+COPY public.reservations_individuals (id, user_id, slot_id, total_participants, total_price, payment_status, reservation_status, created_at, updated_at, nb_adult, nb_reduced, email, name, phone, stripe_payment_intent_id, hotel_commission, platform_commission, net_amount, gross_amount) FROM stdin;
+113	32	89	4	140.00	paid	confirmed	2025-08-09 11:17:58.332359	2025-08-09 11:17:58.332359	3	1	tompayan1710@gmail.com	Tom Payan	+33765594097	pi_3Ru8uP2f0HHvMFDt0TtX1yV9	9.80	18.20	112.00	140.00
 \.
 
 
@@ -1594,7 +1456,7 @@ COPY public.users (id, email, password, role, created_at, provider_id, provider,
 --
 
 COPY public.withdrawal_methods (id, provider_id, method, iban, swift, first_name, last_name, paypal_email, created_at) FROM stdin;
-21	5	iban	COORDE	\N	tim	2222	\N	2025-08-08 15:09:29.566883
+22	5	iban	JIJ	\N	Tom	TOM PAYAN	\N	2025-08-08 19:27:26.235613
 \.
 
 
@@ -1602,16 +1464,8 @@ COPY public.withdrawal_methods (id, provider_id, method, iban, swift, first_name
 -- Data for Name: withdrawals; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
-COPY public.withdrawals (id, provider_id, amount, method, details, status, created_at, iban, swift, first_name, last_name, paypal_email) FROM stdin;
-1	5	300.00	virement bancaire	Retrait vers IBAN FR7630006000011234567890189	completed	2025-08-04 13:30:48.970226	\N	\N	\N	\N	\N
-2	5	30000.00	iban	Retrait vers IBAN FR7630006000011234567890189	waiting	2025-08-07 13:28:26.669317	\N	\N	\N	\N	\N
-7	5	500.00	iban	Demande de versement par IBAN 	waiting	2025-08-07 15:31:05.056755	CLARACHIANTAVECTEL	\N	PAYAN	Tom	
-8	5	500.00	iban	Demande de versement par IBAN 	waiting	2025-08-07 15:36:06.033009	CLARACHIANTAVECTEL	\N	PAYAN	Tom	
-9	5	100.00	iban	Demande de versement par IBAN 	waiting	2025-08-07 15:44:25.814183	CLARACHIANTAVECTEL	\N	PAYAN	Tom	
-10	5	2222.00	IBAN	Demande de versement par IBAN 	waiting	2025-08-08 15:11:58.614982	COORDE	\N	\N	2222	
-11	5	1000.00	IBAN	Demande de versement par IBAN 	waiting	2025-08-08 15:34:25.602443	COORDE	\N	tim	2222	
-12	5	999.00	IBAN	Demande de versement par IBAN 	waiting	2025-08-08 15:35:17.94692	COORDE	\N	tim	2222	
-13	5	555.58	IBAN	Demande de versement par IBAN 	waiting	2025-08-08 15:36:15.881282	COORDE	\N	tim	2222	
+COPY public.withdrawals (id, provider_id, amount, method, details, status, created_at, iban, swift, first_name, last_name, paypal_email, sent_at) FROM stdin;
+14	5	100.00	IBAN	Demande de versement par IBAN 	waiting	2025-08-09 11:18:25.168219	JIJ	\N	Tom	TOM PAYAN		\N
 \.
 
 
@@ -1731,7 +1585,7 @@ SELECT pg_catalog.setval('public.refresh_tokens_id_seq', 297, true);
 -- Name: reservation_slots_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
 
-SELECT pg_catalog.setval('public.reservation_slots_id_seq', 84, true);
+SELECT pg_catalog.setval('public.reservation_slots_id_seq', 89, true);
 
 
 --
@@ -1745,7 +1599,7 @@ SELECT pg_catalog.setval('public.reservations_creneaux_google_calendar_id_seq', 
 -- Name: reservations_individuals_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
 
-SELECT pg_catalog.setval('public.reservations_individuals_id_seq', 107, true);
+SELECT pg_catalog.setval('public.reservations_individuals_id_seq', 113, true);
 
 
 --
@@ -1759,14 +1613,14 @@ SELECT pg_catalog.setval('public.users_id_seq', 60, true);
 -- Name: withdrawal_methods_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
 
-SELECT pg_catalog.setval('public.withdrawal_methods_id_seq', 21, true);
+SELECT pg_catalog.setval('public.withdrawal_methods_id_seq', 22, true);
 
 
 --
 -- Name: withdrawals_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
 
-SELECT pg_catalog.setval('public.withdrawals_id_seq', 13, true);
+SELECT pg_catalog.setval('public.withdrawals_id_seq', 14, true);
 
 
 --

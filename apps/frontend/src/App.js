@@ -27,7 +27,7 @@ BEGIN
 END $$;
 */
 
-//Pour envoyer depuis cmd : c
+//Pour envoyer depuis cmd : cd C:\Users\tompa\Documents\LocalSpot\localspot-platform
 // psql "postgresql://localspot_db_user:L9F2Y94DgXgIJmseoNngbbo0Hajqidlr@dpg-d058idc9c44c738g2kt0-a.oregon-postgres.render.com/localspot_db" < viarte_backup.sql
 
 
@@ -46,6 +46,8 @@ export default function App() {
     <LoadScript googleMapsApiKey={process.env.REACT_APP_GOOGLE_MAPS_KEY}   
               loadingElement={<div className="skeleton" style={{ width: "100%", height: "100%" }}></div>}
               libraries={LIBRARIES}
+              language="fr"
+              region="FR"
               >
       <AuthProvider>
         <BrowserRouter>

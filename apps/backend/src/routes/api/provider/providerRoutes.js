@@ -4,7 +4,7 @@ const { sendAdminAlertEmail } = require("../../../utils/email");
 
 const multer = require("multer");
 const { createClient } = require("@supabase/supabase-js");
-const { createProvider, UpdateUserProvider, getProviderById, getProviderByToken } = require("../../../../src/db/Models/ProviderModel");
+const { createProvider, UpdateUserProvider, getProviderById } = require("../../../../src/db/Models/ProviderModel");
 
 const supabase = createClient(
   process.env.SUPABASE_URL,

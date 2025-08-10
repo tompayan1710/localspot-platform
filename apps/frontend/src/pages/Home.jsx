@@ -191,12 +191,24 @@ import WhiteButton from "../components/Buttons/WhiteButton/WhiteButton";
 
 
 
+    const storedId = localStorage.getItem("id_qrcode");
+
+    function goToOffer(slug) {
+      if (storedId) {
+        navigate(`/offer-page/${slug}?id=${storedId}`);
+      } else {
+        navigate(`/offer-page/${slug}`);
+      }
+    }
+
+
+
 
     return (
       <div className={`HomeContainerPrincipal ${isOccultView && "noScroll"}`} ref={offerContainerRef}>
   
         <div className="ViarteIntro">
-          <img src={ViarteV} alt="Viarte Logo"/>
+          <img src={ViarteV} alt="Viarte Logo"  onClick={() => window.location.reload()} />
           <div className="row">
             <div className="vline"></div>
             <img src={ViarteFont} alt="Viarte font"/>
@@ -235,13 +247,13 @@ import WhiteButton from "../components/Buttons/WhiteButton/WhiteButton";
             {
               !loading && homeOffersByCategory.selected_today &&
               <>
-              <FadeInImage src={homeOffersByCategory.selected_today.image_urls[0]} alt="selecting activity" onClick={() => {navigate(`/offer-page/${homeOffersByCategory.selected_today.slug}`);}}/>
+              <FadeInImage src={homeOffersByCategory.selected_today.image_urls[0]} alt="selecting activity" onClick={() => {goToOffer(`${homeOffersByCategory.selected_today.slug}`)}}/>
               <button 
-                onClick={() => {navigate(`/offer-page/${homeOffersByCategory.selected_today.slug}`);}}
+                onClick={() => {goToOffer(`${homeOffersByCategory.selected_today.slug}`);}}
               >
                 <img src={extendIcon} alt="extend Icon"/>
               </button>
-              <div className="InfoOffer row" onClick={() => {navigate(`/offer-page/${homeOffersByCategory.selected_today.slug}`);}}>
+              <div className="InfoOffer row" onClick={() => {goToOffer(`${homeOffersByCategory.selected_today.slug}`);}}>
                 <div className="column">
                   <p className="t5 maxLine">{homeOffersByCategory.selected_today.title}</p>
                   <div className="row adresse">
@@ -263,7 +275,23 @@ import WhiteButton from "../components/Buttons/WhiteButton/WhiteButton";
               <>
               <div className="row">
                 <p className="t32">Ce matin</p>
-                <button>
+                <button onClick={() => {
+                  const now = new Date();
+                  navigate("/searching-page", {
+                    state: {
+                      priceRange: {
+                        min: 25,
+                        max: 3000,
+                      },
+                      date: now.toLocaleDateString('fr-CA'), // ou today si tu veux toujours passer une date
+                      moment: "Matin", // "Matin", "Après-midi", "Soir"
+                      // total_participants: participantAdult + participantReduced,
+                      categories: null, // tableau ex: ["Nautiques", "Bien-être"]
+                      nb_adult: null,
+                      nb_reduced: null
+                    }
+                  });
+                }}>
                   <img src={arrowRight} alt="arrow right icon"/>
                 </button>
               </div> 
@@ -275,7 +303,23 @@ import WhiteButton from "../components/Buttons/WhiteButton/WhiteButton";
               <>
               <div className="row">
                 <p className="t32">Cet après-midi</p>
-                <button>
+                <button onClick={() => {
+                  const now = new Date();
+                  navigate("/searching-page", {
+                    state: {
+                      priceRange: {
+                        min: 25,
+                        max: 3000,
+                      },
+                      date: now.toLocaleDateString('fr-CA'), // ou today si tu veux toujours passer une date
+                      moment: "Après-midi", // "Matin", "Après-midi", "Soir"
+                      // total_participants: participantAdult + participantReduced,
+                      categories: null, // tableau ex: ["Nautiques", "Bien-être"]
+                      nb_adult: null,
+                      nb_reduced: null
+                    }
+                  });
+                }}>
                   <img src={arrowRight} alt="arrow right icon"/>
                 </button>
               </div> 
@@ -286,7 +330,22 @@ import WhiteButton from "../components/Buttons/WhiteButton/WhiteButton";
             <p className="t6">Populaire cet été</p>
             <div className="row">
               <p className="t32">Les plus aimées</p> 
-              <button>
+              <button onClick={() => {
+                  navigate("/searching-page", {
+                    state: {
+                      priceRange: {
+                        min: 25,
+                        max: 3000,
+                      },
+                      date: null, // ou today si tu veux toujours passer une date
+                      moment: null, // "Matin", "Après-midi", "Soir"
+                      // total_participants: participantAdult + participantReduced,
+                      categories: null, // tableau ex: ["Nautiques", "Bien-être"]
+                      nb_adult: null,
+                      nb_reduced: null
+                    }
+                  });
+                }}>
                 <img src={arrowRight} alt="arrow right icon"/>
               </button>
             </div> 
@@ -331,28 +390,49 @@ import WhiteButton from "../components/Buttons/WhiteButton/WhiteButton";
               </>
             }
 
-            <div className="freeConcelation">
+            {/* <div className="freeConcelation">
               <div className="hline"></div>
               <p className="t3">Annulation Gratuite</p>
               <p className="t5">
                   Les prestataires peuvent activer l’annulation gratuite avec un délai minimum.
               </p>
-              {/* <button>
-                <p className="t6">Politique d'annulation</p>
-              </button> */}
               <WhiteButton text={"Politique d'annulation"} onClick={() => {
                 navigate("/cancellation-policy");
               }}/>
               <div className="hline"></div>
+            </div> */}
+
+            <div className="freeConcelation">
+                <div className="hline"></div>
+                  <p className="t3">Annonces vérifiés</p>
+                  <p className="t5">
+                    Chaque activité est proposée par un partenaire local sélectionné et validé par nos équipes.
+                  </p>
+                <div className="hline"></div>
             </div>
 
-
             {
-              homeOffersByCategory.evenning && homeOffersByCategory.evenning.length > 0 &&
+              homeOffersByCategory.evenning && homeOffersByCategory.evenning.length > -10 &&
               <>
               <div className="row">
                 <p className="t32">Sortir ce soir</p>
-                <button>
+                <button onClick={() => {
+                  const now = new Date();
+                  navigate("/searching-page", {
+                    state: {
+                      priceRange: {
+                        min: 25,
+                        max: 3000,
+                      },
+                      date: now.toLocaleDateString('fr-CA'), // ou today si tu veux toujours passer une date
+                      moment: "Soir", // "Matin", "Après-midi", "Soir"
+                      // total_participants: participantAdult + participantReduced,
+                      categories: null, // tableau ex: ["Nautiques", "Bien-être"]
+                      nb_adult: null,
+                      nb_reduced: null
+                    }
+                  });
+                }}>
                   <img src={arrowRight} alt="arrow right icon"/>
                 </button>
               </div> 

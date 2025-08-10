@@ -2,9 +2,8 @@ const express = require("express");
 const router = express.Router();
 const QRCode = require("qrcode");
 const { createClient } = require("@supabase/supabase-js");
-const { v4: uuidv4 } = require("uuid");
 const { getQRCodeById, createQRCode, UpdateQRCode} = require("../../../db/Models/qrCodeModel");
-const { getOfferBySlug } = require("../../../db/Models/offerModel");
+const { createSlugOfferNotExist } = require("../../../db/Models/offerModel");
 
 // Supabase config
 const supabase = createClient(
@@ -14,21 +13,18 @@ const supabase = createClient(
 
 // Créer un QR code
 router.post("/create", async (req, res) => {
-  const { user_id, id_hote, latitude, longitude, adresse } = req.body;
+  const { user_id, id_hote, latitude, longitude, adresse, base_url } = req.body;
 
-  if (!user_id || !id_hote || !latitude || !longitude || !adresse) {
+  if (!user_id || !latitude || !longitude || !adresse) {
     return res.status(400).json({ success: false, message: "Champs manquants." });
   }
 
   try {
-    let slug = uuidv4(); // identifiant unique pour ce QR code
-    while((await getOfferBySlug(slug)).rowCount > 0){
-        slug = uuidv4();
-    }
+    const slug = await createSlugOfferNotExist();
 
     const id_qrcode = await createQRCode(slug, user_id, id_hote, latitude, longitude, adresse)
 
-    const qrContent = `${process.env.FRONTEND_URL}/offer-page/${slug}?id=${id_qrcode}`; // ou ce que tu veux
+    const qrContent = `${base_url ? base_url : process.env.FRONTEND_URL}/offer-page/${slug}?id=${id_qrcode}`; // ou ce que tu veux
 
     const qrBuffer = await QRCode.toBuffer(qrContent);
 

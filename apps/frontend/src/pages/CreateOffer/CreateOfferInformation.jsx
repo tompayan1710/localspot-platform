@@ -26,14 +26,20 @@ export default function CreateOfferInformations(){
 
 
     const {images_urls, city_id, adresse, latitude, longitude, type, categories, 
-        departement, ville,  qrcode_url, slug} =  location.state || {};
+        departement, ville,  
+        // qrcode_url, 
+        slug} =  location.state || {};
         
         
     useEffect(() => {
         console.log("images_urls :", images_urls, "city_id :", city_id, "adresse :",adresse 
             , "latitude :", latitude, "longitude :", longitude, "type :", type, "categories: ", categories, 
-            "departement :", departement, "ville :", ville,  "qrcode_url : ", qrcode_url, "slug :", slug);
-        const missingData = !images_urls || !city_id || !adresse || !latitude || !longitude || !type || !categories || !departement || !ville || !qrcode_url || !slug;
+            "departement :", departement, "ville :", ville,  
+            // "qrcode_url : ", qrcode_url, 
+            "slug :", slug);
+        const missingData = !images_urls || !city_id || !adresse || !latitude || !longitude || !type || !categories || !departement || !ville || 
+        // !qrcode_url || 
+        !slug;
 
         if (missingData) {
             console.warn("⛔️ Données manquantes dans location.state, redirection...");
@@ -132,7 +138,7 @@ export default function CreateOfferInformations(){
             provider_id: authState.user.provider.id, // à récupérer dynamiquement si possible
             pricePer: form.pricePer,
             total_capacity: form.capacite,
-            qrcode_url: qrcode_url,
+            // qrcode_url: qrcode_url,
             slug: slug,
             cancellable: isCancellable
         }; 
@@ -283,10 +289,10 @@ export default function CreateOfferInformations(){
                         <p className="t6">/&nbsp;participants</p>
                     </div>
                     <div className="CancellableContainer">
-                        <label className="t4">Annulation gratuite</label>
-                        <p className="t6">Choisissez si vos clients peuvent annuler gratuitement leur réservation</p>
+                        {/* <label className="t4">Annulation gratuite</label>
+                        <p className="t6">Choisissez si vos clients peuvent annuler gratuitement leur réservation</p> */}
 
-                        <div className="toggle-button-group">
+                        {/* <div className="toggle-button-group">
                             <button
                                 type="button"
                                 className={isCancellable ? "active" : ""}
@@ -302,7 +308,7 @@ export default function CreateOfferInformations(){
                             >
                                 <p className="t6">Non</p>
                             </button>
-                        </div> 
+                        </div>  */}
                     </div>
                     
 

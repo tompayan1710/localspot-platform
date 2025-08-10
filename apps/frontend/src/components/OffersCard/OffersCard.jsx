@@ -4,9 +4,22 @@ import starIcon2 from "../../assets/images/starIcon2.png"
 import demiStarIcon from "../../assets/images/demiStarIcon.png"
 import { useNavigate } from "react-router-dom"
 import FadeInImage from "../Utils/FadeInImage"
+import React from "react"
+
 
 export default function OffersCard({loading, offers, vertical=false}){
   const navigate = useNavigate();
+
+  const storedId = localStorage.getItem("id_qrcode");
+
+
+    function goToOffer(slug) {
+      if (storedId) {
+        navigate(`/offer-page/${slug}?id=${storedId}`);
+      } else {
+        navigate(`/offer-page/${slug}`);
+      }
+    }
 
     return (
         <div className={`HomeListPrestation ${vertical && "vertical"}`}>
@@ -16,18 +29,20 @@ export default function OffersCard({loading, offers, vertical=false}){
                   // const km = getDistanceInKm(hote.lat, hote.lng, offer.lat, offer.lng);
                   // const estimatedWalkTimeMinutes = km * 15; // 4 km/h ≈ 15 min/km
                   return(
+                    <React.Fragment key={index}>
                     <div key={index} className={`HomeListPrestationItem ${!vertical && offers.length> 2 && index === offers.length - 1 ? "flou" : ""}  ${offer.isToday ? "Today1" : ""}`} 
                     onClick={() => {
-                        navigate(`/offer-page/${offer.slug}`, {
+                        goToOffer(`${offer.slug}`, {
                         state: {
                           isAnimation: false,
                         }
                       });
                     }}>
-                      {
+                      {/* {
                         !vertical && offers.length> 2 && index === offers.length - 1 ? <p className="seeMore t32">Voir <strong>+</strong></p> : <></>
-                      }
-                      <div className={`${!vertical && offers.length> 2 && index === offers.length - 1 ? "flou-interne" : ""}`}>
+                      } */}
+                      {/* <div className={`${!vertical && offers.length> 2 && index === offers.length - 1 ? "flou-interne" : ""}`}> */}
+                      <div>
                         <div className="ImageContainer">
                           <FadeInImage src={offer.image_urls[0]} alt="Offer Image" />
                           <div className="shine"></div> {/* Effet de lueur ici */}
@@ -54,7 +69,7 @@ export default function OffersCard({loading, offers, vertical=false}){
                         </div>
                       </div>
                     </div>
-                    
+                    </React.Fragment>
                   )
                 })
                 :
@@ -68,6 +83,30 @@ export default function OffersCard({loading, offers, vertical=false}){
                 </div>
               ))
             }
+
+          {
+            !vertical &&
+            <div className="GoFilterContainer">
+              <button className="GoFilterNull row" onClick={() => {
+                navigate("/searching-page", {
+                  state: {
+                    priceRange: {
+                      min: 25,
+                      max: 3000,
+                    },
+                    date: null, // ou today si tu veux toujours passer une date
+                    moment: null, // "Matin", "Après-midi", "Soir"
+                    // total_participants: participantAdult + participantReduced,
+                    categories: null, // tableau ex: ["Nautiques", "Bien-être"]
+                    nb_adult: null,
+                    nb_reduced: null
+                  }
+                });
+              }}>
+                <p className="t32">Voir&nbsp;<strong>+</strong></p>
+              </button>
+            </div>
+          }
         </div>
     )
 }

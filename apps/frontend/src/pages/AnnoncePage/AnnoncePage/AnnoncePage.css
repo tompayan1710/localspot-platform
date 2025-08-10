@@ -27,8 +27,8 @@
 }
 #AnnoncePage .InfoContainer>.row:first-of-type>p:first-of-type{
   /* width: 25%; */
-  margin-top: 2px;
-  margin-right: 8px;
+  /* margin-top: 2px;
+  margin-right: 8px; */
 }
 #AnnoncePage .InfoContainer > .row:first-of-type > p:last-of-type {
   word-break: break-word;
@@ -40,7 +40,7 @@
 #AnnoncePage .InfoContainer>.row>p:first-of-type{
   /* width: 25%; */
   margin-right: 5px;
-  margin-top: 1.5px;
+  /* margin-top: 1.5px; */
   /* font-weight: bold; */
 }
 #AnnoncePage .InfoContainer .loading{

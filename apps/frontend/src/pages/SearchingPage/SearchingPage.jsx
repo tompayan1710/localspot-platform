@@ -10,13 +10,14 @@ import TopSearchBar from "../../components/SearchBar/TopSearchBar";
 import OffersCard from "../../components/OffersCard/OffersCard";
 import PopUpBottom from "../../components/PopUpBottom/PopUpBottom";
 import FilterElement from "../../components/SearchBar/FilterElement/FilterElement";
-import { useLocation } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import { getFilteredOffers, getAllOffers } from "../../services/offers";
 import Spinner from "../../components/Spinner/Spinner";
 import { linearTheme } from "../../services/themeModifier";
 
 
 export default function SearchingPage(){
+    const navigate = useNavigate();
     const [isOccultView, setIsOccultView] = useState(false);
     const searchBarRef = useRef(null);
 
@@ -128,7 +129,9 @@ const fetchFilteredOffers = async (filteredOption) => {
         <div className="SearchingPage">
             {/* <OffersCard offers={homeOffersByCategory.thisAfternoon} loading={loading}/> */}
             <div className="ViarteIntro">
-                    <img src={ViarteV} alt="Viarte Logo"/>
+                    <img src={ViarteV} alt="Viarte Logo" onClick={() => {
+                        navigate("/")
+                    }}/>
                     <div className="row">
                         <div className="vline"></div>
                         <img src={ViarteFont} alt="Viarte font"/>
@@ -175,7 +178,7 @@ const fetchFilteredOffers = async (filteredOption) => {
                 { suggestions.length > 0 && (
                     <div className="ListOffers">
                         <div id={"Suggestions"}>
-                            <p className="t4">Quelques suggestions :</p>
+                            <p className="t32 bold">Quelques suggestions :</p>
                         </div>
                         <OffersCard offers={suggestions} loading={loadingAll} vertical={true}/>
                     </div>

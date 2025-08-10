@@ -297,6 +297,13 @@ export default function OfferPage() {
     }, []);
 
 
+    useEffect(() => {
+      if (id_qrcode) {
+        localStorage.setItem("id_qrcode", id_qrcode);
+      }
+    }, [id_qrcode]);
+
+
     return (
       <div className="offerContainer" ref={offerContainerRef}>
         <div className={`OfferPageAnimation ${!isAnimation ? "Without" : ""}`} ref={OfferPageAnimationRef}>
@@ -340,7 +347,15 @@ export default function OfferPage() {
               <img src={allImageIcon} alt="copie Icon"/>
             </button>
           </div>
-          <Carrousel isLoading={isLoading}  photos={offer.image_urls}  setNavigationSelected={setNavigationSelected} ref={CarrouselRef} scrollSyncEnabled={scrollSyncEnabled}/>
+          {/* <Carrousel isLoading={isLoading}  photos={offer.image_urls}  setNavigationSelected={setNavigationSelected} ref={CarrouselRef} scrollSyncEnabled={scrollSyncEnabled}/> */}
+          <Carrousel
+            isLoading={isLoading}
+            photos={offer.image_urls || []}
+            setNavigationSelected={setNavigationSelected}
+            ref={CarrouselRef}
+            scrollSyncEnabled={scrollSyncEnabled}
+          />
+
           <div className="pointNavigationContainer">
             {
               Array.isArray(offer.image_urls) &&
@@ -376,19 +391,19 @@ export default function OfferPage() {
 
               <div className="OfferInfoContainer">
                 {
-                  offer.cancellable ?
-                    <div className={`row ${isLoading ? "loading shimmer" : ""}`}>
-                      {isLoading ?
-                        <></>
-                        : 
-                        <>
-                          <img src={validateIcon} alt="validate icon"/>
-                          <p className="t6">Free cancellation</p>
-                        </>
-                      }
-                    </div>
-                    :
-                    <></>
+                  // offer.cancellable ?
+                  //   <div className={`row ${isLoading ? "loading shimmer" : ""}`}>
+                  //     {isLoading ?
+                  //       <></>
+                  //       : 
+                  //       <>
+                  //         <img src={validateIcon} alt="validate icon"/>
+                  //         <p className="t6">Free cancellation</p>
+                  //       </>
+                  //     }
+                  //   </div>
+                  //   :
+                  //   <></>
                 }
                 <div className={`row ${isLoading ? "loading shimmer" : ""}`}>
                   {isLoading ?

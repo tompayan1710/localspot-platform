@@ -13,7 +13,7 @@ export default function ConfirmCreation() {
                     origin: "confirm-creation"
                 }
             });
-        }, 25000)
+        }, 1500)
 
         return () => clearTimeout(timeout) // Nettoyage si le composant est démonté avant les 2.5s
     }, [])

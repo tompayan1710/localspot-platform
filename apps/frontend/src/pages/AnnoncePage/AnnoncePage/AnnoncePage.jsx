@@ -125,29 +125,29 @@ export default function AnnoncePage(){
             </div>
             <div className="InfoContainer">
                 <div className="row">
-                    <p className="t6">Titre&nbsp;:</p>
+                    <p className="t5">Titre&nbsp;:</p>
                     <p className={`OfferTitle t5 ${isLoading ? "loading shimmer" : ""}`}>{isLoading ? "" :offer.title}</p>
                 </div>
                 <div className="row">
-                    <p className="t6">Description&nbsp;:</p>
+                    <p className="t5">Description&nbsp;:</p>
                     <p className={`OfferDescription t5 ${isLoading ? "loading shimmer" : ""}`}>{isLoading ? "" : offer.description}</p>
                 </div>
                 <div className="row">
-                    <p className="t6">Type&nbsp;:</p>
+                    <p className="t5">Type&nbsp;:</p>
                     <p className={`t5 OfferType ${isLoading ? "loading shimmer" : ""}`}>{isLoading ? "" : `${offer.type}`}</p>
                 </div>
                 <div className="row">
-                    <p className="t6">Durée&nbsp;:</p>
+                    <p className="t5">Durée&nbsp;:</p>
                     <p className={`t5 OfferDuree ${isLoading ? "loading shimmer" : ""}`}>{isLoading ? "" : `${offer.duration}`}</p>
                 </div>
                 <div className="row">
-                    <p className="t6">Capacité maximal&nbsp;:</p>
+                    <p className="t5">Capacité maximal&nbsp;:</p>
                     <p className={`t5 OfferDuree ${isLoading ? "loading shimmer" : ""}`}>{isLoading ? "" : `${offer.total_capacity} participant${offer.total_capacity > 1 ? "s" : ""}`}</p>
                 </div>
-                <div className="row">
+                {/* <div className="row">
                     <p className="t6">Annulation gratuite&nbsp;:</p>
                     <p className={`t5 OfferType ${isLoading ? "loading shimmer" : ""}`}>{isLoading ? "" : `${offer.cancellable ? "Oui" : "Non"}`}</p>
-                </div>
+                </div> */}
             </div>
             {/* <div className="hline88"></div> */}
             {/* <div className="CancellableContainer">

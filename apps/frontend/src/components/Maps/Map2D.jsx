@@ -6,6 +6,7 @@ import Map2DPoint from "../../assets/images/Map2DPoint.png";
 import Map2DPin from "../../assets/images/Map2DPin.png";
 import MapLabel from "./MapLabel";
 
+
 import './Map2D.css'
 
 function Map2D({
@@ -19,7 +20,9 @@ function Map2D({
   borderRadius = 40,
   adresseTexte,
   hotes=[],
-  duration
+  duration,
+  onMapClick,
+  cursor
 }) {
 
 
@@ -171,121 +174,171 @@ useEffect(() => {
 
 
 // src/components/Map2D/Map2D.jsx (mapOptions uniquement)
+// const mapOptions = {
+//   disableDefaultUI: true,
+//   styles: [
+//     // Fond très clair
+//     { elementType: "geometry", stylers: [{ color: "#f7f7f7" }] },
+//     { elementType: "labels.text.fill", stylers: [{ color: "#6E6E6E" }] },
+
+//     // Eau en bleu pastel
+//     {
+//       featureType: "water",
+//       elementType: "geometry",
+//       stylers: [{ color: "#92CAFF" }],
+//     },
+//     {
+//       featureType: "water",
+//       elementType: "labels.text.fill",
+//       stylers: [{ color: "#4a6fa5" }],
+//     },
+
+//     // Parcs et végétation en vert un peu plus soutenu
+//     {
+//       featureType: "poi.park",
+//       elementType: "geometry.fill",
+//       stylers: [{ color: "#b5d8a2" }],  // légèrement plus foncé
+//     },
+//     {
+//       featureType: "poi.park",
+//       elementType: "labels.text.fill",
+//       stylers: [{ color: "#3e653e" }],
+//     },
+
+//     // Cacher tous les autres points d’intérêt (commerces, restos…)
+//     {
+//       featureType: "poi",
+//       elementType: "labels.icon",
+//       stylers: [{ visibility: "off" }],
+//     },
+//     {
+//       featureType: "poi.business",
+//       elementType: "all",
+//       stylers: [{ visibility: "off" }],
+//     },
+//     {
+//       featureType: "poi.attraction",
+//       elementType: "all",
+//       stylers: [{ visibility: "off" }],
+//     },
+//     {
+//       featureType: "poi.government",
+//       elementType: "all",
+//       stylers: [{ visibility: "off" }],
+//     },
+//     {
+//       featureType: "poi.medical",
+//       elementType: "all",
+//       stylers: [{ visibility: "off" }],
+//     },
+//     {
+//       featureType: "poi.school",
+//       elementType: "all",
+//       stylers: [{ visibility: "off" }],
+//     },
+
+//     // Routes principales en blanc, contours gris clair
+//     {
+//       featureType: "road",
+//       elementType: "geometry",
+//       stylers: [{ color: "#ffffff" }],
+//     },
+//     {
+//       featureType: "road",
+//       elementType: "geometry.stroke",
+//       stylers: [{ color: "#e5e5e5" }],
+//     },
+//     {
+//       featureType: "road.highway",
+//       elementType: "geometry.fill",
+//       stylers: [{ color: "#ffeaa7" }],
+//     },
+//     {
+//       featureType: "road.highway",
+//       elementType: "labels.text.fill",
+//       stylers: [{ color: "#7f5900" }],
+//     },
+//     {
+//       featureType: "road.local",
+//       elementType: "labels.text.fill",
+//       stylers: [{ color: "#9e9e9e" }],
+//     },
+
+//     // Bâtiments et parcelles en gris très clair
+//     {
+//       featureType: "administrative.land_parcel",
+//       elementType: "geometry.fill",
+//       stylers: [{ color: "#ececec" }],
+//     },
+//     {
+//       featureType: "landscape.man_made",
+//       elementType: "geometry.fill",
+//       stylers: [{ color: "#e9e9e9" }],
+//     },
+
+//     // Transit discret
+//     {
+//       featureType: "transit.line",
+//       elementType: "geometry",
+//       stylers: [{ color: "#e2e2e2" }],
+//     },
+//     {
+//       featureType: "transit.station",
+//       elementType: "geometry",
+//       stylers: [{ color: "#f0f0f0" }],
+//     },
+//   ],
+// };
 const mapOptions = {
   disableDefaultUI: true,
+  gestureHandling: "greedy",
+  backgroundColor: "#FFFFFF",
   styles: [
-    // Fond très clair
-    { elementType: "geometry", stylers: [{ color: "#f7f7f7" }] },
-    { elementType: "labels.text.fill", stylers: [{ color: "#6E6E6E" }] },
+    // Fond clair et neutre
+    { elementType: "geometry", stylers: [{ color: "#f8f8f8" }] },
+    { elementType: "labels.icon", stylers: [{ visibility: "off" }] },
+    { elementType: "labels.text.fill", stylers: [{ color: "#2E3A43" }] },
+    { elementType: "labels.text.stroke", stylers: [{ color: "#FFFFFF" }, { weight: 2 }] },
 
-    // Eau en bleu pastel
-    {
-      featureType: "water",
-      elementType: "geometry",
-      stylers: [{ color: "#92CAFF" }],
-    },
-    {
-      featureType: "water",
-      elementType: "labels.text.fill",
-      stylers: [{ color: "#4a6fa5" }],
-    },
+    // Eau – bleu élégant et doux
+    { featureType: "water", elementType: "geometry",
+      stylers: [{ color: "#A4D4FF" }] },
 
-    // Parcs et végétation en vert un peu plus soutenu
-    {
-      featureType: "poi.park",
-      elementType: "geometry.fill",
-      stylers: [{ color: "#b5d8a2" }],  // légèrement plus foncé
-    },
-    {
-      featureType: "poi.park",
-      elementType: "labels.text.fill",
-      stylers: [{ color: "#3e653e" }],
-    },
+    // Végétation – vert frais mais pas criard
+    { featureType: "landscape.natural", elementType: "geometry.fill",
+      stylers: [{ color: "#CDE8B2" }] },
+    { featureType: "poi.park", elementType: "geometry.fill",
+      stylers: [{ color: "#B5E3A1" }] },
 
-    // Cacher tous les autres points d’intérêt (commerces, restos…)
-    {
-      featureType: "poi",
-      elementType: "labels.icon",
-      stylers: [{ visibility: "off" }],
-    },
-    {
-      featureType: "poi.business",
-      elementType: "all",
-      stylers: [{ visibility: "off" }],
-    },
-    {
-      featureType: "poi.attraction",
-      elementType: "all",
-      stylers: [{ visibility: "off" }],
-    },
-    {
-      featureType: "poi.government",
-      elementType: "all",
-      stylers: [{ visibility: "off" }],
-    },
-    {
-      featureType: "poi.medical",
-      elementType: "all",
-      stylers: [{ visibility: "off" }],
-    },
-    {
-      featureType: "poi.school",
-      elementType: "all",
-      stylers: [{ visibility: "off" }],
-    },
+    // Zones construites – gris clair pour contraste
+    { featureType: "landscape.man_made", elementType: "geometry",
+      stylers: [{ color: "#E5E5E5" }] },
 
-    // Routes principales en blanc, contours gris clair
-    {
-      featureType: "road",
-      elementType: "geometry",
-      stylers: [{ color: "#ffffff" }],
-    },
-    {
-      featureType: "road",
-      elementType: "geometry.stroke",
-      stylers: [{ color: "#e5e5e5" }],
-    },
-    {
-      featureType: "road.highway",
-      elementType: "geometry.fill",
-      stylers: [{ color: "#ffeaa7" }],
-    },
-    {
-      featureType: "road.highway",
-      elementType: "labels.text.fill",
-      stylers: [{ color: "#7f5900" }],
-    },
-    {
-      featureType: "road.local",
-      elementType: "labels.text.fill",
-      stylers: [{ color: "#9e9e9e" }],
-    },
+    // Routes principales
+    { featureType: "road", elementType: "geometry",
+      stylers: [{ color: "#FFFFFF" }] },
+    { featureType: "road", elementType: "geometry.stroke",
+      stylers: [{ color: "#D6D6D6" }] },
 
-    // Bâtiments et parcelles en gris très clair
-    {
-      featureType: "administrative.land_parcel",
-      elementType: "geometry.fill",
-      stylers: [{ color: "#ececec" }],
-    },
-    {
-      featureType: "landscape.man_made",
-      elementType: "geometry.fill",
-      stylers: [{ color: "#e9e9e9" }],
-    },
+    // Routes secondaires – petit ton pastel pour plus de vie
+    { featureType: "road.arterial", elementType: "geometry",
+      stylers: [{ color: "#FFF6CC" }] },  
+    { featureType: "road.highway", elementType: "geometry",
+      stylers: [{ color: "#FFE1A6" }] },  
+    { featureType: "road.local", elementType: "labels.text.fill",
+      stylers: [{ color: "#6E6E6E" }] },
 
-    // Transit discret
-    {
-      featureType: "transit.line",
-      elementType: "geometry",
-      stylers: [{ color: "#e2e2e2" }],
-    },
-    {
-      featureType: "transit.station",
-      elementType: "geometry",
-      stylers: [{ color: "#f0f0f0" }],
-    },
+    // Supprimer POI inutiles
+    { featureType: "poi.business", stylers: [{ visibility: "off" }] },
+    { featureType: "poi.medical",  stylers: [{ visibility: "off" }] },
+    { featureType: "poi.school",   stylers: [{ visibility: "off" }] },
+
+    // Transport en gris clair
+    { featureType: "transit.line", elementType: "geometry",
+      stylers: [{ color: "#E2E6EB" }] }
   ],
 };
+
 
 console.log("Directions générées :", allDirections);
 
@@ -304,7 +357,14 @@ console.log("Directions générées :", allDirections);
         onLoad={handleLoad}
         options={mapOptions} 
         // onLoad={(map) => (mapRef.current = map)}
-
+        onClick={(e) => {
+          if (!onMapClick) return;
+          const lat = e.latLng?.lat();
+          const lng = e.latLng?.lng();
+          if (typeof lat === "number" && typeof lng === "number") {
+            onMapClick({ lat, lng });
+          }
+        }}
 
       //onDragEnd={handleCenter}
       // center={position}
@@ -411,8 +471,8 @@ console.log("Directions générées :", allDirections);
         <>
           <MapLabel map={mapRef.current} position={destination}>
             <div className="MapHotelContainer">
-              <p className="t32">my </p>
-              <p className="t4">Hotel</p>
+              <p className="t4">Mon </p>
+              <p className="t4">Hôtel</p>
             </div>
           </MapLabel>
           {/* <MapLabel map={mapRef.current} position={center}>

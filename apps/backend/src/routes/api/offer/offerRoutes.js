@@ -1,7 +1,7 @@
 const express = require("express");
 const router = express.Router();
 
-const { createOffer, getAllOffers, getOfferBySlug, getOffersProvider } = require("../../../db/Models/offerModel");
+const { createOffer, getAllOffers, getOfferBySlug, getOffersProvider, createSlugOfferNotExist } = require("../../../db/Models/offerModel");
 const { findOrCreateCityByName } = require("../../../db/Models/AdresseModel");
 const { toggleFavorite, isFavorite } = require("../../../db/Models/FavoritesModel");
 
@@ -26,7 +26,7 @@ router.post("/create", async (req, res) => {
     provider_id,
     pricePer,
     total_capacity,
-    qrcode_url,
+    // qrcode_url,
     slug,
     cancellable
   } = req.body;
@@ -48,7 +48,7 @@ router.post("/create", async (req, res) => {
     "provider_id",provider_id,
     "pricePer",pricePer,
     "total_capacity", total_capacity,
-    "qrcode_url", qrcode_url,
+    // "qrcode_url", qrcode_url,
     "slug", slug,
     "cancellable", cancellable
   );
@@ -80,7 +80,7 @@ router.post("/create", async (req, res) => {
     provider_id,
     pricePer,
     total_capacity,
-    qrcode_url,
+    // qrcode_url,
     slug,
     cancellable);
 
@@ -101,7 +101,7 @@ router.post("/create", async (req, res) => {
       provider_id,
       pricePer,
       total_capacity,
-      qrcode_url,
+      // qrcode_url,
       slug,
       cancellable 
     });
@@ -156,6 +156,19 @@ router.get("/get", async (req, res) => {
   }
 });
 
+
+router.get("/create-slug", async (req, res) => {
+  try {
+    const slug = await createSlugOfferNotExist();
+    if (!slug) {
+      return res.status(404).json({ success: false, error: "Impossible de générer un slug" });
+    }
+    res.json({ success: true, slug: slug});
+  } catch (err) {
+    console.error("Erreur /create-slug :", err);
+    res.status(500).json({ success: false, error: "Erreur serveur" });
+  }
+});
 
 
 

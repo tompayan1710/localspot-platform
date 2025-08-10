@@ -352,7 +352,9 @@ animation: slideUpHome 0.8s ease forwards;
   text-align: center;
 }
 
-
+.ViarteIntro>img{
+  cursor: pointer;
+}
 
 
 .freeConcelation{

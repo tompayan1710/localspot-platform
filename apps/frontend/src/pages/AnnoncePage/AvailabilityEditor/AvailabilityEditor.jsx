@@ -306,6 +306,17 @@ export default function AvailabilityEditor(){
         }, 1000)
     },[]);
 
+
+    const frechDay = {
+        monday: "Lundi", 
+        tuesday: "Mardi",
+        wednesday: "Mercredi",
+        thursday: "Jeudi", 
+        friday: "Vendredi", 
+        saturday: "Samedi",
+        sunday: "Dimanche"
+    }
+
     return (
         <div className="AvailabilityEditor">
             <div className="TopDivOpacity"></div>
@@ -353,7 +364,7 @@ export default function AvailabilityEditor(){
                     Object.entries(availability).map(([day, slots]) => (
                         <div key={day} className={`DayContainer ${isOpen[day] ? "open" : ""}`}>
                         <div className="row">
-                            <p className="t5">{day.toUpperCase()}</p>
+                            <p className="t5">{frechDay[day].toUpperCase()}</p>
                             <button className="switch" onClick={() => {
                             setIsOpen((prev) => ({
                                 ...prev,
@@ -382,7 +393,7 @@ export default function AvailabilityEditor(){
                                 className="row" 
                                 key={slot.id}
                             >
-                                <p className="t5">From</p>
+                                <p className="t5">De</p>
                                 <TimeOnlyPicker
                                 updateAvailability={updateAvailability}
                                 day={day}
@@ -392,7 +403,7 @@ export default function AvailabilityEditor(){
                                 hour={parseInt(slot.from.split(":")[0])}
                                 minute={parseInt(slot.from.split(":")[1])}
                                 />                  
-                                <p className="t5">to</p>
+                                <p className="t5">à</p>
                                 <TimeOnlyPicker
                                 updateAvailability={updateAvailability}
                                 day={day}

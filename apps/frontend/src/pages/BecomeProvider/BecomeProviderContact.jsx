@@ -95,7 +95,8 @@ export default function BecomeProviderAddContact() {
       if(result.success){
         console.log("✅ Prestataire enregistré :", result);
       }
-      navigate("/profile");
+      window.location.href = "/profile";
+      // navigate("/profile");
     } catch (error) {
       console.error("Erreur API :", error);
     }

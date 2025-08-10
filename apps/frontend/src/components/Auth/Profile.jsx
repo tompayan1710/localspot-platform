@@ -78,10 +78,10 @@ export default function Profile() {
     setLoading(false);
   }
 
-  useEffect(() => {
-    console.error("Provider Info");
-    console.error(providerInfo);
-  }, [providerInfo])
+  // useEffect(() => {
+  //   console.error("Provider Info");
+  //   console.error(providerInfo);
+  // }, [providerInfo])
   
   useEffect(() => {
         const queryParams = new URLSearchParams(window.location.search);

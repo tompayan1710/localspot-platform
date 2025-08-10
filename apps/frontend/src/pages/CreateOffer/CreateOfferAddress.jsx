@@ -4,6 +4,7 @@ import crossiconBlack from "../../assets/images/crossiconBlack.png"
 import arrowLeft from "../../assets/images/arrowLeft.png"
 import plusicon from "../../assets/images/plusicon.png"
 import trashicon from "../../assets/images/trashicon.png"
+import ClickIcon from "../../assets/images/ClickIcon.png"
 import galleryPhotosIcon from "../../assets/images/galleryPhotosIcon.png"
 import { useNavigate } from "react-router-dom"
 import { useRef, useState, useEffect } from "react";
@@ -52,62 +53,217 @@ export default function CreateOfferAddress(){
   });
 
   // Charger l'autocomplete Google Maps
-  useEffect(() => {
-      console.warn(type, categories);
+  // useEffect(() => {
+  //     console.warn(type, categories);
 
-      console.log("Offre sélectionnée :", type, categories);
-    if (!window.google) return;
+  //     console.log("Offre sélectionnée :", type, categories);
+  //   if (!window.google) return;
 
-    // const autocomplete = new window.google.maps.places.Autocomplete(adresseRef.current, {
-    //   types: ["geocode"],
-    //   componentRestrictions: { country: "fr" },
-    // });
-    const autocomplete = new window.google.maps.places.Autocomplete(adresseRef.current, {
+  //   // const autocomplete = new window.google.maps.places.Autocomplete(adresseRef.current, {
+  //   //   types: ["geocode"],
+  //   //   componentRestrictions: { country: "fr" },
+  //   // });
+  //   const autocomplete = new window.google.maps.places.Autocomplete(adresseRef.current, {
+  //     componentRestrictions: { country: "fr" },
+  //   });
+
+
+  //   autocomplete.addListener("place_changed", () => {
+  //     const place = autocomplete.getPlace();
+  //     if (!place.geometry) return alert("Aucune position trouvée.");
+  //     const lat = place.geometry.location.lat();
+  //     const lng = place.geometry.location.lng();
+
+  //     const components = place.address_components;
+
+  //     const getComponent = (types) => {
+  //       const comp = components.find(c => types.every(t => c.types.includes(t)));
+  //       return comp ? comp.long_name : "";
+  //     };
+
+  //     const ville = getComponent(["locality"]) || getComponent(["postal_town"]);
+  //     var departement = getComponent(["administrative_area_level_2"]) || getComponent(["administrative_area_level_1"]);;
+  //     //const region = getComponent(["administrative_area_level_1"]); // souvent la région
+  //     //const pays = getComponent(["country"]);
+
+  //     console.log("Ville :", ville);
+  //     console.log("Département :", departement);
+  //     if(!departement){
+  //       departement= "default";
+  //     }
+  //     const codePostal = getComponent(["postal_code"]) || "";
+
+  //     console.log("codePostal :", codePostal);
+  //     //console.log("Région :", region);
+  //     //console.log("Pays :", pays);
+
+
+  //     setFormData((prev) => ({
+  //       ...prev,
+  //       adresse: place.formatted_address,
+  //       latitude: lat,
+  //       longitude: lng,
+  //       isOk: true,
+  //       departement: departement,
+  //       ville: ville,
+  //     }));
+  //   });
+  // }, []);
+
+
+
+useEffect(() => {
+  if (!adresseRef.current) return;
+
+  let autocomplete;
+  let listener;
+  let cancelled = false;
+
+  const init = () => {
+    if (cancelled) return;
+    if (!window.google?.maps?.places) {
+      // Maps pas encore prêt → on réessaie un poil plus tard
+      setTimeout(init, 50);
+      return;
+    }
+
+    autocomplete = new window.google.maps.places.Autocomplete(adresseRef.current, {
       componentRestrictions: { country: "fr" },
+      fields: ["formatted_address", "geometry", "address_components", "place_id"],
     });
 
+    const franceBounds = new window.google.maps.LatLngBounds(
+      new window.google.maps.LatLng(41.2632, -5.142222),
+      new window.google.maps.LatLng(51.0890, 9.561556)
+    );
+    autocomplete.setBounds(franceBounds);
+    autocomplete.setOptions({ strictBounds: false });
 
-    autocomplete.addListener("place_changed", () => {
-      const place = autocomplete.getPlace();
-      if (!place.geometry) return alert("Aucune position trouvée.");
-      const lat = place.geometry.location.lat();
-      const lng = place.geometry.location.lng();
+    const placesService = new window.google.maps.places.PlacesService(document.createElement("div"));
+    const geocoder = new window.google.maps.Geocoder();
 
-      const components = place.address_components;
-
-      const getComponent = (types) => {
-        const comp = components.find(c => types.every(t => c.types.includes(t)));
-        return comp ? comp.long_name : "";
+    const fillFromPlace = (p) => {
+      const lat = p.geometry.location.lat();
+      const lng = p.geometry.location.lng();
+      const comps = p.address_components || [];
+      const get = (types) => {
+        const c = comps.find(c => types.every(t => c.types.includes(t)));
+        return c ? c.long_name : "";
       };
+      const ville = get(["locality"]) || get(["postal_town"]) || get(["administrative_area_level_2"]);
+      let departement = get(["administrative_area_level_2"]) || get(["administrative_area_level_1"]) || "default";
 
-      const ville = getComponent(["locality"]) || getComponent(["postal_town"]);
-      var departement = getComponent(["administrative_area_level_2"]) || getComponent(["administrative_area_level_1"]);;
-      //const region = getComponent(["administrative_area_level_1"]); // souvent la région
-      //const pays = getComponent(["country"]);
-
-      console.log("Ville :", ville);
-      console.log("Département :", departement);
-      if(!departement){
-        departement= "default";
-      }
-      const codePostal = getComponent(["postal_code"]) || "";
-
-      console.log("codePostal :", codePostal);
-      //console.log("Région :", region);
-      //console.log("Pays :", pays);
-
-
-      setFormData((prev) => ({
+      setFormData(prev => ({
         ...prev,
-        adresse: place.formatted_address,
+        adresse: p.formatted_address || prev.adresse,
         latitude: lat,
         longitude: lng,
         isOk: true,
-        departement: departement,
-        ville: ville,
+        departement,
+        ville,
       }));
-    });
+      setErrorSelected("");
+    };
+
+    const onPlaceChanged = async () => {
+      const place = autocomplete.getPlace();
+
+      if (place?.geometry) return fillFromPlace(place);
+
+      if (place?.place_id) {
+        await new Promise((resolve) => {
+          placesService.getDetails(
+            { placeId: place.place_id, fields: ["formatted_address","geometry","address_components"] },
+            (detail, status) => {
+              if (status === window.google.maps.places.PlacesServiceStatus.OK && detail?.geometry) {
+                fillFromPlace(detail);
+              } else {
+                geocoder.geocode({ address: adresseRef.current.value, region: "fr" }, (results, st) => {
+                  if (st === "OK" && results?.[0]?.geometry) fillFromPlace(results[0]);
+                  else setErrorSelected("Adresse introuvable. Cliquez sur la carte pour pointer l’emplacement.");
+                });
+              }
+              resolve();
+            }
+          );
+        });
+        return;
+      }
+
+      geocoder.geocode({ address: adresseRef.current.value, region: "fr" }, (results, st) => {
+        if (st === "OK" && results?.[0]?.geometry) fillFromPlace(results[0]);
+        else setErrorSelected("Adresse introuvable. Cliquez sur la carte pour pointer l’emplacement.");
+      });
+    };
+
+    listener = autocomplete.addListener("place_changed", onPlaceChanged);
+  };
+
+  init();
+
+  return () => {
+    cancelled = true;
+    if (listener) window.google?.maps?.event?.removeListener(listener);
+  };
+}, [adresseRef]);
+
+
+
+
+  const geocoderRef = useRef(null);
+
+  useEffect(() => {
+    let cancelled = false;
+    let t;
+
+    const init = () => {
+      if (cancelled) return;
+      if (window.google?.maps && !geocoderRef.current) {
+        geocoderRef.current = new window.google.maps.Geocoder();
+        return;
+      }
+      t = setTimeout(init, 50);
+    };
+
+    init();
+    return () => { cancelled = true; if (t) clearTimeout(t); };
   }, []);
+
+
+
+
+  const handleMapClick = ({ lat, lng }) => {
+    if (!geocoderRef.current) return;
+    geocoderRef.current.geocode({ location: { lat, lng } }, (results, status) => {
+      if (status === "OK" && results?.[0]) {
+        const r = results[0];
+        const comps = r.address_components || [];
+        const get = (types) => {
+          const c = comps.find(c => types.every(t => c.types.includes(t)));
+          return c ? c.long_name : "";
+        };
+        const ville = get(["locality"]) || get(["postal_town"]) || get(["administrative_area_level_2"]);
+        let departement = get(["administrative_area_level_2"]) || get(["administrative_area_level_1"]) || "default";
+
+        setFormData(prev => ({
+          ...prev,
+          adresse: r.formatted_address,
+          latitude: lat,
+          longitude: lng,
+          isOk: true,
+          departement,
+          ville,
+        }));
+        setErrorSelected("");
+      } else {
+        // Même si l’adresse textuelle échoue, on garde les coords
+        setFormData(prev => ({ ...prev, latitude: lat, longitude: lng, isOk: true }));
+        setErrorSelected("Adresse non trouvée, mais position enregistrée. Vous pouvez continuer.");
+      }
+    });
+  };
+
+
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -235,27 +391,41 @@ export default function CreateOfferAddress(){
       }
 
 
-      console.log("QRCODE user ID: ", authState.user.id);
-     const qrRes = await fetch(`${process.env.REACT_APP_API_URL}/api/qrcode/create`, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          // id_hote: authState.user.id, // à récupérer dynamiquement si possible
-          user_id: authState.user.id,
-          id_hote: 2,//Arbitraire pour l'instant
-          latitude: formData.latitude,
-          longitude: formData.longitude,
-          adresse: formData.adresse,
-        }),
+    //   console.log("QRCODE user ID: ", authState.user.id);
+    //  const qrRes = await fetch(`${process.env.REACT_APP_API_URL}/api/qrcode/create`, {
+    //     method: "POST",
+    //     headers: { "Content-Type": "application/json" },
+    //     body: JSON.stringify({
+    //       // id_hote: authState.user.id, // à récupérer dynamiquement si possible
+    //       user_id: authState.user.id,
+    //       id_hote: null,//Arbitraire pour l'instant
+    //       latitude: formData.latitude,
+    //       longitude: formData.longitude,
+    //       adresse: formData.adresse,
+    //     }),
+    //   });
+
+    //   const qrData = await qrRes.json();
+
+    //   if (qrData.success) {
+    //     console.log("✅ QR code généré :", qrData.qrImageUrl);
+    //     // Tu peux passer cette URL à la page suivante si tu veux
+    //   } else {
+    //     console.error("❌ Erreur QR :", qrData.message);
+    //   }
+
+     console.log("Création du slug: ", authState.user.id);
+     const slugRes = await fetch(`${process.env.REACT_APP_API_URL}/api/offer/create-slug`, {
+        method: "GET",
       });
 
-      const qrData = await qrRes.json();
+      const resultSlug = await slugRes.json();
 
-      if (qrData.success) {
-        console.log("✅ QR code généré :", qrData.qrImageUrl);
+      if (resultSlug.success) {
+        console.log("✅ Slug généré :", resultSlug.slug);
         // Tu peux passer cette URL à la page suivante si tu veux
       } else {
-        console.error("❌ Erreur QR :", qrData.message);
+        console.error("❌ Erreur Génération Slug :", resultSlug.message);
       }
 
 
@@ -290,8 +460,8 @@ export default function CreateOfferAddress(){
             categories: categories,
             departement: formData.departement,
             ville: formData.ville,  
-            qrcode_url: qrData.qrImageUrl,
-            slug: qrData.slug,
+            // qrcode_url: qrData.qrImageUrl,
+            slug: resultSlug.slug,
           },
       });
   setIsLoading(false); 
@@ -334,7 +504,6 @@ export default function CreateOfferAddress(){
     }, [selectedFiles]);
 
 
-
     return (
         <div className="CreateOfferContainerAll" ref={refContainerAll}>
             <button className="CloseButton" onClick={() => navigate(-2)}><img src={crossiconBlack} alt="cross icon"/></button>
@@ -345,13 +514,23 @@ export default function CreateOfferAddress(){
             </button>
             <div className="TopDivOpacity"></div>
             <div className="CreateOfferPage2" ref={refCreateOfferPage2}>
-                <p className="t32">Saisisez l'adresse de votre offre&nbsp;!</p>
+                <p className="t32">Saisissez l'adresse de votre offre&nbsp;!</p>
+                <div className="OuRow row">
+                  <div></div>
+                  <p className="t4">ou</p>
+                  <div></div>
+                </div>
+                <div className="row clickIconRow">
+                  <img src={ClickIcon} alt="Click icon"/><p className="t32">cliquez sur la carte</p>
+                </div>
                 <p className="t6">Cette adresse sera visible par les voyageurs, veillez à ce qu’elle soit exacte.</p>
                 <div className="CreateOfferMapContainer">
                   <Map2D
                       borderRadius={20}
                       zoom={15}
-                      center={{ lat: formData.latitude, lng: formData.longitude}}/>
+                      center={{ lat: formData.latitude, lng: formData.longitude}}
+                      onMapClick={handleMapClick}
+                  />
                 </div>
                   <input
                     type="text"
@@ -359,6 +538,7 @@ export default function CreateOfferAddress(){
                     name="adresse"
                     value={formData.adresse}
                     onChange={handleChange}
+                    autoComplete="off"
                     required
                   />
                   {/* <p>{errorMessage}</p> */}

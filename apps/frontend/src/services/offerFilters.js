@@ -71,7 +71,7 @@ export function classifyOffers(offers, userLocation = null) {
 
   const isBeforEndMorning = hour < 11 || (hour === 11 && minutes < 30);
   const isBeforEndAfternoon = hour < 17 || (hour === 17 && minutes < 30);
-  const isBeforEndEvening = hour < 23 || (hour === 23 && minutes < 30);
+  const isBeforEndEvening = hour > 18 || hour < 3;
  
   for (const offer of sortedOffers) {
     if (isBeforEndMorning && offer.isMorning && !usedSlugs.has(offer.slug)) {
@@ -109,10 +109,10 @@ export function classifyOffers(offers, userLocation = null) {
   
 
   // Toutes les offres restantes (pas encore utilisées)
-  const nonAdd = sortedOffers.filter(o => !usedSlugs.has(o.slug)).slice(0, 5);
+  const nonAdd = sortedOffers.filter(o => !usedSlugs.has(o.slug));
   const selected_today = nonAdd[0];
-  const popular = nonAdd.slice(1, 4);
-  const all_remaining = nonAdd.slice(4);
+  const popular = nonAdd.slice(1, 5);
+  const all_remaining = nonAdd.slice(5);
 
   
   return {

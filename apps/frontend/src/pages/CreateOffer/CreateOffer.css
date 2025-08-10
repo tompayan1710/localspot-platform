@@ -1245,3 +1245,26 @@ input[type=number] {
   width: 90%;
   text-align: center;
 }
+
+
+
+.OuRow{
+  gap: 5px;
+  align-items: center;
+  justify-content: center;
+}
+.OuRow>div{
+  height: 1px;
+  width: 4rem;
+  border: 10px;
+  margin-top: 3px;
+  background-color: var(--greysemidark);
+}
+
+.clickIconRow{
+  margin-bottom: 10px;
+}
+.clickIconRow>img{
+  height: 1.5rem;
+  margin-right: 4px;
+}
