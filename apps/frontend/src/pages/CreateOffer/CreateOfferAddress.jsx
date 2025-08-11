@@ -4,7 +4,7 @@ import crossiconBlack from "../../assets/images/crossiconBlack.png"
 import arrowLeft from "../../assets/images/arrowLeft.png"
 import plusicon from "../../assets/images/plusicon.png"
 import trashicon from "../../assets/images/trashicon.png"
-import ClickIcon from "../../assets/images/ClickIcon.png"
+import clickicon from "../../assets/images/clickicon.png"
 import galleryPhotosIcon from "../../assets/images/galleryPhotosIcon.png"
 import { useNavigate } from "react-router-dom"
 import { useRef, useState, useEffect } from "react";
@@ -521,7 +521,7 @@ useEffect(() => {
                   <div></div>
                 </div>
                 <div className="row clickIconRow">
-                  <img src={ClickIcon} alt="Click icon"/><p className="t32">cliquez sur la carte</p>
+                  <img src={clickicon} alt="Click icon"/><p className="t32">cliquez sur la carte</p>
                 </div>
                 <p className="t6">Cette adresse sera visible par les voyageurs, veillez à ce qu’elle soit exacte.</p>
                 <div className="CreateOfferMapContainer">

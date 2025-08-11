@@ -13,14 +13,14 @@ const supabase = createClient(
 
 // Créer un QR code
 router.post("/create", async (req, res) => {
-  const { user_id, id_hote, latitude, longitude, adresse, base_url } = req.body;
+  const { slug, user_id, id_hote, latitude, longitude, adresse, base_url } = req.body;
 
   if (!user_id || !latitude || !longitude || !adresse) {
     return res.status(400).json({ success: false, message: "Champs manquants." });
   }
 
   try {
-    const slug = await createSlugOfferNotExist();
+    // const slug = await createSlugOfferNotExist();
 
     const id_qrcode = await createQRCode(slug, user_id, id_hote, latitude, longitude, adresse)
 

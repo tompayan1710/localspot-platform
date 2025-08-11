@@ -1084,6 +1084,8 @@ COPY public.cities (id, name, department_id) FROM stdin;
 23	Monaco	21
 24	Cannes	20
 25	Saint-Jean-Cap-Ferrat	20
+26	Cabris	20
+27	Mons	22
 \.
 
 
@@ -1102,6 +1104,7 @@ COPY public.comments (id, user_id, offer_slug, reservation_id, rating, comment, 
 COPY public.departments (id, name) FROM stdin;
 20	Alpes-Maritimes
 21	default
+22	Var
 \.
 
 
@@ -1222,6 +1225,13 @@ COPY public.offer_recurring_slots (id, slug_offer, day_of_week, slots, created_a
 115	707e33f2-9c58-4e44-aea1-a9d83dc6def1	friday	{{10:00:00,14:00:00},{14:00:00,18:00:00},{18:00:00,22:00:00}}	2025-08-10 16:04:40.460108
 116	707e33f2-9c58-4e44-aea1-a9d83dc6def1	saturday	{{18:00:00,22:00:00}}	2025-08-10 16:04:40.461293
 119	707e33f2-9c58-4e44-aea1-a9d83dc6def1	sunday	{{14:00:00,18:00:00},{18:00:00,22:00:00}}	2025-08-10 18:49:36.18918
+124	7bdf044f-eeae-4348-81aa-3e1db365b5d8	monday	{{12:00:00,12:30:00},{12:30:00,13:00:00},{13:30:00,14:30:00},{15:00:00,15:30:00},{16:00:00,16:30:00}}	2025-08-11 00:43:30.837731
+125	7bdf044f-eeae-4348-81aa-3e1db365b5d8	tuesday	{{12:00:00,12:30:00},{13:00:00,13:30:00},{14:00:00,14:30:00},{15:00:00,15:30:00},{16:00:00,16:30:00}}	2025-08-11 00:43:30.850487
+126	7bdf044f-eeae-4348-81aa-3e1db365b5d8	wednesday	{{08:00:00,08:30:00},{09:00:00,09:30:00},{10:00:00,10:30:00},{11:00:00,11:30:00},{12:00:00,12:30:00}}	2025-08-11 00:43:30.852987
+127	7bdf044f-eeae-4348-81aa-3e1db365b5d8	thursday	{{08:00:00,08:30:00},{09:00:00,09:30:00},{10:00:00,10:30:00},{11:00:00,11:30:00},{12:00:00,12:30:00}}	2025-08-11 00:43:30.863099
+128	7bdf044f-eeae-4348-81aa-3e1db365b5d8	friday	{{12:00:00,12:30:00},{13:00:00,13:30:00},{14:00:00,14:30:00},{15:00:00,15:30:00},{16:00:00,16:30:00}}	2025-08-11 00:43:30.86764
+129	7bdf044f-eeae-4348-81aa-3e1db365b5d8	saturday	{{12:00:00,12:30:00},{13:00:00,13:30:00},{14:00:00,14:30:00},{15:00:00,15:30:00},{16:00:00,16:30:00}}	2025-08-11 00:43:30.871127
+130	7bdf044f-eeae-4348-81aa-3e1db365b5d8	sunday	{{08:00:00,08:30:00},{09:00:00,09:30:00},{10:00:00,10:30:00},{11:00:00,11:30:00},{12:00:00,12:30:00}}	2025-08-11 00:43:30.874173
 \.
 
 
@@ -1242,6 +1252,7 @@ COPY public.offers (id, title, description, type, price, image_urls, created_at,
 43	Tour en bateau au coucher du soleil avec vin et collations	Mettez les voiles pour une superbe excursion en bateau au coucher du soleil le long de la Côte d'Azur. Savourez de délicieux en-cas, du vin et admirez la vue imprenable sur Saint Jean Cap Ferrat et Villefranche alors que le soleil descend sous l'horizon.	Activite	50.00	{https://knswskkdaimyrcstijsm.supabase.co/storage/v1/object/public/offers-images/offers/1754825904545_1cdfe23280ff0788b604a205cbf10be0355f9f89acd0d56a40bc5907a2a7ad1c.avif,https://knswskkdaimyrcstijsm.supabase.co/storage/v1/object/public/offers-images/offers/1754825905170_0b955fb64bbdc8920af099386c56022ddb88085618ab168f3fd576e3298a655f.avif,https://knswskkdaimyrcstijsm.supabase.co/storage/v1/object/public/offers-images/offers/1754825905379_bad3130dd14b2406.webp,https://knswskkdaimyrcstijsm.supabase.co/storage/v1/object/public/offers-images/offers/1754825905568_c43c087da795919a21456de6de121776745b4a05534a0172d63ab014ad431572.avif,https://knswskkdaimyrcstijsm.supabase.co/storage/v1/object/public/offers-images/offers/1754825905743_9ec0b8c187a3da2012403efae35ea10ed60aa4a2c977b54ef1b97e31aab18f0b.avif}	2025-08-10 13:39:04.154338	2025-08-10 13:39:04.154338	11	43.696257	7.283544399999999	21	Quai Lunel, 06300 Nice, France	{Nautiques,"Nature & Aventure","En Famille",Bien-être,"Loisirs & Divertissement"}	personne	2 h	dd02dc00-21ae-4b82-934b-7a8b79f11e75	t	12
 46	Plongée découverte à Nice	 Vivez une expérience unique en découvrant la faune et la flore de la Méditerranée lors d’une plongée accompagnée dans les eaux limpides de Fréjus.	Activite	110.00	{https://knswskkdaimyrcstijsm.supabase.co/storage/v1/object/public/offers-images/offers/1754833991294_acsaltwxe6lr6evbp62e.jpg,https://knswskkdaimyrcstijsm.supabase.co/storage/v1/object/public/offers-images/offers/1754833992032_ocgnxdbuvibutqozcst3.webp,https://knswskkdaimyrcstijsm.supabase.co/storage/v1/object/public/offers-images/offers/1754833992287_jzzyoxwoexnj80vcklfc.webp,https://knswskkdaimyrcstijsm.supabase.co/storage/v1/object/public/offers-images/offers/1754833992536_letbeobnilw0jmlnvu9y.webp,https://knswskkdaimyrcstijsm.supabase.co/storage/v1/object/public/offers-images/offers/1754833992770_c6ajr1nedw5mbbnwpagw.webp}	2025-08-10 15:55:14.168916	2025-08-10 15:55:14.168916	11	43.69624302178258	7.285883272883837	21	14 Quai des Deux Emmanuels, 06300 Nice, France	{Nautiques,"Nature & Aventure","Sports & Sensations Fortes"}	personne	2 h	49eda54a-a544-4fd6-91ce-9bcddcfaa20a	t	6
 45	Initiation au tour de potier avec Marguerite	Passez un moment créatif et convivial en façonnant vos propres pièces en argile aux côtés de Marguerite, passionnée et experte en poterie.	Activite	55.00	{https://knswskkdaimyrcstijsm.supabase.co/storage/v1/object/public/offers-images/offers/1754833703888_lzywwaoa6hit4ml5eqnw.webp,https://knswskkdaimyrcstijsm.supabase.co/storage/v1/object/public/offers-images/offers/996d438f-9637-4533-bae9-c4e84b5e8ef8-1754858957095.jpg,https://knswskkdaimyrcstijsm.supabase.co/storage/v1/object/public/offers-images/offers/996d438f-9637-4533-bae9-c4e84b5e8ef8-1754858957853.jpg,https://knswskkdaimyrcstijsm.supabase.co/storage/v1/object/public/offers-images/offers/996d438f-9637-4533-bae9-c4e84b5e8ef8-1754858958143.webp,https://knswskkdaimyrcstijsm.supabase.co/storage/v1/object/public/offers-images/offers/996d438f-9637-4533-bae9-c4e84b5e8ef8-1754858958449.webp,https://knswskkdaimyrcstijsm.supabase.co/storage/v1/object/public/offers-images/offers/996d438f-9637-4533-bae9-c4e84b5e8ef8-1754858958755.webp,https://knswskkdaimyrcstijsm.supabase.co/storage/v1/object/public/offers-images/offers/996d438f-9637-4533-bae9-c4e84b5e8ef8-1754858959063.webp}	2025-08-10 15:49:05.923809	2025-08-10 15:49:05.923809	11	43.692827357347475	7.237479707488261	21	98 Bd Edouard Herriot, 06200 Nice, France	{"Loisirs & Divertissement",Bien-être,"En Famille"}	personne	2 h	996d438f-9637-4533-bae9-c4e84b5e8ef8	t	5
+51	 Saut à l’élastique – Adrénaline et sensations fortes	Vivez une expérience unique de saut à l’élastique, alliant frisson et sécurité, encadrée par une équipe professionnelle pour un souvenir inoubliable.	Activite	110.00	{https://knswskkdaimyrcstijsm.supabase.co/storage/v1/object/public/offers-images/offers/1754865238265_vp6i2bimqluuiev7slen.webp,https://knswskkdaimyrcstijsm.supabase.co/storage/v1/object/public/offers-images/offers/1754865239537_wvsrp7fmqj65yhwm8c8g.webp,https://knswskkdaimyrcstijsm.supabase.co/storage/v1/object/public/offers-images/offers/1754865240049_obod6xt0qdpj80j19uwc.jpg}	2025-08-11 00:34:45.334468	2025-08-11 00:34:45.334468	11	43.68039258631511	6.7387310186237315	27	414 Chem. des Gauds, 83440 Mons, France	{"Sports & Sensations Fortes","Nature & Aventure"}	personne	30 min	7bdf044f-eeae-4348-81aa-3e1db365b5d8	t	8
 \.
 
 
@@ -1268,6 +1279,7 @@ COPY public.providers (id, name, bio, logo_url, tel, email, instagram, facebook,
 
 COPY public.qr_codes (id, slug, id_hote, adresse, image_url, user_id, latitude, longitude) FROM stdin;
 74	399d944e-b980-486a-8c04-2ecd27d6730e	4	Place Masséna, Nice	https://knswskkdaimyrcstijsm.supabase.co/storage/v1/object/public/offers-images/qrcodes/1754837671459_399d944e-b980-486a-8c04-2ecd27d6730e.png	64	43.567945	7.11491
+75	49eda54a-a544-4fd6-91ce-9bcddcfaa20a	4	Place Masséna, Nice	https://knswskkdaimyrcstijsm.supabase.co/storage/v1/object/public/offers-images/qrcodes/1754906380527_49eda54a-a544-4fd6-91ce-9bcddcfaa20a.png	64	43.567945	7.11491
 \.
 
 
@@ -1279,7 +1291,8 @@ COPY public.refresh_tokens (id, user_id, refresh_token, expires_at, created_at) 
 301	64	eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6NjQsImVtYWlsIjoidGVzdEB0ZXN0LmNvbSIsImlhdCI6MTc1NDgyOTc4NywiZXhwIjoxNzcwMzgxNzg3fQ.LArqLNa4j_HdbX4Ik7nC7-xiQ8hAx6cglTXfCFFP8VA	2026-02-06 13:43:07.041	2025-08-10 07:15:59.433322
 302	64	eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6NjQsImVtYWlsIjoidGVzdEB0ZXN0LmNvbSIsImlhdCI6MTc1NDg0MDAyOSwiZXhwIjoxNzcwMzkyMDI5fQ.VEMRYZvYBPPBgeJ_PFp8uabkDrJazf6XoN3XYyjvG3o	2026-02-06 16:33:49.858	2025-08-10 15:06:17.366032
 303	64	eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6NjQsImVtYWlsIjoidGVzdEB0ZXN0LmNvbSIsImlhdCI6MTc1NDg1MjExOCwiZXhwIjoxNzcwNDA0MTE4fQ.itgkuLSBvZUxqLwZ2rrapMN8Pz0VXnS6TZpb5V1sHIQ	2026-02-06 19:55:18.384	2025-08-10 18:46:36.427368
-304	64	eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6NjQsImVtYWlsIjoidGVzdEB0ZXN0LmNvbSIsImlhdCI6MTc1NDg2Mjc0MiwiZXhwIjoxNzcwNDE0NzQyfQ.8_iJJsiR-FOAJsdBR4YlPfN-G_AnonYog44FB3ouQvQ	2026-02-06 22:52:22.959	2025-08-10 21:30:41.844863
+304	64	eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6NjQsImVtYWlsIjoidGVzdEB0ZXN0LmNvbSIsImlhdCI6MTc1NDg5NDE0NiwiZXhwIjoxNzcwNDQ2MTQ2fQ.-YB-cdyWi3J7RmydGWiPBHCpRnEBOdRbu6BB6_8wXe0	2026-02-07 07:35:46.104	2025-08-10 21:30:41.844863
+305	64	eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6NjQsImVtYWlsIjoidGVzdEB0ZXN0LmNvbSIsImlhdCI6MTc1NDkwNjQzMywiZXhwIjoxNzcwNDU4NDMzfQ.PQsLqRQTtVAixPQ1hJzXFbAMXWIlG1l_rL5-rW1TEUw	2026-02-07 11:00:33.803	2025-08-11 11:29:17.704995
 \.
 
 
@@ -1288,6 +1301,8 @@ COPY public.refresh_tokens (id, user_id, refresh_token, expires_at, created_at) 
 --
 
 COPY public.reservation_slots (id, provider_id, offer_slug, date, start_hour, end_hour, total_reserved, price_per_person, status, created_at, updated_at, hotel_commission_total, platform_commission_total, net_amount_total, gross_amount_total) FROM stdin;
+90	11	49eda54a-a544-4fd6-91ce-9bcddcfaa20a	2025-08-12	14:00	16:00	2	110.00	available	2025-08-11 11:33:29.581618	2025-08-11 11:33:29.581618	15.40	28.60	176.00	220.00
+91	11	49eda54a-a544-4fd6-91ce-9bcddcfaa20a	2025-08-26	14:00	16:00	6	110.00	full	2025-08-11 11:37:26.815325	2025-08-11 11:37:26.815325	46.20	85.80	528.00	660.00
 \.
 
 
@@ -1304,6 +1319,8 @@ COPY public.reservations_creneaux_google_calendar (id, reservation_slots_id, pro
 --
 
 COPY public.reservations_individuals (id, user_id, slot_id, total_participants, total_price, payment_status, reservation_status, created_at, updated_at, nb_adult, nb_reduced, email, name, phone, stripe_payment_intent_id, hotel_commission, platform_commission, net_amount, gross_amount) FROM stdin;
+114	64	90	2	220.00	paid	confirmed	2025-08-11 11:33:29.584351	2025-08-11 11:33:29.584351	2	0	tompayan1710@gmail.com	Lacarte Céline	+33765594097	pi_3Rus6R2f0HHvMFDt0hOk68Sr	15.40	28.60	176.00	220.00
+115	64	91	6	660.00	paid	confirmed	2025-08-11 11:37:26.820714	2025-08-11 11:37:26.820714	4	2	tompayan1710@gmail.com	Tom Payan	+33765594097	pi_3RusAJ2f0HHvMFDt0dkS8keK	46.20	85.80	528.00	660.00
 \.
 
 
@@ -1350,7 +1367,7 @@ SELECT pg_catalog.setval('public.categories_id_seq', 1, false);
 -- Name: cities_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
 
-SELECT pg_catalog.setval('public.cities_id_seq', 25, true);
+SELECT pg_catalog.setval('public.cities_id_seq', 27, true);
 
 
 --
@@ -1364,7 +1381,7 @@ SELECT pg_catalog.setval('public.comments_id_seq', 1, false);
 -- Name: departments_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
 
-SELECT pg_catalog.setval('public.departments_id_seq', 21, true);
+SELECT pg_catalog.setval('public.departments_id_seq', 22, true);
 
 
 --
@@ -1406,14 +1423,14 @@ SELECT pg_catalog.setval('public.offer_exceptional_slots_id_seq', 15, true);
 -- Name: offer_recurring_slots_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
 
-SELECT pg_catalog.setval('public.offer_recurring_slots_id_seq', 123, true);
+SELECT pg_catalog.setval('public.offer_recurring_slots_id_seq', 130, true);
 
 
 --
 -- Name: offers_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
 
-SELECT pg_catalog.setval('public.offers_id_seq', 48, true);
+SELECT pg_catalog.setval('public.offers_id_seq', 52, true);
 
 
 --
@@ -1434,21 +1451,21 @@ SELECT pg_catalog.setval('public.providers_id_seq', 11, true);
 -- Name: qr_codes_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
 
-SELECT pg_catalog.setval('public.qr_codes_id_seq', 74, true);
+SELECT pg_catalog.setval('public.qr_codes_id_seq', 75, true);
 
 
 --
 -- Name: refresh_tokens_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
 
-SELECT pg_catalog.setval('public.refresh_tokens_id_seq', 304, true);
+SELECT pg_catalog.setval('public.refresh_tokens_id_seq', 305, true);
 
 
 --
 -- Name: reservation_slots_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
 
-SELECT pg_catalog.setval('public.reservation_slots_id_seq', 89, true);
+SELECT pg_catalog.setval('public.reservation_slots_id_seq', 91, true);
 
 
 --
@@ -1462,7 +1479,7 @@ SELECT pg_catalog.setval('public.reservations_creneaux_google_calendar_id_seq', 
 -- Name: reservations_individuals_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
 
-SELECT pg_catalog.setval('public.reservations_individuals_id_seq', 113, true);
+SELECT pg_catalog.setval('public.reservations_individuals_id_seq', 115, true);
 
 
 --
