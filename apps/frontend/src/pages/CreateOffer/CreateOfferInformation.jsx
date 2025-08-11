@@ -159,7 +159,7 @@ export default function CreateOfferInformations(){
                 navigate(`/annonces/${slug}/confirm-creation`);
             } else {
                 console.error("❌ Erreur côté API :", data.error);
-                alert("Erreur lors de la création de l'offre.");
+                // alert("Erreur lors de la création de l'offre.");
             }
         } catch (err) {
                 console.error("❌ Erreur réseau ou serveur :", err.message);

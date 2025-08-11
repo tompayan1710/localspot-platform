@@ -137,7 +137,7 @@ import WhiteButton from "../components/Buttons/WhiteButton/WhiteButton";
 
         setTimeout(() =>{
           setLoading(false);
-        }, 2000)
+        }, 1300)
         // setLoading(false);
         // setTimeout(() => OfferAnimationShow(), 200);
         // AnnimationWhitoutLogo();
@@ -191,15 +191,17 @@ import WhiteButton from "../components/Buttons/WhiteButton/WhiteButton";
 
 
 
-    const storedId = localStorage.getItem("id_qrcode");
+const id_qrcode = localStorage.getItem("id_qrcode");
 
-    function goToOffer(slug) {
-      if (storedId) {
-        navigate(`/offer-page/${slug}?id=${storedId}`);
+ 
+    const goToOffer = (slug) => {
+      if (id_qrcode) {
+        navigate(`/offer-page/${slug}?id=${id_qrcode}`);
       } else {
         navigate(`/offer-page/${slug}`);
       }
     }
+
 
 
 
@@ -247,13 +249,32 @@ import WhiteButton from "../components/Buttons/WhiteButton/WhiteButton";
             {
               !loading && homeOffersByCategory.selected_today &&
               <>
-              <FadeInImage src={homeOffersByCategory.selected_today.image_urls[0]} alt="selecting activity" onClick={() => {goToOffer(`${homeOffersByCategory.selected_today.slug}`)}}/>
+              <FadeInImage src={homeOffersByCategory.selected_today.image_urls[0]} alt="selecting activity" onClick={() => {
+                goToOffer(`${homeOffersByCategory.selected_today.slug}`, {
+                        state: {
+                          isAnimation: false,
+                        }
+                      })
+                      
+              }}/>
               <button 
-                onClick={() => {goToOffer(`${homeOffersByCategory.selected_today.slug}`);}}
+                // onClick={() => {goToOffer(`${homeOffersByCategory.selected_today.slug}`, {
+                //         state: {
+                //           isAnimation: false,
+                //         }
+                //       })}}
               >
                 <img src={extendIcon} alt="extend Icon"/>
               </button>
-              <div className="InfoOffer row" onClick={() => {goToOffer(`${homeOffersByCategory.selected_today.slug}`);}}>
+              <div className="InfoOffer row"
+                // onClick={() => {
+                //   goToOffer(`${homeOffersByCategory.selected_today.slug}`, {
+                //         state: {
+                //           isAnimation: false,
+                //         }
+                //       })
+                // }}
+                >
                 <div className="column">
                   <p className="t5 maxLine">{homeOffersByCategory.selected_today.title}</p>
                   <div className="row adresse">
@@ -378,7 +399,7 @@ import WhiteButton from "../components/Buttons/WhiteButton/WhiteButton";
             </div>
 
             {
-              homeOffersByCategory.nearby && homeOffersByCategory.nearby.length > 0 &&
+              homeOffersByCategory.nearby && homeOffersByCategory.nearby.length > 2 &&
               <>
               <div className="row">
                 <p className="t32"> À moins de 5 minutes</p> 
@@ -402,17 +423,21 @@ import WhiteButton from "../components/Buttons/WhiteButton/WhiteButton";
               <div className="hline"></div>
             </div> */}
 
-            <div className="freeConcelation">
-                <div className="hline"></div>
-                  <p className="t3">Annonces vérifiés</p>
-                  <p className="t5">
-                    Chaque activité est proposée par un partenaire local sélectionné et validé par nos équipes.
-                  </p>
-                <div className="hline"></div>
-            </div>
+            {
+              homeOffersByCategory.all_remaining && homeOffersByCategory.all_remaining.length > 2 ||
+              homeOffersByCategory.evenning && homeOffersByCategory.evenning.length > 2 &&
+              <div className="freeConcelation">
+                  <div className="hline"></div>
+                    <p className="t3">Annonces vérifiés</p>
+                    <p className="t5">
+                      Chaque activité est proposée par un partenaire local sélectionné et validé par nos équipes.
+                    </p>
+                  <div className="hline"></div>
+              </div>
+            }
 
             {
-              homeOffersByCategory.evenning && homeOffersByCategory.evenning.length > -10 &&
+              homeOffersByCategory.evenning && homeOffersByCategory.evenning.length > 2 &&
               <>
               <div className="row">
                 <p className="t32">Sortir ce soir</p>
@@ -441,7 +466,7 @@ import WhiteButton from "../components/Buttons/WhiteButton/WhiteButton";
             }
 
             {
-              homeOffersByCategory.all_remaining && homeOffersByCategory.all_remaining.length > 0 &&
+              homeOffersByCategory.all_remaining && homeOffersByCategory.all_remaining.length > 2 &&
               <>
               <div className="row">
                 <p className="t32">À voir aussi</p>

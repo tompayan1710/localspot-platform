@@ -143,9 +143,27 @@ async function getAllOffers(whereClause = "", values = [], moment = "") {
         ) AS "isEvening"
       FROM offers o
       ${whereClause ? `WHERE ${whereClause}` : ""}
-    )
-    SELECT * FROM offers_with_moment ow
-    ${momentFilter};
+    ),
+
+
+
+    -- SELECT * FROM offers_with_moment ow
+     reservations_count AS (
+  SELECT
+    ri.offer_slug,
+    COUNT(*)::int AS nb_reservation
+  FROM reservation_slots ri
+  GROUP BY ri.offer_slug
+)
+
+SELECT 
+  ow.*,
+  COALESCE(rc.nb_reservation, 0) AS nb_reservation
+FROM offers_with_moment ow
+LEFT JOIN reservations_count rc
+  ON rc.offer_slug = ow.slug
+${momentField ? `WHERE ow."${momentField}" = TRUE` : ""}
+ORDER BY ow.created_at DESC;
   `, values);
 
 

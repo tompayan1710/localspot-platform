@@ -57,8 +57,13 @@ export function classifyOffers(offers, userLocation = null) {
     const bCount = parseInt(b.nb_reservation) || 0;
     return bCount - aCount;
   });
+  
+  console.error(sortedOffers);
 
   const usedSlugs = new Set();
+
+  const selected_today = sortedOffers[0];
+  usedSlugs.add(selected_today.slug);
 
   const morning = [];
   const afternoon = [];
@@ -69,29 +74,34 @@ export function classifyOffers(offers, userLocation = null) {
   const hour = now.getHours();
   const minutes = now.getMinutes();
 
-  const isBeforEndMorning = hour < 11 || (hour === 11 && minutes < 30);
+  const isBeforEndMorning = hour >= 4 || hour < 11 || (hour === 11 && minutes < 30);
   const isBeforEndAfternoon = hour < 17 || (hour === 17 && minutes < 30);
-  const isBeforEndEvening = hour > 18 || hour < 3;
+  const isBeforEndEvening = hour > 18 || hour < 4;
  
+  let countMorning = 0;
+  let countAfternoon = 0;
+
   for (const offer of sortedOffers) {
-    if (isBeforEndMorning && offer.isMorning && !usedSlugs.has(offer.slug)) {
-      console.log("Je push dans morning !")
-      morning.push(offer);
-      usedSlugs.add(offer.slug);
-      continue;
-    }
-
-    if (isBeforEndAfternoon && offer.isAfternoon && !usedSlugs.has(offer.slug)) {
-      console.log("Je push dans afternoon !")
-      afternoon.push(offer);
-      usedSlugs.add(offer.slug);
-      continue;
-    }
-
     if (isBeforEndEvening && offer.isEvening && !usedSlugs.has(offer.slug)) {
       console.log("Je push dans evening !")
       evenning.push(offer);
       usedSlugs.add(offer.slug);
+      continue;
+    }
+
+    if (isBeforEndMorning && offer.isMorning && !usedSlugs.has(offer.slug) && countMorning < 3) {
+      console.log("Je push dans morning !")
+      morning.push(offer);
+      usedSlugs.add(offer.slug);
+      countMorning++;
+      continue;
+    }
+
+    if (isBeforEndAfternoon && offer.isAfternoon && !usedSlugs.has(offer.slug) && countAfternoon < 4) {
+      console.log("Je push dans afternoon !")
+      afternoon.push(offer);
+      usedSlugs.add(offer.slug);
+      countAfternoon++;
       continue;
     }
 
@@ -110,7 +120,6 @@ export function classifyOffers(offers, userLocation = null) {
 
   // Toutes les offres restantes (pas encore utilisées)
   const nonAdd = sortedOffers.filter(o => !usedSlugs.has(o.slug));
-  const selected_today = nonAdd[0];
   const popular = nonAdd.slice(1, 5);
   const all_remaining = nonAdd.slice(5);
 

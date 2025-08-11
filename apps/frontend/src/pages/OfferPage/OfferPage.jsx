@@ -357,32 +357,22 @@ export default function OfferPage() {
           />
 
           <div className="pointNavigationContainer">
-            {
-              Array.isArray(offer.image_urls) &&
-                offer.image_urls.map((_, index) => (
-                  <button
-                    key={index}
-                    className={`pointNavigation ${navigationSelected === index ? "selected" : ""}`}
-                    onClick={() => {
-                      setNavigationSelected(index);
-                      
-                      setScrollSyncEnabled(false);
+  {Array.isArray(offer.image_urls) &&
+    offer.image_urls.map((url, index) => (
+      <button
+        key={`${index}-${url}`}
+        className={`pointNavigation ${navigationSelected === index ? "selected" : ""}`}
+        onClick={() => {
+          setNavigationSelected(index);
+          setScrollSyncEnabled(false);
+          CarrouselRef.current?.scrollToIndex(index);   // ✅ utilise l’API
+          setTimeout(() => setScrollSyncEnabled(true), 400);
+        }}
+      />
+    ))}
+</div>
 
-                      const carrousel = CarrouselRef.current;
-                      console.log(CarrouselRef.current);
-                      if (carrousel && carrousel.children[index]) {
-                        carrousel.children[index].scrollIntoView({ behavior: "smooth", inline: "center", block: "nearest"  /*/ 👈 ne scroll pas verticalement/*/});
-                      }
 
-                      setTimeout(() => {
-                        setScrollSyncEnabled(true); // réactive après le scroll
-                      }, 400)
-                    }}
-                  ></button>
-
-                ))
-              }
-            </div>
 
             <p className={`OfferTitle t3 ${isLoading ? "loading shimmer" : ""}`}>{isLoading ? "" :offer.title}</p>
             <p className={`OfferDescription t5 ${isLoading ? "loading shimmer" : ""}`}>{isLoading ? "" : offer.description}</p>
