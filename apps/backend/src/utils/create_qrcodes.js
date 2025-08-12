@@ -5,7 +5,7 @@ async function createQRCode() {
     method: "POST",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify({
-      slug: "49eda54a-a544-4fd6-91ce-9bcddcfaa20a",
+      slug: "2a18b701-7f45-4f76-b054-1717f0607657",
       user_id: 64,
       id_hote: 4,
       latitude: 43.567945,

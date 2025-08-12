@@ -21,8 +21,9 @@ app.use(cookieParser());
 // =========================
 // 2. ROUTE WEBHOOK STRIPE AVANT express.json()
 // =========================
-const webhook = require("./routes/api/payment/webhook/webhook");
-app.use("/api/stripe", webhook);
+const stripeWebhook = require("./routes/api/payment/webhook/webhook");
+// app.use("/api/stripe", webhook);
+app.use("/api/stripe/webhook", express.raw({ type: "application/json" }), stripeWebhook);
 
 
 

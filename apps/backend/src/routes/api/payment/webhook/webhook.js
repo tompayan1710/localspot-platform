@@ -96,7 +96,8 @@ const { generateTicketPDF } = require("../Ticket/generateTicketPDF");
 
 const endpointSecret = process.env.STRIPE_WEBHOOK_SECRET;
 
-router.post('/webhook',  bodyParser.raw({ type: "application/json" }), async (request, response) => {
+// router.post('/',  bodyParser.raw({ type: "application/json" }), async (request, response) => {
+router.post('/', async (request, response) => {
   console.log("➡️  Stripe webhook hit");
   
 //   let event = request.body;
