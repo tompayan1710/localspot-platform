@@ -86,7 +86,7 @@ export default function PaymentPage() {
                 setStripePromise(loadStripe(publishableKey));
 
 
-                const amount = 51;
+                const amount = price;
                 console.error("BOG BOS")
                 console.log("Montant envoyé à Stripe :", amount); // doit afficher: 51
 

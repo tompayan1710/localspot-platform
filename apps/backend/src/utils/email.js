@@ -62,17 +62,17 @@ async function sendReservationEmail(reservation, pdfPath) {
           <div style="padding: 20px;">
             <table style="width: 100%; font-size: 14px;">
               <tr>
-                <td><strong>Numéro de réservation :</strong></td>
+                <td><strong>Numéro de réservation&nbsp;:</strong></td>
                 <td style="text-align: right;">#RES-${reservation.reservation_id}</td>
               </tr>
               <tr>
-                <td><strong>Date :</strong></td>
+                <td><strong>Date&nbsp;:</strong></td>
                 <td style="text-align: right;">${reservation.date}</td>
               </tr>
               ${
                 reservation.payment_method !== "Inconnu" ? 
                 `<tr>
-                  <td><strong>Méthode de paiement :</strong></td>
+                  <td><strong>Méthode de paiement&nbsp;:</strong></td>
                   <td style="text-align: right;">${reservation.payment_method}</td>
                 </tr>`
                 : ""
@@ -80,6 +80,7 @@ async function sendReservationEmail(reservation, pdfPath) {
               <tr><td colspan="2"><hr style="border: none; border-top: 1px solid #eee;"></td></tr>
               <tr>
                 <td><strong>×${reservation.nb_adult} Adulte${reservation.nb_adult>1 ? "s" : ""}</strong></td>
+                <td style="text-align: right;">${reservation.price_per_person * reservation.nb_adult} €</td>
                 <td style="text-align: right;">${reservation.price_per_person * reservation.nb_adult} €</td>
               </tr>
               ${reservation.nb_reduced > 0 ?
@@ -94,7 +95,7 @@ async function sendReservationEmail(reservation, pdfPath) {
                 <td colspan="2"><hr style="border: none; border-top: 1px solid #eee;"></td>
               </tr>
               <tr>
-                <td><strong>Total :</strong></td>
+                <td><strong>Total&nbsp;:</strong></td>
                 <td style="text-align: right;"><strong>${reservation.total_price} €</strong></td>
               </tr>
               <tr>
