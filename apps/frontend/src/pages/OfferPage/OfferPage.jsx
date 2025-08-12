@@ -357,20 +357,20 @@ export default function OfferPage() {
           />
 
           <div className="pointNavigationContainer">
-  {Array.isArray(offer.image_urls) &&
-    offer.image_urls.map((url, index) => (
-      <button
-        key={`${index}-${url}`}
-        className={`pointNavigation ${navigationSelected === index ? "selected" : ""}`}
-        onClick={() => {
-          setNavigationSelected(index);
-          setScrollSyncEnabled(false);
-          CarrouselRef.current?.scrollToIndex(index);   // ✅ utilise l’API
-          setTimeout(() => setScrollSyncEnabled(true), 400);
-        }}
-      />
-    ))}
-</div>
+            {Array.isArray(offer.image_urls) &&
+              offer.image_urls.map((url, index) => (
+                <button
+                  key={`${index}-${url}`}
+                  className={`pointNavigation ${navigationSelected === index ? "selected" : ""}`}
+                  onClick={() => {
+                    setNavigationSelected(index);
+                    setScrollSyncEnabled(false);
+                    CarrouselRef.current?.scrollToIndex(index);   // ✅ utilise l’API
+                    setTimeout(() => setScrollSyncEnabled(true), 400);
+                  }}
+                />
+              ))}
+          </div>
 
 
 

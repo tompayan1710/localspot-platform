@@ -53,9 +53,9 @@ export default function PaymentPage() {
 
         
         if(
-            name == null ||
-            email == null ||
-            phone == null ||
+            // name == null ||
+            // email == null ||
+            // phone == null ||
             title == null ||
             price == null ||
             offer_provider_id == null ||
@@ -85,8 +85,8 @@ export default function PaymentPage() {
                 console.log(publishableKey);
                 setStripePromise(loadStripe(publishableKey));
 
+                const amount = Math.round(Number(price) * 100); // "55.00" -> 5500
 
-                const amount = price;
                 console.error("BOG BOS")
                 console.log("Montant envoyé à Stripe :", amount); // doit afficher: 51
 

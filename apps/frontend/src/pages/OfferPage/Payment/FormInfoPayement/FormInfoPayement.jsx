@@ -18,21 +18,40 @@ export default function FormInfoPayement(){
     const location = useLocation();
     const navigate = useNavigate();
 
-    const title = location.state?.title;
-    const price = location.state?.price;
-    const OfferIsCancellable = location.state?.OfferIsCancellable;
-    const participantAdult = location.state?.participantAdult;
-    const participantReduced = location.state?.participantReduced;
-    const start_hour = location.state?.start_hour;
-    const end_hour = location.state?.end_hour;
-    const date = location.state?.date;
-    const total_capacity = location.state?.total_capacity;
-    const adresse = location.state?.adresse;
-    const selectedCreneau = location.state?.selectedCreneau;
-    const offer_provider_id = location.state?.offer_provider_id;
-    const [name, setName] = useState(location.state?.name || "");
-    const [email, setEmail] = useState(location.state?.email || "");
-    const [phone, setPhone] = useState(location.state?.phone || "");
+    const locationParams = location.state;
+    const fallbackParams = JSON.parse(sessionStorage.getItem("paymentParams") || "{}");
+        
+    // const name = locationParams?.name ?? fallbackParams.name;
+    // const email = locationParams?.email ?? fallbackParams.email;
+    // const phone = locationParams?.phone ?? fallbackParams.phone;
+    const title = locationParams?.title ?? fallbackParams.title;
+    const price = locationParams?.price ?? fallbackParams.price;
+    const offer_provider_id = locationParams?.offer_provider_id ?? fallbackParams.offer_provider_id;
+    const OfferIsCancellable = locationParams?.OfferIsCancellable ?? fallbackParams.OfferIsCancellable;
+    const participantAdult = locationParams?.participantAdult ?? fallbackParams.participantAdult;
+    const participantReduced = locationParams?.participantReduced ?? fallbackParams.participantReduced;
+    const start_hour = locationParams?.start_hour ?? fallbackParams.start_hour;
+    const end_hour = locationParams?.end_hour ?? fallbackParams.end_hour;
+    const date = locationParams?.date ?? fallbackParams.date;
+    const adresse = locationParams?.adresse ?? fallbackParams.adresse;
+    const total_capacity = locationParams?.total_capacity ?? fallbackParams.total_capacity;
+    const selectedCreneau = locationParams?.selectedCreneau ?? fallbackParams.selectedCreneau;
+
+    // const title = location.state?.title;
+    // const price = location.state?.price;
+    // const OfferIsCancellable = location.state?.OfferIsCancellable;
+    // const participantAdult = location.state?.participantAdult;
+    // const participantReduced = location.state?.participantReduced;
+    // const start_hour = location.state?.start_hour;
+    // const end_hour = location.state?.end_hour;
+    // const date = location.state?.date;
+    // const total_capacity = location.state?.total_capacity;
+    // const adresse = location.state?.adresse;
+    // const selectedCreneau = location.state?.selectedCreneau;
+    // const offer_provider_id = location.state?.offer_provider_id;
+    const [name, setName] = useState((locationParams?.name ?? fallbackParams.name) || "");
+    const [email, setEmail] = useState((locationParams?.email ?? fallbackParams.email) || "");
+    const [phone, setPhone] = useState((locationParams?.phone ?? fallbackParams.phone) || "");
     const [errors, setErrors] = useState({});
 
 

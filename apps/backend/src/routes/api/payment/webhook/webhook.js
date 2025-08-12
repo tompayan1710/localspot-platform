@@ -24,9 +24,12 @@ module.exports = async function stripeWebhook(req, res) {
   }
 
   if (event.type === "payment_intent.succeeded") {
+    
     const paymentIntent = event.data.object;
     console.log("✅ PaymentIntent successful:", paymentIntent.id);
 
+
+    
     // moyen de paiement (optionnel)
     let payment_method = "Inconnu";
     const charge = paymentIntent.charges?.data?.[0];
@@ -37,6 +40,11 @@ module.exports = async function stripeWebhook(req, res) {
 
     const meta = paymentIntent.metadata || {};
 
+
+    if (meta.mode !== process.env.NODE_ENV) {
+      console.warn("⛔ Webhook ignoré car mode différent :", meta.mode, "vs", process.env.NODE_ENV);
+      return response.status(200).send("Webhook ignoré - mauvais environnement");
+    }
     // 💡 tant que tu es en TEST, enlève ce garde-fou d’environnement
     // if (meta.mode !== process.env.NODE_ENV) {
     //   console.warn("⛔ Webhook ignoré car mode différent :", meta.mode, "vs", process.env.NODE_ENV);
@@ -83,3 +91,41 @@ module.exports = async function stripeWebhook(req, res) {
 
   return res.json({ received: true });
 };
+
+
+
+
+
+
+//  const paymentIntent = event.data.object;
+//       // Then define and call a method to handle the successful payment intent.
+//       // handlePaymentIntentSucceeded(paymentIntent);
+//       console.log("✅ PaymentIntent successful:", paymentIntent.id);
+
+//       // Infos sur le moyen de paiement
+//       const charge = paymentIntent.charges?.data?.[0];
+
+//       let payment_method = "Inconnu";
+
+//       // Vérifie si une charge existe
+//       if (paymentIntent.charges && paymentIntent.charges.data && paymentIntent.charges.data.length > 0) {
+//         const charge = paymentIntent.charges.data[0];
+
+//         // Vérifie que la charge contient bien une carte
+//         if (charge.payment_method_details && charge.payment_method_details.card) {
+//           const { brand, last4 } = charge.payment_method_details.card;
+//           payment_method = `${brand.toUpperCase()} - XXXX ${last4}`;
+//         } else {
+//           console.warn("⚠️ Pas de détails de carte dans la charge :", charge.payment_method_details);
+//         }
+//       } else {
+//         console.warn("⚠️ Aucune charge trouvée dans PaymentIntent :", paymentIntent.charges);
+//       }
+
+
+//       const meta = paymentIntent.metadata;
+
+//       if (meta.mode !== process.env.NODE_ENV) {
+//         console.warn("⛔ Webhook ignoré car mode différent :", meta.mode, "vs", process.env.NODE_ENV);
+//         return response.status(200).send("Webhook ignoré - mauvais environnement");
+//       }

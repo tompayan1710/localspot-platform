@@ -603,6 +603,7 @@ export default function Availability() {
             title: title,
             adresse: adresse,
             price: price,
+            offer_provider_id: offer_provider_id,
             OfferIsCancellable: OfferIsCancellable,
             participantAdult: participantAdult,
             participantReduced: participantReduced,
@@ -612,12 +613,13 @@ export default function Availability() {
             total_capacity: total_capacity,
             selectedCreneau: selectedCreneau,
           }} 
-          googleRedirectRoute={`/offer-page/${slug}/payment`}
-          navigateAfterTo={`/offer-page/${slug}/payment`}
+          googleRedirectRoute={`/offer-page/${slug}/add-info`}
+          navigateAfterTo={`/offer-page/${slug}/add-info`}
           navigateStateToPass={{                         // 🔁 state à passer à la navigation
             title,
             adresse,
             price,
+            offer_provider_id,
             OfferIsCancellable,
             participantAdult,
             participantReduced,
