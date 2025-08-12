@@ -241,10 +241,10 @@ const endpointSecret = process.env.STRIPE_WEBHOOK_SECRET;
 
 // routes/api/payment/webhook/webhook.js
 // const stripe = require("stripe")(process.env.STRIPE_SECRET_KEY);
-const { saveCreneau } = require("../../../../db/Models/CreneauModel");
-const { generateTicketPDF } = require("../Ticket/generateTicketPDF");
-const { sendReservationEmail } = require("../../../api/../../utils/email");
-const fs = require("fs");
+// const { saveCreneau } = require("../../../../db/Models/CreneauModel");
+// const { generateTicketPDF } = require("../Ticket/generateTicketPDF");
+// const { sendReservationEmail } = require("../../../api/../../utils/email");
+// const fs = require("fs");
 
 module.exports = async function stripeWebhook(req, res) {
   console.log("➡️  Stripe webhook hit", req.method, req.originalUrl);
