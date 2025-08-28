@@ -14,7 +14,11 @@ import crossiconBlack from "../../assets/images/crossiconBlack.png"
 import favoris from "../../assets/images/favoris.png" 
 import favoris_selected from "../../assets/images/favoris_selected.png" 
 import allImageIcon from "../../assets/images/allImageIcon.png" 
+import France from "../../assets/images/France.png" 
+import arrow from "../../assets/images/arrowRight.png" 
+
 import Map2D from "../../components/Maps/Map2D"; 
+
 import { getOfferBySlug } from "../../services/offers"
 import { toggleFavorite, IsOfferFavorite } from "../../services/favorites.js"
 import { getQRCodeById } from "../../services/QRCodeService"
@@ -36,15 +40,27 @@ import PopUpBottom from "../../components/PopUpBottom/PopUpBottom";
 import OfferComments from "./Comments/OfferComments";
 import { linearTheme } from "../../services/themeModifier";
 import PopUpLogin from "../../components/Auth/PopUpLogin/PopUpLogin.jsx";
+import ButtonLanguage from "../../components/Buttons/ButtonLanguage/ButtonLanguage.jsx";
+import { useTranslation } from "react-i18next";
+import { pickI18n } from "../../services/translation.js";
+
+
+// import "./EditLanguage.css"
+
 
 export default function OfferPage() {
   const { slug } = useParams();
   const location = useLocation();
+  const { t, i18n } = useTranslation();
+  const lang = (i18n.resolvedLanguage || i18n.language || "fr").split("-")[0];
+  console.error(lang)
+
   const isAnimation = location.state?.isAnimation || false;
+  const origin = location.state?.origin || false;
   const { checkAuth, authState } = useContext(AuthContext);
 
   const queryParams = new URLSearchParams(location.search);
-  const id_qrcode = queryParams.get('id');
+  const id_hote = queryParams.get('host_id');
 
 
   const navigate = useNavigate();
@@ -56,7 +72,7 @@ export default function OfferPage() {
   const PopUpBottomRef = useRef(null);
   const CancelBottomRef = useRef(null);
   const ParticipantBottomRef = useRef(null);
-  const refOfferMapContainer = useRef(null);
+  const refOfferMapContainer = useRef(null);  
   const refAdresse = useRef(null);
   const PopUpLoginRef = useRef(null);
 
@@ -72,8 +88,10 @@ export default function OfferPage() {
   const [isLoading, setIsLoading] = useState(true);      
   const [isExtendMap, setIsExtendMap] = useState(false);  
   const [isFavorite, setIsFavorite] = useState(false);  
-  
-    
+  const [popUpLanguage, setPopUpLanguage] = useState(false);
+
+
+
   function allRefsReady() {
     return (
       OfferPageAnimationRef.current &&
@@ -93,6 +111,7 @@ export default function OfferPage() {
       setTimeout(() => {
         if(ReserveButtonRef.current){
           ReserveButtonRef.current.classList.add("pupUp");
+          setPopUpLanguage(true);
         }
 
         // setTimeout(() => {
@@ -114,7 +133,8 @@ export default function OfferPage() {
   
       if(ReserveButtonRef.current){
           ReserveButtonRef.current.classList.add("pupUp");
-        }
+          setPopUpLanguage(true);
+      }
   }
       
 
@@ -165,21 +185,22 @@ export default function OfferPage() {
     async function loadData(slug) {
       try {
         setIsLoading(true);
-        const offerData = await getOfferBySlug(slug);
+        const offerData = await getOfferBySlug(slug, lang);
         if (!offerData.success) return;
         setOffer(offerData.offer);
         console.log(offerData.offer);
 
         
 
-         if(id_qrcode){
-          console.log("Mon id est :", id_qrcode);
-          const qrcodeData = await getQRCodeById(id_qrcode);
-          if (!qrcodeData.success) return;
-          setQRCode(qrcodeData.qrcode);
+         if(id_hote){
+          // console.log("Mon id est :", id_hote);
+          // const qrcodeData = await getQRCodeById(id_hote);
+          // if (!qrcodeData.success) return;
+          // setQRCode(qrcodeData.qrcode);
 
 
-          const hoteData = await getHoteById(qrcodeData.qrcode.id_hote);
+          // const hoteData = await getHoteById(qrcodeData.qrcode.id_hote);
+          const hoteData = await getHoteById(id_hote);
           if (!hoteData.success) return;
           setHote(hoteData.hote);
 
@@ -189,7 +210,7 @@ export default function OfferPage() {
             getShortestDuration(durations)
           },1000)
         }else{
-          console.log("C'est nulllLLLLLL id", id_qrcode);
+          console.log("C'est nulllLLLLLL id", id_hote);
         }
 
         setTimeout(() => {
@@ -217,7 +238,7 @@ export default function OfferPage() {
         }
       }
     }
-  }, []);
+  }, [lang]);
 
 
 
@@ -298,14 +319,27 @@ export default function OfferPage() {
 
 
     useEffect(() => {
-      if (id_qrcode) {
-        localStorage.setItem("id_qrcode", id_qrcode);
+      if (id_hote) {
+        localStorage.setItem("id_hote", JSON.stringify({ id_hote: id_hote, ts: Date.now() }));
       }
-    }, [id_qrcode]);
+    }, [id_hote]);
+
+
+
+    const [copied, setCopied] = useState(false);
+
+    const handleCopy = (text) => {
+      navigator.clipboard.writeText(text).then(() => {
+        setCopied(true);
+        setTimeout(() => setCopied(false), 1000); // Reset après 2s
+      });
+    };
+    
 
 
     return (
       <div className="offerContainer" ref={offerContainerRef}>
+
         <div className={`OfferPageAnimation ${!isAnimation ? "Without" : ""}`} ref={OfferPageAnimationRef}>
           <div className="ContainerTextWelcome">
             <p className="t2">Welcome</p>
@@ -320,7 +354,7 @@ export default function OfferPage() {
         </div>
 
         <div className={`ContainerOfferPageAll ${!isAnimation ? "Without" : ""}`} ref={OfferPageRef}>
-          <GoBack nagigation={"/"} scrollTo={""} text={"revenir"}/> 
+          <GoBack nagigation={origin ? origin : "/"} scrollTo={""} text={"revenir"}/> 
           {/* <TopDivOpacity /> */}
           <div className="InteractionContainer row">
             <div className="likeContainer">
@@ -372,10 +406,12 @@ export default function OfferPage() {
               ))}
           </div>
 
-
+            {/* <p className={`OfferTitle t3 ${isLoading ? "loading shimmer" : ""}`}>{isLoading ? "" : pickI18n(offer.title_i18n, lang, offer.title)}</p>
+            <p className={`OfferDescription t5 ${isLoading ? "loading shimmer" : ""}`}>{isLoading ? "" : pickI18n(offer.description_i18n, lang, offer.description)}</p> */}
 
             <p className={`OfferTitle t3 ${isLoading ? "loading shimmer" : ""}`}>{isLoading ? "" :offer.title}</p>
             <p className={`OfferDescription t5 ${isLoading ? "loading shimmer" : ""}`}>{isLoading ? "" : offer.description}</p>
+
             <p className={`t5 OfferType ${isLoading ? "loading shimmer" : ""}`}>{isLoading ? "" : `*${offer.type}`}</p>
             <div className="Offerhline"></div>     
 
@@ -401,7 +437,7 @@ export default function OfferPage() {
                     : 
                     <>
                       <img src={dureeIcon} alt="clock icon"/>
-                      <p className="t6">Durée {offer.duration}</p>
+                      <p className="t6">{t('Duration')} {offer.duration}</p>
                     </>
                   }
                 </div>
@@ -411,7 +447,7 @@ export default function OfferPage() {
             <div className="Offerhline"></div>     
 
             {
-              id_qrcode ?
+              id_hote ?
               <>
                 <p className="t32 DistanceText">Distance depuis votre Hotel :</p>
                 <div className="OfferDistanceContainer">
@@ -475,8 +511,16 @@ export default function OfferPage() {
                     <div className={`row adresseContainer ${isLoading ? "loading shimmer" : ""}`}>
                       {!isLoading && (
                         <>
-                          <img src={Map2DPin} alt="map pin icon" />
-                          <p ref={refAdresse} className="adresseText">{offer.adresse}</p>
+                          <button onClick={() => {
+                            handleCopy(offer.adresse);
+                          }} className="CopyButton">
+                            {/* <img src={Map2DPin} alt="map pin icon" /> */}
+                            <p ref={refAdresse} className="t6 adresseText">{offer.adresse}</p>
+                            <img src={copieIcon} alt="Copier l’email" />
+                            <span className={`${copied ? "copied" : ""} CopiedFeedback t6`}>Copié</span>
+                          </button>
+                          {/* <img src={Map2DPin} alt="map pin icon" />
+                          <p ref={refAdresse} className="adresseText t5">{offer.adresse}</p> */}
                         </>
                       )}
                     </div>
@@ -500,8 +544,14 @@ export default function OfferPage() {
                     <div className={`row adresseContainer ${isLoading ? "loading shimmer" : ""}`}>
                     {!isLoading && (
                       <>
-                        <img src={Map2DPin} alt="map pin icon" />
-                        <p ref={refAdresse} className="t6 adresseText">{offer.adresse}</p>
+                        <button onClick={() => {
+                          handleCopy(offer.adresse);
+                        }} className="CopyButton">
+                          {/* <img src={Map2DPin} alt="map pin icon" /> */}
+                          <p ref={refAdresse} className="t6 adresseText">{offer.adresse}</p>
+                          <img src={copieIcon} alt="Copier l’email" />
+                          <span className={`${copied ? "copied" : ""} CopiedFeedback t6`}>Copié</span>
+                        </button>
                       </>
                     )}
                   </div>
@@ -573,7 +623,7 @@ export default function OfferPage() {
                 ><p className="t5">i</p></button>
               </div> 
             }/>
-            <Footer paddingBottom={"180px"}/>
+            <Footer paddingBottom={"220px"}/>
           </div>
 
 
@@ -593,12 +643,19 @@ export default function OfferPage() {
                   participantReduced: participantReduced,
                   OfferIsCancellable: offer.cancellable,
                   total_capacity: offer.total_capacity,
-                  offer_provider_id: offer.provider_id
+                  offer_provider_id: offer.provider_id,
+                  id_hote: id_hote,
                 }
               })
             }}>Voir les<br></br>disponnibilités</button>
           </div>
 
+
+
+          {/* <ButtonLanguage offerPage={true}/> */}
+          
+
+          <ButtonLanguage offerPage={true} popUp={popUpLanguage}/>
 
           <PopUpBottom 
             onClose={() => {

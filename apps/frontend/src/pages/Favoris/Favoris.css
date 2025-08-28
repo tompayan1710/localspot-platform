@@ -110,11 +110,21 @@
 }
 .NoFavorite .MessageNone>.ImageWrapper{
     width: 90%;
-    aspect-ratio: 2.5;
-    /* background-color: red; */
+    /* aspect-ratio: 1.6; */
+    /* height: clamp(150px, 90%, 230px);  */
+    height: 45vw;
+    min-height: 180px;
+    max-height: 230px;
 }
 .NoFavorite .MessageNone>.ImageWrapper>img{
-    width: 100%;
+    /* width: 100%;
+    height: 100%; */
+    /* position: absolute; */
+  /* inset: 0;                 top:0; right:0; bottom:0; left:0; */
+  width: 100%;
+  height: 100%;
+  object-fit: contain;     
+  /* display: block; */
 }
 .NoFavorite .MessageNone>p{
     position: relative;

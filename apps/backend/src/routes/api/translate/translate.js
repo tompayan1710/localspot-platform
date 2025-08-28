@@ -12,7 +12,7 @@ router.post("/", async (req, res) => {
     const params = new URLSearchParams({
       auth_key: process.env.DEEPL_API_KEY,
       target_lang: targetLang.toUpperCase(),
-    });
+    }); 
 
     texts.forEach(text => params.append("text", text));
 

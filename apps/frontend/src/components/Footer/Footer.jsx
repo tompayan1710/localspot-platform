@@ -31,7 +31,9 @@ export default function Footer({paddingBottom, isOtherTheme}) {
 
 
   return (
-    <div id={"Footer"} className="FooterContainer" style={{ paddingBottom: paddingBottom || "90px" }}>
+    <div id={"Footer"} className="FooterContainer" 
+      // style={{ paddingBottom: paddingBottom || "150px" }}
+    >
       <img src={ViarteV} alt="ViarteV"/>
       <p className="t6">
         Les offres affichées ont fait l'objet d'une sélection rigoureuse et d’un contrôle qualité strict, dans le but de vous proposer des prestations de grande qualité. 
@@ -65,7 +67,7 @@ export default function Footer({paddingBottom, isOtherTheme}) {
         <a className="t6" href="/content-policy">Content Policy</a>
         <div className="whiteHline"></div>
         <p className="t6">© 2025 Viarte. Tous droits réservés.</p>
-        
+        <div style={{height: paddingBottom || "150px"}}></div>
       </div>
     </div>
   );

@@ -1,11 +1,11 @@
 
 // ✅ Fonction pour rafraîchir l'Access Token (version simplifiée)
-export const getAllOffers = async () => {
+export const getAllOffers = async (lang) => {
     console.log("Récupération des Offres Today");
 
     try {
         // ✅ Requête pour obtenir un nouveau token (Refresh Token doit être dans les cookies)
-        const response = await fetch(`${process.env.REACT_APP_API_URL}/api/offer/getall`, {
+        const response = await fetch(`${process.env.REACT_APP_API_URL}/api/offer/getall?lang=${lang}`, {
             method: "GET",
         });
 
@@ -28,11 +28,11 @@ export const getAllOffers = async () => {
 
 
 // ✅ Fonction pour rafraîchir l'Access Token (version simplifiée)
-export const getOfferBySlug = async (slug) => {
+export const getOfferBySlug = async (slug, lang) => {
     console.log("Récupération de l'offre");
     try {
         // ✅ Requête pour obtenir un nouveau token (Refresh Token doit être dans les cookies)
-        const response = await fetch(`${process.env.REACT_APP_API_URL}/api/offer/get?slug=${slug}`, {
+        const response = await fetch(`${process.env.REACT_APP_API_URL}/api/offer/get?slug=${slug}${lang ? `&lang=${lang.split("-")[0].toLowerCase()}` : ""}`, {
             method: "GET",
         });
 
@@ -74,9 +74,9 @@ export const getOffersProvider = async (provider_id) => {
 }
 
 
-export const getFilteredOffers = async (filters) => {
+export const getFilteredOffers = async (filters, lang) => {
   try {
-    const response = await fetch(`${process.env.REACT_APP_API_URL}/api/offer/filter`, {
+    const response = await fetch(`${process.env.REACT_APP_API_URL}/api/offer/filter?lang=${lang}`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json"

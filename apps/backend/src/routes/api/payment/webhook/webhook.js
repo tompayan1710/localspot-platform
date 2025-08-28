@@ -43,7 +43,7 @@ module.exports = async function stripeWebhook(req, res) {
 
     if (meta.mode !== process.env.NODE_ENV) {
       console.warn("⛔ Webhook ignoré car mode différent :", meta.mode, "vs", process.env.NODE_ENV);
-      return response.status(200).send("Webhook ignoré - mauvais environnement");
+      return res.status(200).send("Webhook ignoré - mauvais environnement");
     }
     // 💡 tant que tu es en TEST, enlève ce garde-fou d’environnement
     // if (meta.mode !== process.env.NODE_ENV) {
@@ -51,10 +51,16 @@ module.exports = async function stripeWebhook(req, res) {
     //   return res.status(200).send("Webhook ignoré - mauvais environnement");
     // }
 
+    const idHoteNormalized =
+    meta.id_hote && meta.id_hote !== "null" && meta.id_hote !== ""
+      ? parseInt(meta.id_hote, 10)
+      : null;
+
     const reservation = {
       user_id: meta.user_id && meta.user_id !== "guest" ? parseInt(meta.user_id, 10) : 1,
       provider_id: parseInt(meta.provider_id, 10),
       offerSlug: meta.offerSlug,
+      id_hote: idHoteNormalized,
       date: meta.date,
       start_hour: meta.start_hour,
       end_hour: meta.end_hour,

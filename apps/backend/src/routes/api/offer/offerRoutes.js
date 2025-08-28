@@ -4,6 +4,7 @@ const router = express.Router();
 const { createOffer, getAllOffers, getOfferBySlug, getOffersProvider, createSlugOfferNotExist } = require("../../../db/Models/offerModel");
 const { findOrCreateCityByName } = require("../../../db/Models/AdresseModel");
 const { toggleFavorite, isFavorite } = require("../../../db/Models/FavoritesModel");
+const { translateToAll } = require("../../../utils/translate");
 
 
 const db = require("../../../db/index");
@@ -63,7 +64,17 @@ router.post("/create", async (req, res) => {
     return res.status(500).json({ success: false, error: "Erreur serveur" });
   }
 
-  
+  const SUPPORTED_LANGS = [
+    "en",
+    "fr",
+    // "it",
+    // "de"
+  ]
+
+  const title_i18n = await translateToAll(title, SUPPORTED_LANGS /* , "fr" si tu sais */);
+  const description_i18n = await translateToAll(description, SUPPORTED_LANGS /* , "fr" si tu sais */);
+
+
   console.warn(title,
     description,
     adresse,
@@ -82,7 +93,9 @@ router.post("/create", async (req, res) => {
     total_capacity,
     // qrcode_url,
     slug,
-    cancellable);
+    cancellable,
+    title_i18n,
+    description_i18n);
 
   try {
     const newOffer = await createOffer({
@@ -103,7 +116,9 @@ router.post("/create", async (req, res) => {
       total_capacity,
       // qrcode_url,
       slug,
-      cancellable 
+      cancellable,
+      title_i18n,
+      description_i18n
     });
 
     res.status(201).json({ success: true, offer: newOffer });
@@ -115,8 +130,10 @@ router.post("/create", async (req, res) => {
 
 // (optionnel) Liste toutes les offres
 router.get("/getall", async (req, res) => {
+  const lang = (req.query.lang || "fr").split("-")[0].toLowerCase();
+
   try {
-    const offers = await getAllOffers();
+    const offers = await getAllOffers("", [], "", lang);
     res.json({ success: true, offers });
   } catch (err) {
     res.status(500).json({ success: false, error: "Erreur serveur" });
@@ -140,18 +157,20 @@ router.get("/getall-provider", async (req, res) => {
 // (optionnel) Récupère une offre par son ID
 router.get("/get", async (req, res) => {
   const slug = req.query.slug;
+  const lang = (req.query.lang || "fr").split("-")[0].toLowerCase();
 
   if (!slug) {
     return res.status(400).json({ success: false, error: "slug manquant" });
   }
 
   try {
-    const offer = await getOfferBySlug(slug);
+    const offer = await getOfferBySlug(slug, lang);
     if (!offer) {
       return res.status(404).json({ success: false, error: "Offre non trouvée" });
     }
     res.json({ success: true, offer: offer.rows[0]});
   } catch (err) {
+    console.error("Erreur /api/offer/get :", err); // <-- utile
     res.status(500).json({ success: false, error: "Erreur serveur" });
   }
 });
@@ -247,6 +266,7 @@ router.post("/upload-offer-images", upload.array("images"), async (req, res) => 
 
 router.post("/filter", async (req, res) => {
   const { priceRange, date, moment, categories,  nb_adult, nb_reduced } = req.body;
+  const lang = (req.query.lang || "fr").split("-")[0].toLowerCase();
 
 
   console.log(req.body);
@@ -312,7 +332,7 @@ router.post("/filter", async (req, res) => {
     console.log("WhereClause:", whereClause);
     console.log("With values:", values);
 
-    const rows = await getAllOffers(whereClause, values, moment);
+    const rows = await getAllOffers(whereClause, values, moment, lang);
 
 
     // const { rows } = await db.query(query, values);

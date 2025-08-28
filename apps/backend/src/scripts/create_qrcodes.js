@@ -5,12 +5,9 @@ async function createQRCode() {
     method: "POST",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify({
-      slug: "2a18b701-7f45-4f76-b054-1717f0607657",
+      slug: "9630f266-e89f-4ebf-b5f6-88801cb1f07b",
       user_id: 64,
       id_hote: 4,
-      latitude: 43.567945,
-      longitude: 7.11491,
-      adresse: "Place Masséna, Nice",
       base_url: "viarte.eu"
     })
   });

@@ -7,19 +7,8 @@ import FadeInImage from "../Utils/FadeInImage"
 import React from "react"
 
 
-export default function OffersCard({loading, offers, vertical=false}){
+export default function OffersCard({loading, offers, vertical=false, goToOffer}){
   const navigate = useNavigate();
-
-  const storedId = localStorage.getItem("id_qrcode");
-
-
-    function goToOffer(slug) {
-      if (storedId) {
-        navigate(`/offer-page/${slug}?id=${storedId}`);
-      } else {
-        navigate(`/offer-page/${slug}`);
-      }
-    }
 
     return (
         <div className={`HomeListPrestation ${vertical && "vertical"}`}>

@@ -81,7 +81,6 @@ async function sendReservationEmail(reservation, pdfPath) {
               <tr>
                 <td><strong>×${reservation.nb_adult} Adulte${reservation.nb_adult>1 ? "s" : ""}</strong></td>
                 <td style="text-align: right;">${reservation.price_per_person * reservation.nb_adult} €</td>
-                <td style="text-align: right;">${reservation.price_per_person * reservation.nb_adult} €</td>
               </tr>
               ${reservation.nb_reduced > 0 ?
                 `

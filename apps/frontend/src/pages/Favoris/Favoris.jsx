@@ -90,7 +90,9 @@ export default function Favoris() {
                 <div
                     className="FavorisItem"
                     onClick={() => {
-                    if (!loading) navigate(`/offer-page/${offer.slug}`);
+                    if (!loading) navigate(`/offer-page/${offer.slug}`, {state: {
+                        origin: "/favoris"
+                    }});
                     }}
                 >
                     <div className={`ImageWrapper ${loading && "shimmer"}`}>
@@ -143,7 +145,7 @@ export default function Favoris() {
             {!loading && favorites.length === 0 && (
                 <div className="NoFavorite">
                     <div className="MessageNone">
-                         <div className="ImageWrapper">
+                        <div className="ImageWrapper">
                             <FadeInImage src={NoFavorite} alt="no favorite image"/>
                         </div>
                         <p className="t6">Vous n'avez aucun favoris pour <br></br>le moment.</p>

@@ -322,7 +322,7 @@ justify-content: center;
   margin: 0 auto;
 }
 .ContainerOfferPageAll .row{
-  height: 18px;
+  /* height: 18px; */
 }
 .ContainerOfferPageAll .OfferInfoContainer img{
   height: 18px;
@@ -469,17 +469,69 @@ justify-content: center;
   width: 80%;
   margin: 10px 0;
 }
+.ContainerOfferPageAll .adresseContainer{
+  align-items: start;
+}
 .ContainerOfferPageAll .adresseContainer img{
-  height: 18px;
-  margin-right: 5px;
+  /* height: 18px; */
+  /* margin-right: 5px; */
 }
 
 .ContainerOfferPageAll .adresseText {
+  margin-top: 2px;
   max-width: 100%;
   word-break: break-word;
   width: fit-content;
 }
 
+
+
+
+
+
+
+
+
+.ContainerOfferPageAll .CopyButton{
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    background-color: transparent;
+    border: none;
+    width: fit-content;
+    position: relative;
+}
+.ContainerOfferPageAll .CopyButton>p{
+    margin: 0%;
+    /* margin-left: 15px; */
+    margin-right: 10px;
+}
+.ContainerOfferPageAll .CopyButton>img{
+    width: 15px;
+    cursor: pointer;
+}
+.ContainerOfferPageAll .CopyButton>.CopiedFeedback{
+    position: absolute;
+    right: 6px;
+    transform: translateX(50%);
+    top: -30px;
+    /* background-color: var(--greenlight); */
+    /* background-image: linear-gradient(to bottom, #b5edb1, var(--greenlight)); */
+    /* background-image: var(--lineargradientblack); */
+    background-color: white;
+    /* color: var(--greennormal); */
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05),
+        inset  0 0px 1px var(--greylight);
+    color: var(--greydark);
+    padding: 3px 6px;
+    border-radius: 100px;
+    border: 1px solid var(--greylight);
+    transition: opacity 0.15s ease;
+    opacity: 0;
+}
+.ContainerOfferPageAll .CopyButton>.CopiedFeedback.copied{
+    opacity: 1;
+}
 
 
 
@@ -801,3 +853,10 @@ justify-content: center;
 }
 
 
+
+
+
+
+.bodyPopUpBottom .EditLanguageContianer {
+  margin-top: 20px;
+}

@@ -13,22 +13,22 @@ const supabase = createClient(
 
 // Créer un QR code
 router.post("/create", async (req, res) => {
-  const { slug, user_id, id_hote, latitude, longitude, adresse, base_url } = req.body;
+  const { slug, user_id, id_hote, base_url } = req.body;
 
-  if (!user_id || !latitude || !longitude || !adresse) {
+  if (!slug ||!user_id || !id_hote || !base_url) {
     return res.status(400).json({ success: false, message: "Champs manquants." });
   }
 
   try {
     // const slug = await createSlugOfferNotExist();
 
-    const id_qrcode = await createQRCode(slug, user_id, id_hote, latitude, longitude, adresse)
+    const id_qrcode = await createQRCode(slug, user_id, id_hote)
 
-    const qrContent = `${base_url ? base_url : process.env.FRONTEND_URL}/offer-page/${slug}?id=${id_qrcode}`; // ou ce que tu veux
+    const qrContent = `${base_url ? base_url : process.env.FRONTEND_URL}/offer-page/${slug}?host_id=${id_hote}`; // ou ce que tu veux
 
     const qrBuffer = await QRCode.toBuffer(qrContent);
 
-    const filePath = `qrcodes/${Date.now()}_${slug}.png`;
+    const filePath = `qrcodes/${Date.now()}_${slug}_${id_hote}.png`;
 
     const { error: uploadError } = await supabase.storage
       .from("offers-images") // ton bucket
@@ -48,7 +48,7 @@ router.post("/create", async (req, res) => {
     // 👉 insérer en DB
     
     await UpdateQRCode(id_qrcode, image_url);
-
+    console.log("🔲QR créer avec succés : ✅");
     return res.status(200).json({ success: true, qrImageUrl: image_url, slug: slug, id_qrcode: id_qrcode   });
   } catch (err) {
     console.error("❌ Erreur création QR :", err.message);

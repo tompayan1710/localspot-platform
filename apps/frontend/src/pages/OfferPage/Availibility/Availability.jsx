@@ -31,7 +31,8 @@ export default function Availability() {
 
   const [participantAdult, setParticipantAdult] = useState(location.state?.participantAdult || 2);
   const [participantReduced, setParticipantReduced] = useState(location.state?.participantReduced || 1); 
-                  
+  const id_hote = location.state?.id_hote;       
+  
   const creneauRef = useRef(null); // ← Étape 1
   const [barStyle, setBarStyle] = useState({ width: 0, angle: 0 });
   const [isOccultView, setIsOccultView] = useState(false);
@@ -74,6 +75,7 @@ export default function Availability() {
           adresse: adresse,
           price: price,
           offer_provider_id: offer_provider_id,
+          id_hote: id_hote,
           OfferIsCancellable: OfferIsCancellable,
           participantAdult: participantAdult,
           participantReduced: participantReduced,
@@ -81,7 +83,7 @@ export default function Availability() {
           end_hour: selectedCreneau.slot.to,
           date: selectedDate,
           total_capacity: total_capacity,
-          selectedCreneau: selectedCreneau
+          selectedCreneau: selectedCreneau,
         }
       });
     }else{
@@ -604,6 +606,7 @@ export default function Availability() {
             adresse: adresse,
             price: price,
             offer_provider_id: offer_provider_id,
+            id_hote: id_hote,
             OfferIsCancellable: OfferIsCancellable,
             participantAdult: participantAdult,
             participantReduced: participantReduced,
@@ -620,6 +623,7 @@ export default function Availability() {
             adresse,
             price,
             offer_provider_id,
+            id_hote,
             OfferIsCancellable,
             participantAdult,
             participantReduced,

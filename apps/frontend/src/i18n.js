@@ -14,8 +14,12 @@ i18n
           welcome: "Welcome",
           profile: "Profile",
           logout: "Log out",
-          editprofil: "Edit profile"
-          // ajoute tes traductions ici
+          editprofil: "Edit profile",
+          Duration: "Duration",
+
+          //HOME 
+          sloganstart: "Unique experiences,",
+          sloganend: "close to you!"
         },
       },
       fr: {
@@ -23,7 +27,13 @@ i18n
           welcome: "Bienvenue",
           profile: "Profil",
           logout: "Se déconnecter",
-          editprofil: "Modifiler le profil"
+          editprofil: "Modifiler le profil",
+          Duration: "Duréé",
+
+
+          //HOME 
+          sloganstart: "Des expériences uniques,",
+          sloganend: "proche de vous !"
         },
       },
       it: {

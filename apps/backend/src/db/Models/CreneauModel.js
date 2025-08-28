@@ -152,7 +152,7 @@ async function getAccessToken(provider_id) {
 
 
 async function saveCreneau(params) {
-  const {user_id, provider_id, offerSlug, date, start_hour, end_hour, adresse,  nb_adult, nb_reduced, total_participants, price_per_person, name, email, phone, title, payment_intent_id } = params;
+  const {user_id, provider_id, offerSlug, id_hote, date, start_hour, end_hour, adresse,  nb_adult, nb_reduced, total_participants, price_per_person, name, email, phone, title, payment_intent_id } = params;
   try { 
 
     const [ slot_id, newTotalReserved, newStatus ] = await findExistingCreneauOrCreate(provider_id, offerSlug, date, start_hour, end_hour, total_participants, price_per_person);
@@ -178,13 +178,14 @@ async function saveCreneau(params) {
         name, 
         email, 
         phone,
+        id_hote,
         stripe_payment_intent_id,
         
         gross_amount,
         hotel_commission,
         platform_commission,
         net_amount
-      ) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, $14, $15, $16)
+      ) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, $14, $15, $16, $17)
       RETURNING *, id AS reservation_id;
     `, [user_id, 
         slot_id, nb_adult, 
@@ -195,6 +196,7 @@ async function saveCreneau(params) {
         name, 
         email, 
         phone, 
+        id_hote,
         payment_intent_id, 
         grossAmount,
         hotelCommission, 

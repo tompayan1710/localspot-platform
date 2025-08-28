@@ -17,7 +17,8 @@ export default function Reservations(){
     
     const [AllReservations, setAllReservations ] = useState({})
     const [ offers, setOffers ] = useState({});
-
+    const [loading, setLoading] = useState(true);
+    
     const getAllReservations = async () => {
         try {
             const res = await fetch(`${process.env.REACT_APP_API_URL}/api/reservation_individual/getall?user_id=${authState.user?.id}`, {
@@ -73,6 +74,11 @@ export default function Reservations(){
                     }
                 }
                 setOffers(objectOffers);
+
+                setTimeout((
+                )=>{
+                    setLoading(false);
+                }, [800])
             }
         };
 
@@ -93,16 +99,24 @@ export default function Reservations(){
             <p className="t32">Reservation</p>
             <div className="AllReservations">
                 {
-                    Object.entries(AllReservations).length > 0 ? Object.entries(AllReservations).map(([date, reservations]) => {
+                    (loading ? [["August 26, 2025", [1]]] 
+                        : 
+                        // Object.entries(AllReservations).length > 0 &&
+                         Object.entries(AllReservations)).map(([date, reservations]) => {
+                        console.error(date);
                         return (
                             <React.Fragment key={`${date}`}>
-                            <p className="t6">{date}</p>
+                            <p className={`t6  ${loading ? "loadingDate shimmer" : ""}`}>{date}</p>
                             {
                                 reservations.length > 0 ? reservations.map((reservation) => {
                                 return (
-                                    <React.Fragment key={reservation.reservation_id}>
+                                    <React.Fragment key={
+                                        loading
+                                        ? `sk-${date}-${reservation}`                               // key stable pour skeleton
+                                        : reservation.reservation_id || `${date}-${reservation}` 
+                                    }>
                                     <div className="ReservationItem" onClick={() => {
-                                        navigate(`/reservations/${reservation.reservation_id}`)
+                                        if(!loading) navigate(`/reservations/${reservation.reservation_id}`)
                                     }}>
                                         <div className="ImagesOffers">
                                         {/* {
@@ -125,15 +139,24 @@ export default function Reservations(){
                                             } */}
                                         </div>
                                         <div className="column">
-                                            <p className="t4 maxLine maxLine1">{offers[reservation.offer_slug]?.title}Explorez les calanques en kayak</p>
+                                            <p className={`t4 maxLine maxLine1  ${loading ? "loadingTitle shimmer" : ""}`}>{loading ? "Excursion en bateau privé avec coucher de soleil à Saint-Jean" : offers[reservation.offer_slug]?.title}</p>
+                                            {/* <p className="t4 maxLine maxLine1">{offers[reservation.offer_slug]?.title}</p> */}
                                             <div className="hlinedashed"></div>
                                             {/* <p className="t6">07/11/2025 à 14:35</p> */}
                                             <div className="row">
                                                 <div className="column">
-                                                    <p className="t6">Participant : {reservation.total_participants ?? 0}</p>
-                                                    <p className="t6">×{reservation.nb_adult} adult  {reservation.nb_reduced ? `×${reservation.nb_reduced} reduced` : ""}</p>
+                                                    <p className={`t6 nbparticipant ${loading ? "loading shimmer" : ""}`}>Participant : {loading ? "0" : reservation.total_participants}</p>
+
+                                                    {/* <p className="t6">Participant : {reservation.total_participants ?? 0}</p> */}
+                                                    <p className={`t6 ${loading ? "loading shimmer" : ""}`}>
+                                                    {loading
+                                                        ? "×2 adult ×1 reduced"
+                                                        : `×${reservation.nb_adult} adult ${reservation.nb_reduced ? `×${reservation.nb_reduced} reduced` : ""}`
+                                                    }
+                                                    </p>
+                                                    {/* <p className="t6">×{reservation.nb_adult} adult  {reservation.nb_reduced ? `×${reservation.nb_reduced} reduced` : ""}</p> */}
                                                 </div>
-                                                <p className="t4">{reservation.total_price}€</p>
+                                                <p className={`t4 ${loading ? "loading shimmer" : ""}`}>{loading ? "240.00" : reservation.total_price}€</p>
                                             </div>
                                         </div>
                                     </div>
@@ -148,7 +171,10 @@ export default function Reservations(){
                             </React.Fragment>
                         )
                     })
-                    :
+                }
+
+
+                {!loading && Object.entries(AllReservations).length === 0 && (
                     <div className="NoReservation">
                         <div className="MessageNone">
                             <div className="ImageWrapper">
@@ -158,6 +184,7 @@ export default function Reservations(){
                             <WhiteButton text={"Rechercher des annonces"} onClick={() => navigate("/")} img={loupeicon} alt={"loupe icon"}/>
                         </div>
                     </div>
+                    )
                 }
 
             </div>

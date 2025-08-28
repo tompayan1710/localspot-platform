@@ -1,0 +1,115 @@
+:root{
+    --taillemin: min(250px, 50vw);
+}
+
+.ButtonLanguage{
+    position: fixed;
+    bottom: 90px;
+    left: 50%;
+    transform: translateX(-50%);
+    border: none;
+    border-radius: 23px;
+    background-color: white;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05),
+        inset  0 0px 1px var(--greylight);
+    z-index: 5;
+    border: 1px solid var(--greylight);
+    opacity: 0;
+}
+
+.ButtonLanguage.offerPage{
+    /* --taillemin: min(250px, 50vw); */
+    bottom: 100px;
+    /* left: 15px; */
+    transform: none;
+    /* height: 100px; */
+    padding-bottom: 60px;
+    z-index: 1;
+    left: 50%;
+    transform: translateX(calc(var(--taillemin) * -1 + 15px)) scale(0.7);
+    transform-origin: center center;
+    /* transform: scale(0.7) translateX(-50%); */
+    transition: all 0.6s ease-in-out 0.2s;
+}
+
+.ButtonLanguage>button{
+    background-color: transparent;
+    border: none;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    padding: 12px 15px ;
+    gap: 8px;
+    cursor: pointer;
+}
+
+.ButtonLanguage .ImageWrapper:has(img.paysflag){
+    height: 17px;
+    width: 28px;
+    border-radius: 3px;
+    background-color: var(--greylight);
+}
+.ButtonLanguage img.paysflag{
+   min-height: 17px;
+   min-width: 28px;
+   height: 17px;
+   width: 28px;
+   border-radius: 2px;
+}
+
+
+.ButtonLanguage img.ArrowRight {
+    transition: transform 0.4s ease-in-out 0.2s; /* durée = 1s, delay = 1s */
+    transform: rotate(0deg);
+    height: 10px;
+}
+
+.ButtonLanguage.selected img.ArrowRight {
+    transition: transform 0.3s ease-in-out 0s; /* durée = 1s, delay = 1s */
+    transform: rotate(-90deg);
+}
+.ButtonLanguage.selected.offerPage {
+    padding-bottom: 70px;
+}
+
+
+
+
+.ButtonLanguage.offerPage.popUp {
+  animation: popUpButtonLanguageOffer 0.6s ease-in-out forwards 0.3s;
+  transform-origin: left center;
+}
+@keyframes popUpButtonLanguageOffer {
+  0% {
+    opacity: 0;
+    transform: translateX(calc(var(--taillemin) * -1 + 15px)) scale(0.9);
+  }
+  66% {
+    opacity: 1;
+    transform: translateX(calc(var(--taillemin) * -1 + 15px)) scale(1.02);
+  }
+  100% {
+    opacity: 1;
+    transform: translateX(calc(var(--taillemin) * -1 + 15px)) scale(1);
+  }
+}
+
+
+.ButtonLanguage.Home.popUp {
+  animation: popUpButtonLanguage 0.6s ease-in-out forwards 0s;
+  transform-origin: center center;
+}
+@keyframes popUpButtonLanguage {
+  0% {
+    opacity: 0;
+    transform: translateX(-50%) scale(0.9);
+  }
+  66% {
+    opacity: 1;
+    transform: translateX(-50%) scale(1.02);
+  }
+  100% {
+    opacity: 1;
+    transform: translateX(-50%) scale(1);
+  }
+}

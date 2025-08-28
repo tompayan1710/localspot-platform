@@ -27,6 +27,7 @@ export default function FormInfoPayement(){
     const title = locationParams?.title ?? fallbackParams.title;
     const price = locationParams?.price ?? fallbackParams.price;
     const offer_provider_id = locationParams?.offer_provider_id ?? fallbackParams.offer_provider_id;
+    const id_hote = locationParams?.id_hote ?? fallbackParams.id_hote;
     const OfferIsCancellable = locationParams?.OfferIsCancellable ?? fallbackParams.OfferIsCancellable;
     const participantAdult = locationParams?.participantAdult ?? fallbackParams.participantAdult;
     const participantReduced = locationParams?.participantReduced ?? fallbackParams.participantReduced;
@@ -103,6 +104,7 @@ export default function FormInfoPayement(){
                     adresse,
                     price,
                     offer_provider_id,
+                    id_hote,
                     OfferIsCancellable, 
                     participantAdult,
                     participantReduced,
@@ -131,6 +133,7 @@ export default function FormInfoPayement(){
         title,
         adresse,
         offer_provider_id,
+        id_hote,
         total_capacity,
         participantAdult,
         participantReduced

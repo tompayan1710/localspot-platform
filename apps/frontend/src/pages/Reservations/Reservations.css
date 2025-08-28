@@ -115,6 +115,30 @@ p.truncate-multiline {
     margin-bottom: 20px;
 }
 
+.ReservationItem .nbparticipant{
+    margin-bottom: 3px;
+}
+
+
+
+.AllReservations .loadingDate{
+    background-color: var(--greylight);
+    width: fit-content;
+    border-radius: 6px;
+    color: transparent;
+}
+.AllReservations .loadingTitle{
+    background-color: var(--greylight);
+    width: fit-content;
+    border-radius: 6px;
+    color: transparent;
+}
+.AllReservations .loading{
+    background-color: var(--greylight);
+    width: fit-content;
+    border-radius: 4px;
+    color: transparent;
+}
 
 
 .NoReservation {
@@ -138,11 +162,17 @@ p.truncate-multiline {
 }
 .NoReservation .MessageNone>.ImageWrapper{
     width: 90%;
-    aspect-ratio: 2.5;
+    /* aspect-ratio: 2.5; */
+    /* height: clamp(150px, 50vw, 200px);  */
     /* background-color: red; */
+    height: 45vw;
+    min-height: 130px;
+    max-height: 150px;
 }
 .NoReservation .MessageNone>.ImageWrapper>img{
     width: 100%;
+    height: 100%;
+    object-fit: contain;
 }
 .NoReservation .MessageNone>p{
     opacity: 0.6;
@@ -152,3 +182,5 @@ p.truncate-multiline {
 .NoReservation .whiteButton{
     margin-top: 40px;
 }
+
+

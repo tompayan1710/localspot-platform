@@ -1280,6 +1280,11 @@ COPY public.providers (id, name, bio, logo_url, tel, email, instagram, facebook,
 COPY public.qr_codes (id, slug, id_hote, adresse, image_url, user_id, latitude, longitude) FROM stdin;
 74	399d944e-b980-486a-8c04-2ecd27d6730e	4	Place Masséna, Nice	https://knswskkdaimyrcstijsm.supabase.co/storage/v1/object/public/offers-images/qrcodes/1754837671459_399d944e-b980-486a-8c04-2ecd27d6730e.png	64	43.567945	7.11491
 75	49eda54a-a544-4fd6-91ce-9bcddcfaa20a	4	Place Masséna, Nice	https://knswskkdaimyrcstijsm.supabase.co/storage/v1/object/public/offers-images/qrcodes/1754906380527_49eda54a-a544-4fd6-91ce-9bcddcfaa20a.png	64	43.567945	7.11491
+76	863fbf94-7e75-4c8e-8d74-654e7d6a7394	4	Place Masséna, Nice	https://knswskkdaimyrcstijsm.supabase.co/storage/v1/object/public/offers-images/qrcodes/1754909964118_863fbf94-7e75-4c8e-8d74-654e7d6a7394.png	64	43.567945	7.11491
+77	996d438f-9637-4533-bae9-c4e84b5e8ef8	4	Place Masséna, Nice	https://knswskkdaimyrcstijsm.supabase.co/storage/v1/object/public/offers-images/qrcodes/1754910071897_996d438f-9637-4533-bae9-c4e84b5e8ef8.png	64	43.567945	7.11491
+78	dd02dc00-21ae-4b82-934b-7a8b79f11e75	4	Place Masséna, Nice	https://knswskkdaimyrcstijsm.supabase.co/storage/v1/object/public/offers-images/qrcodes/1754910128332_dd02dc00-21ae-4b82-934b-7a8b79f11e75.png	64	43.567945	7.11491
+79	5576bba5-c3d4-4ea7-b84f-d375e1d1e74f	4	Place Masséna, Nice	https://knswskkdaimyrcstijsm.supabase.co/storage/v1/object/public/offers-images/qrcodes/1754910299811_5576bba5-c3d4-4ea7-b84f-d375e1d1e74f.png	64	43.567945	7.11491
+80	2a18b701-7f45-4f76-b054-1717f0607657	4	Place Masséna, Nice	https://knswskkdaimyrcstijsm.supabase.co/storage/v1/object/public/offers-images/qrcodes/1754910382375_2a18b701-7f45-4f76-b054-1717f0607657.png	64	43.567945	7.11491
 \.
 
 
@@ -1288,11 +1293,14 @@ COPY public.qr_codes (id, slug, id_hote, adresse, image_url, user_id, latitude, 
 --
 
 COPY public.refresh_tokens (id, user_id, refresh_token, expires_at, created_at) FROM stdin;
+309	67	eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6NjcsImVtYWlsIjoidG9tcGF5YW4xNzEwQGdtYWlsLmNvbSIsImlhdCI6MTc1NTAyMjAyOCwiZXhwIjoxNzcwNTc0MDI4fQ.V97nI-W75npNv_TrhRA7SXoB9ShqQKWCz1kZfoSXKzo	2026-02-08 19:07:08.953	2025-08-12 20:07:08.957078
+310	67	eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6NjcsImVtYWlsIjoidG9tcGF5YW4xNzEwQGdtYWlsLmNvbSIsImlhdCI6MTc1NTAyMjE2MywiZXhwIjoxNzcwNTc0MTYzfQ.tVh-a1r2Y3hqdadzRdZQ_W6A3Bkgd5xqLE22FpQ1VN8	2026-02-08 19:09:23.772	2025-08-12 20:09:23.77611
 301	64	eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6NjQsImVtYWlsIjoidGVzdEB0ZXN0LmNvbSIsImlhdCI6MTc1NDgyOTc4NywiZXhwIjoxNzcwMzgxNzg3fQ.LArqLNa4j_HdbX4Ik7nC7-xiQ8hAx6cglTXfCFFP8VA	2026-02-06 13:43:07.041	2025-08-10 07:15:59.433322
+314	67	eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6NjcsImVtYWlsIjoidG9tcGF5YW4xNzEwQGdtYWlsLmNvbSIsImlhdCI6MTc1NTAyNDY0OSwiZXhwIjoxNzcwNTc2NjQ5fQ.9pfhnXdIMSGFdrdOzjPJCg81NxUnLmJux0YDdUCcIMg	2026-02-08 19:50:49.551	2025-08-12 20:50:49.55277
 302	64	eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6NjQsImVtYWlsIjoidGVzdEB0ZXN0LmNvbSIsImlhdCI6MTc1NDg0MDAyOSwiZXhwIjoxNzcwMzkyMDI5fQ.VEMRYZvYBPPBgeJ_PFp8uabkDrJazf6XoN3XYyjvG3o	2026-02-06 16:33:49.858	2025-08-10 15:06:17.366032
 303	64	eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6NjQsImVtYWlsIjoidGVzdEB0ZXN0LmNvbSIsImlhdCI6MTc1NDg1MjExOCwiZXhwIjoxNzcwNDA0MTE4fQ.itgkuLSBvZUxqLwZ2rrapMN8Pz0VXnS6TZpb5V1sHIQ	2026-02-06 19:55:18.384	2025-08-10 18:46:36.427368
 304	64	eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6NjQsImVtYWlsIjoidGVzdEB0ZXN0LmNvbSIsImlhdCI6MTc1NDg5NDE0NiwiZXhwIjoxNzcwNDQ2MTQ2fQ.-YB-cdyWi3J7RmydGWiPBHCpRnEBOdRbu6BB6_8wXe0	2026-02-07 07:35:46.104	2025-08-10 21:30:41.844863
-305	64	eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6NjQsImVtYWlsIjoidGVzdEB0ZXN0LmNvbSIsImlhdCI6MTc1NDkwNjQzMywiZXhwIjoxNzcwNDU4NDMzfQ.PQsLqRQTtVAixPQ1hJzXFbAMXWIlG1l_rL5-rW1TEUw	2026-02-07 11:00:33.803	2025-08-11 11:29:17.704995
+308	67	eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6NjcsImVtYWlsIjoidG9tcGF5YW4xNzEwQGdtYWlsLmNvbSIsImlhdCI6MTc1NTAyMTk3OSwiZXhwIjoxNzcwNTczOTc5fQ.yID83O4n0N2SvyTWd1e_03D8KOC-8-rZIEcrhgzv7zg	2026-02-08 19:06:19.866	2025-08-12 20:06:19.868036
 \.
 
 
@@ -1301,8 +1309,8 @@ COPY public.refresh_tokens (id, user_id, refresh_token, expires_at, created_at) 
 --
 
 COPY public.reservation_slots (id, provider_id, offer_slug, date, start_hour, end_hour, total_reserved, price_per_person, status, created_at, updated_at, hotel_commission_total, platform_commission_total, net_amount_total, gross_amount_total) FROM stdin;
-90	11	49eda54a-a544-4fd6-91ce-9bcddcfaa20a	2025-08-12	14:00	16:00	2	110.00	available	2025-08-11 11:33:29.581618	2025-08-11 11:33:29.581618	15.40	28.60	176.00	220.00
-91	11	49eda54a-a544-4fd6-91ce-9bcddcfaa20a	2025-08-26	14:00	16:00	6	110.00	full	2025-08-11 11:37:26.815325	2025-08-11 11:37:26.815325	46.20	85.80	528.00	660.00
+95	11	7bdf044f-eeae-4348-81aa-3e1db365b5d8	2025-08-12	14:00	14:30	3	110.00	available	2025-08-12 20:49:22.443847	2025-08-12 20:49:22.443847	23.10	42.90	264.00	330.00
+96	11	49eda54a-a544-4fd6-91ce-9bcddcfaa20a	2025-08-19	14:00	16:00	3	110.00	available	2025-08-12 20:51:19.885279	2025-08-12 20:51:19.885279	23.10	42.90	264.00	330.00
 \.
 
 
@@ -1319,8 +1327,8 @@ COPY public.reservations_creneaux_google_calendar (id, reservation_slots_id, pro
 --
 
 COPY public.reservations_individuals (id, user_id, slot_id, total_participants, total_price, payment_status, reservation_status, created_at, updated_at, nb_adult, nb_reduced, email, name, phone, stripe_payment_intent_id, hotel_commission, platform_commission, net_amount, gross_amount) FROM stdin;
-114	64	90	2	220.00	paid	confirmed	2025-08-11 11:33:29.584351	2025-08-11 11:33:29.584351	2	0	tompayan1710@gmail.com	Lacarte Céline	+33765594097	pi_3Rus6R2f0HHvMFDt0hOk68Sr	15.40	28.60	176.00	220.00
-115	64	91	6	660.00	paid	confirmed	2025-08-11 11:37:26.820714	2025-08-11 11:37:26.820714	4	2	tompayan1710@gmail.com	Tom Payan	+33765594097	pi_3RusAJ2f0HHvMFDt0dkS8keK	46.20	85.80	528.00	660.00
+119	68	95	3	330.00	paid	confirmed	2025-08-12 20:49:22.450233	2025-08-12 20:49:22.450233	2	1	tompayan1710@gmail.com	Tom Payan	+33765594097	pi_3RvNFv2f0HHvMFDt1RkZ5aKW	23.10	42.90	264.00	330.00
+120	1	96	3	330.00	paid	confirmed	2025-08-12 20:51:19.886682	2025-08-12 20:51:19.886682	2	1	tompayan1710@gmail.com	Lacarte Céline	+33765594097	pi_3RvNHo2f0HHvMFDt1lY3IZfW	23.10	42.90	264.00	330.00
 \.
 
 
@@ -1330,6 +1338,8 @@ COPY public.reservations_individuals (id, user_id, slot_id, total_participants, 
 
 COPY public.users (id, email, password, role, created_at, provider_id, provider, name, phone, profil_picture, receive_booking_emails, receive_activity_suggestions) FROM stdin;
 64	test@test.com	$2b$10$3UvizEpeikdO.CLiWr9MhOZBnM.d/cFcKreM7F74pfsX3VksNH..K	member	2025-08-10 07:15:59.274613	11	password-email	\N	\N	\N	t	t
+67	tompayan1710@gmail.com	\N	member	2025-08-12 20:06:19.809507	\N	google	\N	\N	\N	t	t
+68	test2@test2.com	$2b$10$e3iACZgHNNPkQ2tHBIVnk.2luB6TmB/Xa5/QBza3yfkfF9DZulufO	member	2025-08-12 20:40:08.881656	\N	password-email	\N	\N	\N	t	t
 \.
 
 
@@ -1451,21 +1461,21 @@ SELECT pg_catalog.setval('public.providers_id_seq', 11, true);
 -- Name: qr_codes_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
 
-SELECT pg_catalog.setval('public.qr_codes_id_seq', 75, true);
+SELECT pg_catalog.setval('public.qr_codes_id_seq', 80, true);
 
 
 --
 -- Name: refresh_tokens_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
 
-SELECT pg_catalog.setval('public.refresh_tokens_id_seq', 305, true);
+SELECT pg_catalog.setval('public.refresh_tokens_id_seq', 314, true);
 
 
 --
 -- Name: reservation_slots_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
 
-SELECT pg_catalog.setval('public.reservation_slots_id_seq', 91, true);
+SELECT pg_catalog.setval('public.reservation_slots_id_seq', 96, true);
 
 
 --
@@ -1479,14 +1489,14 @@ SELECT pg_catalog.setval('public.reservations_creneaux_google_calendar_id_seq', 
 -- Name: reservations_individuals_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
 
-SELECT pg_catalog.setval('public.reservations_individuals_id_seq', 115, true);
+SELECT pg_catalog.setval('public.reservations_individuals_id_seq', 120, true);
 
 
 --
 -- Name: users_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
 
-SELECT pg_catalog.setval('public.users_id_seq', 64, true);
+SELECT pg_catalog.setval('public.users_id_seq', 68, true);
 
 
 --

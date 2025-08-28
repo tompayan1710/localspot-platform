@@ -34,8 +34,7 @@ import OffersCard from "../components/OffersCard/OffersCard";
 import TestHeight from "../components/TestHeight/TestHeight";
 import { linearTheme } from "../services/themeModifier";
 import WhiteButton from "../components/Buttons/WhiteButton/WhiteButton";
-
-
+import ButtonLanguage from "../components/Buttons/ButtonLanguage/ButtonLanguage";
 
 
 
@@ -54,8 +53,11 @@ import WhiteButton from "../components/Buttons/WhiteButton/WhiteButton";
   export default function Home({navBarRef}) {
     const [isOccultView, setIsOccultView] = useState(false);
     const { checkAuth, authState } = useContext(AuthContext);
+    const { t, i18n } = useTranslation();
+    const lang = (i18n.resolvedLanguage || i18n.language || "fr").split("-")[0];
+    console.error(lang)
 
-    const offerContainerRef = useRef(null);
+  const offerContainerRef = useRef(null);
     const LogoContainerAnimationRef = useRef(null); 
     const HomePageRef = useRef(null); 
     const generalTerms = useRef(null);
@@ -69,13 +71,15 @@ import WhiteButton from "../components/Buttons/WhiteButton/WhiteButton";
     const location = useLocation();
     const { scrollTo } = location.state || {};
     const navigate = useNavigate();
-    const { i18n } = useTranslation();
     const currentLang = i18n.language;
     const searchBarRef = useRef(null);
     const PopUpLoginRef = useRef(null);
     const [HomeOffers, setHomeOffers] = useState([]);
     const [loading, setLoading] = useState(true);
     const [selectingOfferToday, setSelectingOfferToday] = useState({})
+
+    const [popUpLanguage, setPopUpLanguage] = useState(false);
+
 
     useEffect(() => {
       if (scrollTo) {
@@ -91,7 +95,7 @@ import WhiteButton from "../components/Buttons/WhiteButton/WhiteButton";
 
 
       const getHomeOffers = async () => {
-        const data = await getAllOffers();
+        const data = await getAllOffers(lang);
         if(data.success){
 
           let offers = data.offers;
@@ -132,7 +136,7 @@ import WhiteButton from "../components/Buttons/WhiteButton/WhiteButton";
 
       useEffect(() => {
         setLoading(true);
-
+        setPopUpLanguage(true);
         getHomeOffers();
 
         setTimeout(() =>{
@@ -190,17 +194,30 @@ import WhiteButton from "../components/Buttons/WhiteButton/WhiteButton";
     }, []);
 
 
+    // ⚡ Récupération de l'objet complet { id_hote, ts }
+    const [id_hote_data, setId_hote_data] = useState(() => {
+      const stored = localStorage.getItem("id_hote");
+      return stored ? JSON.parse(stored) : null;
+    });
 
-const id_qrcode = localStorage.getItem("id_qrcode");
+    useEffect(() => {
+      const EXPIRATION = 7 * 24 * 60 * 60 * 1000; // 7 jours en ms
 
- 
+      if (id_hote_data && Date.now() - id_hote_data.ts > EXPIRATION) {
+        localStorage.removeItem("id_hote");
+        console.log("id_hote expiré");
+        setId_hote_data(null);
+      }
+    }, [id_hote_data]);
+
     const goToOffer = (slug) => {
-      if (id_qrcode) {
-        navigate(`/offer-page/${slug}?id=${id_qrcode}`);
+      console.warn("Je goToOffer");
+      if (id_hote_data?.id_hote) {
+        navigate(`/offer-page/${slug}?host_id=${id_hote_data.id_hote}`);
       } else {
         navigate(`/offer-page/${slug}`);
       }
-    }
+    };
 
 
 
@@ -242,7 +259,7 @@ const id_qrcode = localStorage.getItem("id_qrcode");
               }
             </div>
           </div>
-          <p className="t32">Des expériences uniques,<br></br>proche de vous !</p>
+          <p className="t32">{t('sloganstart')}<br></br>{t('sloganend')}</p>
         </div>
         <div ref={HomePageRef} className="HomeContainer">
           <div  className={`SelectingToday ${loading && "loading shimmer"}`}>
@@ -316,7 +333,7 @@ const id_qrcode = localStorage.getItem("id_qrcode");
                   <img src={arrowRight} alt="arrow right icon"/>
                 </button>
               </div> 
-              <OffersCard offers={homeOffersByCategory.morning} loading={loading}/>
+              <OffersCard offers={homeOffersByCategory.morning} loading={loading} goToOffer={goToOffer}/>
               </>
             }
             {
@@ -370,7 +387,7 @@ const id_qrcode = localStorage.getItem("id_qrcode");
                 <img src={arrowRight} alt="arrow right icon"/>
               </button>
             </div> 
-            <OffersCard offers={homeOffersByCategory.popular} loading={loading}/>
+            <OffersCard offers={homeOffersByCategory.popular} loading={loading} goToOffer={goToOffer}/>
             
             
             <div className={`ConnectYourSelf ${authState.isAuth && "close"}`}>
@@ -407,7 +424,7 @@ const id_qrcode = localStorage.getItem("id_qrcode");
                   <img src={arrowRight} alt="arrow right icon"/>
                 </button>
               </div> 
-              <OffersCard offers={homeOffersByCategory.nearby} loading={loading}/>
+              <OffersCard offers={homeOffersByCategory.nearby} loading={loading} goToOffer={goToOffer}/>
               </>
             }
 
@@ -461,7 +478,7 @@ const id_qrcode = localStorage.getItem("id_qrcode");
                   <img src={arrowRight} alt="arrow right icon"/>
                 </button>
               </div> 
-              <OffersCard offers={homeOffersByCategory.evenning} loading={loading}/>
+              <OffersCard offers={homeOffersByCategory.evenning} loading={loading} goToOffer={goToOffer}/>
               </>
             }
 
@@ -474,7 +491,7 @@ const id_qrcode = localStorage.getItem("id_qrcode");
                   <img src={arrowRight} alt="arrow right icon"/>
                 </button>
               </div> 
-              <OffersCard offers={homeOffersByCategory.all_remaining} loading={loading}/>
+              <OffersCard offers={homeOffersByCategory.all_remaining} loading={loading} goToOffer={goToOffer}/>
               </>
             }
 
@@ -482,6 +499,9 @@ const id_qrcode = localStorage.getItem("id_qrcode");
           <div id="DivSpace"></div>
           <Footer isOtherTheme={true}/>
         </div>
+
+        <ButtonLanguage popUp={popUpLanguage}/>
+
 
         <PopUpBottom
           onClose={() => {

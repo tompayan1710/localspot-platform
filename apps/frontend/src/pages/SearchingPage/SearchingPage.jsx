@@ -14,10 +14,14 @@ import { useLocation, useNavigate } from "react-router-dom";
 import { getFilteredOffers, getAllOffers } from "../../services/offers";
 import Spinner from "../../components/Spinner/Spinner";
 import { linearTheme } from "../../services/themeModifier";
+import { useTranslation } from "react-i18next";
 
 
 export default function SearchingPage(){
     const navigate = useNavigate();
+    const { t, i18n } = useTranslation();
+    const lang = (i18n.resolvedLanguage || i18n.language || "fr").split("-")[0];
+
     const [isOccultView, setIsOccultView] = useState(false);
     const searchBarRef = useRef(null);
 
@@ -45,9 +49,9 @@ const fetchFilteredOffers = async (filteredOption) => {
             setFilteredOffers([]);
             setFiltersOptions(location.state);
 
-            try {
+            try { 
                 
-                const offers = await getFilteredOffers(filteredOption);
+                const offers = await getFilteredOffers(filteredOption, lang);
                 // const offers = await getFilteredOffers({
                 //     priceRange: { min: 30, max: 150 },
                 //     date: "2025-07-15",

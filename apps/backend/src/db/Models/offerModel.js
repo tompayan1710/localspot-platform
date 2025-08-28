@@ -19,7 +19,9 @@ async function createOffer({
   total_capacity,
   // qrcode_url,
   slug,
-  cancellable
+  cancellable,
+  title_i18n,
+  description_i18n
 }) {
   const query = `
     INSERT INTO offers (
@@ -38,30 +40,22 @@ async function createOffer({
       pricePer,
       total_capacity,
       slug,
-      cancellable     
+      cancellable,
+      title_i18n, 
+      description_i18n   
     )
-    VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, $14, $15, $16)
+    VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, $14, $15, $16, $17, $18)
     RETURNING *;
   `;
 
   const values = [
-    title,
-    description,
-    adresse,
-    latitude,
-    longitude,
-    categories,
-    type,
-    city_id,
-    price,
-    duration,
-    image_urls,
-    provider_id,
-    pricePer,
-    total_capacity,
+    title, description, adresse, latitude, longitude, categories,
+    type, city_id, price, duration, image_urls, provider_id,
+    pricePer, total_capacity,
     // qrcode_url,
-    slug,
-    cancellable
+    slug, cancellable,
+    JSON.stringify(title_i18n),         // <-- JSONB { fr, en }
+    JSON.stringify(description_i18n)    // <-- JSONB { fr, en }
   ];
 
   const result = await db.query(query, values);
@@ -69,11 +63,34 @@ async function createOffer({
 }
 
 // 🔹 Récupère une offre par son ID
-async function getOfferBySlug(slug) {
+async function getOfferBySlug(slug, lang) {
+  const short = (lang || "fr").split("-")[0].toLowerCase();
+
   const result = await db.query(`
-    SELECT * FROM offers
-    WHERE slug = $1`
-    , [slug]
+    SELECT
+      o.id,
+      o.slug,
+      o.adresse,
+      o.latitude,
+      o.longitude,
+      o.city_id,
+      o.categories,
+      o.type,
+      o.price,
+      o.priceper,
+      o.duration,
+      o.image_urls,
+      o.provider_id,
+      o.total_capacity,
+      o.cancellable,
+      o.created_at,
+      o.updated_at,
+      COALESCE(o.title_i18n->>$2,       o.title_i18n->>'fr',       o.title)       AS title,
+      COALESCE(o.description_i18n->>$2, o.description_i18n->>'fr', o.description) AS description
+    FROM offers o
+    WHERE slug = $1
+    LIMIT 1;`
+    , [slug, short]
   );
   return result;
 }
@@ -83,9 +100,12 @@ async function getOfferBySlug(slug) {
 //   const result = await db.query(`SELECT * FROM offers ORDER BY created_at DESC`);
 //   return result.rows;
 // }
-async function getAllOffers(whereClause = "", values = [], moment = "") {
+async function getAllOffers(whereClause = "", values = [], moment = "", lang="fr") {
   try {
     console.log("GetAllOffers : moment : ", moment);
+    const short = (lang || "fr").split("-")[0].toLowerCase();
+    const langIdx = values.length + 1; // position du paramètre langue
+
     const lowerMoment = moment?.toLowerCase();
     const momentMap = {
       "matin": "isMorning",
@@ -139,7 +159,7 @@ async function getAllOffers(whereClause = "", values = [], moment = "") {
         ) AS "isAfternoon",
         EXISTS (
           SELECT 1 FROM valid_slots vs
-          WHERE vs.offer_slug = o.slug AND vs.slot >= '18:00' OR vs.slot <= '03:00'
+          WHERE vs.offer_slug = o.slug AND (vs.slot >= '18:00' OR vs.slot <= '03:00')
         ) AS "isEvening"
       FROM offers o
       ${whereClause ? `WHERE ${whereClause}` : ""}
@@ -157,15 +177,43 @@ async function getAllOffers(whereClause = "", values = [], moment = "") {
 )
 
 SELECT 
-  ow.*,
+  ow.id,
+      ow.slug,
+      ow.adresse,
+      ow.latitude,
+      ow.longitude,
+      ow.city_id,
+      ow.categories,
+      ow.type,
+      ow.price,
+      ow.priceper,
+      ow.duration,
+      ow.image_urls,
+      ow.provider_id,
+      ow.total_capacity,
+      ow.cancellable,
+      ow.created_at,
+      ow.updated_at,
+      COALESCE(ow.title_i18n->>$${langIdx},       ow.title_i18n->>'fr',       ow.title)       AS title,
+      COALESCE(ow.description_i18n->>$${langIdx}, ow.description_i18n->>'fr', ow.description) AS description,
+      ow."isMorning",
+      ow."isAfternoon",
+      ow."isEvening",
+
   COALESCE(rc.nb_reservation, 0) AS nb_reservation
 FROM offers_with_moment ow
 LEFT JOIN reservations_count rc
   ON rc.offer_slug = ow.slug
 ${momentField ? `WHERE ow."${momentField}" = TRUE` : ""}
 ORDER BY ow.created_at DESC;
-  `, values);
+  `, [...values, short]);
 
+//   const result = await db.query(`
+// SELECT 
+//   *
+// FROM offers ow
+// ORDER BY ow.created_at DESC;
+//   `, values);
 
   return result.rows;
   } catch (err) {

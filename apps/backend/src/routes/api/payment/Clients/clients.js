@@ -22,6 +22,7 @@ router.post("/create-payment-intent", async (req, res) => {
       title,
       price_per_person,
       provider_id,
+      id_hote,
       OfferIsCancellable,
       nb_adult,
       nb_reduced,
@@ -57,6 +58,7 @@ router.post("/create-payment-intent", async (req, res) => {
         title,
         price_per_person,
         provider_id,
+        id_hote: (id_hote ? String(id_hote) : "null"), // 👈 important
         OfferIsCancellable,
         nb_adult,
         nb_reduced,
