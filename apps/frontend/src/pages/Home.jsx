@@ -314,7 +314,7 @@ import ButtonLanguage from "../components/Buttons/ButtonLanguage/ButtonLanguage"
               homeOffersByCategory.morning && homeOffersByCategory.morning.length > 0 &&
               <>
               <div className="row">
-                <p className="t32">Ce matin</p>
+                <p className="t32">{t('This_Morning')}</p>
                 <button onClick={() => {
                   const now = new Date();
                   navigate("/searching-page", {

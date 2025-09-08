@@ -16,6 +16,7 @@ i18n
           logout: "Log out",
           editprofil: "Edit profile",
           Duration: "Duration",
+          This_Morning: "This morning",
 
           //HOME 
           sloganstart: "Unique experiences,",
@@ -44,7 +45,7 @@ i18n
           logout: "Se déconnecter",
           editprofil: "Modifiler le profil",
           Duration: "Duréé",
-
+          This_Morning: "Ce matin",
 
           //HOME 
           sloganstart: "Des expériences uniques,",
