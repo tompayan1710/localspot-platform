@@ -121,7 +121,8 @@
   top: 0;
   left: 0;
   height: 100vh;
-  width: 100vw;
+  width: 100%;
+  /* max-width: 500px; */
   background-color: rgba(0, 0, 0, 0.1); /* un noir léger, sinon trop sombre */
   backdrop-filter: blur(2px);
   opacity: 0;
@@ -136,7 +137,7 @@
 
 .occultView.Calendar {
   min-height: 100vh;
-  top: -20px;
+  top: -40px;
 }
 /*/////////////////OccultView*/
 

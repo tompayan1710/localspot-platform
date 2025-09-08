@@ -9,8 +9,10 @@ import StartIconMiddle from "../../../assets/images/StartIconMiddle.png"
 import "./OfferComments.css"
 import ReviewItem from "./ReviewItem";
 import Spinner from "../../../components/Spinner/Spinner";
+import { useTranslation } from "react-i18next";
 
 export default function OfferComments({ offerSlug, children }) {
+  const {t} = useTranslation();
   const [comments, setComments] = useState([]);
   const [loading, setLoading] = useState(true);
 
@@ -30,12 +32,16 @@ export default function OfferComments({ offerSlug, children }) {
         let tempAverage = 0;
 
         comments.forEach(comment => {
-            const note = comment.rating;
-            tempStat[note]++;
+            const note = Number(comment.rating);
+            tempStat[Math.round(note)]++;
             tempAverage+=comment.rating
         })
 
-        setAverage(tempAverage/comments.length);
+        if (comments.length > 0) {
+          setAverage(tempAverage / comments.length);
+        } else {
+          setAverage(0); // ou 1 si tu veux par défaut
+        }
         setStatComments(tempStat);
     };
 
@@ -63,6 +69,16 @@ export default function OfferComments({ offerSlug, children }) {
     fetchComments();
   }, [offerSlug]);
 
+  useEffect(() => {
+    console.warn(comments);
+  }, [comments]);
+
+
+  useEffect(() => {
+    console.warn(average);
+  }, [average]);
+
+
   if (loading) return (
     <div className="CommentsExceptContainer">
         <Spinner />
@@ -70,38 +86,42 @@ export default function OfferComments({ offerSlug, children }) {
   ) 
   if (comments.length === 0) return (
     <div className="CommentsExceptContainer">
-        <p className="t5">Aucun commentaire pour cette offre.</p>
+        <p className="t5">{t("No_comment")}</p>
     </div>
   )
 
-  const fullStars = Math.floor(average);      // nombre d’étoiles pleines
-        const hasHalfStar = average % 1 >= 0.25 && average % 1 < 0.75; // demi-étoile ?
-const emptyStars = 5 - fullStars - (hasHalfStar ? 1 : 0);
-
+  // Arrondi au demi le plus proche
+  const rounded = Math.round(average * 2) / 2;
+  // étoiles pleines
+  const fullStars = Math.floor(rounded);
+  // demi-étoile ?
+  const hasHalfStar = rounded % 1 !== 0;
+  // étoiles vides
+  const emptyStars = 5 - fullStars - (hasHalfStar ? 1 : 0);
 
   return (
         <div className="ClientReviewContainer"> 
             {
                 children
             }      
-            <p className="t1">{average.toFixed(1)} / 5</p>
+            <p className="t1">{Number(average).toFixed(1)} / 5</p>
             <div className="StarsList">
-                {
-                    Array.from({ length: Math.floor(average) }).map((_, i) => (
-                    <img key={`full-${i}`} src={starIcon} alt="star full" />
-                    ))
-                }
-                {
-                    (average % 1 >= 0.25 && average % 1 < 0.75) && (
-                    <img key="half" src={StartIconMiddle} alt="star half" />
-                    )
-                }
-                {
-                    Array.from({ length: 5 - Math.floor(average) - ((average % 1 >= 0.25 && average % 1 < 0.75) ? 1 : 0) }).map((_, i) => (
-                    <img key={`empty-${i}`} className="NonChose" src={starIcon} alt="star empty" />
-                    ))
-                }
-            </div>
+              {/* étoiles pleines */}
+              {Array.from({ length: fullStars }).map((_, i) => (
+                <img key={`full-${i}`} src={starIcon} alt="star full" />
+              ))}
+
+              {/* demi-étoile */}
+              {hasHalfStar && (
+                <img key="half" src={StartIconMiddle} alt="star half" />
+              )}
+
+              {/* étoiles vides */}
+              {Array.from({ length: emptyStars }).map((_, i) => (
+                <img key={`empty-${i}`} className="NonChose" src={starIcon} alt="star empty" />
+              ))}
+          </div>
+
 
               <div className="validateReview">
                 <div className="row">
@@ -112,12 +132,12 @@ const emptyStars = 5 - fullStars - (hasHalfStar ? 1 : 0);
                   {/* <p>les commentaires des autres personnes serve à vous décrire leur ressentie et autre</p> */}
                   {/* Avis 100 % authentiques. */}
                   {/* Seules les personnes ayant réservé cette activité peuvent partager leur ressenti pour vous guider dans votre choix */}
-                  <p className="t5">les avis des participants</p>
+                  <p className="t5">{t("participants_opinions")}</p>
                   {/* <p className="t6">Les commentaires partagés vous permettent de découvrir les ressentis et avis d'autres participants.</p> */}
-                  <p className="t6">Les commentaires reflètent les ressentis de participants ayant réellement vécu l’expérience.</p>
+                  <p className="t6">{t("participants_opinions_para")}</p>
                 </div>
               </div>
-              <p className="t5 BasedOn">Based on {comments.length} reviews :</p>
+              <p className="t5 BasedOn">{t("based_on_review", { count: comments.length })}</p>
               <div className="rankStarContainer">
               {
                 Object.entries(statComments)
@@ -162,7 +182,12 @@ const emptyStars = 5 - fullStars - (hasHalfStar ? 1 : 0);
             }
         </div>
             
-        <p className="seeMore t5">Voir <strong>+</strong></p>
+
+        <button className="seeMore row" onClick={() => {}}>
+          <p className="t32">{t("See")}&nbsp;<strong>+</strong></p>
+        </button>
+
+        {/* <p className="seeMore t5">Voir <strong>+</strong></p> */}
     </div>
   );
 }

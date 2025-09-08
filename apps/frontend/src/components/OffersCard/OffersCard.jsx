@@ -5,11 +5,12 @@ import demiStarIcon from "../../assets/images/demiStarIcon.png"
 import { useNavigate } from "react-router-dom"
 import FadeInImage from "../Utils/FadeInImage"
 import React from "react"
+import { useTranslation } from "react-i18next"
 
 
 export default function OffersCard({loading, offers, vertical=false, goToOffer}){
   const navigate = useNavigate();
-
+  const {t} = useTranslation();
     return (
         <div className={`HomeListPrestation ${vertical && "vertical"}`}>
             {
@@ -92,7 +93,7 @@ export default function OffersCard({loading, offers, vertical=false, goToOffer})
                   }
                 });
               }}>
-                <p className="t32">Voir&nbsp;<strong>+</strong></p>
+                <p className="t32">{t("See")}&nbsp;<strong>+</strong></p>
               </button>
             </div>
           }

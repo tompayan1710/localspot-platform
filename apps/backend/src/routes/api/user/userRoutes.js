@@ -68,13 +68,14 @@ router.patch("/update-profile", upload.single("profil_picture"), async (req, res
 
 router.get("/getall-favorites", async (req, res) => {
   const user_id = req.query.user_id;
+  const lang = req.query.lang;
 
   if (!user_id) {
     return res.status(400).json({ success: false, message: "user_id requis" });
   }
 
   try {
-    const favorites = await getAllFavorites(user_id);
+    const favorites = await getAllFavorites(user_id, lang);
     return res.json({ success: true, favorites });
   } catch (error) {
     console.error("Erreur dans /offer/favorites :", error);

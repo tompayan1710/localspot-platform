@@ -493,7 +493,7 @@
               <p className={`OfferTitle t3 ${isLoading ? "loading shimmer" : ""}`}>{isLoading ? "" :offer.title}</p>
               <p className={`OfferDescription t5 ${isLoading ? "loading shimmer" : ""}`}>{isLoading ? "" : offer.description}</p>
 
-              <p className={`t5 OfferType ${isLoading ? "loading shimmer" : ""}`}>{isLoading ? "" : `*${offer.type}`}</p>
+              <p className={`t5 OfferType ${isLoading ? "loading shimmer" : ""}`}>{isLoading ? "" : `*${t(offer.type)}`}</p>
               <div className="Offerhline"></div>     
 
                 <div className="OfferInfoContainer">
@@ -698,7 +698,7 @@
               </div>
               <OfferComments offerSlug={slug} children={
                 <div className="ContainerIButton row">
-                    <p className="t4 ReviewTitle">Customer Riviews</p>
+                    <p className="t4 ReviewTitle">{t("Customer_Riviews")}</p>
                     <button className="iButton" onClick={() => {
                       // PopUpBottomRef.current.style.bottom = "0px";
                       PopUpBottomRef.current.classList.add("open")
@@ -902,7 +902,7 @@
               )}
               ref={PopUpBottomRef}
             >
-              <p className="t6">Après avoir participé à l’activité, les voyageurs sont invités à partager leur expérience en laissant un commentaire. Ces avis sont 100 % authentiques, rédigés uniquement par les participants ayant réellement vécu l’expérience.</p>
+              <p className="t6">{t("Customer_Para")}</p>
             </PopUpBottom>
             
             {/* <div className="PopUpBottom" ref={PopUpBottomRef}>

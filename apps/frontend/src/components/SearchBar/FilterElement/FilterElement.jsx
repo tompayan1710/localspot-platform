@@ -8,8 +8,11 @@ import CalendarNotFill from "../../../assets/images/CalendarNotFill.png"
 import arrowRight from "../../../assets/images/arrowRight.png"
 import arrowLeft from "../../../assets/images/arrowLeft.png"
 import { DayPicker } from "react-day-picker";
+
 import PopUpBottom from "../../PopUpBottom/PopUpBottom"
 import { useNavigate } from "react-router-dom"
+import { useTranslation } from "react-i18next"
+import { fr, enUS, it, de } from "date-fns/locale";
 
 
 export default function FilterElement({ 
@@ -37,8 +40,26 @@ export default function FilterElement({
     const [participantInfant, setParticipantInfant] = useState(nb_infant);  
     const dayPickerRef = useRef(null);
     const [seccondOccultView, setSeccondOccultView] = useState(false);
-    const today = new Date().toLocaleDateString('fr-CA');
     const [selectedDate, setSelectedDate] = useState(date);
+
+    const {t, i18n} = useTranslation();
+    const lang = (i18n.language || "fr").split("-")[0]; 
+    // const today = new Date().toLocaleDateString('fr-CA');
+    const today = new Date().toLocaleDateString(lang, {
+        weekday: "long", // ex: Monday, Lundi
+        day: "numeric",
+        month: "long",
+        year: "numeric",
+    });
+
+    const dateLocales = {
+        fr,
+        en: enUS,
+        it,
+        de
+    };
+    const dayPickerLocale = dateLocales[lang] || enUS;
+
 
     const moments = [
         {
@@ -57,6 +78,7 @@ export default function FilterElement({
     const [selectedMoment, setSelectedMoment] = useState(moment);
     const [resetTrigger, setResetTrigger] = useState(0);
 
+    
     const toggleCategory = (cat) => {
         setSelectedCategories((prev) =>
         prev.includes(cat)
@@ -74,14 +96,17 @@ export default function FilterElement({
 
 
 
+ useEffect(() => {
+        document.documentElement.style.setProperty("--today-label", `"${t("Today")}"`);
+    }, [lang]);
 
 
 
     return (
         <div className="FilterElement" style={{paddingBottom : "70px"}}>
-            <p className="t3">Filtres</p>
+            <p className="t3">{t("Filters")}</p>
             <div className="column">
-                <p className="t32">Moment de la journée</p>
+                <p className="t32">{t("Time_of_day")}</p>
                 <div className="AllMoments row">
                     {moments.map((moment, index) => (
                     <button
@@ -89,25 +114,25 @@ export default function FilterElement({
                         className={`momentButton ${selectedMoment === moment.text ? "selected" : ""}`}
                         onClick={() => setSelectedMoment((prev) => prev === moment.text ? "" :  moment.text)}
                     >
-                        <img src={moment.img} alt={moment.text} />
-                        <p className="t6">{moment.text}</p>
+                        <img src={moment.img} alt={t(moment.text)} />
+                        <p className="t6">{t(moment.text)}</p>
                     </button>
                     ))}
                 </div>
             </div>
 
             <div className="column">
-                <p className="t32">Tranche de prix :</p>
+                <p className="t32">{t("Price_range")}</p>
                 <SliderPrice minValue={minValue} setMinValue={setMinValue} maxValue={maxValue} setMaxValue={setMaxValue} resetTrigger={resetTrigger}/>
             </div>
             <div className="column">
-                <p className="t32">Date</p>
+                <p className="t32">{t("Date")}</p>
                 <div className="ColumnCalendar">
                     <button className="OpenCalendar" onClick={() => {
                         dayPickerRef.current.classList.add("open");
                         setSeccondOccultView(true)
                     }}>
-                        <p className="t5">{selectedDate || "Aucun date spécifié"}</p>
+                        <p className="t5">{selectedDate || t("No_date_specified")}</p>
                         <img src={CalendarNotFill} alt="Calendar icon"/>
                     </button>
                     <PopUpBottom 
@@ -129,12 +154,14 @@ export default function FilterElement({
                                 mode="single"
                                 selected={new Date(selectedDate)}
                                 onSelect={(date) => {
-                                setSelectedDate(date ? date.toLocaleDateString('fr-CA') : today)
+                                // setSelectedDate(date ? date.toLocaleDateString('fr-CA') : today)
+                                setSelectedDate(date ? date.toLocaleDateString(lang) : today)
                                 }}
                                 disabled={[{ before: today }]}
                                 weekStartsOn={1}
                                 required
                                 captionLayout="buttons" // <-- OBLIGATOIRE pour voir les boutons flèches
+                                locale={dayPickerLocale}  // ✅ Ici la locale change selon la langue
                                 components={{
                                 IconLeft: () => (
                                     <img
@@ -162,7 +189,7 @@ export default function FilterElement({
                                             setSeccondOccultView(false);
                                         }}
                                     >
-                                        <p className="t5">Ajouter</p>
+                                        <p className="t5">{t("Ajouter")}</p>
                                     </button>
                                 </div>
                             </div>
@@ -171,7 +198,7 @@ export default function FilterElement({
                 </div>
             </div>
             <div className="column">
-                <p className="t32">Catégories</p>
+                <p className="t32">{t("Categories")}</p>
                 <div className="AllCategories">
                     {
                         categories.map((txt, index) => {
@@ -181,7 +208,7 @@ export default function FilterElement({
                                     className={`categorieButton ${selectedCategories.includes(txt) ? "selected" : ""}`}
                                     onClick={() => toggleCategory(txt)}
                                 >
-                                    <p className="t6">{txt}</p>
+                                    <p className="t6">{t(txt)}</p>
                                 </button>
                             )
                         })
@@ -260,7 +287,7 @@ export default function FilterElement({
                             setSelectedDate("")
                             setSelectedMoment("")
                         }}>
-                        <p className="t5">Effacer tout</p>
+                        <p className="t5">{t("Clear_all")}</p>
                     </button>
                     <button 
                         className="Applie"
@@ -306,7 +333,7 @@ export default function FilterElement({
 
                         }}
                     >
-                        <p className="t5">Appliquer</p>
+                        <p className="t5">{t("Apply")}</p>
                     </button>
                     {/* <button onClick={() => {
                         setResetTrigger((prev) => prev +1)

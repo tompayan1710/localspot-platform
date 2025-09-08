@@ -51,16 +51,21 @@ async function isFavorite(user_id, offer_slug) {
 
 
 
-async function getAllFavorites(user_id) {
+async function getAllFavorites(user_id, lang="fr") {
+  const short = (lang || "fr").split("-")[0].toLowerCase();
+ 
   try {
     const query = `
-      SELECT offers.* 
+      SELECT 
+        o.*,
+        COALESCE(o.title_i18n->>$2,       o.title_i18n->>'fr',       o.title)       AS title,
+        COALESCE(o.description_i18n->>$2, o.description_i18n->>'fr', o.description) AS description 
       FROM favorites 
-      JOIN offers ON favorites.offer_slug = offers.slug
-      WHERE favorites.user_id = $1
-      ORDER BY favorites.created_at DESC
+        JOIN offers o ON favorites.offer_slug = o.slug
+        WHERE favorites.user_id = $1
+        ORDER BY favorites.created_at DESC
     `;
-    const result = await db.query(query, [user_id]);
+    const result = await db.query(query, [user_id, short],);
     return result.rows;
   } catch (error) {
     console.error("Erreur dans getAllFavorites :", error);

@@ -164,7 +164,7 @@ async function getAllOffers(whereClause = "", values = [], moment = "", lang="fr
     console.log("GetAllOffers : moment : ", moment);
     const short = (lang || "fr").split("-")[0].toLowerCase();
     const langIdx = values.length + 1; // position du paramètre langue
-
+ 
     const lowerMoment = moment?.toLowerCase();
     const momentMap = {
       "matin": "isMorning",

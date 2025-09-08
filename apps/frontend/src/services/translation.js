@@ -1,3 +1,4 @@
+
 export function pickI18n(field, lang, fallback = "") {
     if (!field) return fallback;
     // si jamais c'est une string JSON

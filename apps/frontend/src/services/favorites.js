@@ -39,9 +39,9 @@ export async function IsOfferFavorite(user_id, offer_slug) {
 
 
 
-export async function getAllFavorites(user_id) {
+export async function getAllFavorites(user_id, lang) {
   try {
-    const response = await fetch(`${process.env.REACT_APP_API_URL}/api/user/getall-favorites?user_id=${user_id}`, {
+    const response = await fetch(`${process.env.REACT_APP_API_URL}/api/user/getall-favorites?user_id=${user_id}&lang=${lang}`, {
       method: "GET",
     });
 

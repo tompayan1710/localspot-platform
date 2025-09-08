@@ -283,7 +283,8 @@
   padding: 0px 18px;
   background: linear-gradient(180deg, #545454, #373737);
   border-radius: 100px;
-  box-shadow: 0 2px 15px rgba(0, 0, 0, 0.3);
+  /* box-shadow: 0 2px 15px rgba(0, 0, 0, 0.3); */
+  box-shadow: 0 2px 18px rgba(0, 0, 0, 0.2);
   height: fit-content;
   display: flex;
   flex-direction: row;

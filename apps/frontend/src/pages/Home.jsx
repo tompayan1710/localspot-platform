@@ -342,7 +342,7 @@ import ButtonLanguage from "../components/Buttons/ButtonLanguage/ButtonLanguage"
               homeOffersByCategory.afternoon && homeOffersByCategory.afternoon.length > 0 &&
               <>
               <div className="row">
-                <p className="t32">Cet après-midi</p>
+                <p className="t32">{t("This_afternoon")}</p>
                 <button onClick={() => {
                   const now = new Date();
                   navigate("/searching-page", {
@@ -367,9 +367,9 @@ import ButtonLanguage from "../components/Buttons/ButtonLanguage/ButtonLanguage"
               </>
             }
             
-            <p className="t6">Populaire cet été</p>
+            {/* <p className="t6">Populaire cet été</p> */}
             <div className="row">
-              <p className="t32">Les plus aimées</p> 
+              <p className="t32">{t("The_most_loved")}</p> 
               <button onClick={() => {
                   navigate("/searching-page", {
                     state: {

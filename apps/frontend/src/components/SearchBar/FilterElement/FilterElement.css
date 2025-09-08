@@ -204,8 +204,14 @@
 .FilterElement .rdp-today{
   position: relative;
 }
+
+.FilterElement .rdp-caption_label {
+  text-transform: capitalize;
+}
+
 .FilterElement .rdp-today::before {
-  content: "Aujourd'hui";
+  /* content: "Aujourd'hui"; */
+  content: var(--today-label);
   position: absolute;
   top: 1.8rem;
   left: calc(50% - 0px);

@@ -11,10 +11,13 @@ import loupeicon from "../../assets/images/loupeicon.png"
 import { useNavigate } from "react-router-dom";
 import FadeInImage from "../../components/Utils/FadeInImage";
 import WhiteButton from "../../components/Buttons/WhiteButton/WhiteButton";
+import { useTranslation } from "react-i18next";
 
 export default function Favoris() {
     const { authState } = useContext(AuthContext);
     const navigate = useNavigate();
+    const {t, i18n} = useTranslation();
+    const lang = (i18n.resolvedLanguage || i18n.language || "fr").split("-")[0];
 
     const [loading, setLoading] = useState(true);
     const [favorites, setFavorites] = useState([]);
@@ -24,8 +27,8 @@ export default function Favoris() {
     useEffect(() => {
         async function loadFavorites() {
         if (authState.user?.id) {
-            const result = await getAllFavorites(authState.user.id);
-            console.error(result)
+            const result = await getAllFavorites(authState.user.id, lang);
+            console.warn(result)
             if (result.success) {
                 setFavorites(result.favorites);
             }
@@ -40,7 +43,7 @@ export default function Favoris() {
 
     return (
         <div className="Favoris">
-            <p className="t32">Favoris</p>
+            <p className="t32">{t("Favorites")}</p>
             {/* <div className="FavorisList colum">
                 {(loading ? Array.from({ length: 3 }) : favorites).map((offer) => (
                 <React.Fragment key={offer.slug}>

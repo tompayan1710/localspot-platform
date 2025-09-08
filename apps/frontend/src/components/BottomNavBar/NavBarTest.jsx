@@ -1,6 +1,6 @@
 import "./NavBarTest.css";
 import { useNavigate, useLocation } from "react-router-dom"; // 👈 pour naviguer
-import { forwardRef, useContext, useEffect, useState } from "react"
+import { forwardRef, useContext, useEffect, useState, useTransition } from "react"
 import jetSkieIcon from "../../assets/images/jetSkieIcon.png"
 import foodIcon from "../../assets/images/foodIcon.png"
 import userIconBlack from "../../assets/images/userIconBlack.png"
@@ -14,10 +14,13 @@ import ExploreIcon from "../../assets/images/ExploreIcon.png"
 import favoris from "../../assets/images/favoris.png"
 import Today from "../../assets/images/Today.png"
 import { AuthContext } from "../Auth/authContext/authContext"
+import { useTranslation } from "react-i18next";
 
 const NavBarTest = forwardRef(({ isMap }, ref) => {
   const navigate = useNavigate(); // 👈 hook de navigation
   const location = useLocation();  // 👈
+
+  const { t, i18n } = useTranslation();
 
   const { authState } = useContext(AuthContext);
 
@@ -95,7 +98,7 @@ const NavBarTest = forwardRef(({ isMap }, ref) => {
           >
             <div className={`IconWrapper ${activeTab === "explorer" ? "active" : ""}`}>
               <img src={ExploreIcon} alt="explore icon"/>
-              <p className="t6">Explorer</p>
+              <p className="t6">{t("Explore")}</p>
             </div>
                          
           </button>
@@ -109,7 +112,7 @@ const NavBarTest = forwardRef(({ isMap }, ref) => {
           >
             <div className={`IconWrapper ${activeTab === "favoris" ? "active" : ""}`}>
               <img src={favoris} alt="favoris icon"/>
-              <p className="t6">favoris</p>
+              <p className="t6">{t("Favorites")}</p>
             </div>
                          
           </button>
@@ -122,7 +125,7 @@ const NavBarTest = forwardRef(({ isMap }, ref) => {
           >
             <div className={`IconWrapper ${activeTab === "reservations" ? "active" : ""}`}>
               <img src={ReservationsIcon} alt="reservations icon"/>
-                <p className="t6">Reservations</p>
+                <p className="t6">{t("Reservations")}</p>
             </div>
           </button>
            {/* <button className="NavBarButton" onClick={() =>  setActiveTab("activity")}>  */}
@@ -179,7 +182,7 @@ const NavBarTest = forwardRef(({ isMap }, ref) => {
             }}>
               <div className={`IconWrapper ${activeTab === "today" ? "active" : ""}`}>
                 <img src={Today} alt="Today icon"/>
-                <p className="t6">Aujourd'hui</p>
+                <p className="t6">{t("Today")}</p>
               </div>
             </button>
             <button className="NavBarButton" onClick={() => {
@@ -188,7 +191,7 @@ const NavBarTest = forwardRef(({ isMap }, ref) => {
             }}>
               <div className={`IconWrapper ${activeTab === "calendar" ? "active" : ""}`}>
                 <img src={Calendar} alt="calendar icon"/>
-                <p className="t6">Calendar</p>
+                <p className="t6">{t("Calendar")}</p>
               </div>
             </button>
             {/* <button className="NavBarButton" onClick={() => setActiveTab("myoffers")}> */}
@@ -199,7 +202,7 @@ const NavBarTest = forwardRef(({ isMap }, ref) => {
             }}>
               <div className={`IconWrapper ${activeTab === "annonces" ? "active" : ""}`}>
                 <img src={OffersNav} alt="annonces icon"/>
-                <p className="t6">Annonces</p>
+                <p className="t6">{t("Listings")}</p>
               </div>
             </button>     
             <button className="NavBarButton" onClick={() => {
@@ -210,7 +213,7 @@ const NavBarTest = forwardRef(({ isMap }, ref) => {
                 <img src={EuroNav} alt="My Earnings icon"/>
                 {/* My Earnings */}
                 {/* <p className="t6">Mes&nbsp;Revenus</p> */}
-                <p className="t6">Paiements</p>
+                <p className="t6">{t("Payments")}</p>
               </div>
             </button>       
           </>
@@ -222,7 +225,7 @@ const NavBarTest = forwardRef(({ isMap }, ref) => {
             }}> 
           <div className={`IconWrapper ${activeTab === "profile" ? "active" : ""}`}>
             <img src={userIconBlack} alt="user icon"/>
-            <p className="t6">Profile</p>
+            <p className="t6">{t("Profile")}</p>
           </div>
         </button>
     </div>

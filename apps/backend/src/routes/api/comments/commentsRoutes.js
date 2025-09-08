@@ -51,7 +51,7 @@ router.get("/getall", async (req, res) => {
   try {
     const result = await db.query(
       `
-      SELECT *
+      SELECT *, rating::float
       FROM comments
       WHERE offer_slug = $1
       ORDER BY created_at DESC
