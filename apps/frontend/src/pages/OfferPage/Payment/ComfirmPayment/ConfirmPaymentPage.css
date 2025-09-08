@@ -20,25 +20,37 @@
     width: 80px;
 }
 .ConfirmPayement>p:first-of-type{
+  margin-top: 10px;
+  margin-bottom: 4px;
+}
+.ConfirmPayement>p.intro{
   /* font-family: "Cookie"; */
-  font-family: "Playfaire Display";
+  /* font-family: "Playfaire Display"; */
   font-weight: 100;
-  margin-top: 15px;
-  margin-bottom: 10px;
+  /* margin-top: 15px; */
+  /* margin-bottom: 10px; */
+}
+
+.ConfirmPayement .SuccesMessage{
+  margin-top: 10px;
+  opacity: 0.7;
 }
 
 .ConfirmPayement .SuccesIcon{
-  padding: 16px;
+  padding: 5px;
   width: fit-content;
-  background: var(--lineargradientgreen);
+  /* background: var(--lineargradientgreen); */
+  background-color: var(--greenlight);
   border-radius: 100%;
   display: flex;
   flex-direction: column;
+  border: 2px solid var(--greennormal);
+  margin-top: 60px;
 }
 .ConfirmPayement .SuccesIcon>img{
-  height: 25px;
-  width: 25px;
-  filter: invert(1);
+  height: 20px;
+  width: 20px;
+  /* filter: invert(1); */
 }
 
 .ConfirmPayement>.hline88{

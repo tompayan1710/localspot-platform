@@ -5,6 +5,7 @@ import France from "../../../assets/images/France.png"
 import United_Kingdom from "../../../assets/images/United_Kingdom.png"
 import Italy from "../../../assets/images/Italy.png"
 import Germany from "../../../assets/images/Germany.png"
+import global from "../../../assets/images/globalThink.png"
 
 import { useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
@@ -13,7 +14,7 @@ import FadeInImage from "../../Utils/FadeInImage"
 
 
 
-export default function ButtonLanguage({offerPage= false, popUp=false}){
+export default function ButtonLanguage({home=false, offerPage= false, footer=false, popUp=false}){
     const LanguageRef = useRef(null);
     const ButtonLanguageRef = useRef(null); 
 
@@ -40,15 +41,20 @@ export default function ButtonLanguage({offerPage= false, popUp=false}){
 
     return(
         <>  
-            <div ref={ButtonLanguageRef} className={`ButtonLanguage ${offerPage ? "offerPage" : "Home"} ${popUp ? "popUp" : ""} ${isOccultView ? "selected" : ""}`}>
+            <div ref={ButtonLanguageRef} className={`ButtonLanguage ${home ? "Home" : offerPage ? "offerPage" :  footer ? "Footer" : ""} ${popUp ? "popUp" : ""} ${isOccultView ? "selected" : ""}`}>
                 <button onClick={() =>{
                     LanguageRef.current.classList.add("open");
                     setIsOccultView(true);
                     }}
                 >
-                    <div className="ImageWrapper">
-                        <FadeInImage className="paysflag" src={currentLang.flag} alt={`${currentLang.label} flag`}/>
-                    </div>
+                    {
+
+                        footer ?
+                        <img id={"global"} src={global} alt="global"/>
+                        : <div className="ImageWrapper">
+                            <FadeInImage className="paysflag" src={currentLang.flag} alt={`${currentLang.label} flag`}/>
+                        </div>
+                    }
                     {/* <img className="paysflag" src={currentLang.flag} alt={`${currentLang.label} flag`} /> */}
                     <p className="t5">{currentLang.label}</p>
                     <img src={arrow} className={"ArrowRight"} alt="arrow icon"/>

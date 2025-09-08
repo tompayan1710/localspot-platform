@@ -441,3 +441,20 @@
   color: orange;
 }
 
+
+
+.NotCountCapacity{
+  background-color: var(--greyverylight);
+  padding: 5px 8px;
+  padding-right: 12px;
+  gap: 5px;
+  border-radius: 8px;
+  margin-top: 8px;
+  width: fit-content;
+}
+.NotCountCapacity>img{
+  height: 20px;
+}
+.NotCountCapacity>p{
+  color: var(--rednormal);
+}

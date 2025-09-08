@@ -55,7 +55,7 @@ import ButtonLanguage from "../components/Buttons/ButtonLanguage/ButtonLanguage"
     const { checkAuth, authState } = useContext(AuthContext);
     const { t, i18n } = useTranslation();
     const lang = (i18n.resolvedLanguage || i18n.language || "fr").split("-")[0];
-    console.error(lang)
+    console.warn(lang)
 
   const offerContainerRef = useRef(null);
     const LogoContainerAnimationRef = useRef(null); 
@@ -210,12 +210,12 @@ import ButtonLanguage from "../components/Buttons/ButtonLanguage/ButtonLanguage"
       }
     }, [id_hote_data]);
 
-    const goToOffer = (slug) => {
+    const goToOffer = (slug, navOptions = {}) => {
       console.warn("Je goToOffer");
       if (id_hote_data?.id_hote) {
-        navigate(`/offer-page/${slug}?host_id=${id_hote_data.id_hote}`);
+        navigate(`/offer-page/${slug}?host_id=${id_hote_data.id_hote}`, navOptions);
       } else {
-        navigate(`/offer-page/${slug}`);
+        navigate(`/offer-page/${slug}`, navOptions);
       }
     };
 
@@ -262,7 +262,7 @@ import ButtonLanguage from "../components/Buttons/ButtonLanguage/ButtonLanguage"
           <p className="t32">{t('sloganstart')}<br></br>{t('sloganend')}</p>
         </div>
         <div ref={HomePageRef} className="HomeContainer">
-          <div  className={`SelectingToday ${loading && "loading shimmer"}`}>
+          <div  className={`SelectingToday ${loading ? "loading shimmer" : ""}`}>
             {
               !loading && homeOffersByCategory.selected_today &&
               <>
@@ -275,22 +275,24 @@ import ButtonLanguage from "../components/Buttons/ButtonLanguage/ButtonLanguage"
                       
               }}/>
               <button 
-                // onClick={() => {goToOffer(`${homeOffersByCategory.selected_today.slug}`, {
-                //         state: {
-                //           isAnimation: false,
-                //         }
-                //       })}}
+                onClick={() => {
+                  goToOffer(`${homeOffersByCategory.selected_today.slug}`, {
+                    state: {
+                      isAnimation: false,
+                    }
+                  })
+                }}
               >
                 <img src={extendIcon} alt="extend Icon"/>
               </button>
               <div className="InfoOffer row"
-                // onClick={() => {
-                //   goToOffer(`${homeOffersByCategory.selected_today.slug}`, {
-                //         state: {
-                //           isAnimation: false,
-                //         }
-                //       })
-                // }}
+                onClick={() => {
+                  goToOffer(`${homeOffersByCategory.selected_today.slug}`, {
+                    state: {
+                      isAnimation: false,
+                    }
+                  })
+                }}
                 >
                 <div className="column">
                   <p className="t5 maxLine">{homeOffersByCategory.selected_today.title}</p>
@@ -323,10 +325,10 @@ import ButtonLanguage from "../components/Buttons/ButtonLanguage/ButtonLanguage"
                       },
                       date: now.toLocaleDateString('fr-CA'), // ou today si tu veux toujours passer une date
                       moment: "Matin", // "Matin", "Après-midi", "Soir"
-                      // total_participants: participantAdult + participantReduced,
                       categories: null, // tableau ex: ["Nautiques", "Bien-être"]
                       nb_adult: null,
-                      nb_reduced: null
+                      nb_child: null,
+                      nb_infant: null
                     }
                   });
                 }}>
@@ -351,17 +353,17 @@ import ButtonLanguage from "../components/Buttons/ButtonLanguage/ButtonLanguage"
                       },
                       date: now.toLocaleDateString('fr-CA'), // ou today si tu veux toujours passer une date
                       moment: "Après-midi", // "Matin", "Après-midi", "Soir"
-                      // total_participants: participantAdult + participantReduced,
                       categories: null, // tableau ex: ["Nautiques", "Bien-être"]
                       nb_adult: null,
-                      nb_reduced: null
+                      nb_child: null,
+                      nb_infant: null
                     }
                   });
                 }}>
                   <img src={arrowRight} alt="arrow right icon"/>
                 </button>
               </div> 
-              <OffersCard offers={homeOffersByCategory.afternoon} loading={loading}/>
+              <OffersCard offers={homeOffersByCategory.afternoon} loading={loading} goToOffer={goToOffer}/>
               </>
             }
             
@@ -377,10 +379,10 @@ import ButtonLanguage from "../components/Buttons/ButtonLanguage/ButtonLanguage"
                       },
                       date: null, // ou today si tu veux toujours passer une date
                       moment: null, // "Matin", "Après-midi", "Soir"
-                      // total_participants: participantAdult + participantReduced,
                       categories: null, // tableau ex: ["Nautiques", "Bien-être"]
                       nb_adult: null,
-                      nb_reduced: null
+                      nb_child: null,
+                      nb_infant: null
                     }
                   });
                 }}>
@@ -468,10 +470,10 @@ import ButtonLanguage from "../components/Buttons/ButtonLanguage/ButtonLanguage"
                       },
                       date: now.toLocaleDateString('fr-CA'), // ou today si tu veux toujours passer une date
                       moment: "Soir", // "Matin", "Après-midi", "Soir"
-                      // total_participants: participantAdult + participantReduced,
                       categories: null, // tableau ex: ["Nautiques", "Bien-être"]
                       nb_adult: null,
-                      nb_reduced: null
+                      nb_child: null,
+                      nb_infant: null
                     }
                   });
                 }}>
@@ -500,7 +502,7 @@ import ButtonLanguage from "../components/Buttons/ButtonLanguage/ButtonLanguage"
           <Footer isOtherTheme={true}/>
         </div>
 
-        <ButtonLanguage popUp={popUpLanguage}/>
+        <ButtonLanguage home={true} popUp={popUpLanguage}/>
 
 
         <PopUpBottom

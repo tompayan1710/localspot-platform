@@ -57,6 +57,52 @@ router.post("/create", async (req, res) => {
 });
 
 
+// Créer un QR code
+router.post("/create-reservation", async (req, res) => {
+  const {token_validate, url_base} = req.body;
+
+  if (!token_validate ||!url_base) {
+    return res.status(400).json({ success: false, message: "Champs manquants." });
+  }
+
+  try {
+    // const slug = await createSlugOfferNotExist();
+
+    const id_qrcode = await createQRCode(slug, user_id, id_hote)
+
+    const qrContent = `${base_url ? base_url : process.env.FRONTEND_URL}/offer-page/${slug}?host_id=${id_hote}`; // ou ce que tu veux
+
+    const qrBuffer = await QRCode.toBuffer(qrContent);
+
+    const filePath = `qrcodes/${Date.now()}_${slug}_${id_hote}.png`;
+
+    const { error: uploadError } = await supabase.storage
+      .from("offers-images") // ton bucket
+      .upload(filePath, qrBuffer, {
+        contentType: "image/png",
+        upsert: true,
+      });
+
+    if (uploadError) throw uploadError;
+
+    const { data: publicData } = supabase.storage
+      .from("offers-images")
+      .getPublicUrl(filePath);
+
+    const image_url = publicData.publicUrl;
+
+    // 👉 insérer en DB
+    
+    await UpdateQRCode(id_qrcode, image_url);
+    console.log("🔲QR créer avec succés : ✅");
+    return res.status(200).json({ success: true, qrImageUrl: image_url, slug: slug, id_qrcode: id_qrcode   });
+  } catch (err) {
+    console.error("❌ Erreur création QR :", err.message);
+    return res.status(500).json({ success: false, message: "Erreur serveur." });
+  }
+});
+
+
 // (optionnel) Récupère une offre par son ID
 router.get("/get", async (req, res) => {
   const id_qrcode = req.query.id_qrcode;

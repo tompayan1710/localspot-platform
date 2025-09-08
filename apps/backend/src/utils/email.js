@@ -46,7 +46,7 @@ async function sendReservationEmail(reservation, pdfPath) {
   // --greyverylight: #FBFBFB;
   
   const htmlContent = `
-    <div style="background-color: #f7f7f7; padding: 40px 0; font-family: Arial, sans-serif;">
+    <div style="background-color: #f7f7f7; padding: 20px 0; font-family: Arial, sans-serif;">
       <div style="max-width: 600px; margin: auto; background: white; padding: 40px; border-radius: 10px; box-shadow: 0 0 10px rgba(0,0,0,0.05);">
 
         <div style="text-align: center;">
@@ -55,7 +55,7 @@ async function sendReservationEmail(reservation, pdfPath) {
           <p style="font-size: 12px; color: #999;">Vous recevrez un email contenant votre ticket numérique</p>
         </div>
 
-        <div style="margin: 30px 0; border: 1px solid #eee; border-radius: 8px; overflow: hidden;">
+        <div style="margin: 15px 0; border: 1px solid #eee; border-radius: 8px; overflow: hidden;">
           <div style="padding: 20px; background-color: #fafafa; border-bottom: 1px solid #eee;">
             <strong>Détails de la commande</strong>
           </div>
@@ -67,7 +67,7 @@ async function sendReservationEmail(reservation, pdfPath) {
               </tr>
               <tr>
                 <td><strong>Date&nbsp;:</strong></td>
-                <td style="text-align: right;">${reservation.date}</td>
+                <td style="text-align: right;">${dateStr}</td>
               </tr>
               ${
                 reservation.payment_method !== "Inconnu" ? 
@@ -77,16 +77,28 @@ async function sendReservationEmail(reservation, pdfPath) {
                 </tr>`
                 : ""
               }
+              
               <tr><td colspan="2"><hr style="border: none; border-top: 1px solid #eee;"></td></tr>
-              <tr>
-                <td><strong>×${reservation.nb_adult} Adulte${reservation.nb_adult>1 ? "s" : ""}</strong></td>
-                <td style="text-align: right;">${reservation.price_per_person * reservation.nb_adult} €</td>
-              </tr>
-              ${reservation.nb_reduced > 0 ?
+              ${reservation.nb_adult > 0 ?
                 `
                 <tr>
-                <td><strong>×${reservation.nb_reduced} Réduit${reservation.nb_reduced > 1 ? "s" : ""}</strong></td>
-                <td style="text-align: right;">${reservation.price_per_person * reservation.nb_reduced} €</td>
+                  <td><strong>×${reservation.nb_adult} Adulte${reservation.nb_adult>1 ? "s" : ""}</strong></td>
+                  <td style="text-align: right;">${(Number(reservation.unit_price_adult * reservation.nb_adult)).toFixed(2)} €</td>
+                </tr>` : ""
+              }
+              ${reservation.nb_child > 0 ?
+                `
+                <tr>
+                <td><strong>×${reservation.nb_child} Enfant${reservation.nb_child > 1 ? "s" : ""}</strong></td>
+                <td style="text-align: right;">${(Number(reservation.unit_price_child * reservation.nb_child)).toFixed(2)} €</td>
+              </tr>
+              ` : ""
+              }
+              ${reservation.nb_infant > 0 ?
+                `
+                <tr>
+                <td><strong>×${reservation.nb_infant} Bébé${reservation.nb_infant > 1 ? "s" : ""}</strong></td>
+                <td style="text-align: right;">${(Number(reservation.unit_price_infant * reservation.nb_infant)).toFixed(2)} €</td>
               </tr>
               ` : ""
               }
@@ -94,8 +106,8 @@ async function sendReservationEmail(reservation, pdfPath) {
                 <td colspan="2"><hr style="border: none; border-top: 1px solid #eee;"></td>
               </tr>
               <tr>
-                <td><strong>Total&nbsp;:</strong></td>
-                <td style="text-align: right;"><strong>${reservation.total_price} €</strong></td>
+                <td><strong>TOTAL&nbsp;:</strong></td>
+                <td style="text-align: right;"><strong>${(Number(reservation.total_price_eur)).toFixed(2)} €</strong></td>
               </tr>
               <tr>
                 <td colspan="2" style="text-align: right; font-size: 12px; color: #666; padding-top: 5px;">
@@ -107,8 +119,8 @@ async function sendReservationEmail(reservation, pdfPath) {
           </div>
         </div>
         
-        <h3 style="margin: 30px 0 10px; font-size: 16px;">Activités réservées :</h3>
-        <div style="font-size: 14px; line-height: 1.6;">
+        <h3 style="margin: 30px 0px 0 15px; font-size: 16px;">Activités réservées :</h3>
+        <div style="font-size: 14px; line-height: 1.6; margin: 0 10px 0 0">
           <p><strong>${reservation.title}</strong><br>
           <p>${reservation.adresse}</p>
           <a href="${process.env.FRONTEND_URL}/offer-page/${reservation.offerSlug}">Voir les détails</a><br>
@@ -134,21 +146,22 @@ async function sendReservationEmail(reservation, pdfPath) {
 
         <div style="display: flex; justify-content: space-between; margin-top: 30px; flex-wrap: wrap; font-size: 14px; width: 100%;">
           <div style="flex: 1 1 45%;">
-            <h4>Détails client</h4>
-            <p style="color: #555;">Cette réservation a été effectuée au nom de <strong>${reservation.name}</strong>.</p>
-            <p>
-              <strong>Contact</strong><br>
+            <h3 style="margin: 30px 0 10px; font-size: 16px;">Détails client</h3>
+            <p style="color: #555;">Cette réservation a été effectuée au nom de${reservation.name}.</p>
+            <h3 style="margin: 30px 0 10px; font-size: 16px;">Contact</h3>
+            <p style="color: #555;">
               Email : ${reservation.email}<br>
               Téléphone : ${reservation.phone}
             </p>
           </div>
+        </div>
         </div>
 
         <div style="text-align: center; font-size: 12px; color: #999; margin-top: 40px;">
           <p>Viarte – Des expériences locales inoubliables.</p>
           <p style="margin: 20px 0;">
             <a href="${process.env.FRONTEND_URL}/legal-notice" style="margin: 0 5px;">Mentions légales</a> |
-            <a href="${process.env.FRONTEND_URL}/terms-and-conditions-of-sal" style="margin: 0 5px;">Conditions Générales de Vente</a> |
+            <a href="${process.env.FRONTEND_URL}/terms-and-conditions-of-sale" style="margin: 0 5px;">Conditions Générales de Vente</a> |
             <a href="${process.env.FRONTEND_URL}/privacy-policy" style="margin: 0 5px;">Politique de confidentialité</a>
             </p>
           <p style="color: #ccc;">© 2025 Viarte. Tous droits réservés.</p>
@@ -193,7 +206,8 @@ async function sendReservationEmail(reservation, pdfPath) {
 //     start_hour: "10:00",
 //     adresse: "Port de Nice",
 //     nb_adult: 2,
-//     nb_reduced: 1,
+//     nb_child: 1,
+//     nb_infant: 1,
 //     total_price: 90,
 //     name: "Jean Dupont",
 //     email: "tompayan1710@gmail.com", // <-- à remplacer

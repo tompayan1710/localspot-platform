@@ -32,18 +32,25 @@ export default function PaymentPage() {
     const email = locationParams?.email ?? fallbackParams.email;
     const phone = locationParams?.phone ?? fallbackParams.phone;
     const title = locationParams?.title ?? fallbackParams.title;
-    const price = locationParams?.price ?? fallbackParams.price;
+    // const price = locationParams?.price ?? fallbackParams.price;
     const offer_provider_id = locationParams?.offer_provider_id ?? fallbackParams.offer_provider_id;
     const id_hote = locationParams?.id_hote ?? fallbackParams.id_hote;
     const OfferIsCancellable = locationParams?.OfferIsCancellable ?? fallbackParams.OfferIsCancellable;
     const participantAdult = locationParams?.participantAdult ?? fallbackParams.participantAdult;
-    const participantReduced = locationParams?.participantReduced ?? fallbackParams.participantReduced;
+    const participantChild = locationParams?.participantChild ?? fallbackParams.participantChild;
+    const participantInfant = locationParams?.participantInfant ?? fallbackParams.participantInfant;
+    const pricing = locationParams?.pricing ?? fallbackParams.pricing;
     const start_hour = locationParams?.start_hour ?? fallbackParams.start_hour;
     const end_hour = locationParams?.end_hour ?? fallbackParams.end_hour;
     const date = locationParams?.date ?? fallbackParams.date;
     const adresse = locationParams?.adresse ?? fallbackParams.adresse;
     const total_capacity = locationParams?.total_capacity ?? fallbackParams.total_capacity;
     const selectedCreneau = locationParams?.selectedCreneau ?? fallbackParams.selectedCreneau;
+
+    const total =
+                    (pricing?.adult?.price  ?? 0) * (participantAdult  ?? 0) +
+                    (pricing?.child?.price  ?? 0) * (participantChild  ?? 0) +
+                    (pricing?.infant?.price ?? 0) * (participantInfant ?? 0);
 
     const [isFetching, setIsFetching] = useState(true);
     const [isStripeReady, setIsStripeReady] = useState(false);
@@ -58,11 +65,12 @@ export default function PaymentPage() {
             // email == null ||
             // phone == null ||
             title == null ||
-            price == null ||
+            // price == null ||
             offer_provider_id == null ||
             OfferIsCancellable == null ||
             participantAdult == null ||
-            participantReduced == null ||
+            participantChild == null ||
+            pricing == null ||
             start_hour == null ||
             end_hour == null ||
             date == null ||
@@ -86,7 +94,11 @@ export default function PaymentPage() {
                 console.log(publishableKey);
                 setStripePromise(loadStripe(publishableKey));
 
-                const amount = Math.round(Number(price) * 100); // "55.00" -> 5500
+
+                const amount = Math.round(total * 100);
+
+
+                // const amount = Math.round(Number(price) * 100); // "55.00" -> 5500
 
                 console.error("BOG BOS")
                 console.log("Montant envoyé à Stripe :", amount); // doit afficher: 51
@@ -99,20 +111,26 @@ export default function PaymentPage() {
                         email,
                         phone,
                         title,
-                        price_per_person: price,
                         provider_id: offer_provider_id,
                         id_hote,
                         OfferIsCancellable,
                         nb_adult: participantAdult,
-                        nb_reduced: participantReduced,
-                        total_participants: participantAdult + participantReduced,
+                        nb_child: participantChild,
+                        nb_infant: participantInfant,
+                        unit_price_adult: pricing?.adult?.price,
+                        unit_price_child: pricing?.child?.price,
+                        unit_price_infant: pricing?.infant?.price,
+                        adult_counts_toward_capacity: pricing?.adult?.counts_toward_capacity,
+                        child_counts_toward_capacity: pricing?.child?.counts_toward_capacity,
+                        infant_counts_toward_capacity: pricing?.infant?.counts_toward_capacity,
+                        pricing: pricing,
                         start_hour,
                         end_hour,
                         date,
                         adresse,
                         total_capacity,
                     }
-
+ 
                 console.error(body);
                 console.error("Fin body");
                 const responseClient = await fetch(`${process.env.REACT_APP_API_URL}/api/payment/clients/create-payment-intent`, {
@@ -169,92 +187,9 @@ export default function PaymentPage() {
     }; 
     
     console.error("Le nom est :", name);
-    
-    // async function saveCreneau() {
-    //     const dateObject = new Date(date);
-    //     const formattedDate = dateObject.toLocaleDateString('fr-CA', { timeZone: 'Europe/Paris' });
-
-    //     console.log(formattedDate, start_hour, end_hour)
-
-    //     try {
-    //         const ObjectToSave = {
-    //             user_id: authState.user?.id, 
-    //             provider_id: offer_provider_id, 
-    //             offerSlug: slug, 
-    //             date: formattedDate, 
-    //             start_hour: start_hour, 
-    //             end_hour: end_hour, 
-    //             location: adresse, 
-    //             nb_adult: participantAdult,
-    //             nb_reduced: participantReduced,
-    //             total_participants: participantAdult + participantReduced, 
-    //             price_per_person: price, 
-    //             title: title,
-    //             selectedCreneau: selectedCreneau,
-    //             name: name,
-    //             email: email,
-    //             phone: phone
-    //         }
-    //         console.log(ObjectToSave);
-
-
-    //         const response = await fetch(`${process.env.REACT_APP_API_URL}/api/google/save-creaneau`, {
-    //         method: "POST",
-    //         headers: { "Content-Type": "application/json" },
-    //         body: JSON.stringify(ObjectToSave)
-    //         });
-        
-    //         const data = await response.json();
-    //         console.log(data)
-    //         if (data.success) {
-    //             console.log("✅ " + data.message);
-    //             const reservation_individual = data.reservation_individual;
-    //             return reservation_individual
-    //         } else {
-    //         alert("❌ Erreur lors de l’enregistrement de la réservation");
-    //         }
-        
-    //         return data;
-    //     } catch (error) {
-    //         console.error("❌ Erreur lors de la sauvegarde :", error);
-    //         alert("❌ Problème de connexion ou de serveur");
-    //         return null;
-    //     }
-    // }
-
-    // const sendEmail = async (reservation_individual) => {
-
-    //     const fullReservation = {
-    //         ...reservation_individual,
-    //         title,
-    //         adresse,
-    //         price_per_person: price,
-    //         nb_adult: participantAdult,
-    //         nb_reduced: participantReduced,
-    //         total_price: price * (participantAdult + participantReduced)
-    //     };  
-    //     try {
-    //         const res = await fetch(`${process.env.REACT_APP_API_URL}/api/payment/tickets/send-email-invoice`,
-    //         {
-    //             method: "POST",
-    //             headers: { "Content-Type": "application/json" },
-    //             body: JSON.stringify(fullReservation),
-    //         }
-    //         );
-    //         const data = await res.json();
-    //         if (!res.ok || !data.success) throw new Error(data.error || "Erreur envoi mail");
-    //         alert("Email envoyé !");
-    //     } catch (e) {
-    //         console.error(e);
-    //         alert("Échec envoi email");
-    //     }
-    // };
-
-
-
 
     const stateAvailibility = {
-        price,
+        // price,
         OfferIsCancellable,
         title,
         adresse,
@@ -262,7 +197,9 @@ export default function PaymentPage() {
         id_hote,
         total_capacity,
         participantAdult,
-        participantReduced,
+        participantChild,
+        participantInfant,
+        pricing,
         selectedCreneau
     }
 
@@ -271,12 +208,14 @@ export default function PaymentPage() {
         email,
         phone,
         title,
-        price,
+        // price,
         offer_provider_id,
         id_hote,
         OfferIsCancellable,
         participantAdult,
-        participantReduced,
+        participantChild,
+        participantInfant,
+        pricing,
         start_hour,
         end_hour,
         date,
@@ -332,7 +271,7 @@ export default function PaymentPage() {
                             },
                         }}
                     >
-                        <CheckoutForm isStripeReady={isStripeReady} onReady={() => setIsStripeReady(true)} price={price} />
+                        <CheckoutForm isStripeReady={isStripeReady} onReady={() => setIsStripeReady(true)} total={total} />
                     </Elements>
                 </div>
                 )}

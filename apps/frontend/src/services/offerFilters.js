@@ -58,7 +58,7 @@ export function classifyOffers(offers, userLocation = null) {
     return bCount - aCount;
   });
   
-  console.error(sortedOffers);
+  // console.error(sortedOffers);
 
   const usedSlugs = new Set();
 

@@ -1,7 +1,3 @@
-
-
-
-
 import { Route, useLocation, useNavigate, useParams } from "react-router-dom"
 import GoBack from "../../../../components/GoBack/GoBack"
 import "./FormInfoPayement.css"
@@ -25,12 +21,14 @@ export default function FormInfoPayement(){
     // const email = locationParams?.email ?? fallbackParams.email;
     // const phone = locationParams?.phone ?? fallbackParams.phone;
     const title = locationParams?.title ?? fallbackParams.title;
-    const price = locationParams?.price ?? fallbackParams.price;
+    // const price = locationParams?.price ?? fallbackParams.price;
     const offer_provider_id = locationParams?.offer_provider_id ?? fallbackParams.offer_provider_id;
     const id_hote = locationParams?.id_hote ?? fallbackParams.id_hote;
     const OfferIsCancellable = locationParams?.OfferIsCancellable ?? fallbackParams.OfferIsCancellable;
     const participantAdult = locationParams?.participantAdult ?? fallbackParams.participantAdult;
-    const participantReduced = locationParams?.participantReduced ?? fallbackParams.participantReduced;
+    const participantChild = locationParams?.participantChild ?? fallbackParams.participantChild;
+    const participantInfant = locationParams?.participantInfant ?? fallbackParams.participantInfant;
+    const pricing = locationParams?.pricing ?? fallbackParams.pricing;
     const start_hour = locationParams?.start_hour ?? fallbackParams.start_hour;
     const end_hour = locationParams?.end_hour ?? fallbackParams.end_hour;
     const date = locationParams?.date ?? fallbackParams.date;
@@ -42,7 +40,7 @@ export default function FormInfoPayement(){
     // const price = location.state?.price;
     // const OfferIsCancellable = location.state?.OfferIsCancellable;
     // const participantAdult = location.state?.participantAdult;
-    // const participantReduced = location.state?.participantReduced;
+    // const participantChild = location.state?.participantChild;
     // const start_hour = location.state?.start_hour;
     // const end_hour = location.state?.end_hour;
     // const date = location.state?.date;
@@ -62,10 +60,11 @@ export default function FormInfoPayement(){
         if(
             // !location.state || !location.state.price
             title == null ||
-            price == null ||
+            // price == null ||
             OfferIsCancellable == null ||
             participantAdult == null ||
-            participantReduced == null ||
+            participantChild == null ||
+            participantInfant == null ||
             start_hour == null ||
             end_hour == null ||
             date == null ||
@@ -102,16 +101,18 @@ export default function FormInfoPayement(){
                     phone,
                     title,
                     adresse,
-                    price,
+                    // price,
                     offer_provider_id,
                     id_hote,
                     OfferIsCancellable, 
                     participantAdult,
-                    participantReduced,
+                    participantChild,
+                    participantInfant,
+                    pricing,
                     start_hour,
                     end_hour,
-                    price,
-                    date ,
+                    // price,
+                    date,
                     total_capacity,
                     selectedCreneau,
                 }
@@ -128,7 +129,7 @@ export default function FormInfoPayement(){
     const stateAvailibility = {
         date,
         selectedCreneau,
-        price,
+        // price,
         OfferIsCancellable,
         title,
         adresse,
@@ -136,7 +137,9 @@ export default function FormInfoPayement(){
         id_hote,
         total_capacity,
         participantAdult,
-        participantReduced
+        participantChild,
+        participantInfant,
+        pricing
     }
     return (
         <div className="FormInfoPayement">

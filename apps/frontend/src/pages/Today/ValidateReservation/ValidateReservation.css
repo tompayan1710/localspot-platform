@@ -1,0 +1,67 @@
+.ResValidate{
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.ResValidate>p:first-of-type{
+  margin-top: 10px;
+  margin-bottom: 4px;
+}
+.ResValidate>p.intro{
+  /* font-family: "Cookie"; */
+  /* font-family: "Playfaire Display"; */
+  font-weight: 100;
+  /* margin-top: 15px; */
+  /* margin-bottom: 10px; */
+}
+
+.ResValidate .SuccesMessage{
+  margin-top: 10px;
+  opacity: 0.7;
+}
+
+.ResValidate .SuccesIcon{
+  padding: 5px;
+  width: fit-content;
+  /* background: var(--lineargradientgreen); */
+  background-color: var(--greenlight);
+  border-radius: 100%;
+  display: flex;
+  flex-direction: column;
+  border: 2px solid var(--greennormal);
+  margin-top: 60px;
+}
+.ResValidate .SuccesIcon>img{
+  height: 20px;
+  width: 20px;
+  /* filter: invert(1); */
+}
+
+.ResValidate>.hline88{
+    margin-top: 30px;
+    margin-bottom: 50px;
+}
+.ResValidate>p{
+  max-width: 400px;
+  width: 90%;
+  text-align: center;
+}
+
+
+.InfoValid{
+    box-shadow: var(--boxshadow);
+    padding: 15px;
+    border-radius: 14px;
+    width: calc(100% - 30px);
+
+    /* width: var()%; */
+    /* margin: ; */
+}
+.InfoValid>p:first-of-type{
+  margin-bottom: 17px;
+}
+.InfoValid>.row{
+  justify-content: space-between;
+}

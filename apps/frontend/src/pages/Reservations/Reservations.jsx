@@ -145,18 +145,17 @@ export default function Reservations(){
                                             {/* <p className="t6">07/11/2025 à 14:35</p> */}
                                             <div className="row">
                                                 <div className="column">
-                                                    <p className={`t6 nbparticipant ${loading ? "loading shimmer" : ""}`}>Participant : {loading ? "0" : reservation.total_participants}</p>
+                                                    <p className={`t6 nbparticipant ${loading ? "loading shimmer" : ""}`}>Participant : {loading ? "0" : reservation.total_places_used}</p>
 
-                                                    {/* <p className="t6">Participant : {reservation.total_participants ?? 0}</p> */}
+                                                    {/* <p className="t6">Participant : {reservation.total_places_used ?? 0}</p> */}
                                                     <p className={`t6 ${loading ? "loading shimmer" : ""}`}>
                                                     {loading
-                                                        ? "×2 adult ×1 reduced"
-                                                        : `×${reservation.nb_adult} adult ${reservation.nb_reduced ? `×${reservation.nb_reduced} reduced` : ""}`
+                                                        ? "×2 adult ×1 child"
+                                                        : `×${reservation.nb_adult} adult ${reservation.nb_child ? `×${reservation.nb_child} child` : ""} ${reservation.nb_infant ? `×${reservation.nb_infant} infant` : ""}`
                                                     }
                                                     </p>
-                                                    {/* <p className="t6">×{reservation.nb_adult} adult  {reservation.nb_reduced ? `×${reservation.nb_reduced} reduced` : ""}</p> */}
                                                 </div>
-                                                <p className={`t4 ${loading ? "loading shimmer" : ""}`}>{loading ? "240.00" : reservation.total_price}€</p>
+                                                <p className={`t4 ${loading ? "loading shimmer" : ""}`}>{loading ? "240.00" : reservation.gross_amount}€</p>
                                             </div>
                                         </div>
                                     </div>

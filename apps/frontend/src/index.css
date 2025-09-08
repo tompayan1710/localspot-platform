@@ -105,9 +105,10 @@ body{
   --rednormal: #ED332A;
   --violetlight: #F3EDFE;
   --violetnormal: #9C5DEE;
-  --greenlight: #DFF0D8;
+  --greenlight: #F3FFEE;
   --greennormal: #50b849;
-  --greenflash: #1fd112;
+  /* --greennormal: #7ccf76; */
+  --greenflash: #5ddf54;
   --yellownormal: #FFD85C;
   --yellowlight: #FFF4C1;
   --beigelight: #ecead94b;

@@ -29,6 +29,7 @@ module.exports = async function stripeWebhook(req, res) {
     console.log("✅ PaymentIntent successful:", paymentIntent.id);
 
 
+
     
     // moyen de paiement (optionnel)
     let payment_method = "Inconnu";
@@ -45,40 +46,57 @@ module.exports = async function stripeWebhook(req, res) {
       console.warn("⛔ Webhook ignoré car mode différent :", meta.mode, "vs", process.env.NODE_ENV);
       return res.status(200).send("Webhook ignoré - mauvais environnement");
     }
-    // 💡 tant que tu es en TEST, enlève ce garde-fou d’environnement
-    // if (meta.mode !== process.env.NODE_ENV) {
-    //   console.warn("⛔ Webhook ignoré car mode différent :", meta.mode, "vs", process.env.NODE_ENV);
-    //   return res.status(200).send("Webhook ignoré - mauvais environnement");
-    // }
+
+
+
+    const nb_adult  = parseInt(meta.nb_adult  || "0", 10) || 0;
+    const nb_child  = parseInt(meta.nb_child  || "0", 10) || 0; 
+    const nb_infant = parseInt(meta.nb_infant || "0", 10) || 0;
+
+    const adult_counts_toward_capacity  = meta.adult_counts_toward_capacity === "true";
+    const child_counts_toward_capacity  = meta.child_counts_toward_capacity === "true";
+    const infant_counts_toward_capacity = meta.infant_counts_toward_capacity === "true";
+
 
     const idHoteNormalized =
     meta.id_hote && meta.id_hote !== "null" && meta.id_hote !== ""
       ? parseInt(meta.id_hote, 10)
       : null;
 
+    const total_price_eur = (paymentIntent.amount_received ?? paymentIntent.amount) / 100;
+    const total_places_used =
+      (adult_counts_toward_capacity  ? nb_adult  : 0) +
+      (child_counts_toward_capacity  ? nb_child  : 0) +
+      (infant_counts_toward_capacity ? nb_infant : 0);
+
     const reservation = {
       user_id: meta.user_id && meta.user_id !== "guest" ? parseInt(meta.user_id, 10) : 1,
-      provider_id: parseInt(meta.provider_id, 10),
-      offerSlug: meta.offerSlug,
+      provider_id: parseInt(meta.provider_id || "0", 10),
+      offerSlug: meta.offerSlug || "",
       id_hote: idHoteNormalized,
-      date: meta.date,
-      start_hour: meta.start_hour,
-      end_hour: meta.end_hour,
-      adresse: meta.adresse || "PasDAdresse",
-      nb_adult: parseInt(meta.nb_adult, 10),
-      nb_reduced: parseInt(meta.nb_reduced, 10),
-      total_participants: parseInt(meta.total_participants, 10),
-      price_per_person: parseFloat(meta.price_per_person),
-      total_price: parseInt(meta.total_participants, 10) * parseFloat(meta.price_per_person),
-      name: meta.name,
-      email: meta.email,
-      phone: meta.phone,
-      title: meta.title,
+      date: meta.date || "",
+      start_hour: meta.start_hour || "",
+      end_hour: meta.end_hour || "",
+      adresse: meta.adresse || "No_Adresse",
+      nb_adult,
+      nb_child,
+      nb_infant,
+      unit_price_adult: parseFloat(meta.unit_price_adult)  || 0,
+      unit_price_child:  parseFloat(meta.unit_price_child)  || 0,
+      unit_price_infant:  parseFloat(meta.unit_price_infant)  || 0,
+      total_places_used: total_places_used,
+      total_price_eur: total_price_eur,
+      name: meta.name || "",
+      email: meta.email || "",
+      phone: meta.phone || "",
+      title: meta.title || "",
       payment_intent_id: paymentIntent.id,
       payment_method,
+      reservation_created_at: new Date()
     };
 
     console.log("💥✅Reservation :", reservation);
+    console.log("💥Essaye d'entre dans saveCreneau :", reservation);
 
     const savedReservation = await saveCreneau(reservation);
     const completeReservation = { ...reservation, ...savedReservation };
@@ -98,40 +116,3 @@ module.exports = async function stripeWebhook(req, res) {
   return res.json({ received: true });
 };
 
-
-
-
-
-
-//  const paymentIntent = event.data.object;
-//       // Then define and call a method to handle the successful payment intent.
-//       // handlePaymentIntentSucceeded(paymentIntent);
-//       console.log("✅ PaymentIntent successful:", paymentIntent.id);
-
-//       // Infos sur le moyen de paiement
-//       const charge = paymentIntent.charges?.data?.[0];
-
-//       let payment_method = "Inconnu";
-
-//       // Vérifie si une charge existe
-//       if (paymentIntent.charges && paymentIntent.charges.data && paymentIntent.charges.data.length > 0) {
-//         const charge = paymentIntent.charges.data[0];
-
-//         // Vérifie que la charge contient bien une carte
-//         if (charge.payment_method_details && charge.payment_method_details.card) {
-//           const { brand, last4 } = charge.payment_method_details.card;
-//           payment_method = `${brand.toUpperCase()} - XXXX ${last4}`;
-//         } else {
-//           console.warn("⚠️ Pas de détails de carte dans la charge :", charge.payment_method_details);
-//         }
-//       } else {
-//         console.warn("⚠️ Aucune charge trouvée dans PaymentIntent :", paymentIntent.charges);
-//       }
-
-
-//       const meta = paymentIntent.metadata;
-
-//       if (meta.mode !== process.env.NODE_ENV) {
-//         console.warn("⛔ Webhook ignoré car mode différent :", meta.mode, "vs", process.env.NODE_ENV);
-//         return response.status(200).send("Webhook ignoré - mauvais environnement");
-//       }

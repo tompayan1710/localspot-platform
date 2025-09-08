@@ -86,9 +86,68 @@ async function getOfferBySlug(slug, lang) {
       o.created_at,
       o.updated_at,
       COALESCE(o.title_i18n->>$2,       o.title_i18n->>'fr',       o.title)       AS title,
-      COALESCE(o.description_i18n->>$2, o.description_i18n->>'fr', o.description) AS description
+      COALESCE(o.description_i18n->>$2, o.description_i18n->>'fr', o.description) AS description,
+
+      o.departement_id,
+      
+      
+      -- 👇 Objet JSON construit seulement avec les clés présentes
+      (
+        COALESCE(
+          CASE WHEN ap.id IS NOT NULL THEN
+            jsonb_build_object(
+              'adult', jsonb_build_object(
+                'id', ap.id,
+                'type', ap.band_type,
+                'price', ap.price,
+                'currency', ap.currency,
+                'age_min', ap.age_min,
+                'age_max', ap.age_max,
+                'counts_toward_capacity', ap.counts_toward_capacity
+              )
+            )
+          END, '{}'::jsonb
+        )
+        ||
+        COALESCE(
+          CASE WHEN cp.id IS NOT NULL THEN
+            jsonb_build_object(
+              'child', jsonb_build_object(
+                'id', cp.id,
+                'type', cp.band_type,
+                'price', cp.price,
+                'currency', cp.currency,
+                'age_min', cp.age_min,
+                'age_max', cp.age_max,
+                'counts_toward_capacity', cp.counts_toward_capacity
+              )
+            )
+          END, '{}'::jsonb
+        )
+        ||
+        COALESCE(
+          CASE WHEN ip.id IS NOT NULL THEN
+            jsonb_build_object(
+              'infant', jsonb_build_object(
+                'id', ip.id,
+                'type', ip.band_type,
+                'price', ip.price,
+                'currency', ip.currency,
+                'age_min', ip.age_min,
+                'age_max', ip.age_max,
+                'counts_toward_capacity', ip.counts_toward_capacity
+              )
+            )
+          END, '{}'::jsonb
+        )
+      ) AS pricing
+
+
     FROM offers o
-    WHERE slug = $1
+      LEFT JOIN offer_pricing AS ap ON ap.id = o.offer_pricing_adult
+      LEFT JOIN offer_pricing AS cp ON cp.id = o.offer_pricing_child
+      LEFT JOIN offer_pricing AS ip ON ip.id = o.offer_pricing_infant
+      WHERE o.slug = $1
     LIMIT 1;`
     , [slug, short]
   );

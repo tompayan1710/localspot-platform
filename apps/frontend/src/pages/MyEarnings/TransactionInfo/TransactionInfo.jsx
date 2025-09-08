@@ -2,7 +2,7 @@ import "./TransactionInfo.css"
 
 import { useLocation, useNavigate } from "react-router-dom";
 import GoBack from "../../../components/GoBack/GoBack";
-import { useSSR } from "react-i18next";
+import { useSSR, useTranslation } from "react-i18next";
 import { useContext, useEffect, useState } from "react";
 import { AuthContext } from "../../../components/Auth/authContext/authContext";
 import { formatEuro } from "../../../services/formatEuro";
@@ -16,12 +16,14 @@ import ArrowRightRetired from "../../../assets/images/ArrowRightRetired.png"
 import ArrowLearnMore from "../../../assets/images/ArrowLearnMore.png"
 
 import TestLoading from "../../../components/Utils/TestLoading";
+import { plural } from "../../../services/translation";
 
 export default function TransactionInfo(){
-    const location = useLocation();
+    const location = useLocation(); 
     const { type, id } = location.state;
     const { authState } = useContext(AuthContext);
 
+    const { t, i18n } = useTranslation();
     const navigate = useNavigate();
 
     console.warn(type, id);
@@ -93,6 +95,37 @@ export default function TransactionInfo(){
         }
     };
     
+    const [individuals, setIndividuals] = useState([]);
+    const [loadingIndividuals, setLoadingIndividuals] = useState(true);
+
+    const fetchIndividuals = async (slotId) => {
+    try {
+        setLoadingIndividuals(true);
+        const provider_id = authState.user?.provider_id;
+        const res = await fetch(
+        `${process.env.REACT_APP_API_URL}/api/reservation_individual/slot/${slotId}/individuals?provider_id=${provider_id}`
+        );
+        const data = await res.json();
+        if (data.success) {
+        setIndividuals(data.individuals || []);
+        console.warn(data.individuals);
+        }
+    } catch (e) {
+        console.error("❌ fetchIndividuals:", e);
+    } finally {
+        setLoadingIndividuals(false);
+    }
+    };
+
+    // Quand tu as reçu l'encaissement (earning)
+    useEffect(() => {
+    if (earning?.id) {
+        fetchIndividuals(earning.id); // earning.id == slot_id
+    }
+    }, [earning?.id]);
+
+
+
     useEffect(() => {
         if (authState.user?.provider_id) {
             if(type === "earning"){
@@ -133,6 +166,25 @@ export default function TransactionInfo(){
         sent: "Envoyé",
         failed: "Échoué"
     };
+
+
+    // D/M/Y à hh:mm — Europe/Paris
+    function formatReservationDate(isoString, tz = "Europe/Paris") {
+    const d = new Date(isoString);
+    if (Number.isNaN(d)) return "";
+
+    const parts = new Intl.DateTimeFormat("fr-FR", {
+        timeZone: tz,
+        year: "numeric",
+        month: "numeric",  // pas de zéro en tête
+        day: "numeric",    // pas de zéro en tête
+        hour: "2-digit",
+        minute: "2-digit",
+        hour12: false,
+    }).formatToParts(d).reduce((acc, p) => (acc[p.type] = p.value, acc), {});
+
+    return `${parts.day}/${parts.month}/${parts.year} à ${parts.hour}:${parts.minute}`;
+    }
 
 
     return (
@@ -185,16 +237,10 @@ export default function TransactionInfo(){
                     </div>
                 </div>
                 <div className="hline"></div>
-                <div className="row" style={{paddingBottom: "4px"}} >
+                <div className="row">
                     <p className="t5 firstP">Participants</p>
                     <div className="row RowInfo">
                         <p className="t5">{earning.total_reserved}</p>
-                    </div>
-                </div>
-                <div className="row" style={{paddingTop: "4px"}}>
-                    <p className="t5 firstP">Prix par participant</p>
-                    <div className="row RowInfo">
-                        <p className="t5">EUR {formatEuro(parseFloat(earning.price_per_person))}</p>
                     </div>
                 </div>
                 <div className="hline"></div>
@@ -218,6 +264,65 @@ export default function TransactionInfo(){
                     </div>
                 </div>
             </div>
+            <div className="ParticipantRes">
+                <p className="t3">Participants</p>
+                {
+                    individuals.length>0 && individuals.map((individual, index) => {
+                        return (
+                            <div className="ParticipantItem">
+                                <div className="row Separation">
+                                    <p className="t5 bold">RES-{individual?.id}</p>
+
+                                    <p className="t5 bold">EUR {individual?.gross_amount}</p>
+                                </div>
+                                {
+                                    Number(individual?.nb_adult) > 0 && 
+                                        <div className="row">
+                                            <p className="t6 firstP">×{Number(individual?.nb_adult)} {t(plural(Number(individual?.nb_adult), 'adult', 'adults'))}</p>
+                                            <p className="t6">EUR {(Number(individual?.nb_adult) * Number(individual?.unit_price_adult)).toFixed(2)}</p>
+                                        </div>
+                                }
+                                {
+                                    Number(individual?.nb_child) > 0 && 
+                                        <div className="row">
+                                            <p className="t6 firstP">×{Number(individual?.nb_child)} {t(plural(Number(individual?.nb_child), 'child', 'children'))}</p>
+                                            <p className="t6">EUR {(Number(individual?.nb_child) * Number(individual?.unit_price_child)).toFixed(2)}</p>
+                                        </div>
+                                }
+                                {
+                                    Number(individual?.nb_infant) > 0 && 
+                                        <div className="row">
+                                            <p className="t6 firstP">×{Number(individual?.nb_infant)} {t(plural(Number(individual?.nb_infant), 'infant', 'infants'))}</p>
+                                            <p className="t6">EUR {(Number(individual?.nb_infant) * Number(individual?.unit_price_infant)).toFixed(2)}</p>
+                                        </div>
+                                }
+                                <div className="row InfoParticipantRes Separation">
+                                    <p className="t5 bold">Réservé par</p>
+                                    <p className="t5 bold">{individual?.name}</p>
+                                </div>
+                                <div className="row">
+                                    <p className="t6">Email</p>
+                                    <p className="t6">{individual?.email}</p>
+                                </div>
+                                <div className="row">
+                                    <p className="t6">Phone</p>
+                                    <p className="t6">{individual?.phone}</p>
+                                </div>
+                                <div className="row">
+                                    <p className="t6"></p>
+                                    <button className="seeRes" onClick={() => {navigate(`/reservations/${individual?.id}`)}}><p className="t6">see reservation</p></button>
+                                </div>
+
+                                {
+                                    index != (individuals.length -1)
+                                    ? <div className="hlinedashed"></div>
+                                    : <div className="hline"></div>
+                                }
+                            </div>
+                        )
+                    })
+                }
+            </div>
             <div className="bottomInfo column">
                 <div className="row">
                     <p className="t6 bold">Montant Total</p>
@@ -233,7 +338,7 @@ export default function TransactionInfo(){
                 </div>
                 <div className="row">
                     <p className="t5 bold">Total</p>
-                    <p className="t5 bold">EUR {formatEuro(parseFloat(earning.net_amount_total))}</p>
+                    <p className="t5 bold greenColor">EUR {formatEuro(parseFloat(earning.net_amount_total))}</p>
                 </div>
             </div>
             </>

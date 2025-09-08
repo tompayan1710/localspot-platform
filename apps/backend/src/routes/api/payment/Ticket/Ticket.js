@@ -43,9 +43,12 @@ router.post("/download-ticket", async (req, res) => {
     phone,
     reservation_status,
     nb_adult,
-    nb_reduced,
-    price_per_person,
-    total_price
+    nb_child,
+    nb_infant,
+    unit_price_adult,
+    unit_price_child,
+    unit_price_infant,
+    gross_amount
   } = req.body;
 
   const reservation = {
@@ -59,9 +62,12 @@ router.post("/download-ticket", async (req, res) => {
     phone,
     reservation_status,
     nb_adult,
-    nb_reduced,
-    price_per_person,
-    total_price
+    nb_child,
+    nb_infant,
+    unit_price_adult,
+    unit_price_child,
+    unit_price_infant,
+    gross_amount
   };
 
   try {

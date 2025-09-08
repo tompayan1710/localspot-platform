@@ -265,14 +265,14 @@ router.post("/upload-offer-images", upload.array("images"), async (req, res) => 
 
 
 router.post("/filter", async (req, res) => {
-  const { priceRange, date, moment, categories,  nb_adult, nb_reduced } = req.body;
+  const { priceRange, date, moment, categories,  nb_adult, nb_child, nb_infant } = req.body;
   const lang = (req.query.lang || "fr").split("-")[0].toLowerCase();
 
 
   console.log(req.body);
 
-  const total_participants =  nb_adult + nb_reduced;
-  console.log( "priceRange", priceRange, "date", date, "moment", moment, "categories", categories, "total_participants", total_participants)
+  const total_places_used =  nb_adult + nb_child + nb_infant;
+  console.log( "priceRange", priceRange, "date", date, "moment", moment, "categories", categories, "total_places_used", total_places_used)
   let conditions = [];
   let values = [];
   let index = 1;
@@ -305,9 +305,9 @@ router.post("/filter", async (req, res) => {
   }
 
   // Si tu veux filtrer par capacité minimum par exemple :
-  if (total_participants > 0) {
+  if (total_places_used > 0) {
     conditions.push(`total_capacity >= $${index}`);
-    values.push(total_participants);
+    values.push(total_places_used);
     index++;
   }
 
@@ -342,7 +342,7 @@ router.post("/filter", async (req, res) => {
   } catch (err) {
     console.error("Erreur filtre offres :", err);
     res.status(500).json({ success: false, message: "Erreur serveur" });
-  }
+  } 
 });
 
 

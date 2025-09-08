@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { useStripe, useElements, PaymentElement  } from "@stripe/react-stripe-js";
 import Spinner from "../../../components/Spinner/Spinner";
 
-export default function CheckoutForm({ onReady, isStripeReady, price }) {
+export default function CheckoutForm({ onReady, isStripeReady, total }) {
   const stripe = useStripe();
   const elements = useElements();
   const [message, setMessage] = useState(null);
@@ -48,7 +48,7 @@ export default function CheckoutForm({ onReady, isStripeReady, price }) {
       <div className="PayButtonContainer">
         <div className="column">
           <p className="t5">Total</p>
-          <p className="t3 bold">{price}€</p>
+          <p className="t3 bold">{total}€</p>
         </div>
         <button disabled={isProcessing} id="submit" className={`${isStripeReady ? "loaded" : ""} stripe-pay-button`}>
           {!isProcessing ?

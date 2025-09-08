@@ -311,7 +311,7 @@ export default function Today() {
                                                 <div className="row">
                                                     <p className="t32">TOTAL</p>
                                                     <p className="t32">
-                                                        {(slot.total_reserved * slot.price_per_person).toLocaleString('fr-FR', { minimumFractionDigits: 2, maximumFractionDigits: 2 })} €
+                                                        {(slot.gross_amount_total).toLocaleString('fr-FR', { minimumFractionDigits: 2, maximumFractionDigits: 2 })} €
                                                     </p>
                                                 </div>
                                             </div>   

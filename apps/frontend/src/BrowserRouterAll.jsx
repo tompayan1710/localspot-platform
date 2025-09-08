@@ -59,6 +59,7 @@ import AddIBANForm from "./pages/AddVersementMethode/AddIBANForm";
 import AddVersementHome from "./pages/AddVersementMethode/AddVersementHome";
 import TransactionInfo from "./pages/MyEarnings/TransactionInfo/TransactionInfo";
 import PaymentPolicy from "./pages/DocumentOfficiel/PaymentPolicy/PaymentPolicy";
+import ValidateReservation from "./pages/Today/ValidateReservation/ValidateReservation";
 
 export default function BrowserRouterAll(){
     const location = useLocation();
@@ -150,10 +151,12 @@ export default function BrowserRouterAll(){
 
             <Route path="/reservations" element={<Reservations />} />
             <Route path="/reservations/:reservation_id" element={<ReservationsElement />} />
+            <Route path="/reservations/validate" element={<ValidateReservation/>} />
 
 
 
             <Route path="/today" element={<Today />} />
+            
 
             <Route path="/calendar" element={<Calendar />} />
  

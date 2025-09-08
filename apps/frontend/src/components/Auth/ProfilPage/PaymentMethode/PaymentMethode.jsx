@@ -25,7 +25,7 @@ export default function PaymentMethode() {
 
   return (
     <div className="PaymentMethode">
-      <GoBack nagigation={"/"} text={"retour"}/>
+      <GoBack nagigation={"/profile"} text={"retour"}/>
       <p className="t4">Methode de versements</p>
       <VersementList setIsOccultView={setIsOccultView} editPopUp={editPopUp} deletePopUp={deletePopUp} selectedVersement={selectedVersement} setselectedVersement={setselectedVersement} versements={versements} setVersements={setVersements} selectionnable={false} origin={"/payment-methode"}/>
 

@@ -64,12 +64,28 @@ export default function ReservationsElement(){
     }, [reservation])
 
     const dateObj = new Date(reservation?.reservation_created_at);
+    const startObj = new Date(reservation?.date);
 
     const formattedDate = dateObj.toLocaleDateString("fr-FR", {
     day: "2-digit",
     month: "2-digit",
     year: "numeric",
-    });
+    }); 
+
+    const formattedHour = dateObj.toLocaleTimeString("fr-FR", {
+    hour: "2-digit",
+    minute: "2-digit",
+    hour12: false,
+    })
+    // .replace(":", "h ") + "min";
+    // "16h:50m"
+
+    const start_date = startObj.toLocaleDateString("fr-FR", {
+    day: "2-digit",
+    month: "2-digit",
+    year: "numeric",
+    }); 
+
 
     console.log(formattedDate);
 
@@ -87,9 +103,11 @@ export default function ReservationsElement(){
             phone: reservation.phone,
             reservation_status: reservation.reservation_status,
             nb_adult: reservation.nb_adult,
-            nb_reduced: reservation.nb_reduced,
-            price_per_person: reservation.price_per_person,
-            total_price: reservation.total_price,
+            nb_child: reservation.nb_child,
+            nb_infant: reservation.nb_infant,
+            unit_price_adult: reservation.unit_price_adult,
+            unit_price_child: reservation.unit_price_child,
+            unit_price_infant: reservation.unit_price_infant,
         }
         const url = `${process.env.REACT_APP_API_URL}/api/payment/tickets/download-ticket?reservation_id=${reservation.reservation_id}`;
         try {
@@ -150,12 +168,16 @@ export default function ReservationsElement(){
                         <p className="t6">#RES-{reservation_id}</p>
                     </div>
                     <div className="row">
+                        <p className="t6">Effectué le</p>
+                        <p className="t6">{formattedDate} à {formattedHour}</p>
+                    </div>
+                    <div className="row">
                         <p className="t6">Activité</p>
                         <p className="t6">{reservation.title}</p>
                     </div>
                     <div className="row">
-                        <p className="t6">Départ</p>
-                        <p className="t6">{formattedDate} à {reservation.start_hour}</p>
+                        <p className="t6">Début</p>
+                        <p className="t6">{start_date} à {reservation.start_hour}</p>
                     </div>
                     <div className="row">
                         <p className="t6">Adresse</p>
@@ -180,31 +202,41 @@ export default function ReservationsElement(){
                         <p className="t6">{reservation.phone || "non renseigné"}</p>
                     </div>
                     <div className="hlinedashed"></div>
-                    <div className="row">
+                    {/* <div className="row">
                         <p className="t6">Paiement</p>
                         <p className="t6">Carte Visa ****1234</p>
-                    </div>
+                    </div> */}
                     <div className="row">
                         <p className="t6">Status de payement</p>
                         <p className="t6">{reservation.reservation_status}</p>
                     </div>
 
                     <div className="hlinedashed"></div>
-                    <div className="row">
-                        <p className="t6">×{reservation.nb_adult}&nbsp;&nbsp;&nbsp;adult</p>
-                        <p className="t6">{reservation.nb_adult * reservation.price_per_person}€</p>
-                    </div>
                     {
-                        reservation.nb_reduced > 0 &&
+                        reservation.nb_adult > 0 &&
                         <div className="row">
-                            <p className="t6">×{reservation.nb_reduced}&nbsp;&nbsp;&nbsp;reduced</p>
-                            <p className="t6">{reservation.nb_reduced * reservation.price_per_person}€</p>
+                            <p className="t6">×{reservation.nb_adult}&nbsp;&nbsp;&nbsp;adult</p>
+                            <p className="t6">{(reservation.nb_adult * reservation.unit_price_adult).toFixed(2)}€</p>
+                        </div>
+                    }
+                    {
+                        reservation.nb_child > 0 &&
+                        <div className="row">
+                            <p className="t6">×{reservation.nb_child}&nbsp;&nbsp;&nbsp;Child</p>
+                            <p className="t6">{(reservation.nb_child * reservation.unit_price_child).toFixed(2)}€</p>
+                        </div>
+                    }
+                    {
+                        reservation.nb_infant > 0 &&
+                        <div className="row">
+                            <p className="t6">×{reservation.nb_infant}&nbsp;&nbsp;&nbsp;Infant</p>
+                            <p className="t6">{(reservation.nb_infant * reservation.unit_price_infant).toFixed(2)}€</p>
                         </div>
                     }
                     <div className="hlinedashed"></div>
                     <div className="row">
                         <p className="t32">TOTAL</p>
-                        <p className="t32">{reservation.total_price}€</p>
+                        <p className="t32">{reservation.gross_amount}€</p>
                     </div>
                     <p className="t6">(toutes taxes comprises)</p>
 

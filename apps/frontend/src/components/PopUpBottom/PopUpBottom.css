@@ -150,6 +150,8 @@
 .PopUpBottom .bodyPopUpBottom>.rowTotal{
   display: flex;
   flex-direction: row;
+  align-items: end;
+
   gap: 5px;
   /* margin-top: 15px; */
 }

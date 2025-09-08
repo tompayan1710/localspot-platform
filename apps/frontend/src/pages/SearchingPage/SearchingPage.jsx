@@ -52,13 +52,6 @@ const fetchFilteredOffers = async (filteredOption) => {
             try { 
                 
                 const offers = await getFilteredOffers(filteredOption, lang);
-                // const offers = await getFilteredOffers({
-                //     priceRange: { min: 30, max: 150 },
-                //     date: "2025-07-15",
-                //     moment: "Matin", // ou "Après-midi", "Soir"
-                //     categories: ["Bien-être", "Loisirs & Divertissement"],
-                //     total_participants: 2+1
-                // });
 
                 console.log("Offres filtrées :", offers);
                 setFilteredOffers(Array.isArray(offers) ? offers : []);
@@ -213,7 +206,8 @@ const fetchFilteredOffers = async (filteredOption) => {
                     priceRange_max={filtersOptions.priceRange?.max || 3000}
                     categoriesList={filtersOptions.categories || []}
                     nb_adult={filtersOptions.nb_adult || 0}
-                    nb_reduced={filtersOptions.nb_reduced || 0}
+                    nb_child={filtersOptions.nb_child || 0}
+                    nb_infant={filtersOptions.nb_infant || 0}
                     fetchFilteredOffers={fetchFilteredOffers}
                 />
                 )}

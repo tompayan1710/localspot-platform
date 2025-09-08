@@ -24,7 +24,7 @@ export const getAllOffers = async (lang) => {
     }
 }
 
-
+ 
 
 
 // ✅ Fonction pour rafraîchir l'Access Token (version simplifiée)

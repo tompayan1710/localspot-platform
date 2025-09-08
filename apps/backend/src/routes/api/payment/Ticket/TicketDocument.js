@@ -119,6 +119,29 @@ const styles = StyleSheet.create({
 });
 
 function TicketDocument({ reservation }) {
+    const dateObj = new Date(reservation?.reservation_created_at);
+    const startObj = new Date(reservation?.date);  
+  
+    const formattedDate = dateObj.toLocaleDateString("fr-FR", {
+    day: "2-digit",
+    month: "2-digit",
+    year: "numeric",
+    }); 
+
+    const formattedHour = dateObj.toLocaleTimeString("fr-FR", {
+    hour: "2-digit",
+    minute: "2-digit",
+    hour12: false,
+    })
+    // .replace(":", "h ") + "min";
+    // "16h:50m"
+
+    const start_date = startObj.toLocaleDateString("fr-FR", {
+    day: "2-digit",
+    month: "2-digit",
+    year: "numeric",
+    }); 
+
   return React.createElement(
     Document,
     null,
@@ -157,11 +180,15 @@ function TicketDocument({ reservation }) {
             React.createElement(Text, { style: styles.rightText }, `#RES-${reservation.reservation_id}`)
           ),
           React.createElement(View, { style: styles.rowItem },
+            React.createElement(Text, { style: styles.leftText }, "Effectué le"),
+            React.createElement(Text, { style: styles.rightText }, `${formattedDate} à ${formattedHour}<`)
+          ),
+          React.createElement(View, { style: styles.rowItem },
             React.createElement(Text, { style: styles.leftText }, "Activité"),
             React.createElement(Text, { style: styles.rightText }, reservation.title)
           ),
           React.createElement(View, { style: styles.rowItem },
-            React.createElement(Text, { style: styles.leftText }, "Départ"),
+            React.createElement(Text, { style: styles.leftText }, "Début"),
             React.createElement(Text, { style: styles.rightText }, `${reservation.date} à ${reservation.start_hour}`)
           ),
           React.createElement(View, { style: styles.rowItem },
@@ -198,14 +225,23 @@ function TicketDocument({ reservation }) {
 
           React.createElement(View, { style: styles.separator }),
 
-          React.createElement(View, { style: styles.rowItem },
-            React.createElement(Text, { style: styles.leftText }, `×${reservation.nb_adult} adult`),
-            React.createElement(Text, { style: styles.rightText }, `${reservation.nb_adult * reservation.price_per_person}€`)
-          ),
-          reservation.nb_reduced > 0 &&
+
+          reservation.nb_child > 0 &&
             React.createElement(View, { style: styles.rowItem },
-              React.createElement(Text, { style: styles.leftText }, `×${reservation.nb_reduced} reduced`),
-              React.createElement(Text, { style: styles.rightText }, `${reservation.nb_reduced * reservation.price_per_person}€`)
+              React.createElement(Text, { style: styles.leftText }, `×${reservation.nb_adult} adult`),
+              React.createElement(Text, { style: styles.rightText }, `${reservation.nb_adult * reservation.unit_price_adult}€`)
+            ),
+
+          reservation.nb_child > 0 &&
+            React.createElement(View, { style: styles.rowItem },
+              React.createElement(Text, { style: styles.leftText }, `×${reservation.nb_child} reduced`),
+              React.createElement(Text, { style: styles.rightText }, `${reservation.nb_child * reservation.unit_price_child}€`)
+            ),
+
+          reservation.nb_infant > 0 &&
+            React.createElement(View, { style: styles.rowItem },
+              React.createElement(Text, { style: styles.leftText }, `×${reservation.nb_infant} reduced`),
+              React.createElement(Text, { style: styles.rightText }, `${reservation.nb_infant * reservation.unit_price_infant}€`)
             ),
 
           React.createElement(View, { style: styles.separator }),

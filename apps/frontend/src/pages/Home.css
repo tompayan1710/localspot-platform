@@ -204,6 +204,7 @@ animation: slideUpHome 0.8s ease forwards;
   height: 100%;
   object-fit: cover;
   border-radius: 35px;
+  cursor: pointer;
 }
 .HomeContainer .SelectingToday>img.loading{
   opacity: 0;

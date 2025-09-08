@@ -6,3 +6,6 @@ export function pickI18n(field, lang, fallback = "") {
     }
     return field?.[lang] || field?.en || field?.fr || Object.values(field)[0] || fallback;
 }
+
+
+export function plural(n, sing, plur){return n === 1 ? sing : plur};

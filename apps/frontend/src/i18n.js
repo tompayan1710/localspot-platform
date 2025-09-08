@@ -19,7 +19,22 @@ i18n
 
           //HOME 
           sloganstart: "Unique experiences,",
-          sloganend: "close to you!"
+          sloganend: "close to you!",
+
+          adult: "adult",
+          adults: "adults",
+          child: "child",
+          children: "children",
+          infant: "infant",
+          infants: "infants",
+
+          Adult:"Adult",
+          Child:"Child",
+          Infant:"Infant",
+
+          years: "years",
+          and_up: "and-up",
+          to: "to"
         },
       },
       fr: {
@@ -33,7 +48,22 @@ i18n
 
           //HOME 
           sloganstart: "Des expériences uniques,",
-          sloganend: "proche de vous !"
+          sloganend: "proche de vous !",
+
+          adult: "adulte",
+          adults: "adultes",
+          child: "enfant",
+          children: "enfants",
+          infant: "bébé",
+          infants: "bébés",
+
+          Adult:"Adulte",
+          Child:"Enfant",
+          Infant:"Bébé",
+
+          years: "ans",
+          and_up: "et plus",
+          to: "à"
         },
       },
       it: {

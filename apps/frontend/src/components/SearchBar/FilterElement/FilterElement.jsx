@@ -23,7 +23,8 @@ export default function FilterElement({
     date="", 
     categoriesList=[], 
     nb_adult=0, 
-    nb_reduced=0,
+    nb_child=0,
+    nb_infant=0,
     fetchFilteredOffers
 }){
     const navigate = useNavigate();
@@ -32,7 +33,8 @@ export default function FilterElement({
     const categories = ["Nautiques", "Culture & Patrimoine", "Bien-être", "Nature & Aventure", "Loisirs & Divertissement", "Sports & Sensations Fortes", "En Famille"];
     const [selectedCategories, setSelectedCategories] = useState(categoriesList)
     const [participantAdult, setParticipantAdult] = useState(nb_adult);
-    const [participantReduced, setParticipantReduced] = useState(nb_reduced);  
+    const [participantChild, setParticipantChild] = useState(nb_child);  
+    const [participantInfant, setParticipantInfant] = useState(nb_infant);  
     const dayPickerRef = useRef(null);
     const [seccondOccultView, setSeccondOccultView] = useState(false);
     const today = new Date().toLocaleDateString('fr-CA');
@@ -186,7 +188,7 @@ export default function FilterElement({
                     }
                 </div>
             </div>
-            <div className="column Participants">
+            {/* <div className="column Participants">
                 <p className="t32">Participants</p>
                 <div className="rowAddParticipant row">
                     <div className="column">
@@ -213,18 +215,35 @@ export default function FilterElement({
                     <p className="t6">-18 ans</p>
                     </div>
                     <div className="row">
-                    <button className="buttonParticipant" disabled={participantReduced === 0} onClick={() => {
-                        setParticipantReduced((prev) => prev - 1)
+                    <button className="buttonParticipant" disabled={participantChild === 0} onClick={() => {
+                        setParticipantChild((prev) => prev - 1)
                         }}>
                         <p className="t3">-</p>
                     </button>
-                    <p className="t4">{participantReduced}</p>
-                    <button className="buttonParticipant" disabled={participantReduced === 20} onClick={() => {setParticipantReduced((prev) => prev + 1)}}>
+                    <p className="t4">{participantChild}</p>
+                    <button className="buttonParticipant" disabled={participantChild === 20} onClick={() => {setParticipantChild((prev) => prev + 1)}}>
                         <p className="t3">+</p>
                     </button>
                     </div>
                 </div>
-            </div>
+                <div className="rowAddParticipant row">
+                    <div className="column">
+                    <p className="t5">Bébé</p>
+                    <p className="t6">0 - 4ans</p>
+                    </div>
+                    <div className="row">
+                    <button className="buttonParticipant" disabled={participantInfant === 0} onClick={() => {
+                        setParticipantInfant((prev) => prev - 1)
+                        }}>
+                        <p className="t3">-</p>
+                    </button>
+                    <p className="t4">{participantInfant}</p>
+                    <button className="buttonParticipant" disabled={participantInfant === 20} onClick={() => {setParticipantInfant((prev) => prev + 1)}}>
+                        <p className="t3">+</p>
+                    </button>
+                    </div>
+                </div>
+            </div> */}
 
             <div className="ApplieContainer">
                 <div className="hline"></div>
@@ -237,7 +256,7 @@ export default function FilterElement({
                             setResetTrigger(prev => prev + 1)
                             setSelectedCategories([])
                             setParticipantAdult(0)
-                            setParticipantReduced(0)  
+                            setParticipantChild(0)  
                             setSelectedDate("")
                             setSelectedMoment("")
                         }}>
@@ -257,10 +276,11 @@ export default function FilterElement({
                                         },
                                         date: selectedDate || null, // ou today si tu veux toujours passer une date
                                         moment: selectedMoment || null, // "Matin", "Après-midi", "Soir"
-                                        // total_participants: participantAdult + participantReduced,
+                                        // total_participants: participantAdult + participantChild,
                                         categories: selectedCategories, // tableau ex: ["Nautiques", "Bien-être"]
                                         nb_adult: participantAdult,
-                                        nb_reduced: participantReduced
+                                        nb_child: participantChild,
+                                        nb_infant: participantInfant
                                     }
                                 });
                             } else {
@@ -273,7 +293,8 @@ export default function FilterElement({
                                     date: selectedDate || null, // ou today si tu veux toujours passer une date
                                     moment: selectedMoment || null, // "Matin", "Après-midi", "Soir"
                                     nb_adult: participantAdult,
-                                    nb_reduced: participantReduced,
+                                    nb_child: participantChild,
+                                    nb_infant: participantInfant,
                                     categories: selectedCategories, // tableau ex: ["Nautiques", "Bien-être"]
                                 }
                                 setFiltersOptions(options)

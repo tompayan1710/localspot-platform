@@ -5,6 +5,7 @@ import arrowRight from "../../assets/images/arrowRight.png";
 import { useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { linearTheme } from "../../services/themeModifier";
+import ButtonLanguage from "../Buttons/ButtonLanguage/ButtonLanguage";
 
 export default function Footer({paddingBottom, isOtherTheme}) {
   const navigate = useNavigate();
@@ -40,18 +41,20 @@ export default function Footer({paddingBottom, isOtherTheme}) {
       </p>
       <div className="whiteHline"></div>
       <div className="BottomContainer">
-        <p className="t5">Language</p>
-        <button id="language" className="LanguageButton" onClick={() => {
+        <p className="t5" style={{marginBottom: 0}}>Language</p>
+        {/* <button id="language" className="LanguageButton" onClick={() => {
           navigate("/edit-language", {
             state: {
               origin: "/",
               scrollTo: "Footer"
             }
-          })
+          }) 
         }}>
           <p className="t6">francais</p> 
           <img src={arrowRight} alt="arrowRight"/>
-        </button>
+        </button> */}
+        <ButtonLanguage footer={true} popUp={false}/>
+
         <p className="t5">Contact</p>
         <button onClick={handleCopy} className="CopyButton">
           <p className="t6">tom.payan@viarte.eu</p>

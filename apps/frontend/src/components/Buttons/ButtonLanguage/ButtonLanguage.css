@@ -32,6 +32,33 @@
     transition: all 0.6s ease-in-out 0.2s;
 }
 
+
+.ButtonLanguage.Footer{
+  position: relative;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  opacity: 1;
+  transform: none;
+  width: fit-content;
+  z-index: 0;
+  background-color: transparent;
+  border: none;
+  box-shadow: none;
+}
+.ButtonLanguage.Footer .t5{
+  /* color: var(--greydark); */
+  color: white;
+  font-weight: 100;
+  margin: 0;
+}
+.ButtonLanguage.Footer #global{
+  height: 17px;
+}
+.ButtonLanguage.Footer img{
+  filter: invert(1);
+}
+
 .ButtonLanguage>button{
     background-color: transparent;
     border: none;

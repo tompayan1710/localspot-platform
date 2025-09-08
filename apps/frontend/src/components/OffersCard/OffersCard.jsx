@@ -85,10 +85,10 @@ export default function OffersCard({loading, offers, vertical=false, goToOffer})
                     },
                     date: null, // ou today si tu veux toujours passer une date
                     moment: null, // "Matin", "Après-midi", "Soir"
-                    // total_participants: participantAdult + participantReduced,
-                    categories: null, // tableau ex: ["Nautiques", "Bien-être"]
+                     categories: null, // tableau ex: ["Nautiques", "Bien-être"]
                     nb_adult: null,
-                    nb_reduced: null
+                    nb_child: null,
+                    nb_infant: null
                   }
                 });
               }}>
