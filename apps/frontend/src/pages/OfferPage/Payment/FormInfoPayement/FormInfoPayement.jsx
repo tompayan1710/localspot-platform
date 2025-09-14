@@ -7,10 +7,11 @@ import PhoneInput from "react-phone-number-input";
 import 'react-phone-number-input/style.css';
 
 import LockGreen from "../../../../assets/images/LockGreen.png"
+import { useTranslation } from "react-i18next";
 
 export default function FormInfoPayement(){
     const { slug } = useParams();
-
+    const {t} = useTranslation();
     const location = useLocation();
     const navigate = useNavigate();
 
@@ -145,20 +146,20 @@ export default function FormInfoPayement(){
         <div className="FormInfoPayement">
             <GoBack nagigation={`/offer-page/${slug}/availibility`} text={"revenir"} state={stateAvailibility}/>
             <ProgressBar num_etape={2} steps ={[
-                {   title: "Réservation",
+                {   title: t("Reservation"),
                     route: `/offer-page/${slug}/availibility`,
                     state: stateAvailibility
                  },
-                { title: "Informations" },
-                { title: "Paiement" }
+                { title: t("Informations") },
+                { title: t("Payment") }
             ]}/>
             <form className="FormInfoBody" autoComplete="on" onSubmit={(e) => { e.preventDefault(); handleSubmit(); }}>
-                <p className="Title t3">Vérifier vos informations personnels</p>
+                <p className="Title t3">{t("Verify_your_personal_information")}</p>
                 <div className="Securised row">
                     <img src={LockGreen} alt={"Lock green"}/>
-                    <p className="t6">Réservation rapide et sécurisé</p>
+                    <p className="t6">{t("Fast_and_secure_booking")}</p>
                 </div>
-                <p className="t5 label">Nom complet*</p>
+                <p className="t5 label">{t("Full_name")}*</p>
                 <input
                     className={`InputText ${errors.name ? "error" : ""}`}
                     name="name"
@@ -170,7 +171,7 @@ export default function FormInfoPayement(){
                 />
                 {errors.name && <p className="error-message">{errors.name}</p>}
 
-                <p className="t5 label">E-mail*</p>
+                <p className="t5 label">{t("Email")}*</p>
                 <input
                     className={`InputText ${errors.email ? "error" : ""}`}
                     type="email"
@@ -182,7 +183,7 @@ export default function FormInfoPayement(){
                 />
                 {errors.email && <p className="error-message">{errors.email}</p>}
 
-                <p className="t5 label">Numéro de téléphone*</p>
+                <p className="t5 label">{t("Phone_number")}*</p>
                 {/* react-phone-number-input transmet les props non reconnues à l’<input> interne. Donc ajoute name et autoComplete="tel" : */}
                 <PhoneInput
                     defaultCountry="FR"
@@ -200,13 +201,13 @@ export default function FormInfoPayement(){
                 {errors.phone ? (
                 <p className="t6 error-message">{errors.phone}</p>
                 ) : (
-                <p className="t6 info">Votre numéro sera utilisé uniquement en cas de changements importants concernant votre réservation.</p>
+                <p className="t6 info">{t("Phone_info")}</p>
                 )}
 
                 <button className="SuivantButton" onClick={handleSubmit}>
-                    Suivant
+                    {t("Next")}
                 </button>
-                <p className="t6 info">Le nom indiqué sera utilisé pour toute la réservation et sera associé à tous les participants.</p>
+                <p className="t6 info">{t("Name_will_be_used_for_booking")}</p>
             </form>
         </div>
     )

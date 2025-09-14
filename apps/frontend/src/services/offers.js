@@ -27,7 +27,6 @@ export const getAllOffers = async (lang) => {
  
 
 
-// ✅ Fonction pour rafraîchir l'Access Token (version simplifiée)
 export const getOfferBySlug = async (slug, lang) => {
     console.log("Récupération de l'offre");
     try {
@@ -52,10 +51,10 @@ export const getOfferBySlug = async (slug, lang) => {
 }
 
 
-export const getOffersProvider = async (provider_id) => {
+export const getOffersProvider = async (provider_id, lang) => {
     console.log("Récupération des offres providers");
     try{
-        const response = await fetch(`${process.env.REACT_APP_API_URL}/api/offer/getall-provider?provider_id=${provider_id}`,{
+        const response = await fetch(`${process.env.REACT_APP_API_URL}/api/offer/getall-provider?provider_id=${provider_id}&lang=${lang}`,{
             method: "GET",
         })
 

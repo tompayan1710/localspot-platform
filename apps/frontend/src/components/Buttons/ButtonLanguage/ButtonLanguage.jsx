@@ -5,6 +5,7 @@ import France from "../../../assets/images/France.png"
 import United_Kingdom from "../../../assets/images/United_Kingdom.png"
 import Italy from "../../../assets/images/Italy.png"
 import Germany from "../../../assets/images/Germany.png"
+import Spain from "../../../assets/images/Spain.png"
 import global from "../../../assets/images/globalThink.png"
 
 import { useRef, useState } from "react";
@@ -29,8 +30,9 @@ export default function ButtonLanguage({home=false, offerPage= false, footer=fal
     const languagesSupply = [
         { code: 'en', label: 'English', flag: United_Kingdom },
         { code: 'fr', label: 'Français', flag: France },
-        // { code: 'it', label: 'Italiano', flag: Italy },
-        // { code: 'de', label: 'Deutsch', flag: Germany },
+        { code: 'it', label: 'Italiano', flag: Italy },
+        { code: 'de', label: 'Deutsch', flag: Germany },
+        { code: 'es', label: 'Español', flag: Spain }
     ]
    
     const currentCode = (i18n.resolvedLanguage || i18n.language || "fr").split("-")[0];

@@ -142,13 +142,14 @@ router.get("/getall", async (req, res) => {
 
 router.get("/getall-provider", async (req, res) => {
   const provider_id = req.query.provider_id;
+  const lang = req.query.lang;
 
   if (!provider_id) {
     return res.status(400).json({ success: false, error: "provider_id manquant" });
   }
 
   try {
-    const offers = await getOffersProvider(provider_id);
+    const offers = await getOffersProvider(provider_id, lang);
     res.json({success: true, offers});
   }catch(err){
     res.status(500).json({ success: false, error: "Erreur serveur" });
@@ -455,7 +456,6 @@ router.patch("/toggle-like", async (req, res) => {
 
 router.post("/is-favorite", async (req, res) => {
   const { user_id, offer_slug } = req.body;
-  console.log("Je Toggle l'offer");
 
   if (!user_id || !offer_slug) {
     return res.status(400).json({ success: false, message: "user_id et offer_slug sont requis." });

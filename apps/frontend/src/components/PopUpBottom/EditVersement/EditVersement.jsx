@@ -4,6 +4,7 @@ import PopUpBottom from "../PopUpBottom";
 import "./EditVersement.css";
 import IBANChecker from "../../../pages/AddVersementMethode/IBANChecker";
 import IBAN from "../../../pages/AddVersementMethode/IBAN/IBAN";
+import { useTranslation } from "react-i18next";
 
 export default function EditVersement({
   editPopUp,
@@ -22,7 +23,7 @@ export default function EditVersement({
   setIsOccultView
 }) {
   const [ isValidRepeat, setIsValidRepeat ] = useState(true);
-
+  const {t} = useTranslation();
   useEffect(() => {
     console.log("IsValidReapeat: ", isValidRepeat);
   }, [isValidRepeat])
@@ -40,7 +41,7 @@ export default function EditVersement({
     >
       <>
         <div className="ModifieVersement">
-          <p className="t4 bold">Titulaire du compte</p>
+          <p className="t4 bold">{t("Account_holder")}</p>
           <div className="row">
             <input
               name="last_name"
@@ -75,9 +76,9 @@ export default function EditVersement({
           />
           <IBANChecker referenceIban={modifieIban} setIsValidRepeat={setIsValidRepeat} base={true}/> */}
 
-          <p className="t4 bold">Code SWIFT/BIC</p>
+          <p className="t4 bold">{t("SWIFT_BIC_code")}</p>
           <p className="t6" style={{ paddingTop: "2px" }}>
-            Facultatif pour les comptes européens (SEPA)
+            {t("Optional_for_European_accounts")}
           </p>
           <input
             name="Swift"
@@ -89,16 +90,17 @@ export default function EditVersement({
               setModifieSwift(cleaned);
             }}
           />
+          <p className="t6">{t("SWIFT_explanation")}</p>
+
           <p className="t6">
-            Assurez-vous que les informations saisies sont exactes avant de
-            valider.
+            {t("Ensure_accurate_info")}
           </p>
         </div>
 
     
         <CancelConfirmButton
-            cancelText={"Annuler"}
-            confirmText={"Modifier"}
+            cancelText={t("Cancel")}
+            confirmText={t("Edit")}
             loading={loadingModifie}
             onCancel={() => {
                 editPopUp.current.classList.remove("open");

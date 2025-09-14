@@ -2,8 +2,10 @@ import { useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import GoBack from "../../components/GoBack/GoBack";
 import "./AddVersement.css";
+import { useTranslation } from "react-i18next";
 
 export default function AddTitulaireForm() {
+  const {t} = useTranslation();
   const [first_name, setFirstName] = useState("");
   const [last_name, setLastName] = useState("");
   const navigate = useNavigate();
@@ -22,24 +24,24 @@ export default function AddTitulaireForm() {
       });
     } else {
       // Optionnel : message d’erreur si les champs sont vides
-      alert("Veuillez remplir le nom et le prénom du titulaire.");
+      alert(t("Please_fill_in_holder_name"));
     }
   };
 
   return (
     <div className="AddVersement">
-        <GoBack nagigation={location?.state?.origin ? location?.state?.origin : "/payout-request"} scrollTo={""} text={"retour"} />
+        <GoBack nagigation={location?.state?.origin ? location?.state?.origin : "/payout-request"} scrollTo={""} text={t("back")} />
 
-        <p className="t3 bold">Indiquez le nom du titulaire du compte</p>
+        <p className="t3 bold">{t("Enter_account_holder_name")}</p>
 
         <div className="bodyVersement">
-            <p className="t5">À qui appartient le compte ?</p>
+            <p className="t5">{t("Who_owns_the_account")}</p>
 
             <div className="row">
                 <input
                 name="name"
                 className="InputText"
-                placeholder="Nom"
+                placeholder={t("Last_name")}
                 value={last_name}
                 onChange={(e) => setLastName(e.target.value.toUpperCase())}
                 // onChange={(e) => setName(e.target.value)}
@@ -48,15 +50,15 @@ export default function AddTitulaireForm() {
                 <input
                 name="last_name"
                 className="InputText"
-                placeholder="Prénom"
+                placeholder={t("First_name")}
                 value={first_name}
                 onChange={(e) => setFirstName(e.target.value)}
                 />
             </div>
         </div>
-        <p className="t6">Le nom indiqué sera celui rattaché au payement effectué via cette méthode de versemment.</p>
+        <p className="t6">{t("Holder_name_info")}</p>
         <button className="NavigateButton" onClick={handleContinue}>
-          <p className="t4">Continuer</p>
+          <p className="t4">{t("Continue")}</p>
         </button>
     </div>
   );

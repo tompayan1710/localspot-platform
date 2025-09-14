@@ -153,7 +153,7 @@ export default function FilterElement({
                             <DayPicker
                                 mode="single"
                                 selected={new Date(selectedDate)}
-                                onSelect={(date) => {
+                                onSelect={(date) => { 
                                 // setSelectedDate(date ? date.toLocaleDateString('fr-CA') : today)
                                 setSelectedDate(date ? date.toLocaleDateString(lang) : today)
                                 }}

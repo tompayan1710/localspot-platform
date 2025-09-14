@@ -23,7 +23,7 @@ import Cuisto from "../../assets/images/Cuisto.jpg"
 import CalendarBorder from "../../assets/images/CalendarBorder.png"
 import Switch from "../../assets/images/Switch.png"
 import Kayak from "../../assets/images/Kayak.jpg"
-import { useTranslation } from "react-i18next"; 
+import { Trans, useTranslation } from "react-i18next"; 
 import { useLocation } from "react-router-dom"
 
 import { getOffersProvider } from "../../services/offers"
@@ -32,7 +32,9 @@ import { getProviderById } from "../../services/provider";
 
 export default function Profile() {
   const navigate = useNavigate();
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
+  const lang = (i18n.resolvedLanguage || i18n.language || "fr").split("-")[0];
+
   const location = useLocation();
 
  
@@ -169,8 +171,8 @@ export default function Profile() {
             <img src={Switch} alt="Switch" />
             <p className="t5">
               {selectedMode === "provider"
-                ? "Basculer en mode voyageur"
-                : "Basculer en mode prestataire"}
+                ? t("Switch_to_traveler_mode")
+                : t("Switch_to_provider_mode")}
             </p>
           </button>
         )
@@ -237,8 +239,8 @@ export default function Profile() {
               
             }
             <div className="ColumnName">
-              <p className="t4">{authState.user?.name ? authState.user?.name : t('Compte personnel')}</p>
-              <p className="t6">Voir le profile</p>
+              <p className="t4">{authState.user?.name ? authState.user?.name : t('Personal_account')}</p>
+              <p className="t6">{t("View_profile")}</p>
             </div>
           </div>
         <img src={arrowRight} alt="arrow right"/>
@@ -256,10 +258,10 @@ export default function Profile() {
                 <FadeInImage src={providerOffers[0]?.image_urls[0] ? providerOffers[0]?.image_urls[0] : templateOffer} alt="template photo"/>
               </div>
               {/* <p className="t4">Mes annonces</p> */}
-              <p className="t6">Gérez facilement vos activités, suivez vos réservations et mettez à jour vos offres en temps réel.</p>
+              <p className="t6">{t("Easily_manage_your_activities")}</p>
             </div>
           <button className="whiteButton" onClick={() => {navigate("/annonces")}}>
-              <p className="t5">Voir mes annonces</p>
+              <p className="t5">{t("View_my_listings")}</p>
           </button>
           </>
           : 
@@ -271,25 +273,27 @@ export default function Profile() {
                   <img className="profilPicture" src={profilPicture} alt="profilPicture"/>
                   <div className="row time">
                     <img src={clockIcon} alt="clock icon"/>
-                    <p className="t6">1 mois</p>
+                    <p className="t6">{t("one_month")}</p>
                   </div>
-                  <p className="t6">Camille a un cours prévu<br></br> ce week-end</p>
+                  <p className="t6">
+                    <Trans i18nKey="cours_weekend" components={{ br: <br /> }} />  
+                  </p>
                 </div>
               </div>
 
               {/* <p className="t4">Mes annonces</p> */}
               {/* <p className="t6">Gérez facilement vos activités, suivez vos réservations et mettez à jour vos offres en temps réel.</p> */}
-              <p className="t6">Découvrez les meilleures activités autour de vous, en toute simplicité.</p>
+              <p className="t6">{t("Discover the best activities near you, with ease.")}</p>
             </div>
           <button className="whiteButton" onClick={() => {navigate("/annonces")}}>
-              <p className="t5">Recherchez des annonces</p>
+              <p className="t5">{t("Search_for_listings")}</p>
           </button>
           </>
           }
         </>
       ) : (
       <p className="t32 IsValidateMessage">
-        Votre profil prestataire est en cours de validation. Vous serez notifié dès son activation
+        {t("Profil_validation_description")}Votre profil prestataire est en cours de validation. Vous serez notifié dès son activation
       </p>
       ))
       :
@@ -299,17 +303,17 @@ export default function Profile() {
                 <FadeInImage src={yoga3} alt="yoga photo"/>
                 <FadeInImage src={Cuisto} alt="cuisto photo"/>
               </div>
-              <p className="t4">Devenir prestataire</p>
-              <p className="t6">Votre demande sera traitée sous 24h et notre réponse vous sera rapidement communiquée.</p>
+              <p className="t4">{t("Become_provider")}</p>
+              <p className="t6">{t("Request_processed_within")}</p>
             </div>
         <button className="BecomeProviderButton" onClick={() => {navigate("/become-provider")}}>
-            <p className="t6">Devenir prestataire</p>
+            <p className="t6">{t("Become_provider")}</p>
         </button>
       </>
     }
 
           <div className="hline"></div> 
-          <p className="t3">Settings</p>
+          <p className="t3">{t("Settings")}</p>
           <div
             className={`
               SettingsListContainer ${authState.user?.provider_id && 
@@ -319,7 +323,7 @@ export default function Profile() {
 
             <div className="SettingsListItem" onClick={() => navigate("/settings")}>
               <div className="SettingsRow">
-                <div className="RowFirst"><img src={parametres} alt="settings icon"/><p className="t4">Account settings</p></div>
+                <div className="RowFirst"><img src={parametres} alt="settings icon"/><p className="t4">{t("Account_settings")}</p></div>
                 <img src={arrowRight} alt="arrow right"/>
               </div>
               <div className="hline"></div>
@@ -331,14 +335,14 @@ export default function Profile() {
               }
             })}>
               <div className="SettingsRow">
-                <div className="RowFirst"><img src={global} alt="global icon"/><p className="t4">Languages</p></div>
+                <div className="RowFirst"><img src={global} alt="global icon"/><p className="t4">{t("Languages")}</p></div>
                 <img src={arrowRight} alt="arrow right"/>
               </div>
               <div className="hline"></div>
             </div>
             <div className="SettingsListItem" onClick={() => navigate("/currency")}>
               <div className="SettingsRow">
-                <div className="RowFirst"><img src={EuroIcon} alt="currenncy icon"/><p className="t4">Currency</p></div>
+                <div className="RowFirst"><img src={EuroIcon} alt="currenncy icon"/><p className="t4">{t("Currency")}</p></div>
                 <img src={arrowRight} alt="arrow right"/>
               </div>
               <div className="hline"></div>
@@ -350,7 +354,7 @@ export default function Profile() {
                     {selectedMode === "provider" &&
                       <div className="SettingsListItem" onClick={() => navigate("/booking-system")}>
                         <div className="SettingsRow">
-                          <div className="RowFirst"><img src={CalendarBorder} alt="currenncy icon"/><p className="t4">Booking system</p></div>
+                          <div className="RowFirst"><img src={CalendarBorder} alt="currenncy icon"/><p className="t4">{t("Booking_system")}</p></div>
                           <img src={arrowRight} alt="arrow right"/>
                         </div>
                         <div className="hline"></div>
@@ -358,7 +362,7 @@ export default function Profile() {
                     }
                     <div className="SettingsListItem" onClick={() => navigate("/payment-methode")}>
                       <div className="SettingsRow">
-                        <div className="RowFirst"><img src={CreditCard} alt="credit card icon"/><p className="t4">Payment methods</p></div>
+                        <div className="RowFirst"><img src={CreditCard} alt="credit card icon"/><p className="t4">{t("Payment_methods")}</p></div>
                         <img src={arrowRight} alt="arrow right"/>
                       </div>
                       <div className="hline"></div>
@@ -369,7 +373,7 @@ export default function Profile() {
             }
             <div className="SettingsListItem" onClick={handleLogout}>
               <div className="SettingsRow">
-                <div className="RowFirst"><img src={logOutIcon} alt="log out icon"/><p className="t4">Log out</p></div>
+                <div className="RowFirst"><img src={logOutIcon} alt="log out icon"/><p className="t4">{t("Log_out")}</p></div>
                 <img src={arrowRight} alt="arrow right"/>
               </div>
               <div className="hline"></div>

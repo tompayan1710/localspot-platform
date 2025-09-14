@@ -22,6 +22,7 @@
       const { slug } = useParams();
       const location = useLocation();
       const { t, i18n } = useTranslation();
+      const lang = (i18n.language || "fr").split("-")[0]; 
 
       const today = new Date().toLocaleDateString('fr-CA');
       const [selectedDate, setSelectedDate] = useState(location.state?.date || today);
@@ -371,7 +372,7 @@
           const { age_min: min, age_max: max } = band;
 
           // Tous âges
-          if (min == null && max == null) return t('age-range.all-ages', 'Tous âges');
+          if (min == null && max == null) return t('all_ages');
 
           // ≤ max ans
           if (min == null && max != null) return `≤ ${max} ${yearsLabel}`;
@@ -432,8 +433,8 @@
           <div className="TopDivOpacity"></div>
           <GoBack nagigation={`/offer-page/${slug}`} scrollTo={""} text={"revenir"}/>
           <div className="TitleContainer">
-            <p className="t32">Sélectionnez une date et un créneaux</p>
-            <p className="t6">Indiquez quand vous souhaitez participer à cette activité. Les créneaux disponibles s’adapteront automatiquement.</p>
+            <p className="t32">{t("select_date_and_slot")}</p>
+            <p className="t6">{t("select_date_and_slot_subtitle")}</p>
           </div>
           
           <div className="DayPickerContainer">
@@ -442,7 +443,9 @@
               <DayPicker
                 mode="single"
                 selected={new Date(selectedDate)}
+                
                 onSelect={(date) => {
+                  // setSelectedDate(date ? date.toLocaleDateString(lang) : today)
                   setSelectedDate(date ? date.toLocaleDateString('fr-CA') : today)
                   setSelectedCreneau({index: "no-selected"})
                 }}
@@ -478,10 +481,10 @@
             </div>
             
             <div className="CreneauPicker" ref={creneauRef}>
-              <p className="t5">Creneaux disponnibles : </p>
+              <p className="t5">{t("available_slots")}</p>
               {
                 isTooFar ? <div className="NoneSlote">
-                  <p className="t5">Vous ne pouvez réserver qu'un mois à l'avance</p>
+                  <p className="t5">{t("too_far_date")}</p>
                 </div>
                 :
                 disponnibility[selectedDate] && Object.keys(disponnibility[selectedDate]).length > 0 ? (
@@ -507,7 +510,7 @@
                         places_disponnibles === 0 &&
                         <>
                         <div className="CompleteOverlay">
-                          <p className="t5 bold">COMPLET</p>
+                          <p className="t5 bold">{t("full")}</p>
                         </div>
                         <div className={`NoCreneau`}  
                           style={{
@@ -522,8 +525,8 @@
                           isReservable ?
                             <>
                             <div>
-                              <p className="t6">Il reste actuellement :</p>
-                              <p className={`greenColor t6`}>{places_disponnibles} places</p>
+                              <p className="t6">{t("currently_remaining")}</p>
+                              <p className={`greenColor t6`}>{places_disponnibles} {t("places")}</p>
                             </div>
                             </>
                             : 
@@ -538,9 +541,9 @@
                             }
                           
                             <div>
-                              <p className="t6">Il reste actuellement :</p>
-                              <p className={`redColor t6`}>{places_disponnibles} places</p>
-                              <p className={`redColor t6`}> Vous êtes trop nombreux.</p>
+                              <p className="t6">{t("currently_remaining")}</p>
+                              <p className={`redColor t6`}>{places_disponnibles} {t("places")}</p>
+                              <p className={`redColor t6`}>{t("too_many_people")}</p>
                             </div>
                             </>
                         }
@@ -551,14 +554,14 @@
                   }))
                   :
                   <div className="NoneSlote">
-                    <p className="t5">Aucun créneau n'est disponible pour ce jour.</p>
+                    <p className="t5">{t("no_slot_available")}</p>
                   </div>
                 }
 
                 <div className={`CancelContainer ${selectedCreneau.index!=="no-selected" && OfferIsCancellable ? "selected" : ""}`}>
                   <img src={VerifyIcon} alt="verify icon"/>
                   <p className="t6">
-                    Date limite d’annulation gratuite : {new Date(new Date(selectedDate).setDate(new Date(selectedDate).getDate() + 1)).toLocaleDateString('fr-FR', { day: '2-digit', month: 'long' })} {selectedCreneau.slot ? ` à ${selectedCreneau.slot.from}` : "00:00"}.
+                    {t("free_cancellation_deadline")} {new Date(new Date(selectedDate).setDate(new Date(selectedDate).getDate() + 1)).toLocaleDateString('fr-FR', { day: '2-digit', month: 'long' })} {selectedCreneau.slot ? ` à ${selectedCreneau.slot.from}` : "00:00"}.
                   </p>
                 </div>
                 
@@ -576,7 +579,7 @@
             }}>
             <div>
               <div className="row">
-                <p className="t5">Participants :</p> 
+                <p className="t5">{t("Participants")} :</p> 
                 <p className="t5">{participantAdult + participantChild + participantInfant}</p>
               </div>
               <p className="t6">
@@ -587,7 +590,7 @@
 
             </div>
             <button>
-              <p className="t6">Modifier</p>
+              <p className="t6">{t("Edit")}</p>
               {/* <img src={arrowRight} alt="arrow right"/> */}
             </button>
             {/* <img src={arrowRight} alt="arrow right"/> */}
@@ -600,7 +603,7 @@
           <div className="Availline"></div> */}
           <div className="addresseContainer">
             <img src={Map2DPin} alt="adresse icon"/>
-            <p className="t6">04 place Godeau, Vence, France</p>
+            <p className="t6">{adresse}</p>
           </div>
           <div className="payementInfoContainer">
             <div className="row">
@@ -654,7 +657,7 @@
             }
             <div className="payementSeparation"></div>
             <div className="row">
-              <p>TOTAL</p>
+              <p>{t("TOTAL")}</p>
               <p className="t32">{new Intl.NumberFormat('fr-FR', {
                   style: 'currency',
                   currency: 'EUR',
@@ -664,10 +667,10 @@
               </p>
             </div>  
             <div className="payementSeparation"></div>
-            <p className="t6">Toutes taxes comprises</p>
+            <p className="t6">{t("all_taxes_included")}</p>
           </div>
           <button className="SuivantButton" onClick={() => TestAuth()}>
-            Suivant
+            {t("Next")}
           </button>
 
           <PopUpBottom 
@@ -676,7 +679,7 @@
               setIsOccultView(false);
             }}
             title={(
-              <p className="t5">Ajouter des participants</p>
+              <p className="t5">{("Add_participants")}</p>
             )}
             ref={ParticipantBottomRef}
           >
@@ -686,7 +689,7 @@
 
               </div> */}
               <div className="rowTotal">
-                <p className="t4">Participants :</p> 
+                <p className="t4">{t("Participants")} :</p> 
                 <p className="t4">{participantAdult + participantChild + participantInfant}</p>
               </div>
                 {adult && (

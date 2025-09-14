@@ -17,9 +17,11 @@ import FadeInImage from "../../../components/Utils/FadeInImage";
 import Spinner from "../../../components/Spinner/Spinner";
 import EditVersement from "../../../components/PopUpBottom/EditVersement/EditVersement";
 import VersementList from "../../../components/PopUpBottom/EditVersement/VersementList/VersementList";
+import { useTranslation } from "react-i18next";
 
 
 export default function PayoutRequest(){
+    const {t} = useTranslation();
     const navigate = useNavigate();
     const { authState } = useContext(AuthContext);
     const [versements, setVersements] = useState([]);
@@ -46,6 +48,10 @@ export default function PayoutRequest(){
     const deletePopUp = useRef(null);
 
     const [isOccultView, setIsOccultView] = useState(false);
+
+    const maxAmount = 3000.00.toFixed(2).replace('.', ',');
+    const minAmount = 1.00.toFixed(2).replace('.', ',');
+
 
     useEffect(() => {
       if (isOccultView) {
@@ -174,22 +180,22 @@ export default function PayoutRequest(){
 
     return (
         <div className={`PayoutRequest ${isOccultView ? "noScroll" : ""}`}>
-            <GoBack nagigation={"/my-earnings"} text={"revenir"}/>
+            <GoBack nagigation={"/my-earnings"} text={t("return")}/>
 
-            <p className="t32">Retirer mes gains</p>
+            <p className="t32">{t("Withdraw_my_earnings")}</p>
             <div className="MySolde column">
                 <div className="SoldePricipal">
-                    <p className="t6">Mon solde</p>
+                    <p className="t6">{t("My_balance")}</p>
                     <p className="t2">{formatEuro(solde)}€</p>
                 </div>
                 <div className="SoldInfo row">
                     <div className="column center">
-                        <p className="t5 bold">En attente</p>
+                        <p className="t5 bold">{t("Pending")}</p>
                         <p className="t5">{formatEuro(waiting)}€</p>
                     </div>
                     <div className="vline"></div>
                     <div className="column center">
-                        <p className="t5 bold">Déjà retiré</p>
+                        <p className="t5 bold">{t("Already_withdrawn")}</p>
                         <p className="t5">{formatEuro(alreadyPaid)}€</p>
                     </div>
                 </div>
@@ -197,7 +203,7 @@ export default function PayoutRequest(){
 
             <div className={`bodyPayoutRequest column ${isOccultView ? "noScroll" : ""}`}>
                 <div className="VersementMethode">
-                    <p className="t5">Mode de versement</p>
+                    <p className="t5">{t("Payout_method")}</p>
                     <VersementList setIsOccultView={setIsOccultView} editPopUp={editPopUp} deletePopUp={deletePopUp} selectedVersement={selectedVersement} setselectedVersement={setselectedVersement} versements={versements} setVersements={setVersements} selectionnable={true} origin={"/payout-request"}/>
                 
                     {/* <button onClick={() => {
@@ -209,7 +215,7 @@ export default function PayoutRequest(){
                 </div>
 
                 <div className="SelectingAmount">
-                    <p className="t5">Montant</p>
+                    <p className="t5">{t("Amount")}</p>
                     <div className="row">
                         <button className={`MontantItem ${selectedAmount === 0 ? "selected" : ""}`}
                             onClick={() => {
@@ -241,47 +247,20 @@ export default function PayoutRequest(){
                                 openNumberPicker();
                             }}
                             >
-                            <p className="t5">Personnalisé</p>
+                            <p className="t5">{t("Custom_amount")}</p>
                         </button>
                     </div>
                 </div>
 
-                {/* <div className="hlinedashed"></div> */}
-
-                {/* <div className="RecapInfo column">
-                    <div className="row">
-                        <p className="t5">Expéditeur</p>
-                        <p className="t5">Compte Viarte</p>
-                    </div>
-                    <div className="row">
-                        <p className="t5">Destinataire</p>
-                        <p className="t5">**** 3424</p>
-                    </div>
-                    <div className="row">
-                        <p className="t5">Référence</p>
-                        <p className="t5">Virement des revenus prestataire - Juillet 2025</p>
-                    </div>
-                    <div className="row">
-                        <p className="t5">Délais estimés</p>
-                        <p className="t5">1 à 2 jours ouvrés</p>
-                    </div>
-                </div> */}
-                {
-                    errorMessage ?
-                    <p className="t6 InfoMessage redColor">
-                        Pour des raisons de sécurité, le montant maximum autorisé par virement est de 3000 €.
-                    </p>
-                    :
-                    <p className="t6 InfoMessage">
-                        Pour des raisons de sécurité, le montant maximum autorisé par virement est de 3000 €.
-                    </p>
-                }
+                <p className={`t6 InfoMessage ${errorMessage ? "redColor" : ""}`}>
+                    {t("Security_limit", { max: maxAmount })}
+                </p>
             
             </div>
 
             <div className="SendingNav">
                 <div className="row">
-                    <p className="t4">Total</p>
+                    <p className="t4">{t("Total")}</p>
                     <p className="t2">{amount ? `${parseFloat(amount).toFixed(2).replace('.', ',')} €` : '0,00 €'}</p>
                 </div>
 
@@ -294,7 +273,7 @@ export default function PayoutRequest(){
                         {
                             loadingRequest && <Spinner replaceText={true}/>
                         }
-                        <p className="t5" style={{opacity: `${loadingRequest ? "0" : "1"}`}}>Envoyer</p>
+                        <p className="t5" style={{opacity: `${loadingRequest ? "0" : "1"}`}}>{t("Send")}</p>
                         <img src={ArrowRightRetired} alt="arrow right" style={{opacity: `${loadingRequest ? "0" : "1"}`}}/>
                     </button>
 
@@ -305,11 +284,11 @@ export default function PayoutRequest(){
                 title={"Montant personnalisé"}
                 // smalltext={`Montant maximum disponible : ${formatEuro(solde)} €`}
                 // max={solde}
-                smalltext={`Montant maximum disponible : 3000,00€`}
-                min={1.00}
-                errorMin={`Le montant ne peut pas dépasser 1.00 €`}
-                max={3000.00}
-                errorMax={`Le montant ne peut pas dépasser 3000.00 €`}
+                smalltext={`${t("Available_max", {max: maxAmount})}`}
+                min={minAmount}
+                errorMin={`${t("Error_min", {min: minAmount})}`}
+                max={maxAmount}
+                errorMax={`${t("Error_max"), {max: maxAmount}}`}
                 onClose={closeNumberPicker} 
                 setReturnValue={setAmount}
             />

@@ -2,8 +2,10 @@ import "./ConfirmPaymentPage.css"
 import ValidateProgress from "../../../../assets/images/validateGreen.png"
 import ViarteFontLinear from "../../../../assets/images/ViarteFontLinear.png"
 import { useNavigate } from "react-router-dom";
+import { useTranslation } from "react-i18next";
 
 export default function ConfirmPayementPage() {
+  const {t} = useTranslation();
   const navigate = useNavigate();
 
   return (
@@ -14,20 +16,18 @@ export default function ConfirmPayementPage() {
       <div className="SuccesIcon">
           <img src={ValidateProgress} alt="Validate White Icon"/>
         </div>
-      <p className="t3 bold intro">Merci</p>
-      <p className="t3 bold intro">Votre réservation a bien été reçue</p>
+      <p className="t3 bold intro">{t("Thank_you")}</p>
+      <p className="t3 bold intro">{t("Reservation_received")}</p>
       <p className="SuccesMessage t6">
-        {/* Votre paiement a été validé avec succès.<br></br>   */}
-        Vous recevrez un e-mail avec votre ticket de réseravtion
-        {/* Vous recevrez un e-mail de confirmation contenant tous les détails de votre réservation. */}
+        {t("Reservation_email_ticket")}
       </p>
       {/* <div className="hline88"></div> */}
       <div className="NavigateButton column">
         <button onClick={() => navigate("/")}>
-          <p className="t4">Retour à l’accueil</p>
+          <p className="t4">{t("Back_to_home")}</p>
         </button>
         <button onClick={() => navigate("/reservations")}>
-          <p className="t4">Voir mes réservations</p>
+          <p className="t4">{t("View_my_reservations")}</p>
         </button>
       </div>
     </div>

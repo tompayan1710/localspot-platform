@@ -92,7 +92,8 @@ module.exports = async function stripeWebhook(req, res) {
       title: meta.title || "",
       payment_intent_id: paymentIntent.id,
       payment_method,
-      reservation_created_at: new Date()
+      reservation_created_at: new Date(),
+      lang: meta.lang
     };
 
     console.log("💥✅Reservation :", reservation);

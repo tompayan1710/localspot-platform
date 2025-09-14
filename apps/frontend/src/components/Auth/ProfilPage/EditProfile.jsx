@@ -22,17 +22,7 @@ export default function EditProfil() {
 
 
   const { authState, updateUser } = useContext(AuthContext);
-    const [errors, setErrors] = useState({});
-
-  // const validateForm = () => {
-  //       const newErrors = {};
-  //       if (!name.trim()) newErrors.name = "Le nom complet est requis";
-  //       if (!email.trim()) newErrors.email = "L'email est requis";
-  //       else if (!/\S+@\S+\.\S+/.test(email)) newErrors.email = "L'email est invalide";
-  //       if (!phone || phone.length < 8) newErrors.phone = "Le numéro de téléphone est invalide";
-  //       setErrors(newErrors);
-  //       return Object.keys(newErrors).length === 0;
-  // };
+  const [errors, setErrors] = useState({});
 
   console.log(authState)
   const [form, setform] = useState({
@@ -79,7 +69,7 @@ export default function EditProfil() {
     }
 
     if (!form.phone || !isValidPhoneNumber(form.phone)) {
-      newErrors.phone = "Le numéro de téléphone est invalide";
+      newErrors.phone = t("The_phone_number_is_invalid");
     }
 
     if(Object.keys(newErrors).length !== 0){
@@ -88,7 +78,7 @@ export default function EditProfil() {
     }
 
     if (Object.keys(updates).length === 0 && !form.profil_picture) {
-      alert("Aucune modification détectée.");
+      alert(t("No_changes_detected"));
       return;
     }
 
@@ -112,14 +102,14 @@ export default function EditProfil() {
       const data = await res.json();
       if (res.ok) {
         setErrors({})  
-        alert("Profil mis à jour !");
+        alert(t("Profile_updated_successfully"));
         updateUser(data); 
       } else {
-        alert(data.message || "Erreur lors de la mise à jour.");
+        alert(data.message || t("Error_updating_profile"));
       }
     } catch (err) {
       console.error("Erreur :", err);
-      alert("Erreur serveur.");
+      alert(t("Server_error"));
     }
   };
 
@@ -163,7 +153,7 @@ export default function EditProfil() {
     <>
       {authState.loading ? <Spinner centerPage={true}/> : 
       <div className="EditProfilContainer">
-        <GoBack nagigation={"/profile"} text={"revenir"} refresh={true}/>
+        <GoBack nagigation={"/profile"} text={t("return")} refresh={true}/>
         <p className="t2">{t('editprofil')}</p> 
         <div className="ListInformation">
             <form onSubmit={handleSubmit}>
@@ -195,52 +185,26 @@ export default function EditProfil() {
 
                 
                 <div className="ConnexionInfoBox column">
-                  <p className="t32 bold">Compte</p>
+                  <p className="t32 bold">{t("Account")}</p>
                   <div className="row">
-                    <p className="t5">Connexion :</p>
+                    <p className="t5">{t("Connection_method")} :</p>
                     <p className="t5">{getConnexionMethod()}</p>
                   </div>
                   <div className="row">
-                    <p className="t5">Email associé :</p>
+                    <p className="t5">{t("Related_Email")}&nbsp;:</p>
                     <p className="t5">{authState.user?.email}</p>
                   </div>
                 </div>
 
 
-                <label className="t4">Nom complet</label>
+                <label className="t4">{t("Full_name")}</label>
                 <input
                   name="name"
                   className="InputText"
                   value={form.name}
                   onChange={handleChange}
                 />
-
-                {/* <input
-                  name="email"
-                  value={form.email}
-                  onChange={handleChange}
-                /> */}
-
-
-
-                
-                {/* <label className="t4">Ajoutez une courte biographie</label> */}
-                {/* <label className="t6">Décrivez ce que vous proposez, et ce qui rend vos expériences uniques pour les voyageurs.</label> */}
-                {/* Parlez-nous de vous et de ce qui rend votre activité unique. */}
-                {/* Je suis guide local depuis 5 ans et j’adore faire découvrir ma région à travers des balades culturelles et gourmandes. */}
-
-
-                {/* <textarea
-                    name="bio"
-                    className="DescriptionInput"
-                    value={form.bio}
-                    onChange={handleChange}
-                    rows={5}
-                    maxLength={200}
-                />
-                <p className={`${form.bio.length >0 ? "" : "error"} RightInfo t6`}>{form.bio ? form.bio.length : "0"}/200</p> */}
-                <label className="t5 label">Numéro de téléphone*</label>
-                {/* react-phone-number-input transmet les props non reconnues à l’<input> interne. Donc ajoute name et autoComplete="tel" : */}
+                <label className="t4 label">{t("Phone_number")}</label>
                 <PhoneInput
                     defaultCountry="FR"
                     international
@@ -253,7 +217,7 @@ export default function EditProfil() {
                       setform((prev) => ({ ...prev, phone: value }))
                     }
                     className={`PhoneInput ${errors.phone ? "error" : ""}`}
-                    placeholder="Entrez votre numéro"
+                    placeholder={t("Enter_your_number")}
                 />
 
                 {errors.phone  && 
@@ -271,7 +235,7 @@ export default function EditProfil() {
                 /> */}
 
 
-                <button type="submit" className="SaveButton"><img src={SaveIconFillWhite}/><p>Enregistrer</p></button>
+                <button type="submit" className="SaveButton"><img src={SaveIconFillWhite}/><p>{t("Save")}</p></button>
             </form>
         </div>
       </div>

@@ -1,8 +1,10 @@
 import { useEffect, useState } from "react";
 import "./AddVersement.css";
+import { useTranslation } from "react-i18next";
 
 export default function IBANChecker({ referenceIban, setIsValidRepeat, base }) {
   const [value, setValue] = useState("");
+  const {t} = useTranslation();
 
   // Quand le referenceIban change (donc modif de l'input principal)
   useEffect(() => {
@@ -62,7 +64,7 @@ export default function IBANChecker({ referenceIban, setIsValidRepeat, base }) {
       <input
         type="text"
         value={value}
-        placeholder="Confirmez le numéro IBAN"
+        placeholder={t("Confirm_the_IBAN_number")}
         onChange={handleChange}
         className="RealInput"
         maxLength={referenceIban.length}

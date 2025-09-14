@@ -10,9 +10,14 @@ import { AuthContext } from "../../components/Auth/authContext/authContext"
 import Spinner from "../../components/Spinner/Spinner";
 import FadeInImage from "../../components/Utils/FadeInImage";
 import { linearTheme } from "../../services/themeModifier";
+import { plural } from "../../services/translation";
+import { useTranslation } from "react-i18next";
 
 
 export default function Today() {
+  const {t, i18n} = useTranslation();
+  const lang = (i18n.resolvedLanguage || i18n.language || "fr").split("-")[0];
+  
   const navigate = useNavigate();
   const allDay = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
   const [firstMonth, setFirstMonth] = useState("");
@@ -34,14 +39,14 @@ export default function Today() {
     try {
         const today = new Date();
         const days = [];
-        const firstMonthName = today.toLocaleDateString('en-US', { month: 'long' });
+        const firstMonthName = today.toLocaleDateString(lang, { month: 'long' });
         setFirstMonth(firstMonthName);
 
         let lastMonthName;
         for (let i = 0; i < 7; i++) {
         const date = new Date(today);
         date.setDate(today.getDate() + i);
-        const currentMonth = date.toLocaleDateString('en-US', { month: 'long' });
+        const currentMonth = date.toLocaleDateString(lang, { month: 'long' });
         if (currentMonth !== firstMonthName) {
             lastMonthName = currentMonth;
         }
@@ -103,7 +108,7 @@ export default function Today() {
         setCreneauOfSelectedDate(() => {
             const temp = {};
             // console.log(allCreneaux[next7Days[selectedDay].toLocaleDateString('fr-CA')])
-            allCreneaux[next7Days[selectedDay].toLocaleDateString('fr-CA')] && allCreneaux[next7Days[selectedDay].toLocaleDateString('fr-CA')].forEach((slot) => {
+            allCreneaux[next7Days[selectedDay].toLocaleDateString(lang)] && allCreneaux[next7Days[selectedDay].toLocaleDateString('fr-CA')].forEach((slot) => {
                 // console.log(slot);
                 const key = `${slot.start_hour}-${slot.end_hour}`
                 if(!temp[key]) temp[key]= [];
@@ -167,7 +172,7 @@ export default function Today() {
                     {date.getDate()}
                     </button>
                     {
-                        allCreneaux[next7Days[index].toLocaleDateString('fr-CA')] && <div className="isReservation"></div>
+                        allCreneaux[next7Days[index].toLocaleDateString(lang)] && <div className="isReservation"></div>
                     }
                 </div>
                 ))
@@ -210,16 +215,16 @@ export default function Today() {
                         // const startHour = "13:30";           // format HH:mm
                         // const endHour = "15:00";             // format HH:mm
                         const slotStatusLabels = {
-                            ongoing: "En cours",
-                            upcoming: "Bientôt",
+                            ongoing: t("Ongoing"),
+                            upcoming: t("Upcoming"),
                             completed: null,
                             normal: null
                         };
                         const slot_hours = timeRange.split("-");
                         const slot_start_hour = slot_hours[0];
                         const slot_end_hour = slot_hours[1];
-                        console.log(next7Days[selectedDay].toLocaleDateString('fr-CA'))
-                        const dateCreneau = next7Days[selectedDay].toLocaleDateString('fr-CA');
+                        console.log(next7Days[selectedDay].toLocaleDateString(lang))
+                        const dateCreneau = next7Days[selectedDay].toLocaleDateString(lang);
                         // Tu construis des dates complètes en France (GMT+2 l'été)
                         const startDateTime = new Date(`${dateCreneau}T${slot_start_hour}:00+02:00`);
                         const endDateTime = new Date(`${dateCreneau}T${slot_end_hour}:00+02:00`);
@@ -290,8 +295,18 @@ export default function Today() {
                                                     </div>
                                                     <div className="hlinedashed"></div>
                                                     <div className="column">
-                                                        <p className="t5">Participant : {slot.total_reserved} {allOffers[slot.offer_slug].total_capacity - slot.total_reserved === 0 && "(COMPLET)"}</p>
-                                                        <p className="t6">×2 adult&nbsp;&nbsp;×2 reduced</p>
+                                                        <p className="t5">{t("Participants")} : {slot.total_reserved} {allOffers[slot.offer_slug].total_capacity - slot.total_reserved === 0 && t("Full_in_brackets")}</p>
+                                                        <p className="t6">
+                                                            {Number(slot?.nb_adult) > 0 && (
+                                                                <>×{Number(slot.nb_adult)} {t(plural(Number(slot.nb_adult), "adult", "adults"))}&nbsp;&nbsp;</>
+                                                            )}
+                                                            {Number(slot?.nb_child) > 0 && (
+                                                                <>×{Number(slot.nb_child)} {t(plural(Number(slot.nb_child), "child", "children"))}&nbsp;&nbsp;</>
+                                                            )}
+                                                            {Number(slot?.nb_infant) > 0 && (
+                                                                <>×{Number(slot.nb_infant)} {t(plural(Number(slot.nb_infant), "infant", "infants"))}</>
+                                                            )}
+                                                        </p>
                                                     </div>
                                                     {/* <div className="row">
                                                         <div className="rowParticipant">
@@ -309,9 +324,9 @@ export default function Today() {
                                                 }
                                                         
                                                 <div className="row">
-                                                    <p className="t32">TOTAL</p>
+                                                    <p className="t32">{t("TOTAL")}</p>
                                                     <p className="t32">
-                                                        {(slot.gross_amount_total).toLocaleString('fr-FR', { minimumFractionDigits: 2, maximumFractionDigits: 2 })} €
+                                                        {(slot.gross_amount_total).toLocaleString(lang, { minimumFractionDigits: 2, maximumFractionDigits: 2 })} €
                                                     </p>
                                                 </div>
                                             </div>   
@@ -326,9 +341,9 @@ export default function Today() {
                 
                 :
                 <div className="NoCreneau">
-                    <p className="t32">{now.getDay() == allDay[selectedDay] ? "Aucune réservations pour aujourd'hui." : "Actuellement aucune réservations"}</p>
+                    <p className="t32">{now.getDay() == allDay[selectedDay] ? t("Currently_no_reservations_today") : t("Currently_no_reservations")}</p>
                     <p className="t6">
-                    Vous pouvez permettre aux clients de réserver jusqu’à 1 heure avant le début de l’activité. Grâce à cela capter les clients de dernière minutes !
+                        {t("You_can_allow_last_minute")}
                     </p>
                     <button className="whiteButton" onClick={() => {
                         // navigate("/create-offer", {
@@ -343,7 +358,7 @@ export default function Today() {
                         })
                     }}>
                         {/* <p className="t5">Mettre en avant mes offres</p> */}
-                        <p className="t5">Voir mes revenues</p>
+                        <p className="t5">{t("See_my_earnings")}</p>
                     </button>
                 </div>
             )

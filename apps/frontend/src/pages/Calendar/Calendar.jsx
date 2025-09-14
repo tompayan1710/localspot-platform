@@ -13,8 +13,13 @@ import Spinner from "../../components/Spinner/Spinner"
 import FadeInImage from "../../components/Utils/FadeInImage"
 import Map2DPin from "../../assets/images/Map2DPin.png"
 import { linearTheme } from "../../services/themeModifier"
+import { useTranslation } from "react-i18next"
+import { plural } from "../../services/translation"
+import i18n from "../../i18n"
 
 export default function Calendar(){
+    const {t} = useTranslation();
+    const lang = (i18n.resolvedLanguage || i18n.language || "fr").split("-")[0];
 
     const tomorrow = new Date();
     tomorrow.setDate(tomorrow.getDate() + 1);
@@ -43,14 +48,14 @@ export default function Calendar(){
         try {
             const today = new Date();
             const days = [];
-            const firstMonthName = today.toLocaleDateString('en-US', { month: 'long' });
+            const firstMonthName = today.toLocaleDateString(lang, { month: 'long' });
             setFirstMonth(firstMonthName);
 
             let lastMonthName;
             for (let i = 0; i < 7; i++) {
             const date = new Date(today);
             date.setDate(today.getDate() + i);
-            const currentMonth = date.toLocaleDateString('en-US', { month: 'long' });
+            const currentMonth = date.toLocaleDateString(lang , { month: 'long' });
             if (currentMonth !== firstMonthName) {
                 lastMonthName = currentMonth;
             }
@@ -120,7 +125,7 @@ export default function Calendar(){
             setCreneauOfSelectedDate(() => {
                 const temp = {};
                 // console.log(allCreneaux[next30Days[selectedDay].toLocaleDateString('fr-CA')])
-                allCreneaux[selectedDate.toLocaleDateString('fr-CA')] && allCreneaux[selectedDate.toLocaleDateString('fr-CA')].forEach((slot) => {
+                allCreneaux[selectedDate.toLocaleDateString(lang)] && allCreneaux[selectedDate.toLocaleDateString(lang)].forEach((slot) => {
                     // console.log(slot);
                     const key = `${slot.start_hour}-${slot.end_hour}`
                     if(!temp[key]) temp[key]= [];
@@ -138,7 +143,7 @@ export default function Calendar(){
 
 
     const getDateWithMaj = (date) => {
-        const dateLabel = date.toLocaleDateString("fr-FR", {
+        const dateLabel = date.toLocaleDateString(lang, {
             weekday: "long",
             day: "numeric",
             month: "long", 
@@ -211,7 +216,7 @@ export default function Calendar(){
             </div>
             <div className="AllReservationList">
                 <div className="barToScroll"></div>
-                <p className="t3">Reservations</p>
+                <p className="t3">{t("Reservations")}</p>
                 <div className="row">
                     <p className="t4">{getDateWithMaj(selectedDate)}</p>
                     <div className="hline"></div>
@@ -266,6 +271,7 @@ export default function Calendar(){
                                                 }
 
 
+                                                console.error(slotsArray);
                                                 return (
                                                     <div className="AllReservationItem" key={timeRange}>
                                                         <div className="t6 Creneau">{slot_start_hour} - {slot_end_hour}</div>
@@ -290,12 +296,22 @@ export default function Calendar(){
                                                                         <img src={NiceIntro1} alt="reservation Offer image"/> */}
                                                                     </div>
                                                                     <div className="column">
-                                                                        <p className="t6">ref : #{slot.offer_slug}</p>
+                                                                        <p className="t6">ref : #{slot.slot_id}</p>
                                                                         <p className="t4">{allOffers[slot.offer_slug].title}</p>
                                                                         <div className="hlinedashed"></div>
                                                                         <div className="column">
-                                                                            <p className="t5">Participant : {slot.total_reserved} {allOffers[slot.offer_slug].total_capacity - slot.total_reserved === 0 && "(COMPLET)"}</p>
-                                                                            <p className="t6">×2 adult&nbsp;&nbsp;×2 reduced</p>
+                                                                            <p className="t5">{t("Participants")} : {slot.total_reserved} {allOffers[slot.offer_slug].total_capacity - slot.total_reserved === 0 && t("Full_in_brackets")}</p>
+                                                                            <p className="t6">
+                                                                                {Number(slot?.nb_adult) > 0 && (
+                                                                                    <>×{Number(slot.nb_adult)} {t(plural(Number(slot.nb_adult), "adult", "adults"))}&nbsp;&nbsp;</>
+                                                                                )}
+                                                                                {Number(slot?.nb_child) > 0 && (
+                                                                                    <>×{Number(slot.nb_child)} {t(plural(Number(slot.nb_child), "child", "children"))}&nbsp;&nbsp;</>
+                                                                                )}
+                                                                                {Number(slot?.nb_infant) > 0 && (
+                                                                                    <>×{Number(slot.nb_infant)} {t(plural(Number(slot.nb_infant), "infant", "infants"))}</>
+                                                                                )}
+                                                                            </p>
                                                                         </div>
                                                                         {/* <div className="row">
                                                                             <div className="rowParticipant">
@@ -308,9 +324,9 @@ export default function Calendar(){
                                                                         </div> */}
                                                                         <div className="hlinedashed"></div>
                                                                         <div className="row">
-                                                                            <p className="t32">TOTAL</p>
+                                                                            <p className="t32">{t("TOTAL")}</p>
                                                                             <p className="t32">
-                                                                                {(slot.gross_amount_total).toLocaleString('fr-FR', { minimumFractionDigits: 2, maximumFractionDigits: 2 })} €
+                                                                                {(slot.gross_amount_total).toLocaleString(lang, { minimumFractionDigits: 2, maximumFractionDigits: 2 })} €
                                                                             </p>
                                                                         </div>
                                                                     </div>
@@ -323,12 +339,12 @@ export default function Calendar(){
                     )
                     :
                         <div className="NoCreneau">
-                            <p className="t32">Actuellement aucune réservations</p>
+                            <p className="t32">{t("Currently_no_reservations")}</p>
                             <p className="t6">
                                 {
                                     selectedDate < dateLimit ?
-                                    "Vous pouvez permettre aux clients de réserver jusqu’à 1 heure avant le début de l’activité. Grâce à cela capter les clients de dernière minutes"
-                                    : "Les voyageurs ne peuvent pas réserver une activité plus de 30 jours à l’avance."
+                                    t("You_can_allow_last_minute")
+                                    : t("Travelers_cannot_book_more_than_30_days")
                                 }
                             </p>
                             <button className="whiteButton" onClick={() => {
@@ -344,7 +360,7 @@ export default function Calendar(){
                                 })
                             }}>
                                 {/* <p className="t5">Mettre en avant mes offres</p> */}
-                                <p className="t5">Aujourd'hui</p>
+                                <p className="t5">{t("Today")}</p>
                             </button>
                         </div>
                     )

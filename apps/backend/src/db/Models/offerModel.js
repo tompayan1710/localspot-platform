@@ -310,9 +310,17 @@ ORDER BY ow.created_at DESC;
 //     ${whereClause};
 //   `, values)
 
-async function getOffersProvider(provider_id) {
+async function getOffersProvider(provider_id, lang) {
   console.log("🔍 Récupération des offres du provider", provider_id);
-  const result = await db.query('SELECT * FROM offers WHERE provider_id = $1 ORDER BY created_at DESC', [provider_id]);
+  const result = await db.query(
+    `SELECT 
+      *, 
+      COALESCE(o.title_i18n->>$2, o.title_i18n->>'fr') AS title
+    FROM offers o
+      WHERE provider_id = $1 
+    ORDER BY created_at DESC
+    `, 
+    [provider_id, lang]);
   return result.rows;
 }
 

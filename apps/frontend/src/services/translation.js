@@ -10,3 +10,20 @@ export function pickI18n(field, lang, fallback = "") {
 
 
 export function plural(n, sing, plur){return n === 1 ? sing : plur};
+
+
+// utils/formatDate.js
+export function formatDate(dateString, lang, options = {}) {
+  if (!dateString) return "";
+
+  const date = new Date(dateString);
+
+  return new Intl.DateTimeFormat(lang, {
+    year: "numeric",
+    month: "long",
+    day: "numeric",
+    // hour: "2-digit",
+    // minute: "2-digit",
+    ...options, // permet de personnaliser
+  }).format(date);
+}

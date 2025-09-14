@@ -4,7 +4,7 @@ import { useLocation, useNavigate } from "react-router-dom";
 
 import "./AddVersement.css"
 import { useContext, useEffect, useState } from "react";
-import { useSSR } from "react-i18next";
+import { useSSR, useTranslation } from "react-i18next";
 import IBANChecker from "./IBANChecker";
 import IBAN from "./IBAN/IBAN";
 import Spinner from "../../components/Spinner/Spinner";
@@ -12,6 +12,8 @@ import TestLoading from "../../components/Utils/TestLoading";
 
 export default function AddIBANForm() {
     const navigate = useNavigate();
+    const {t} = useTranslation();
+
     const location = useLocation();
     const { authState } = useContext(AuthContext);
 
@@ -85,13 +87,13 @@ export default function AddIBANForm() {
     return (
         <div className="AddVersement Iban">
             <GoBack nagigation={-1} scrollTo={""} text={"retour"} />
-            <p className="t3 bold">Veuillez saisir vos coordonnées bancaires</p>
+            <p className="t3 bold">{t("Enter_bank_details")}</p>
             <div className="bodyVersement">
             
                 <IBAN iban={iban} setIban={setIban} setIsValidRepeat={setIsValidRepeat} base={true}/>
                 
-                <p className="t4 bold">Code SWIFT/BIC</p>
-                <p className="t6" style={{paddingTop: "2px"}}>Facultatif pour les comptes européens (SEPA)</p>
+                <p className="t4 bold">{t("SWIFT_BIC_code")}</p>
+                <p className="t6" style={{paddingTop: "2px"}}>{t("Optional_for_European_accounts")}</p>
                 <input
                     name="Swift"
                     className="InputText"
@@ -102,7 +104,7 @@ export default function AddIBANForm() {
                         setSwift(cleaned);
                     }}
                 />
-                <p className="t6">Le code SWIFT (ou BIC) permet d’identifier votre établissement bancaire à l’international. Il comporte généralement 8 ou 11 caractères alphanumériques.</p>
+                <p className="t6">{t("SWIFT_explanation")}</p>
             </div>
             <button className="NavigateButton" onClick={handleSubmit}
                 disabled={!iban || !isValidRepeat}
@@ -110,7 +112,7 @@ export default function AddIBANForm() {
                 {
                     loading && <Spinner />
                 }
-                <p className={`${loading ? "disappear" : ""} t4`}>Ajouter</p>
+                <p className={`${loading ? "disappear" : ""} t4`}>{t("Add")}</p>
             </button>
 
             {/* <TestLoading setLoading={setLoading}/> */}

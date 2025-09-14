@@ -34,8 +34,10 @@ router.post("/send-email-invoice", async (req, res) => {
 router.post("/download-ticket", async (req, res) => {
   const {
     reservation_id,
-    date,
     title,
+    reservation_created_at,
+    reservation_created_at_hour,
+    start_date,
     start_hour,
     adresse,
     name,
@@ -48,18 +50,21 @@ router.post("/download-ticket", async (req, res) => {
     unit_price_adult,
     unit_price_child,
     unit_price_infant,
-    gross_amount
+    gross_amount,
+    labels 
   } = req.body;
 
   const reservation = {
     reservation_id,
-    date,
     title,
+    reservation_created_at,
+    reservation_created_at_hour,
+    start_date,
     start_hour,
     adresse,
     name,
     email,
-    phone,
+    phone, 
     reservation_status,
     nb_adult,
     nb_child,
@@ -67,7 +72,8 @@ router.post("/download-ticket", async (req, res) => {
     unit_price_adult,
     unit_price_child,
     unit_price_infant,
-    gross_amount
+    gross_amount,
+    labels 
   };
 
   try {

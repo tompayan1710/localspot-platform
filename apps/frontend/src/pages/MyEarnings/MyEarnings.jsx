@@ -16,8 +16,12 @@ import NoTransactions from "../../assets/images/NoTransactions.png"
 
 import FadeInImage from "../../components/Utils/FadeInImage";
 import EditVersement from "../../components/PopUpBottom/EditVersement/EditVersement";
+import { useTranslation } from "react-i18next";
 
 export default function MyEarnings() {
+  const {t, i18n} = useTranslation();
+  const lang = (i18n.resolvedLanguage || i18n.language || "fr").split("-")[0];
+
   const { authState } = useContext(AuthContext);
   const navigate = useNavigate();
   const location = useLocation();
@@ -93,12 +97,12 @@ export default function MyEarnings() {
     };
     
 
-  function groupTransactionsByMonth(transactions) {
+  function groupTransactionsByMonth(transactions, lang) {
     const groups = {};
 
     transactions.forEach((t) => {
       const date = new Date(t.created_at);
-      const monthYear = date.toLocaleString("fr-FR", { month: "long", year: "numeric" });
+      const monthYear = date.toLocaleString(lang, { month: "long", year: "numeric" });
 
       if (!groups[monthYear]) groups[monthYear] = [];
       groups[monthYear].push(t);
@@ -112,7 +116,7 @@ export default function MyEarnings() {
     const now = new Date();
     const monthlyData = [];
 
-    const formatter = new Intl.DateTimeFormat("fr-FR", {
+    const formatter = new Intl.DateTimeFormat(lang, {
       month: "short",
     });
 
@@ -137,25 +141,6 @@ export default function MyEarnings() {
     return monthlyData;
   }
 
-
-  // useEffect(() => {
-  //   if (authState.user?.provider_id) {
-  //     getTransactionHistory().then(data => {
-  //       if (data.success) {
-  //         const history = data.history || [];
-  //         setTransactions(history);
-
-          
-  //       }
-  //     });
-  //     setTimeout(() => {
-  //       setLoading(false);
-  //     }, 500)
-  //   }
-
-    
-  // }, [authState]);
-
   useEffect(() => {
     if (authState.user?.provider_id) {
       getTransactionHistory().then(data => {
@@ -176,12 +161,7 @@ export default function MyEarnings() {
 
       fetchIsWithdrawalMethod();
     }
-  },[ authState])
-
-  // useEffect(() => {
-  //   fetchVersements();
-  //   getTransactionHistory();
-  // }, [authState]);
+  },[ authState, lang])
 
     const fetchIsWithdrawalMethod = async () => {
         try {
@@ -224,8 +204,8 @@ export default function MyEarnings() {
 
   return (
     <div className="MyEarnings">
-      <p className="t32">Paiements</p>
-
+      <p className="t32">{t("Payments")}</p>
+      
       <MonthlyRevenueChart
         data={monthlyChartData.map(m => m.total)}
         labels={monthlyChartData.map(m => m.month)}
@@ -233,14 +213,6 @@ export default function MyEarnings() {
         solde={solde}
         loading={loading}
       />
-{/* const limitedHistory = fullHistory.slice(0, 9); */}
-      {/* <div className="NoVersementMethode">
-        <img src={warningRed} alt="warning red icon"/>
-        <div className="column">
-          <p className="t5">Ajouter un mode de versement</p>
-          <p className="t6">Ajouter mode de versement vous permet de recevoir vos gains.</p>
-        </div>
-      </div> */}
 
 
       {
@@ -248,14 +220,14 @@ export default function MyEarnings() {
         <>
         <button className="RetiredGainButton" onClick={() => navigate("/payout-request")}>
           <img src={ArrowDownRetired} alt="Arrow down retired"/>
-          <p className="t5">Retirer mes gains</p>
+          <p className="t5">{t("Withdraw_my_earnings")}</p>
         </button>
-        <p className="t6">À l’issue du virement, une attestation de virement vous sera envoyer par e-mail.</p>
+        <p className="t6">{t("Withdrawal_notice")}</p>
         </>
         : 
         <div className="VersementContainer column">
-          <p className="t4 bold">Recevoir mes paiements</p>
-          <p className="t6">Afin de recevoir vos gains, merci de renseigner un mode de versement valide.</p>
+          <p className="t4 bold">{t("Receive_my_payments")}</p>
+          <p className="t6">{t("Provide_withdrawal_method")}</p>
           <button className="AddVersementButton" onClick={() => {
             navigate("/versement/new/titulaire", {
               state: {
@@ -263,28 +235,28 @@ export default function MyEarnings() {
               }
             })
           }}>
-            <p className="t6">Configurer un compte de versement</p>
+            <p className="t6">{t("Configure_withdrawal_account")}</p>
           </button>
         </div>
       }
       <div className="hline15"></div>
       <div className="Transactions column" id={"Transactions"}>
         <div className="row">
-          <p className="t4">Historique</p>
+          <p className="t4">{t("History")}</p>
           <button className="SeeMoreHistorique row" onClick={() => {navigate("/all-history-transactions")}}>
-            <p className="t6">voir plus</p>
+            <p className="t6">{t("See_more")}</p>
           </button>
         </div>
         {
           !loading ?
           transactions.length > 0 ?
-          Object.entries(groupTransactionsByMonth(transactions.slice(0, 8))).map(([month, items]) => (
+          Object.entries(groupTransactionsByMonth(transactions.slice(0, 8), lang)).map(([month, items]) => (
             <div className="MonthSeparation column" key={month} style={{ marginTop: "5px", marginBottom: "8px" }}>
               <p className="t5" style={{ marginBottom: "6px" }}>{month.charAt(0).toUpperCase() + month.slice(1)}</p>
 
               {items.map((transaction, index) => {
                 const date = new Date(transaction.created_at);
-                const formattedDate = date.toLocaleString("fr-FR", {
+                const formattedDate = date.toLocaleString(lang, {
                   day: "2-digit",
                   month: "2-digit",
                   year: "numeric",
@@ -311,7 +283,8 @@ export default function MyEarnings() {
                         />
                       </div>
                       <div className="column">
-                        <p className="t5">{transaction.label}</p>
+                        <p className="t5">{transaction.type === "earning" ? t("Places_sold", {total_reserved: transaction.total_reserved, start_hour: transaction.start_hour, end_hour: transaction.end_hour}) : t("Withdrawal_via", {method: transaction.method})}</p>
+                        {/* CONCAT(total_reserved, ' places vendues - ', start_hour, ' à ', end_hour) as label, */}
                         <p className="t6">{formattedDate}</p>
                       </div>
                     </div>
@@ -319,7 +292,7 @@ export default function MyEarnings() {
                       <p className={`t5 ${transaction.type === "earning" ? "greenColor" : "orangeColor"}`}>
                         {transaction.type === "earning" ? "" : "-"}{transaction.amount}€
                       </p>
-                      <p className="t6">{transaction.type === "earning" ? "reçu" : "retrait"}</p>
+                      <p className="t6">{transaction.type === "earning" ? t("received") : t("withdrawal")}</p>
                     </div>
                   </div>
                 );
@@ -329,9 +302,9 @@ export default function MyEarnings() {
          :
           <div className="no-transactions column">
             {/* <img src={NoTransactions} alt="no transactions"/> */}
-            <p className="t5 bold">Actuellement aucune transactions</p>
+            <p className="t5 bold">{t("No_transactions_yet")}</p>
             <p className="t6">
-              Votre historique de transaction sera visible ici dès qu’une transaction aura été effectuée.
+              {t("No_transactions_message")}
             </p>
             <WhiteButton text={"Voir mes annonces"} onClick={() => {
               navigate("/annonces")

@@ -9,12 +9,17 @@ import { AuthContext } from "../../components/Auth/authContext/authContext";
 import React from "react";
 import { getOfferBySlug } from "../../services/offers";
 import WhiteButton from "../../components/Buttons/WhiteButton/WhiteButton";
+import { useTranslation } from "react-i18next"
+import { formatDate, plural } from "../../services/translation"
 
-export default function Reservations(){
+export default function Reservations(){ 
     const navigate = useNavigate();
-    const reservation_id = "IFJ3FF3SIA2"
     const { authState } = useContext(AuthContext);
     
+    const {t, i18n} = useTranslation();
+    const lang = (i18n.resolvedLanguage || i18n.language || "fr").split("-")[0];
+
+
     const [AllReservations, setAllReservations ] = useState({})
     const [ offers, setOffers ] = useState({});
     const [loading, setLoading] = useState(true);
@@ -69,7 +74,7 @@ export default function Reservations(){
                 for (const reservation of reservations) {
                     const slug = reservation.offer_slug;
                     if (!objectOffers[slug]) {
-                        const response = await getOfferBySlug(slug);
+                        const response = await getOfferBySlug(slug, lang);
                         objectOffers[slug] = response.offer;
                     }
                 }
@@ -96,7 +101,7 @@ export default function Reservations(){
 
     return (
         <div className="Reservations">
-            <p className="t32">Reservation</p>
+            <p className="t32">{t("Reservations")}</p>
             <div className="AllReservations">
                 {
                     (loading ? [["August 26, 2025", [1]]] 
@@ -106,9 +111,10 @@ export default function Reservations(){
                         console.error(date);
                         return (
                             <React.Fragment key={`${date}`}>
-                            <p className={`t6  ${loading ? "loadingDate shimmer" : ""}`}>{date}</p>
+                            <p className={`t6  ${loading ? "loadingDate shimmer" : ""}`}>{formatDate(date, lang)}</p>
                             {
                                 reservations.length > 0 ? reservations.map((reservation) => {
+                                const nb_participant = reservation.nb_adult + reservation.nb_child + reservation.nb_infant;
                                 return (
                                     <React.Fragment key={
                                         loading
@@ -119,24 +125,14 @@ export default function Reservations(){
                                         if(!loading) navigate(`/reservations/${reservation.reservation_id}`)
                                     }}>
                                         <div className="ImagesOffers">
-                                        {/* {
-                                            Array.from({ length: 2 }).map((_, index) => {
-                                                const imageOffer = allOffers[slot.offer_slug].image_urls[index]; 
-                                                return (
-                                                    imageOffer && */}
-                                                        {/* // <>
-                                                        // <p className="TESTINUMBER">{index}</p> */}
-                                                        <div className="ImageWrapper">
-                                                            {offers[reservation.offer_slug]?.image_urls[1] && 
-                                                                <FadeInImage src={offers[reservation.offer_slug]?.image_urls[1]} alt="offer imageReservation offer image"/>
-                                                            }
-                                                        </div>
-                                                        <div className="ImageWrapper">
-                                                            <FadeInImage src={offers[reservation.offer_slug]?.image_urls[0]} alt="offer imageReservation offer image"/>
-                                                        </div>
-                                                    {/* );
-                                                })
-                                            } */}
+                                            <div className="ImageWrapper">
+                                                {offers[reservation.offer_slug]?.image_urls[1] && 
+                                                    <FadeInImage src={offers[reservation.offer_slug]?.image_urls[1]} alt="offer imageReservation offer image"/>
+                                                }
+                                            </div>
+                                            <div className="ImageWrapper">
+                                                <FadeInImage src={offers[reservation.offer_slug]?.image_urls[0]} alt="offer imageReservation offer image"/>
+                                            </div>
                                         </div>
                                         <div className="column">
                                             <p className={`t4 maxLine maxLine1  ${loading ? "loadingTitle shimmer" : ""}`}>{loading ? "Excursion en bateau privé avec coucher de soleil à Saint-Jean" : offers[reservation.offer_slug]?.title}</p>
@@ -145,13 +141,13 @@ export default function Reservations(){
                                             {/* <p className="t6">07/11/2025 à 14:35</p> */}
                                             <div className="row">
                                                 <div className="column">
-                                                    <p className={`t6 nbparticipant ${loading ? "loading shimmer" : ""}`}>Participant : {loading ? "0" : reservation.total_places_used}</p>
+                                                    <p className={`t6 nbparticipant ${loading ? "loading shimmer" : ""}`}>{t(plural(nb_participant, "Participant", "Participants"))} : {loading ? "0" : nb_participant}</p>
 
                                                     {/* <p className="t6">Participant : {reservation.total_places_used ?? 0}</p> */}
                                                     <p className={`t6 ${loading ? "loading shimmer" : ""}`}>
                                                     {loading
                                                         ? "×2 adult ×1 child"
-                                                        : `×${reservation.nb_adult} adult ${reservation.nb_child ? `×${reservation.nb_child} child` : ""} ${reservation.nb_infant ? `×${reservation.nb_infant} infant` : ""}`
+                                                        : `×${reservation.nb_adult} ${t(plural(reservation.nb_adult, "adult", "adults"))} ${reservation.nb_child ? `×${reservation.nb_child} ${t(plural(reservation.nb_child, "child", "children"))}` : ""} ${reservation.nb_infant ? `×${reservation.nb_infant} ${t(plural(reservation.nb_infant, "infant", "infants"))}` : ""}`
                                                     }
                                                     </p>
                                                 </div>

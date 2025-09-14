@@ -2,12 +2,16 @@ import React from 'react';
 import ReactECharts from 'echarts-for-react';
 
 import "./MonthlyRevenueChart.css"
+import { useTranslation } from 'react-i18next';
 
 export default function MonthlyRevenueBarChart({ data = [], labels = [], solde, loading }) {
   // Placeholder data pour affichage initial
+  const {t, i18n} = useTranslation();
+  const lang = (i18n.resolvedLanguage || i18n.language || "fr").split("-")[0];
+
   const now = new Date();
   const placeholderLabels = [];
-  const formatter = new Intl.DateTimeFormat("fr-FR", {
+  const formatter = new Intl.DateTimeFormat(lang, {
     month: "short",
   });
 
@@ -20,13 +24,6 @@ export default function MonthlyRevenueBarChart({ data = [], labels = [], solde, 
   // const placeholderLabels = ['févr.', 'mars', 'avr.', 'mai', 'juin', 'juil.'];
 
   const option = {
-    // tooltip: {
-    //   trigger: 'axis',
-    //   formatter: (params) => {
-    //     const val = params[0].value.toFixed(2).replace('.', ',');
-    //     return `${params[0].axisValue}<br/>Revenus : $${val}`;
-    //   },
-    // },
     tooltip: {
       trigger: 'axis',
       backgroundColor: '#ffffff',
@@ -41,7 +38,7 @@ export default function MonthlyRevenueBarChart({ data = [], labels = [], solde, 
         return `
           <div style="color:#333; font-family: sans-serif;">
             <p style="font-size: 14px;">${axisValue}</p>
-            <span>Revenus : <strong>${formattedValue}€</strong></span>
+            <span>${t("Earnings_")} <strong>${formattedValue}€</strong></span>
           </div>
         `;
       },
@@ -98,7 +95,7 @@ export default function MonthlyRevenueBarChart({ data = [], labels = [], solde, 
   return (
     <div className='MonthlyChart'>
       <div>
-        <p className='t3 bold'>Gains disponibles :</p>
+        <p className='t3 bold'>{t("Available_earnings")}</p>
         {!loading ? (
           <p className='t3 GainsEuro'>
             {solde.toFixed(2).replace('.', ',')}€

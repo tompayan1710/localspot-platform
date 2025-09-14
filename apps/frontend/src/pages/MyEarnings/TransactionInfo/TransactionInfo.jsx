@@ -24,6 +24,8 @@ export default function TransactionInfo(){
     const { authState } = useContext(AuthContext);
 
     const { t, i18n } = useTranslation();
+      const lang = (i18n.resolvedLanguage || i18n.language || "fr").split("-")[0];
+      
     const navigate = useNavigate();
 
     console.warn(type, id);
@@ -41,7 +43,7 @@ export default function TransactionInfo(){
         }
          
         const response = await fetch(
-            `${process.env.REACT_APP_API_URL}/api/payment/transactions/get?id=${id}&provider_id=${provider_id}`, {
+            `${process.env.REACT_APP_API_URL}/api/payment/transactions/get?id=${id}&provider_id=${provider_id}&lang=${lang}`, {
                 method: "GET"
             }
         );
@@ -158,13 +160,13 @@ export default function TransactionInfo(){
 
     
     const statusLabelsEarning = {
-        full: "Complet",
-        available: "Places disponibles"
+        full: t("Full"),
+        available: t("Available")
     };
     const statusLabelsPayout = {
-        waiting: "En attente",
-        sent: "Envoyé",
-        failed: "Échoué"
+        waiting: t("Waiting"),
+        sent: t("Sent"),
+        failed: t("Failed")
     };
 
 
@@ -183,89 +185,89 @@ export default function TransactionInfo(){
         hour12: false,
     }).formatToParts(d).reduce((acc, p) => (acc[p.type] = p.value, acc), {});
 
-    return `${parts.day}/${parts.month}/${parts.year} à ${parts.hour}:${parts.minute}`;
+    return `${parts.day}/${parts.month}/${parts.year} ${t("at")} ${parts.hour}:${parts.minute}`;
     }
 
 
     return (
         <div className="TransactionInfo">
             {/* <TestLoading setLoading={setLoading}/> */}
-            <GoBack nagigation={"/my-earnings"} scrollTo={""} text={"retour"} /> 
+            <GoBack nagigation={"/my-earnings"} scrollTo={""} text={t("back")} /> 
             {
                 !loading ?
             
             
                 Object.keys(earning).length > 0 ?
                 <>
-            <p className="t4 bold">Encaissement</p>
+            <p className="t4 bold">{t("Earning")}</p>
             <div className="IconCarte">
                 <img src={EuroNavBlue} alt="Icon carte"/>
             </div>
             <p className="t4">{earning.offer_slug}</p>
             <p className="t4">REF-{earning.id}</p>
             <div className="TopInfo">
-                <p className="t6">Montant total encaissé</p>
+                <p className="t6">{t("Total_amount_received")}</p>
                 <p className="t1">{formatEuro(parseFloat(earning.net_amount_total))} €</p>
             </div>
 
             <div className="AllInfo">
                 <div className="row">
-                    <p className="t5 firstP">Encaissé le</p>
+                    <p className="t5 firstP">{t("Received_on")}</p>
                     <div className="row RowInfo">
                         <p className="t5">{formatDate(earning.created_at)}</p>
                     </div>
                 </div>                
                 <div className="hline"></div>
                 <div className="row">
-                    <p className="t5 firstP">Titre</p>
+                    <p className="t5 firstP">{t("Title")}</p>
                     <div className="row RowInfo">
-                        <p className="t5 maxLine">{earning.offer_title}</p>
+                        <p className="t5 maxLine">{earning.title}</p>
                     </div>
                 </div>
                 <div className="hline"></div>
                 <div className="row">
-                    <p className="t5 firstP">Durée</p>
+                    <p className="t5 firstP">{t("Duration")}</p>
                     <div className="row RowInfo">
                         <p className="t5">{earning.offer_duration}</p>
                     </div>
                 </div>
                 <div className="hline"></div>
                 <div className="row">
-                    <p className="t5 firstP">Adresse</p>
+                    <p className="t5 firstP">{t("Address")}</p>
                     <div className="row RowInfo">
                         <p className="t5">{earning.offer_address}</p>
                     </div>
                 </div>
                 <div className="hline"></div>
                 <div className="row">
-                    <p className="t5 firstP">Participants</p>
+                    <p className="t5 firstP">{t("Participants")}</p>
                     <div className="row RowInfo">
                         <p className="t5">{earning.total_reserved}</p>
                     </div>
                 </div>
                 <div className="hline"></div>
                 <div className="row">
-                    <p className="t5 firstP">Statut</p>
+                    <p className="t5 firstP">{t("Status")}</p>
                     <div className="row RowInfo">
                         <p className="t5">{statusLabelsEarning[earning.status] || earning.status}</p>
                     </div>
                 </div>
                 <div className="hline"></div>
                 <div className="row" style={{paddingBottom: "4px"}}>
-                    <p className="t5 firstP">Début</p>
+                    <p className="t5 firstP">{t("Start")}</p>
                     <div className="row RowInfo">
-                        <p className="t5">{formatDate(earning.date)} à {earning.start_hour}</p>
+                        <p className="t5">{formatDate(earning.date)} {t("at")} {earning.start_hour}</p>
                     </div>
                 </div>
                 <div className="row" style={{paddingTop: "4px"}}>
-                    <p className="t5 firstP">Fin</p>
+                    <p className="t5 firstP">{t("End")}</p>
                     <div className="row RowInfo">
-                        <p className="t5">{formatDate(earning.date)} à {earning.end_hour}</p>
+                        <p className="t5">{formatDate(earning.date)} {t("at")} {earning.end_hour}</p>
                     </div>
                 </div>
             </div>
             <div className="ParticipantRes">
-                <p className="t3">Participants</p>
+                <p className="t3">{t("Participants")}</p>
                 {
                     individuals.length>0 && individuals.map((individual, index) => {
                         return (
@@ -297,20 +299,20 @@ export default function TransactionInfo(){
                                         </div>
                                 }
                                 <div className="row InfoParticipantRes Separation">
-                                    <p className="t5 bold">Réservé par</p>
+                                    <p className="t5 bold">{t("Reserved_by")}</p>
                                     <p className="t5 bold">{individual?.name}</p>
                                 </div>
                                 <div className="row">
-                                    <p className="t6">Email</p>
+                                    <p className="t6">{t("Email")}</p>
                                     <p className="t6">{individual?.email}</p>
                                 </div>
                                 <div className="row">
-                                    <p className="t6">Phone</p>
+                                    <p className="t6">{t("Phone")}</p>
                                     <p className="t6">{individual?.phone}</p>
                                 </div>
                                 <div className="row">
                                     <p className="t6"></p>
-                                    <button className="seeRes" onClick={() => {navigate(`/reservations/${individual?.id}`)}}><p className="t6">see reservation</p></button>
+                                    <button className="seeRes" onClick={() => {navigate(`/reservations/${individual?.id}`)}}><p className="t6">{t("See_reservation")}</p></button>
                                 </div>
 
                                 {
@@ -325,49 +327,49 @@ export default function TransactionInfo(){
             </div>
             <div className="bottomInfo column">
                 <div className="row">
-                    <p className="t6 bold">Montant Total</p>
+                    <p className="t6 bold">{t("Total_amount")}</p>
                     <p className="t6">EUR {formatEuro(parseFloat(earning.gross_amount_total))}</p>
                 </div>
                 <div className="row">
-                    <p className="t6 bold">Commission hôtel</p>
+                    <p className="t6 bold">{t("Hotel_commission")}</p>
                     <p className="t6">EUR {formatEuro(parseFloat(earning.hotel_commission_total))}</p>
                 </div>
                 <div className="row">
-                    <p className="t6 bold">Commission Viarte</p>
+                    <p className="t6 bold">{t("Platform_commission")}</p>
                     <p className="t6">EUR {formatEuro(parseFloat(earning.platform_commission_total))}</p>
                 </div>
                 <div className="row">
-                    <p className="t5 bold">Total</p>
+                    <p className="t5 bold">{t("Total")}</p>
                     <p className="t5 bold greenColor">EUR {formatEuro(parseFloat(earning.net_amount_total))}</p>
                 </div>
             </div>
             </>
             :
             <>
-            <p className="t4 bold">Retrait</p>
+            <p className="t4 bold">{t("Withdrawal")}</p>
             <div className="IconCarte">
                 <img src={EuroNavBlue} alt="Icon carte"/>
             </div>
             {/* <p className="t4">{payout.id}</p> */}
             <p className="t4">REF-{payout.id}</p>
             <div className="TopInfo">
-                <p className="t6">Montant total du retrait</p>
+                <p className="t6">{t("Total_withdrawal_amount")}</p>
                 <p className="t1">{formatEuro(parseFloat(payout.amount))} €</p>
             </div>
 
             <div className="AllInfo">
                 <div className="row">
-                    <p className="t4 firstP">Émetteur</p>
+                    <p className="t4 firstP">{t("Sender")}</p>
                     <div className="row RowInfo">
                         <div className="IconWrapper">
                             <img src={BanckFin} alt="bank icon"/>
                         </div>
-                        <p className="t6 bold">COMPTE Viarte</p>
+                        <p className="t6 bold">{t("Viarte_account")}</p>
                     </div>
                 </div>
                 <div className="hline"></div>
                 <div className="row">
-                    <p className="t4 firstP">Bénéficiaire</p>
+                    <p className="t4 firstP">{t("Beneficiary")}</p>
                     <div className="row RowInfo">
                         <div className="IconWrapper">
                             <img src={BanckFin} alt="bank icon"/>
@@ -382,21 +384,21 @@ export default function TransactionInfo(){
                 </div>
                 <div className="hline"></div>
                 <div className="row">
-                    <p className="t5 firstP">Méthode</p>
+                    <p className="t5 firstP">{t("Method")}</p>
                     <div className="row RowInfo">
                         <p className="t5">{payout.method}</p>
                     </div>
                 </div> 
                 <div className="hline"></div>
                 <div className="row">
-                    <p className="t5 firstP">Émis le</p>
+                    <p className="t5 firstP">{t("Issued_on")}</p>
                     <div className="row RowInfo">
                         <p className="t5">{formatDate(payout.created_at)}</p>
                     </div>
                 </div> 
                 <div className="hline"></div>
                 <div className="row">
-                    <p className="t5 firstP">Statut</p>
+                    <p className="t5 firstP">{t("Status")}</p>
                     <div className="row RowInfo">
                         <p className="t5">{statusLabelsPayout[payout.status] || payout.status}</p>
                     </div>
@@ -406,7 +408,7 @@ export default function TransactionInfo(){
                     !payout.send_at == null &&
                     <>
                     <div className="row">
-                        <p className="t5 firstP">Envoyé le</p>
+                        <p className="t5 firstP">{t("Sent_on")}</p>
                         <div className="row RowInfo">
                             <p className="t5">{formatDate(payout.send_at)}</p>
                         </div>
@@ -415,13 +417,13 @@ export default function TransactionInfo(){
                     </>
                 }               
                 <div className="row" style={{paddingBottom: "4px"}}>
-                    <p className="t5 firstP">Nom</p>
+                    <p className="t5 firstP">{t("Last_name")}</p>
                     <div className="row RowInfo">
                         <p className="t5 maxLine">{payout.last_name}</p>
                     </div>
                 </div>
                 <div className="row" style={{paddingTop: "4px"}}>
-                    <p className="t5 firstP">Prénom</p>
+                    <p className="t5 firstP">{t("First_name")}</p>
                     <div className="row RowInfo">
                         <p className="t5">{payout.first_name}</p>
                     </div>
@@ -431,7 +433,7 @@ export default function TransactionInfo(){
                     payout.paypal_email &&
                     <>
                     <div className="row">
-                        <p className="t5 firstP">Email</p>
+                        <p className="t5 firstP">{t("Email")}</p>
                         <div className="row RowInfo">
                             <p className="t5">{payout.paypal_email}</p>
                         </div>
@@ -440,7 +442,7 @@ export default function TransactionInfo(){
                     </>
                 }
                 <div className="row">
-                    <p className="t5 firstP">Détails</p>
+                    <p className="t5 firstP">{t("Details")}</p>
                     <div className="row RowInfo">
                         <p className="t5">{payout.details}</p>
                     </div>
@@ -448,8 +450,8 @@ export default function TransactionInfo(){
             </div>
             <div className="bottomInfo column">
                 <div className="row">
-                    <p className="t5 bold">Versement de</p>
-                    <p className="t5 bold">EUR {formatEuro(parseFloat(payout.amount))}</p>
+                    <p className="t5 bold">{t("Payout_of")}</p>
+                    <p className="t5 bold greenColor">EUR {formatEuro(parseFloat(payout.amount))}</p>
                 </div>
             </div>
 
@@ -565,17 +567,17 @@ export default function TransactionInfo(){
 
             <div className="EndContainer">
                 <div className="row learnMoreContainer">
-                    <p className="t6">Vos transactions en toute sérénité.</p>
+                    <p className="t6">{t("Your_transactions_are_safe")}</p>
                     <button className="row learnMore" onClick={() => {
                         navigate("/payment-policy")
                     }}>
-                        <p className="t6 bold">En savoir plus</p>
+                        <p className="t6 bold">{t("Learn_more")}</p>
                         <img src={ArrowLearnMore} alt="Arrow learn more"/>
                     </button>
                 </div>
                 <div className="row secured">
                     <img className="" src={privacy} alt="privacy"/>
-                    <p className="t6">Sécurisé par <strong>Viarte</strong></p>
+                    <p className="t6">{t("Secured_by")}<strong>Viarte</strong></p>
                 </div>
             </div>      
         </div>

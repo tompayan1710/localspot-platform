@@ -16,10 +16,11 @@ import PopUpBottom from "../../PopUpBottom"
 import CancelConfirmButton from "../../CancelConfirmButton/CancelConfirmButton"
 import PopUpConfirmDelete from "../../PopUpConfirmDelete/PopUpConfirmDelete"
 import TestLoading from "../../../Utils/TestLoading"
+import { useTranslation } from "react-i18next"
 
 export default function VersementList({setIsOccultView, editPopUp, deletePopUp, selectedVersement, setselectedVersement, versements, setVersements, selectionnable=true, origin}) {
     const navigate = useNavigate();
-
+    const {t} = useTranslation();
     const { authState } = useContext(AuthContext);
 
     const [loading, setLoading ] = useState(true);
@@ -42,6 +43,7 @@ export default function VersementList({setIsOccultView, editPopUp, deletePopUp, 
     const [modifieSwift, setModifieSwift] = useState("");  
     const [loadingModifie, setLoadingModifie] = useState(false);  
     const [loadingRequest, setLoadingRequest] = useState(false);  
+    const [selectedDelete, setSelectedDelete] = useState(0);  
 
     const [errorMessage, setErrorMessage] = useState("");  
 
@@ -130,7 +132,7 @@ export default function VersementList({setIsOccultView, editPopUp, deletePopUp, 
         setLoadingDelete(true);
 
         const provider_id = authState.user?.provider_id;
-        const iban = versements[selectedModifie]?.iban;
+        const iban = versements[selectedDelete]?.iban;
 
         if (!provider_id || !iban) return;
 
@@ -254,7 +256,7 @@ export default function VersementList({setIsOccultView, editPopUp, deletePopUp, 
                                       setIsOccultView(true);
                                     }}>
                                       <FadeInImage src={editPenIcon} alt="edit pen icon"/>
-                                      <p className="t6">Modifier</p>
+                                      <p className="t6">{t("Edit")}</p>
                                     </button>
                                   </div>
                                 </div>
@@ -267,10 +269,11 @@ export default function VersementList({setIsOccultView, editPopUp, deletePopUp, 
                                     } 
                                     <button className="DeleteVersement" onClick={(e) => {
                                         e.stopPropagation();
+                                        setSelectedDelete(index);
                                         deletePopUp.current.classList.add("open");
                                         setIsOccultView(true);
                                     }}>
-                                        <p className="t6 redColor">supprimer</p>
+                                        <p className="t6 redColor">{t("delete")}</p>
                                     </button>
                                 </div>
                             
@@ -281,8 +284,8 @@ export default function VersementList({setIsOccultView, editPopUp, deletePopUp, 
                           <div className="NoVersementMethode">
                             <img src={warningRed} alt="warning red icon"/>
                             <div className="column">
-                              <p className="t5 bold">Ajouter un mode de versement</p>
-                          <p className="t6">Ajouter mode de versement vous permet de recevoir vos gains.</p>
+                              <p className="t5 bold">{t("Add_a_payout_method")}</p>
+                          <p className="t6">{t("Add_a_payout_method_description")}</p>
                         {/* <button>
                           <p className="t6">Configurer les versements</p>
                         </button> */}
@@ -299,14 +302,8 @@ export default function VersementList({setIsOccultView, editPopUp, deletePopUp, 
                 })
               }}>
                 <img src={ArrowTopRight} alt="Arrow top right icon"/>
-                <p className="t6">Ajouter un mode de versement</p>
+                <p className="t6">{t("Add_a_payout_method")}</p>
             </button>
-
-            {/* <button onClick={() => {
-                setLoadingModifie((prev) => !prev);
-            }}>
-                <p className="t4 fixedTop">handle</p>
-            </button> */}
 
             <EditVersement
                 editPopUp={editPopUp} // ✅ passe-le ici

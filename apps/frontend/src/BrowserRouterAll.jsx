@@ -101,7 +101,8 @@ export default function BrowserRouterAll(){
         "/all-history-transactions",
         "/payout-request",
         "/transaction-info",
-        "/payment-policy"
+        "/payment-policy",
+        "/not-found"
     ];
     
     //offer-page/b2f3a4ae-6cc4-4353-824e-65de72035d68/availibility
@@ -109,12 +110,12 @@ export default function BrowserRouterAll(){
     /^\/offer-page\/[^\/]+\/availibility$/,  // regex pour offer-page/:slug/availibility
     /^\/offer-page\/[^\/]+\/payment$/, 
     /^\/offer-page\/[^\/]+\/add-info$/, 
+    /^\/offer-page\/[^\/]+\/add-comment$/, 
     /^\/annonces\/[^\/]+\/availability-editor$/, 
     /^\/annonces\/[^\/]+\/confirm-creation$/,
     /^\/annonces\/[^\/]+\/edit-infos$/,
     /^\/annonces\/[^\/]+\/edit-photos$/,
     /^\/reservations\/[^\/]+$/,
-    /^\/offer-page\/[^\/]+\/add-comment$/,
     /^\/versement\/.*/,
     ];
 
@@ -212,7 +213,9 @@ export default function BrowserRouterAll(){
             <Route path="/payment-policy" element={<PaymentPolicy />} />
 
             {/* FIN : catch-all pour tout le reste → 404 client-side */}
-            <Route path="*" element={<NotFound />} />
+            <Route path="*" element={<Navigate to="/not-found" replace />} />
+            <Route path="/not-found" element={<NotFound />} />
+
         </Routes>
         </>
     )

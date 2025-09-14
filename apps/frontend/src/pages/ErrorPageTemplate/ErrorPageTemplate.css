@@ -1,0 +1,26 @@
+.ErrorPage{
+    /* background-color: red; */
+    width: 100%;
+    height: 100%;
+    flex: 1 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.ErrorPage p{
+    text-align: center;
+}
+
+.ErrorPage .BodyError{
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 20px;
+    width: 80%;
+    max-width: 350px;
+    gap: 3px;
+}
+.ErrorPage .whiteButton{
+    margin-bottom: 20px;
+}

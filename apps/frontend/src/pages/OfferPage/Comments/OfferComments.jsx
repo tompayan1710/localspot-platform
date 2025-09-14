@@ -10,9 +10,12 @@ import "./OfferComments.css"
 import ReviewItem from "./ReviewItem";
 import Spinner from "../../../components/Spinner/Spinner";
 import { useTranslation } from "react-i18next";
+import { formatDate } from "../../../services/translation";
 
 export default function OfferComments({ offerSlug, children }) {
-  const {t} = useTranslation();
+  const {t, i18n} = useTranslation();
+  const lang = (i18n.resolvedLanguage || i18n.language || "fr").split("-")[0];
+
   const [comments, setComments] = useState([]);
   const [loading, setLoading] = useState(true);
 
@@ -49,7 +52,7 @@ export default function OfferComments({ offerSlug, children }) {
     async function fetchComments() {
       try {
         const response = await fetch(
-          `${process.env.REACT_APP_API_URL}/api/comments/getall?slug=${offerSlug}`
+          `${process.env.REACT_APP_API_URL}/api/comments/getall?slug=${offerSlug}&lang=${lang}`
         );
         const data = await response.json();
 
@@ -67,7 +70,7 @@ export default function OfferComments({ offerSlug, children }) {
     }
 
     fetchComments();
-  }, [offerSlug]);
+  }, [offerSlug, lang]);
 
   useEffect(() => {
     console.warn(comments);
@@ -99,6 +102,8 @@ export default function OfferComments({ offerSlug, children }) {
   // étoiles vides
   const emptyStars = 5 - fullStars - (hasHalfStar ? 1 : 0);
 
+
+  
   return (
         <div className="ClientReviewContainer"> 
             {
@@ -167,11 +172,7 @@ export default function OfferComments({ offerSlug, children }) {
                     comment={comment.comment}
                     rating={comment.rating}
                     date={
-                        new Date(comment.created_at).toLocaleDateString("fr-FR", {
-                            year: "numeric",
-                            month: "long",
-                            day: "numeric"
-                        })
+                      formatDate(comment.created_at, lang)
                     }
                     readMoreIsEnable={readMoreIsEnable}
                     setReadMoreIsEnable={setReadMoreIsEnable}

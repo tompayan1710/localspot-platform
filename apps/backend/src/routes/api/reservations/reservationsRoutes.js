@@ -78,12 +78,31 @@ router.post("/getnextXdays", async (req, res) => {
 
     console.log( today.toLocaleDateString('fr-CA'), in7Days.toLocaleDateString("fr-CA"))
     const result  = await pool.query(`
-      SELECT * FROM reservation_slots
-      WHERE provider_id = $1
-      AND date BETWEEN $2 AND $3
-      ORDER BY date ASC, start_hour ASC
+      SELECT 
+      
+        rslt.id AS slot_id,
+        rslt.date,
+        rslt.start_hour,
+        rslt.end_hour,
+        rslt.offer_slug,
+        rslt.total_reserved,
+        rslt.gross_amount_total,
+        rslt.net_amount_total,
+        rslt.platform_commission_total,
+        rslt.hotel_commission_total,
+        COALESCE(SUM(rsi.nb_adult), 0)  AS nb_adult,
+        COALESCE(SUM(rsi.nb_child), 0)  AS nb_child,
+        COALESCE(SUM(rsi.nb_infant), 0) AS nb_infant
+      FROM reservation_slots rslt
+      LEFT JOIN reservations_individuals rsi 
+        ON rslt.id = rsi.slot_id
+      WHERE rslt.provider_id = $1
+        AND rslt.date BETWEEN $2 AND $3
+      GROUP BY rslt.id
+      ORDER BY rslt.date ASC, rslt.start_hour ASC;
     `, [provider_id, today.toLocaleDateString('fr-CA'), in7Days.toLocaleDateString("fr-CA")]);
 
+    
     const slots = result.rows;
     const grouped = {};
 

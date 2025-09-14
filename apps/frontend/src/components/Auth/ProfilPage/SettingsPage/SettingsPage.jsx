@@ -9,9 +9,11 @@ import Pin from "../../../../assets/images/Pin (3).png"
 import Document from "../../../../assets/images/Document.png"
 import { deleteAccount } from "../../../../services/auth";
 import { motion, AnimatePresence } from "framer-motion";
+import { useTranslation } from "react-i18next";
 
 export default function SettingsPage(){
     const navigate = useNavigate();
+    const {t} = useTranslation();
 
    const [isPopupOpen, setIsPopupOpen] = useState(false);
 
@@ -30,17 +32,17 @@ export default function SettingsPage(){
     }
 
     return(
-      <>
+      <> 
         <div className='SettingsPageContainer'>
-          <GoBack nagigation={"/profile"} text={"revenir"}/>
-          <p className="t2">Settings</p> 
+          <GoBack nagigation={"/profile"} text={t("return")}/>
+          <p className="t2">{t("Settings")}</p> 
           <div className="SettingsListContainer">
-            <p className="t4">General</p>
+            <p className="t4">{t("General")}</p>
             <div className="SettingsBox">
               <div className="SettingsRow row" onClick={() => navigate("notification")}>
                 <div className="RowFirst row">
                   <img src={NotificationLine} alt="notifications icon"/>
-                  <p className="t4">Notifications</p>
+                  <p className="t4">{t("Notifications")}</p>
                 </div>
                 <img src={arrowRight} alt="arrow right"/>
               </div>
@@ -54,12 +56,12 @@ export default function SettingsPage(){
                 <img src={arrowRight} alt="arrow right"/>
               </div>
             </div> */}
-            <p className="t4">Documents</p>
-            <div className="SettingsBox" onClick={() => navigate("/terms-of-service")}>
-              <div className="SettingsRow row">
+            <p className="t4">{t("Documents")}</p>
+            <div className="SettingsBox">
+              <div className="SettingsRow row" onClick={() => navigate("/terms-of-service")}>
                 <div className="RowFirst row">
                   <img src={Document} alt="Document icon"/>
-                  <p className="t4">Conditions générales</p>
+                  <p className="t4">{t("Terms_Of_Service")}</p>
                 </div>
                 <img src={arrowRight} alt="arrow right"/>
               </div>
@@ -67,7 +69,7 @@ export default function SettingsPage(){
               <div className="SettingsRow row">
                 <div className="RowFirst row" onClick={() => navigate("/privacy-policy")}>
                   <img src={Document} alt="Document icon"/>
-                  <p className="t4">Politique de confidentialité</p>
+                  <p className="t4">{t("Privacy_Policy")}</p>
                 </div>
                 <img src={arrowRight} alt="arrow right"/>
               </div>

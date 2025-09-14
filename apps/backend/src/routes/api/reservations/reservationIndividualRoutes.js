@@ -12,7 +12,33 @@ router.get("/getall", async (req, res) => {
   }
 
   try {
-      const query = `
+      // const query = `
+      //   SELECT
+      //     i.id              AS reservation_id,
+      //     i.user_id,
+      //     i.total_places_used,
+      //     i.gross_amount,
+      //     i.payment_status,
+      //     i.created_at      AS reservation_created_at,
+      //     i.nb_adult,
+      //     i.nb_child,
+      //     i.nb_infant,
+
+      //     s.id              AS slot_id,
+      //     s.date,
+      //     s.start_hour,
+      //     s.end_hour,
+      //     s.offer_slug,
+      //     s.status          AS slot_status,
+
+      //     COALESCE(c.comment_i18n->>$2, c.comment_i18n->>'fr') AS comment
+
+      //   FROM reservations_individuals AS i
+      //   JOIN reservation_slots AS s ON i.slot_id = s.id
+      //   WHERE i.user_id = $1
+      //   ORDER BY i.created_at DESC;
+      //   `
+    const query = `
         SELECT
           i.id              AS reservation_id,
           i.user_id,
@@ -24,12 +50,8 @@ router.get("/getall", async (req, res) => {
           i.nb_child,
           i.nb_infant,
 
-          s.id              AS slot_id,
-          s.date,
-          s.start_hour,
-          s.end_hour,
-          s.offer_slug,
-          s.status          AS slot_status
+          s.offer_slug
+
         FROM reservations_individuals AS i
         JOIN reservation_slots AS s ON i.slot_id = s.id
         WHERE i.user_id = $1
@@ -49,7 +71,7 @@ router.get("/getall", async (req, res) => {
 
 
 router.get("/get", async (req, res) => {
-  const { reservation_id } = req.query;
+  const { reservation_id, lang } = req.query;
 
   if (!reservation_id) {
     return res.status(400).json({ error: "reservation_id manquant." });
@@ -84,13 +106,14 @@ router.get("/get", async (req, res) => {
           s.status          AS slot_status,
 
           o.adresse,
-          o.title
+          COALESCE(o.title_i18n->>$2,       o.title_i18n->>'fr',       o.title)       AS title
+
         FROM reservations_individuals AS i
         JOIN reservation_slots AS s ON i.slot_id = s.id
         JOIN offers o ON o.slug = s.offer_slug
         WHERE i.id = $1
         `
-    const values = [reservation_id];
+    const values = [reservation_id, lang];
     const result = await pool.query(query, values);
 
     // C'est CETTE ligne qui manque dans ton code :

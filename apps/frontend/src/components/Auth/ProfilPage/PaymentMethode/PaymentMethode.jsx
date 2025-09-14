@@ -13,8 +13,10 @@ import { useLocation, useNavigate } from "react-router-dom";
 import GoBack from "../../../GoBack/GoBack";
 import EditVersement from "../../../PopUpBottom/EditVersement/EditVersement";
 import VersementList from "../../../PopUpBottom/EditVersement/VersementList/VersementList";
+import { useTranslation } from "react-i18next";
 
 export default function PaymentMethode() {
+  const {t} = useTranslation();
   const [isOccultView, setIsOccultView] = useState(false);
   const [versements, setVersements] = useState([]);
   const [selectedVersement, setselectedVersement] = useState(0);
@@ -25,8 +27,8 @@ export default function PaymentMethode() {
 
   return (
     <div className="PaymentMethode">
-      <GoBack nagigation={"/profile"} text={"retour"}/>
-      <p className="t4">Methode de versements</p>
+      <GoBack nagigation={"/profile"} text={t("return")}/>
+      <p className="t4">{t("Payout_method")}</p>
       <VersementList setIsOccultView={setIsOccultView} editPopUp={editPopUp} deletePopUp={deletePopUp} selectedVersement={selectedVersement} setselectedVersement={setselectedVersement} versements={versements} setVersements={setVersements} selectionnable={false} origin={"/payment-methode"}/>
 
 

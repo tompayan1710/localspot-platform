@@ -27,21 +27,25 @@
     max-width: 350px;
 }
 .ReservationsElement .FactureContainer .LogoHead{
-    background: var(--lineargradientblack);
+    /* background: var(--lineargradientblack); */
     height: 80px;
     width: 100%;
     justify-content: space-between;
     padding: 0 30px;
-    padding-right: 25px;
+    padding-right: 18px;
+    padding-left: 15px;
     border-top-left-radius: 10px;
     border-top-right-radius: 10px;
+    border: 1px solid var(--greysemidark);
+    border-bottom: none;
 }
 .ReservationsElement .FactureContainer .LogoHead>img{
     height: 50px;
     width: 50px;
+    border-radius: 5px;
 }
 .ReservationsElement .FactureContainer .LogoHead>p{
-    color: white;
+    /* color: white; */
 }
 
 .ReservationsElement .FactureBody{
@@ -94,7 +98,7 @@
     justify-content: space-between;
     align-items: start;
     padding: 0 20px;
-    gap: 20px;
+    gap: 10px;
 }
 .ReservationsElement .FactureBody>.row>p:last-of-type{
     text-align: end;

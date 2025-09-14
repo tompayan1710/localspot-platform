@@ -10,13 +10,15 @@
 import { useEffect, useContext, useState } from "react";
 import { AuthContext } from "../../../authContext/authContext"
 import Spinner from "../../../../Spinner/Spinner";
+import { useTranslation } from "react-i18next";
 
 
 
 
     export default function NotificationSettings(){
         const navigate = useNavigate();
-        
+        const {t} = useTranslation();
+
         const { authState, updateUser } = useContext(AuthContext);
 
         console.log(authState)
@@ -109,16 +111,16 @@ import Spinner from "../../../../Spinner/Spinner";
         
         return(
             <div className="NotificationPage">
-                <GoBack nagigation={"/settings"} text={"revenir"}/>
-                <p className="t4">Email</p>
+                <GoBack nagigation={"/settings"} text={t("return")}/>
+                <p className="t4">{t("Email")}</p>
                 <div className="SettingsBox">
                     <div className="SettingsRow row">
                         <div className="RowFirst row">
                         <img src={Warning} alt="Warning icon"/>
                         <div className="column">
-                            <p className="t5 bold">Emails de réservation</p>
+                            <p className="t5 bold">{t("Reservation_emails")}</p>
                             <p className="t6">
-                                    Recevez automatiquement les détails de vos réservations&nbsp;: horaires, tickets, contacts et informations pratiques.
+                                    {t("Reservation_emails_description")}
                             </p>
                         </div>
                         </div>
@@ -139,9 +141,9 @@ import Spinner from "../../../../Spinner/Spinner";
                         <div className="RowFirst row">
                         <img src={Event} alt="Event icon"/>
                         <div className="column">
-                            <p className="t5 bold">Suggestions d'activités</p>
+                            <p className="t5 bold">{t("Suggestions_for_activities")}</p>
                             <p className="t6">
-                                Profitez d’offres recommandées spécialement pour vous, en fonction de votre destination et du moment de votre séjour.
+                                {t("Suggestions_for_activities_description")}
                             </p>
                         </div>
                         </div>
@@ -158,7 +160,7 @@ import Spinner from "../../../../Spinner/Spinner";
                         </button>
                     </div>  
                 </div>
-                <button type="submit" className="SaveButton" onClick={handleSubmit}><img src={SaveIconFillWhite}/><p>Enregistrer</p></button>
+                <button type="submit" className="SaveButton" onClick={handleSubmit}><img src={SaveIconFillWhite}/><p>{t("Save")}</p></button>
             </div>
         )
     }

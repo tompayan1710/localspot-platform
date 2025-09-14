@@ -1,19 +1,21 @@
 
 .ModifieVersement{
-    margin-bottom: 30px;
+    margin-bottom: 20px;
     margin-top: 20px;
 }
 .ModifieVersement>.row{
     gap: 10px;
 }
 .ModifieVersement input {
-    margin-bottom: 20px;
+    margin-bottom: 10px;
     /* letter-spacing: 2px; */
 }
 .ModifieVersement>p:last-of-type{
     color: var(--greymiddledark);
     text-align: center;
-    width: 90%;
+    margin-top: 30px;
+    /* width: 90%; */
+    
 }
 
 

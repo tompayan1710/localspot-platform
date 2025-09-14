@@ -20,7 +20,9 @@ router.get("/getall-by-provider", async (req, res) => {
     const earnings = await pool.query(
       `SELECT created_at, 'earning' as type, 
               (net_amount_total)::numeric as amount, 
-              CONCAT(total_reserved, ' places vendues - ', start_hour, ' à ', end_hour) as label,
+              total_reserved,
+              start_hour,
+              end_hour,
               id
        FROM reservation_slots 
        WHERE provider_id = $1`,
@@ -35,8 +37,8 @@ router.get("/getall-by-provider", async (req, res) => {
     const payouts = await pool.query(
       `SELECT created_at, 'payout' as type, 
               amount,
+              method,
               status,
-              CONCAT('Retrait via ', method) as label ,
               id
        FROM withdrawals 
        WHERE provider_id = $1`,
@@ -69,7 +71,7 @@ router.get("/getall-by-provider", async (req, res) => {
 
 
 router.get("/get", async (req, res) => {
-  const { id, provider_id } = req.query;
+  const { id, provider_id, lang } = req.query;
 
   if (!id || !provider_id) {
     return res.status(400).json({ error: "/transaction/get : id ou provider_id manquant" });
@@ -77,14 +79,14 @@ router.get("/get", async (req, res) => {
 
   try {
     const earning = await pool.query(
-      `SELECT r.*,         
-        o.title                      AS offer_title,
+      `SELECT r.*,     
+        COALESCE(o.title_i18n->>$3,       o.title_i18n->>'fr')       AS title,    
         o.duration                   AS offer_duration,
         o.adresse                    AS offer_address
        FROM reservation_slots r
        JOIN offers o ON o.slug = r.offer_slug
        WHERE r.id = $1 AND r.provider_id = $2`,
-      [id, provider_id]
+      [id, provider_id, lang]
     );
 
     if(earning.rowCount <= 0 ){

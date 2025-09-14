@@ -661,6 +661,7 @@
               {/* <div className="MargeBottom"></div> */}
               
               <div className={"cancelline"}></div>
+              {/*
               <button id="CancellationPolicy" onClick={() => {
                 // CancelBottomRef.current.style.bottom = "0px";
                 PopUpBottomRef.current.classList.add("open")
@@ -672,7 +673,7 @@
                 </div>
                 <img src={arrowRight} alt="arrow right icon"/>
               </button>
-              <div className={"cancelline"}></div>
+              <div className={"cancelline"}></div> */}
 
               <div className="ParticipantSelectContainer" onClick={() => {
                 // ParticipantBottomRef.current.style.bottom = "0px";
@@ -680,9 +681,9 @@
                 setIsOccultView(true);
               }}>
                 <div>
-                  <p className="t4">Select participants</p>
+                  <p className="t4">{t("Select_participants")}</p>
                   <div className="row">
-                    <p className="t5">Participants :</p> 
+                    <p className="t5">{t("Participants")} :</p> 
                     <p className="t5">{ participantAdult + participantChild + participantInfant}</p>
                   </div>
                   <p className="t6">
@@ -714,7 +715,7 @@
 
             <div className="ReserveContainer" ref={ReserveButtonRef}>
               <div className="ReserveInfoCon">
-                <p className="t5" style={{fontWeight: "900"}}>À partir de&nbsp;
+                <p className="t5" style={{fontWeight: "900"}}>{t("Starting_at")}&nbsp;
                   {new Intl.NumberFormat('fr-FR', {
                     style: 'currency',
                     currency: 'EUR',
@@ -723,7 +724,7 @@
                   }).format(pricing.adult?.price || pricing.child?.price || pricing.infant?.price)}
                 </p>
                 {/* <p className="t6">par {offer.priceper}</p> */}
-                <p className="t6">par personne</p>
+                <p className="t6">{t("per_person")}</p>
               </div>
               <button className="ReserveButton" onClick={() => {
                 navigate(`/offer-page/${slug}/availibility`, {
@@ -741,7 +742,15 @@
                     id_hote: id_hote,
                   }
                 })
-              }}>Voir les<br></br>disponnibilités</button>
+              }}>
+                
+              {t("See_availability").split(" ").map((word, i, arr) =>
+                i === arr.length - 1 
+                  ? <React.Fragment key={i}><br />{word}</React.Fragment> 
+                  : word + " "
+              )}
+
+              </button>
             </div>
 
 

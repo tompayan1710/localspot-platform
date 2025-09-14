@@ -7,16 +7,20 @@ import plus from "../../assets/images/plus.png"
 import Pin from "../../assets/images/Pin (3).png"
 import CahierTexte from "../../components/CahierTexte/CahierTexte";
 import FadeInImage from "../../components/Utils/FadeInImage";
+import { useTranslation } from "react-i18next";
 
 export default function AllAnnoncesPage(){
+    const {t, i18n} = useTranslation();
+    const lang = (i18n.resolvedLanguage || i18n.language || "fr").split("-")[0];
+
     const navigate = useNavigate();
     const { authState, logout } = useContext(AuthContext);
     const [providerOffers, setProviderOffers] = useState([]);
     const [loading, setLoading] = useState(true);
     
 
-    const getOfferOfProvider = async (provider_id) => {
-        const data = await getOffersProvider(provider_id);
+    const getOfferOfProvider = async (provider_id, lang) => {
+        const data = await getOffersProvider(provider_id, lang);
         if(data.success){        
         console.warn(data.offers);
         setProviderOffers(data.offers);
@@ -35,7 +39,7 @@ export default function AllAnnoncesPage(){
         }
 
         if (authState.user?.provider_id && authState.user?.provider?.is_validated) {
-        getOfferOfProvider(authState.user.provider_id);
+        getOfferOfProvider(authState.user.provider_id, lang);
         }  
     }, [authState.loading, authState.isAuth, navigate]); // ✅ Suivre loading et isAuth
 
@@ -45,7 +49,7 @@ export default function AllAnnoncesPage(){
             {/* <div className="StatistiqueAnnonces"></div> */}
             {/* <CahierTexte /> */}
             <div className="row">
-                <p className="t32">Mes annonces :</p>
+                <p className="t32">{t("My_listings")}</p>
                 <button onClick={() => {
                     navigate("/create-offer", {
                         state: {
@@ -71,13 +75,13 @@ export default function AllAnnoncesPage(){
                                 <img src={Pin} alt="Pin adresse"/>
                                 <p className="t6 maxLine">{offer.adresse}</p>
                             </div>
-                            <p className="t6 maxLine">{offer.price}€ par personne</p>
+                            <p className="t6 maxLine">{offer.price}€ {t("per_person")}</p>
                         </div> 
                     </button>
                     )) : 
                     <div className="noOffer">
-                        <p className="t32">Actuellement aucune réservations</p>
-                        <p className="t6">Aucune offre actuellement</p>
+                        {/* <p className="t32">Actuellement aucune réservations</p> */}
+                        <p className="t6">{t("No_offers")}</p>
                         <button className="blackButton" onClick={() => {
                             navigate("/create-offer", {
                                 state: {
@@ -86,7 +90,7 @@ export default function AllAnnoncesPage(){
                             })
                         }}>
                         {/* <p className="t5">Mettre en avant mes offres</p> */}
-                        <p className="t5">Ajouter une annonces</p>
+                        <p className="t5">{t("Add_a_listing")}</p>
                         </button>
                     </div>
                 } 

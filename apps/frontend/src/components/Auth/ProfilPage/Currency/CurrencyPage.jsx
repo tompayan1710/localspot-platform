@@ -1,13 +1,15 @@
+import { useTranslation } from "react-i18next";
 import GoBack from "../../../GoBack/GoBack";
 import "./CurrencyPage.css"
 
 export default function CurrencyPage(){
+    const {t} = useTranslation();
     return(
         <div className="CurrencyPage">
-            <GoBack nagigation={"/profile"} text={"revenir"}/>
+            <GoBack nagigation={"/profile"} text={t("return")}/>
             <div className="CurrencyContainer">
                 <p className="t5">
-                    L’euro (€) est actuellement la seule devise acceptée pour les paiements. Le support d'autres devises sera bientôt disponible.
+                    {t("Only_euro_text")}
                 </p>
             </div>
         </div>
