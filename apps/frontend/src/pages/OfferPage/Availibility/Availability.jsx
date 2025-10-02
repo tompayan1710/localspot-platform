@@ -338,7 +338,7 @@
         console.log(location.state);
         const hasAnyPricing = Boolean(location.state?.pricing?.adult || location.state?.pricing?.child || location.state?.pricing?.infant);
         if (!location.state || !hasAnyPricing) {
-          console.warn("❌ Aucun state ou price reçu !");
+          console.error("❌ Aucun state ou price reçu !");
           navigate(`/offer-page/${slug}`);
         }
         const fetchData = async () => {
@@ -431,14 +431,14 @@
       return (
         <div className="AvailabilityContainer">
           <div className="TopDivOpacity"></div>
-          <GoBack nagigation={`/offer-page/${slug}`} scrollTo={""} text={"revenir"}/>
+          <GoBack nagigation={`/offer-page/${slug}`} scrollTo={""} text={t("back")}/>
           <div className="TitleContainer">
             <p className="t32">{t("select_date_and_slot")}</p>
             <p className="t6">{t("select_date_and_slot_subtitle")}</p>
           </div>
           
           <div className="DayPickerContainer">
-            <div className="CalendarContainer">
+            <div className="CalendarContainer" style={{ "--today-label": `"${t("Today")}"` }}>
               {/* <p className="t5">Choisissez une date</p> */}
               <DayPicker
                 mode="single"

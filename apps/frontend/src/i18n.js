@@ -173,27 +173,6 @@ i18n
           not_specified: "not specified",
           Download_receipt: "Download receipt",
 
-          email_title_thank_you_for_order: "Thank you for your order",
-          email_subtitle_reservation_received: "We have successfully received your reservation",
-          email_hint_ticket_will_be_sent: "You will soon receive an email with your digital ticket",
-          email_section_order_details: "Order details",
-          email_label_reservation_number: "Reservation number",
-          email_label_date: "Date",
-          email_label_payment_method: "Payment method",
-          email_label_total: "TOTAL",
-          email_label_all_taxes_included: "All taxes included (VAT)",
-          email_section_reserved_activities: "Reserved activities:",
-          email_button_view_reservation: "View my reservation",
-          email_link_view_details: "View details",
-          email_section_client_details: "Customer details",
-          email_text_reservation_made_for: "This reservation was made under the name",
-          email_section_contact: "Contact",
-          email_footer_signature: "Viarte – Unforgettable local experiences.",
-          email_footer_legal_notice: "Legal notice",
-          email_footer_terms_conditions: "Terms and conditions of sale",
-          email_footer_privacy_policy: "Privacy policy",
-          email_footer_rights_reserved: "© 2025 Viarte. All rights reserved.",
-
 
           //Profile
           Personal_account: "Personal account",
@@ -437,6 +416,7 @@ i18n
 
           Total: "Total",
           Send: "Send",
+          See_also: "See also",
         },
       },
       fr: {
@@ -596,28 +576,6 @@ i18n
           not_specified: "non renseigné",
           Download_receipt: "Télécharger le reçu",
 
-          email_title_thank_you_for_order: "Merci pour votre commande",
-          email_subtitle_reservation_received: "Nous avons bien reçu votre réservation",
-          email_hint_ticket_will_be_sent: "Vous recevrez un email contenant votre ticket numérique",
-          email_section_order_details: "Détails de la commande",
-          email_label_reservation_number: "Numéro de réservation",
-          email_label_date: "Date",
-          email_label_payment_method: "Méthode de paiement",
-          email_label_total: "TOTAL",
-          email_label_all_taxes_included: "Toutes taxes comprises (TTC)",
-          email_section_reserved_activities: "Activités réservées :",
-          email_button_view_reservation: "Voir ma réservation",
-          email_link_view_details: "Voir les détails",
-          email_section_client_details: "Détails client",
-          email_text_reservation_made_for: "Cette réservation a été effectuée au nom de",
-          email_section_contact: "Contact",
-          email_footer_signature: "Viarte – Des expériences locales inoubliables.",
-          email_footer_legal_notice: "Mentions légales",
-          email_footer_terms_conditions: "Conditions Générales de Vente",
-          email_footer_privacy_policy: "Politique de confidentialité",
-          email_footer_rights_reserved: "© 2025 Viarte. Tous droits réservés.",
-
-
 
 
 
@@ -757,8 +715,10 @@ i18n
           Waiting: "En attente",
           Sent: "Envoyé",
           Failed: "Échoué",
-
-
+          //all-history-transactions
+          History: "Historique",
+          Currently_no_transactions : "Actuellement aucune transactions",
+          Your_transaction_history_will_be_visible: "Your transaction history will be visible here as soon as a transaction has been completed",
 
           //Payout-Request
           Withdraw_my_earnings: "Retirer mes gains",
@@ -852,7 +812,7 @@ i18n
 
           Total: "Total",
           Send: "Envoyer",
-
+          See_also: "À voir aussi"
         },
       },
       it: {

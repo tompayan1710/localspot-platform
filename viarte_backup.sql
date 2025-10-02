@@ -131,11 +131,12 @@ ALTER SEQUENCE public.cities_id_seq OWNED BY public.cities.id;
 CREATE TABLE public.comments (
     id integer NOT NULL,
     user_id integer NOT NULL,
-    offer_slug text NOT NULL,
     reservation_id integer NOT NULL,
     comment text,
     created_at timestamp without time zone DEFAULT now(),
-    rating numeric(2,1)
+    rating numeric(2,1),
+    comment_i18n jsonb,
+    offer_slug text
 );
 
 
@@ -793,7 +794,8 @@ CREATE TABLE public.reservations_individuals (
     unit_price_child numeric(10,2),
     unit_price_infant numeric(10,2),
     nb_adult integer,
-    token_validate text
+    token_validate text,
+    comment_id integer
 );
 
 
@@ -1149,9 +1151,8 @@ COPY public.cities (id, name, department_id) FROM stdin;
 -- Data for Name: comments; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
-COPY public.comments (id, user_id, offer_slug, reservation_id, comment, created_at, rating) FROM stdin;
-1	64	49eda54a-a544-4fd6-91ce-9bcddcfaa20a	137	Expérience incroyable, je recommande fortement !	2025-09-08 14:14:18.455887	4.5
-2	64	49eda54a-a544-4fd6-91ce-9bcddcfaa20a	138	Encore mieux que ce que je pensai !	2025-09-08 14:31:31.185306	3.2
+COPY public.comments (id, user_id, reservation_id, comment, created_at, rating, comment_i18n, offer_slug) FROM stdin;
+13	64	137	Je teste le nombre d'étoile\n	2025-09-11 16:11:02.830986	5.0	{"en": "I test the number of stars\\n", "fr": "Je teste le nombre d'étoile\\n"}	49eda54a-a544-4fd6-91ce-9bcddcfaa20a
 \.
 
 
@@ -1366,6 +1367,7 @@ COPY public.refresh_tokens (id, user_id, refresh_token, expires_at, created_at) 
 302	64	eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6NjQsImVtYWlsIjoidGVzdEB0ZXN0LmNvbSIsImlhdCI6MTc1NDg0MDAyOSwiZXhwIjoxNzcwMzkyMDI5fQ.VEMRYZvYBPPBgeJ_PFp8uabkDrJazf6XoN3XYyjvG3o	2026-02-06 16:33:49.858	2025-08-10 15:06:17.366032
 318	64	eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6NjQsImVtYWlsIjoidGVzdEB0ZXN0LmNvbSIsImlhdCI6MTc1NjI3NzI2NiwiZXhwIjoxNzcxODI5MjY2fQ.JMykhF31OZpvqemYUeqjevB5XSNx7UZ-e8m2Tbbveqs	2026-02-23 07:47:46.377	2025-08-26 21:40:00.402232
 303	64	eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6NjQsImVtYWlsIjoidGVzdEB0ZXN0LmNvbSIsImlhdCI6MTc1NDg1MjExOCwiZXhwIjoxNzcwNDA0MTE4fQ.itgkuLSBvZUxqLwZ2rrapMN8Pz0VXnS6TZpb5V1sHIQ	2026-02-06 19:55:18.384	2025-08-10 18:46:36.427368
+332	64	eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6NjQsImVtYWlsIjoidGVzdEB0ZXN0LmNvbSIsImlhdCI6MTc1NzYxNTEyNCwiZXhwIjoxNzczMTY3MTI0fQ.PwYKmC9z63wfhGNAOD1MomsrhL22I-CnNQyC5d2710w	2026-03-10 19:25:24.237	2025-09-10 21:07:30.695821
 304	64	eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6NjQsImVtYWlsIjoidGVzdEB0ZXN0LmNvbSIsImlhdCI6MTc1NDg5NDE0NiwiZXhwIjoxNzcwNDQ2MTQ2fQ.-YB-cdyWi3J7RmydGWiPBHCpRnEBOdRbu6BB6_8wXe0	2026-02-07 07:35:46.104	2025-08-10 21:30:41.844863
 315	67	eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6NjcsImVtYWlsIjoidG9tcGF5YW4xNzEwQGdtYWlsLmNvbSIsImlhdCI6MTc1NjIzMzIxNywiZXhwIjoxNzcxNzg1MjE3fQ.90KcV5MtSCzPZEAFpq8VdoauY9qGP-8T7mjVIVqsWbs	2026-02-22 19:33:37.996	2025-08-26 16:55:11.628422
 323	64	eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6NjQsImVtYWlsIjoidGVzdEB0ZXN0LmNvbSIsImlhdCI6MTc1NjY2MTI4OCwiZXhwIjoxNzcyMjEzMjg4fQ.J8z16Nie7sGaLvXzZ65qU_KJfJ-WFpQqYA7MuXanZ-0	2026-02-27 18:28:08.974	2025-08-28 17:45:41.929799
@@ -1376,6 +1378,8 @@ COPY public.refresh_tokens (id, user_id, refresh_token, expires_at, created_at) 
 320	64	eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6NjQsImVtYWlsIjoidGVzdEB0ZXN0LmNvbSIsImlhdCI6MTc1NjI5NDk4MSwiZXhwIjoxNzcxODQ2OTgxfQ.6F4BIj9SBqo1tMaEOE3VhftdKhTDVFgTnwkqf9boog4	2026-02-23 12:43:01.317	2025-08-27 10:52:17.160843
 321	67	eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6NjcsImVtYWlsIjoidG9tcGF5YW4xNzEwQGdtYWlsLmNvbSIsImlhdCI6MTc1NjM5NTU2MywiZXhwIjoxNzcxOTQ3NTYzfQ.X0uLWcaAlKcxNTW04KfCtyvKn7ZThgnq0Av81-aaC2Y	2026-02-24 16:39:23.238	2025-08-28 17:39:23.245592
 327	64	eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6NjQsImVtYWlsIjoidGVzdEB0ZXN0LmNvbSIsImlhdCI6MTc1NzMzNDYxMCwiZXhwIjoxNzcyODg2NjEwfQ._XebyyQey59S6m5Q0nBZee2-uHbXbefehyQN_jYkyAY	2026-03-07 13:30:10.435	2025-09-07 16:46:32.663787
+329	64	eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6NjQsImVtYWlsIjoidGVzdEB0ZXN0LmNvbSIsImlhdCI6MTc1NzUxODcxNiwiZXhwIjoxNzczMDcwNzE2fQ.SzOM4g65FkgQa3958bgUrk2kszog6eyC517pQTXtS2c	2026-03-09 16:38:36.867	2025-09-10 17:38:36.872926
+334	64	eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6NjQsImVtYWlsIjoidGVzdEB0ZXN0LmNvbSIsImlhdCI6MTc1Nzg0MDU2MSwiZXhwIjoxNzczMzkyNTYxfQ.bR3v6cm8BJuFL1QjnJ4yIFDsPbJr2j_wh2S72untJgQ	2026-03-13 10:02:41.787	2025-09-11 20:35:59.178201
 \.
 
 
@@ -1400,9 +1404,9 @@ COPY public.reservations_creneaux_google_calendar (id, reservation_slots_id, pro
 -- Data for Name: reservations_individuals; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
-COPY public.reservations_individuals (id, user_id, slot_id, total_places_used, payment_status, reservation_status, created_at, updated_at, email, name, phone, stripe_payment_intent_id, hotel_commission, platform_commission, net_amount, gross_amount, id_hote, nb_child, nb_infant, unit_price_adult, unit_price_child, unit_price_infant, nb_adult, token_validate) FROM stdin;
-137	64	112	5	paid	confirmed	2025-09-07 16:47:19.486518	2025-09-07 16:47:19.486518	tompayan1710@gmail.com	Tom Payan	+33765594097	pi_3S4js02f0HHvMFDt0F45kjN0	32.20	59.80	368.00	460.00	\N	3	4	110.00	80.00	0.00	2	20c348cf-afa4-4989-ba3c-68bfbac47ca2
-138	64	112	1	paid	confirmed	2025-09-07 16:50:09.490973	2025-09-07 16:50:09.490973	tompayan1710@gmail.com	Lacarte Céline	+33611111111	pi_3S4jum2f0HHvMFDt1ZEpB3Rs	7.70	14.30	88.00	110.00	4	0	2	110.00	80.00	0.00	1	18298f05-b7f9-4662-85bc-f6eb4e5fceb8
+COPY public.reservations_individuals (id, user_id, slot_id, total_places_used, payment_status, reservation_status, created_at, updated_at, email, name, phone, stripe_payment_intent_id, hotel_commission, platform_commission, net_amount, gross_amount, id_hote, nb_child, nb_infant, unit_price_adult, unit_price_child, unit_price_infant, nb_adult, token_validate, comment_id) FROM stdin;
+138	64	112	1	paid	confirmed	2025-09-07 16:50:09.490973	2025-09-07 16:50:09.490973	tompayan1710@gmail.com	Lacarte Céline	+33611111111	pi_3S4jum2f0HHvMFDt1ZEpB3Rs	7.70	14.30	88.00	110.00	4	0	2	110.00	80.00	0.00	1	18298f05-b7f9-4662-85bc-f6eb4e5fceb8	\N
+137	64	112	5	paid	confirmed	2025-09-07 16:47:19.486518	2025-09-07 16:47:19.486518	tompayan1710@gmail.com	Tom Payan	+33765594097	pi_3S4js02f0HHvMFDt0F45kjN0	32.20	59.80	368.00	460.00	\N	3	4	110.00	80.00	0.00	2	20c348cf-afa4-4989-ba3c-68bfbac47ca2	13
 \.
 
 
@@ -1422,7 +1426,7 @@ COPY public.users (id, email, password, role, created_at, provider_id, provider,
 --
 
 COPY public.withdrawal_methods (id, provider_id, method, iban, swift, first_name, last_name, paypal_email, created_at) FROM stdin;
-23	11	iban	FSFSFS	ARARARAR	Tom	PAYAN	\N	2025-09-05 12:55:51.640355
+28	11	iban	CLARABELLE	FOSFS	Payan	TOM PAYAN	\N	2025-09-13 19:11:16.138595
 \.
 
 
@@ -1431,6 +1435,7 @@ COPY public.withdrawal_methods (id, provider_id, method, iban, swift, first_name
 --
 
 COPY public.withdrawals (id, provider_id, amount, method, details, status, created_at, iban, swift, first_name, last_name, paypal_email, sent_at) FROM stdin;
+15	11	100.00	IBAN	Demande de versement par IBAN 	waiting	2025-09-14 08:44:35.263075	CLARABELLE	FOSFS	Payan	TOM PAYAN		\N
 \.
 
 
@@ -1459,7 +1464,7 @@ SELECT pg_catalog.setval('public.cities_id_seq', 28, true);
 -- Name: comments_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
 
-SELECT pg_catalog.setval('public.comments_id_seq', 2, true);
+SELECT pg_catalog.setval('public.comments_id_seq', 13, true);
 
 
 --
@@ -1550,7 +1555,7 @@ SELECT pg_catalog.setval('public.qr_codes_id_seq', 83, true);
 -- Name: refresh_tokens_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
 
-SELECT pg_catalog.setval('public.refresh_tokens_id_seq', 327, true);
+SELECT pg_catalog.setval('public.refresh_tokens_id_seq', 334, true);
 
 
 --
@@ -1585,14 +1590,14 @@ SELECT pg_catalog.setval('public.users_id_seq', 68, true);
 -- Name: withdrawal_methods_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
 
-SELECT pg_catalog.setval('public.withdrawal_methods_id_seq', 23, true);
+SELECT pg_catalog.setval('public.withdrawal_methods_id_seq', 28, true);
 
 
 --
 -- Name: withdrawals_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
 
-SELECT pg_catalog.setval('public.withdrawals_id_seq', 14, true);
+SELECT pg_catalog.setval('public.withdrawals_id_seq', 15, true);
 
 
 --
@@ -1840,7 +1845,7 @@ ALTER TABLE ONLY public.cities
 --
 
 ALTER TABLE ONLY public.comments
-    ADD CONSTRAINT comments_offer_slug_fkey FOREIGN KEY (offer_slug) REFERENCES public.offers(slug) ON DELETE CASCADE;
+    ADD CONSTRAINT comments_offer_slug_fkey FOREIGN KEY (offer_slug) REFERENCES public.offers(slug);
 
 
 --
@@ -2017,6 +2022,14 @@ ALTER TABLE ONLY public.reservations_creneaux_google_calendar
 
 ALTER TABLE ONLY public.reservations_creneaux_google_calendar
     ADD CONSTRAINT reservations_creneaux_google_calendar_reservation_slots_id_fkey FOREIGN KEY (reservation_slots_id) REFERENCES public.reservation_slots(id) ON DELETE CASCADE;
+
+
+--
+-- Name: reservations_individuals reservations_individuals_comment_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.reservations_individuals
+    ADD CONSTRAINT reservations_individuals_comment_id_fkey FOREIGN KEY (comment_id) REFERENCES public.comments(id) ON DELETE SET NULL;
 
 
 --

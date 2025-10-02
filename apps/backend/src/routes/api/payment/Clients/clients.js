@@ -35,10 +35,8 @@ router.post("/create-payment-intent", async (req, res) => {
       date,
       adresse,
       total_capacity,
-      lang
+      lang,
     } = req.body;
-
-
   // const totalEur =
   //   ((Number(pricing?.adult?.price)  || 0) * (Number(nb_adult)  || 0)) +
   //   ((Number(pricing?.child?.price)  || 0) * (Number(nb_child)  || 0)) +
@@ -53,6 +51,9 @@ router.post("/create-payment-intent", async (req, res) => {
     if (!amount || amount < 50) {
     return res.status(400).send({ error: { message: "Invalid amount" } });
   }
+
+  console.log(lang)
+
 
   try {
     const paymentIntent = await stripe.paymentIntents.create({
@@ -87,7 +88,7 @@ router.post("/create-payment-intent", async (req, res) => {
         adresse: String(adresse ?? "CreatePayementNoAdresse"),
         total_capacity: String(total_capacity ?? ""),
         mode: String(process.env.NODE_ENV),
-        lang
+        lang: String(lang ?? "fr")
       },
 
       // payment_method_types: ['card', 'bancontact'], 

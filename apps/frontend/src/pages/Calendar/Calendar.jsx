@@ -176,7 +176,7 @@ export default function Calendar(){
     return (
         <div className="Calendar">
             <div className="DayPickerContainer">
-                <div id={"CalendarContainer"} className="CalendarContainer">
+                <div id={"CalendarContainer"} className="CalendarContainer" style={{ "--today-label": `"${t("Today")}"` }}>
                     {/* <p className="t5">Choisissez une date</p> */}
                     <DayPicker
                         mode="single"

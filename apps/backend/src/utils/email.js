@@ -1,7 +1,8 @@
 const nodemailer = require("nodemailer");
 require("dotenv").config();
 // console.log("ENV VARIABLES:", process.env);
-
+const translations = require("../utils/translation_dic");
+const { formatDateYYYYMMDD, formatHumanAtTime } = require("./helpers");
 
 const transporter = nodemailer.createTransport({
   service: "gmail",
@@ -14,7 +15,6 @@ const transporter = nodemailer.createTransport({
 async function sendAdminAlertEmail({ to, subject, message }) {
   // console.log("📧 sendAdminAlertEmail appelée avec :", { to, subject, message });
   // console.log("⚙ ENV:", { ADMIN_EMAIL: process.env.ADMIN_EMAIL, ADMIN_PASSWORD: process.env.ADMIN_PASSWORD ? "OK" : "MISSING" });
-
 
   //  console.log("Valeurs actuelles :", {
   //   ADMIN_EMAIL: process.env.ADMIN_EMAIL,
@@ -34,15 +34,13 @@ async function sendAdminAlertEmail({ to, subject, message }) {
 async function sendReservationEmail(reservation, pdfPath) {
   console.log("J'ENVOIE LE MAIL !!!!!!!");
 
-  const dateStr = new Date(reservation.date).toLocaleString("fr-FR", {
-    day: "2-digit",
-    month: "long",
-    year: "numeric",
-    hour: "2-digit",
-    minute: "2-digit",
-  });
+  const lang = reservation.lang || "fr"; // fallback fr
+  const l = translations[lang];
 
-  const l = reservation.labels_email; // raccourci pour les labels
+  const labels = translations[lang] || translations.fr;
+  console.log("DATE DE MA RESERVATION :", reservation.date, " à : ",reservation.start_hour);
+
+  const startDateTime = new Date(`${reservation.date}T${reservation.start_hour}:00`);
 
   const htmlContent = `
     <div style="background-color: #f7f7f7; padding: 20px 0; font-family: Arial, sans-serif;">
@@ -51,12 +49,12 @@ async function sendReservationEmail(reservation, pdfPath) {
         <div style="text-align: center;">
           <h1 style="margin: 10px 0;">${l.email_title_thank_you_for_order}</h1>
           <p style="color: #555;">${l.email_subtitle_reservation_received}</p>
-          <p style="font-size: 12px; color: #999;">${l.email_hint_ticket_will_be_sent}</p>
         </div>
 
         <div style="margin: 15px 0; border: 1px solid #eee; border-radius: 8px; overflow: hidden;">
           <div style="padding: 20px; background-color: #fafafa; border-bottom: 1px solid #eee;">
             <strong>${l.email_section_order_details}</strong>
+            <strong></strong>
           </div>
           <div style="padding: 20px;">
             <table style="width: 100%; font-size: 14px;">
@@ -64,10 +62,20 @@ async function sendReservationEmail(reservation, pdfPath) {
                 <td><strong>${l.email_label_reservation_number}&nbsp;:</strong></td>
                 <td style="text-align: right;">#RES-${reservation.reservation_id}</td>
               </tr>
+              
+
               <tr>
-                <td><strong>${l.email_label_date}&nbsp;:</strong></td>
-                <td style="text-align: right;">${dateStr}</td>
+                <td><strong>${l.Done_at}&nbsp;:</strong></td>
+                <td style="text-align: right;">${formatDateYYYYMMDD(reservation.reservation_created_at)}</td>
               </tr>
+
+              <tr><td colspan="2"><hr style="border: none; border-top: 1px solid #eee;"></td></tr>
+
+              <tr>
+                <td><strong>${l.Start}&nbsp;:</strong></td>
+                <td style="text-align: right;">${formatHumanAtTime(reservation.date, lang, reservation.start_hour)}</td>
+              </tr>
+
               ${
                 reservation.payment_method !== "Inconnu" ? 
                 `<tr>
@@ -79,19 +87,19 @@ async function sendReservationEmail(reservation, pdfPath) {
               <tr><td colspan="2"><hr style="border: none; border-top: 1px solid #eee;"></td></tr>
               ${reservation.nb_adult > 0 ? `
                 <tr>
-                  <td><strong>×${reservation.nb_adult} ${reservation.nb_adult>1 ? reservation.labels.adults : reservation.labels.adult}</strong></td>
+                  <td><strong>×${reservation.nb_adult} ${reservation.nb_adult>1 ? labels.adults : labels.adult}</strong></td>
                   <td style="text-align: right;">${(Number(reservation.unit_price_adult * reservation.nb_adult)).toFixed(2)} €</td>
                 </tr>` : ""
               }
               ${reservation.nb_child > 0 ? `
                 <tr>
-                  <td><strong>×${reservation.nb_child} ${reservation.nb_child>1 ? reservation.labels.children : reservation.labels.child}</strong></td>
+                  <td><strong>×${reservation.nb_child} ${reservation.nb_child>1 ? labels.children : labels.child}</strong></td>
                   <td style="text-align: right;">${(Number(reservation.unit_price_child * reservation.nb_child)).toFixed(2)} €</td>
                 </tr>` : ""
               }
               ${reservation.nb_infant > 0 ? `
                 <tr>
-                  <td><strong>×${reservation.nb_infant} ${reservation.nb_infant>1 ? reservation.labels.infants : reservation.labels.infant}</strong></td>
+                  <td><strong>×${reservation.nb_infant} ${reservation.nb_infant>1 ? labels.infants : labels.infant}</strong></td>
                   <td style="text-align: right;">${(Number(reservation.unit_price_infant * reservation.nb_infant)).toFixed(2)} €</td>
                 </tr>` : ""
               }
@@ -142,7 +150,7 @@ async function sendReservationEmail(reservation, pdfPath) {
             <h3 style="margin: 30px 0 10px; font-size: 16px;">${l.email_section_contact}</h3>
             <p style="color: #555;">
               Email : ${reservation.email}<br>
-              ${reservation.labels.Phone} : ${reservation.phone}
+              ${labels.Phone} : ${reservation.phone}
             </p>
           </div>
         </div>
@@ -176,37 +184,6 @@ async function sendReservationEmail(reservation, pdfPath) {
   await transporter.sendMail(mailOptions);
   console.log("Email avec ticket PDF envoyé !");
 }
-
-
-
-
-
-// if (require.main === module) {
-//   const path = require("path");
-
-//   const testReservation = {
-//     reservation_id: 82,
-//     title: "Balade en bateau à Nice",
-//     offerSlug: "2c09a43a-c524-4dbb-bbfa-6b7598ca950b",
-//     date: "2025-08-10",
-//     start_hour: "10:00",
-//     adresse: "Port de Nice",
-//     nb_adult: 2,
-//     nb_child: 1,
-//     nb_infant: 1,
-//     total_price: 90,
-//     name: "Jean Dupont",
-//     email: "tompayan1710@gmail.com", // <-- à remplacer
-//     phone: "+33600000000",
-//     payment_method: "VISA - XXXX 4242"
-//   };
-
-//   const testPDFPath = path.join(__dirname, "Viarte_Reservation_undefined_2025-07-26.pdf"); // Tu dois mettre un PDF réel ici (par exemple copie manuelle)
-
-//   sendReservationEmail(testReservation, testPDFPath)
-//     .then(() => console.log("✅ Mail de test envoyé avec succès"))
-//     .catch(err => console.error("❌ Erreur d'envoi du mail :", err));
-// }
 
 
 

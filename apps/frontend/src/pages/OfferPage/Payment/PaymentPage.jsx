@@ -82,7 +82,7 @@ export default function PaymentPage() {
             selectedCreneau == null
         )
         {
-            console.warn("❌ PayementPage Aucun state recu ou champs manquants !");
+            console.error("❌ PayementPage Aucun state recu ou champs manquants !");
             navigate(`/offer-page/${slug}/add-info`, {
                 state: stateAddInfo
             })
@@ -132,54 +132,7 @@ export default function PaymentPage() {
                         date,
                         adresse,
                         total_capacity,
-                        labels: {
-                            Reservation: t("Reservation"),
-                            Done_at: t("Done_at"),
-                            Activity: t("Activity"),
-                            Start: t("Start"),
-                            Address: t("Address"),
-                            Client: t("Client"),
-                            Email: t("Email"),
-                            Phone: t("Phone"),
-                            Payment: t("Payment"),
-                            Payment_status: t("Payment_status"),
-                            TOTAL: t("TOTAL"),
-                            all_taxes_included: t("all_taxes_included"),
-                            Thank_you: t("Thank_you"),
-                            Your_ticket_has_been_issued: t("Your_ticket_has_been_issued"),
-                            Transaction_details: t("Transaction_details"),
-                            at: t("at"),
-                            confirmed: t("confirmed "),
-                            adult: t("adult"),
-                            adults: t("adults"),
-                            child: t("child"),
-                            children: t("children"),
-                            infant: t("infant"),
-                            infants: t("infants"),
-                            text_entrance_scan: t("text_entrance_scan")
-                        },
-                        labels_email: {
-                            email_title_thank_you_for_order: t("email_title_thank_you_for_order"),
-                            email_subtitle_reservation_received: t("email_subtitle_reservation_received"),
-                            email_hint_ticket_will_be_sent: t("email_hint_ticket_will_be_sent"),
-                            email_section_order_details: t("email_section_order_details"),
-                            email_label_reservation_number: t("email_label_reservation_number"),
-                            email_label_date: t("email_label_date"),
-                            email_label_payment_method: t("email_label_payment_method"),
-                            email_label_total: t("email_label_total"),
-                            email_label_all_taxes_included: t("email_label_all_taxes_included"),
-                            email_section_reserved_activities: t("email_section_reserved_activities"),
-                            email_button_view_reservation: t("email_button_view_reservation"),
-                            email_link_view_details: t("email_link_view_details"),
-                            email_section_client_details: t("email_section_client_details"),
-                            email_text_reservation_made_for: t("email_text_reservation_made_for"),
-                            email_section_contact: t("email_section_contact"),
-                            email_footer_signature: t("email_footer_signature"),
-                            email_footer_legal_notice: t("email_footer_legal_notice"),
-                            email_footer_terms_conditions: t("email_footer_terms_conditions"),
-                            email_footer_privacy_policy: t("email_footer_privacy_policy"),
-                            email_footer_rights_reserved: t("email_footer_rights_reserved"),
-                        }
+                        lang
                     }
  
                 console.error(body);

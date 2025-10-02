@@ -1,3 +1,6 @@
+const translations = require("../../../../utils/translation_dic");
+const { formatDateYYYYMMDD, formatHumanAtTime } = require("../../../../utils/helpers");
+
 const React = require("react");
 const {
   Document,
@@ -137,6 +140,9 @@ const styles = StyleSheet.create({
 
 function TicketDocument({ reservation }) {
 
+  const lang = reservation.lang || "fr";
+  const labels = translations[lang] || translations.fr;
+
   return React.createElement(
     Document,
     null,
@@ -181,7 +187,7 @@ function TicketDocument({ reservation }) {
               borderRadius: 3, // 👈 arrondi (ici 20px → cercle parfait)
             },
         }),
-          React.createElement(Text, { style: { fontSize: 10, color: "#4E5562" } }, reservation.reservation_created_at)
+          React.createElement(Text, { style: { fontSize: 10, color: "#4E5562" } }, formatDateYYYYMMDD(reservation.reservation_created_at))
         ),
 
 
@@ -191,47 +197,47 @@ function TicketDocument({ reservation }) {
         React.createElement(View, { style: styles.body },
 
           React.createElement(View, { style: { alignItems: "center", marginVertical: 10 } },
-            React.createElement(Text, { style: [styles.centeredText, styles.thankYouTitle] }, reservation.labels.Thank_you),
-            React.createElement(Text, { style: [styles.centeredText, styles.thankYouSub] }, reservation.labels.Your_ticket_has_been_issued)
+            React.createElement(Text, { style: [styles.centeredText, styles.thankYouTitle] }, labels.Thank_you),
+            React.createElement(Text, { style: [styles.centeredText, styles.thankYouSub] }, labels.Your_ticket_has_been_issued)
           ),
 
           React.createElement(View, { style: styles.separator }),
 
-          React.createElement(Text, { style: styles.sectionTitle }, reservation.labels.Transaction_details),
+          React.createElement(Text, { style: styles.sectionTitle }, labels.Transaction_details),
 
           React.createElement(View, { style: styles.rowItem },
-            React.createElement(Text, { style: styles.leftText }, reservation.labels.Reservation),
+            React.createElement(Text, { style: styles.leftText }, labels.Reservation),
             React.createElement(Text, { style: styles.rightText }, `#RES-${reservation.reservation_id}`)
           ),
           React.createElement(View, { style: styles.rowItem },
-            React.createElement(Text, { style: styles.leftText }, reservation.labels.Done_at),
-            React.createElement(Text, { style: styles.rightText }, `${reservation.reservation_created_at} ${reservation.labels.at} ${reservation.reservation_created_at_hour}`)
+            React.createElement(Text, { style: styles.leftText }, labels.Done_at),
+            React.createElement(Text, { style: styles.rightText }, `${formatDateYYYYMMDD(reservation.reservation_created_at)}`)
           ),
           React.createElement(View, { style: styles.rowItem },
-            React.createElement(Text, { style: styles.leftText }, reservation.labels.Activity),
+            React.createElement(Text, { style: styles.leftText }, labels.Activity),
             React.createElement(Text, { style: styles.rightText }, reservation.title)
           ),
           React.createElement(View, { style: styles.rowItem },
-            React.createElement(Text, { style: styles.leftText }, reservation.labels.Start),
-            React.createElement(Text, { style: styles.rightText }, `${reservation.start_date} ${reservation.labels.at} ${reservation.start_hour}`)
+            React.createElement(Text, { style: styles.leftText }, labels.Start),
+            React.createElement(Text, { style: styles.rightText }, `${formatHumanAtTime(reservation.date, lang, reservation.start_hour)}`)
           ),
           React.createElement(View, { style: styles.rowItem },
-            React.createElement(Text, { style: styles.leftText }, reservation.labels.Address),
+            React.createElement(Text, { style: styles.leftText }, labels.Address),
             React.createElement(Text, { style: styles.rightText }, reservation.adresse)
           ),
 
           React.createElement(View, { style: styles.separator }),
 
           React.createElement(View, { style: styles.rowItem },
-            React.createElement(Text, { style: styles.leftText }, reservation.labels.Client),
+            React.createElement(Text, { style: styles.leftText }, labels.Client),
             React.createElement(Text, { style: styles.rightText }, reservation.name)
           ),
           React.createElement(View, { style: styles.rowItem },
-            React.createElement(Text, { style: styles.leftText }, reservation.labels.Email),
+            React.createElement(Text, { style: styles.leftText }, labels.Email),
             React.createElement(Text, { style: styles.rightText }, reservation.email)
           ),
           React.createElement(View, { style: styles.rowItem },
-            React.createElement(Text, { style: styles.leftText }, reservation.labels.Phone),
+            React.createElement(Text, { style: styles.leftText }, labels.Phone),
             React.createElement(Text, { style: styles.rightText }, reservation.phone)
           ),
 
@@ -239,12 +245,12 @@ function TicketDocument({ reservation }) {
 
           reservation.payment_method !== "Inconnu" &&
           React.createElement(View, { style: styles.rowItem },
-            React.createElement(Text, { style: styles.leftText }, reservation.labels.Payment),
+            React.createElement(Text, { style: styles.leftText }, labels.Payment),
             React.createElement(Text, { style: styles.rightText }, reservation.payment_method)
           ),
           React.createElement(View, { style: styles.rowItem },
-            React.createElement(Text, { style: styles.leftTextBig }, reservation.labels.Payment_status),
-            React.createElement(Text, { style: styles.rightTextSmall }, reservation.reservation_status || reservation.labels.confirmed)
+            React.createElement(Text, { style: styles.leftTextBig }, labels.Payment_status),
+            React.createElement(Text, { style: styles.rightTextSmall }, reservation.reservation_status || labels.confirmed)
           ),
 
           React.createElement(View, { style: styles.separator }),
@@ -271,11 +277,11 @@ function TicketDocument({ reservation }) {
           React.createElement(View, { style: styles.separator }),
 
           React.createElement(View, { style: styles.rowItem },
-            React.createElement(Text, { style: styles.total }, reservation.labels.TOTAL),
+            React.createElement(Text, { style: styles.total }, labels.TOTAL),
             React.createElement(Text, { style: styles.total }, `${reservation.gross_amount}€`)
           ),
 
-          React.createElement(Text, { style: styles.totalNote }, reservation.labels.all_taxes_included),
+          React.createElement(Text, { style: styles.totalNote }, labels.all_taxes_included),
 
           React.createElement(View, { style: styles.separator }),
           React.createElement(Image, {
@@ -285,7 +291,7 @@ function TicketDocument({ reservation }) {
         )
       ),
       React.createElement(Text, { style: styles.footerText },
-          "Ce ticket numérique peut être scanné à l’entrée.")
+          labels.text_entrance_scan)
     )
   );
 }

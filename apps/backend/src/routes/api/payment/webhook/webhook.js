@@ -24,13 +24,13 @@ module.exports = async function stripeWebhook(req, res) {
   }
 
   if (event.type === "payment_intent.succeeded") {
-    
+
     const paymentIntent = event.data.object;
     console.log("✅ PaymentIntent successful:", paymentIntent.id);
 
 
 
-    
+
     // moyen de paiement (optionnel)
     let payment_method = "Inconnu";
     const charge = paymentIntent.charges?.data?.[0];
@@ -49,25 +49,27 @@ module.exports = async function stripeWebhook(req, res) {
 
 
 
-    const nb_adult  = parseInt(meta.nb_adult  || "0", 10) || 0;
-    const nb_child  = parseInt(meta.nb_child  || "0", 10) || 0; 
+    const nb_adult = parseInt(meta.nb_adult || "0", 10) || 0;
+    const nb_child = parseInt(meta.nb_child || "0", 10) || 0;
     const nb_infant = parseInt(meta.nb_infant || "0", 10) || 0;
 
-    const adult_counts_toward_capacity  = meta.adult_counts_toward_capacity === "true";
-    const child_counts_toward_capacity  = meta.child_counts_toward_capacity === "true";
+    const adult_counts_toward_capacity = meta.adult_counts_toward_capacity === "true";
+    const child_counts_toward_capacity = meta.child_counts_toward_capacity === "true";
     const infant_counts_toward_capacity = meta.infant_counts_toward_capacity === "true";
 
 
     const idHoteNormalized =
-    meta.id_hote && meta.id_hote !== "null" && meta.id_hote !== ""
-      ? parseInt(meta.id_hote, 10)
-      : null;
+      meta.id_hote && meta.id_hote !== "null" && meta.id_hote !== ""
+        ? parseInt(meta.id_hote, 10)
+        : null;
 
     const total_price_eur = (paymentIntent.amount_received ?? paymentIntent.amount) / 100;
     const total_places_used =
-      (adult_counts_toward_capacity  ? nb_adult  : 0) +
-      (child_counts_toward_capacity  ? nb_child  : 0) +
+      (adult_counts_toward_capacity ? nb_adult : 0) +
+      (child_counts_toward_capacity ? nb_child : 0) +
       (infant_counts_toward_capacity ? nb_infant : 0);
+
+    const labels = meta.labels ? JSON.parse(meta.labels) : {};
 
     const reservation = {
       user_id: meta.user_id && meta.user_id !== "guest" ? parseInt(meta.user_id, 10) : 1,
@@ -81,9 +83,9 @@ module.exports = async function stripeWebhook(req, res) {
       nb_adult,
       nb_child,
       nb_infant,
-      unit_price_adult: parseFloat(meta.unit_price_adult)  || 0,
-      unit_price_child:  parseFloat(meta.unit_price_child)  || 0,
-      unit_price_infant:  parseFloat(meta.unit_price_infant)  || 0,
+      unit_price_adult: parseFloat(meta.unit_price_adult) || 0,
+      unit_price_child: parseFloat(meta.unit_price_child) || 0,
+      unit_price_infant: parseFloat(meta.unit_price_infant) || 0,
       total_places_used: total_places_used,
       total_price_eur: total_price_eur,
       name: meta.name || "",
@@ -93,7 +95,8 @@ module.exports = async function stripeWebhook(req, res) {
       payment_intent_id: paymentIntent.id,
       payment_method,
       reservation_created_at: new Date(),
-      lang: meta.lang
+      
+      lang: meta.lang,
     };
 
     console.log("💥✅Reservation :", reservation);

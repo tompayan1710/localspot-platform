@@ -268,11 +268,7 @@ export default function MyEarnings() {
                   <div className="transactionItem row" 
                         key={transaction.created_at + index} 
                         onClick={() => {
-                          navigate("/transaction-info", {
-                            state: {
-                              type: transaction.type,
-                              id: transaction.id
-                            }
+                          navigate(`/transaction-info/${transaction.type}/${transaction.id}`, {
                           });
                   }}>
                     <div className="row">
@@ -306,7 +302,7 @@ export default function MyEarnings() {
             <p className="t6">
               {t("No_transactions_message")}
             </p>
-            <WhiteButton text={"Voir mes annonces"} onClick={() => {
+            <WhiteButton text={t("View_my_listings")} onClick={() => {
               navigate("/annonces")
             }}/>
           </div>
@@ -336,7 +332,7 @@ export default function MyEarnings() {
       }
 
       {transactions.length > 8 && 
-      <WhiteButton text="Voir plus" onClick={() => {navigate("/all-history-transactions")}} />
+      <WhiteButton text={t("View_more")} onClick={() => {navigate("/all-history-transactions")}} />
       }
       </div>
 

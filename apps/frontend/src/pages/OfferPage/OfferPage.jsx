@@ -49,7 +49,7 @@
 
   export default function OfferPage() {
     const { slug } = useParams();
-    const location = useLocation();
+    const location = useLocation(); 
     const { t, i18n } = useTranslation();
     const lang = (i18n.resolvedLanguage || i18n.language || "fr").split("-")[0];
 
@@ -435,7 +435,7 @@
           </div>
 
           <div className={`ContainerOfferPageAll ${!isAnimation ? "Without" : ""}`} ref={OfferPageRef}>
-            <GoBack nagigation={origin ? origin : "/"} scrollTo={""} text={"revenir"}/> 
+            <GoBack nagigation={origin ? origin : "/"} scrollTo={""} text={t("back")}/> 
             {/* <TopDivOpacity /> */}
             <div className="InteractionContainer row">
               <div className="likeContainer">

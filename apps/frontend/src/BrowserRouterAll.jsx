@@ -117,6 +117,7 @@ export default function BrowserRouterAll(){
     /^\/annonces\/[^\/]+\/edit-photos$/,
     /^\/reservations\/[^\/]+$/,
     /^\/versement\/.*/,
+    /^\/transaction-info\/[^\/]+\/[^\/]+$/,
     ];
 
     return(
@@ -167,7 +168,7 @@ export default function BrowserRouterAll(){
             <Route path="/versement/new" element={<AddVersementHome />} />
             <Route path="/versement/new/titulaire" element={<AddTitulaireForm />} />
             <Route path="/versement/new/iban" element={<AddIBANForm />} />
-            <Route path="/transaction-info" element={<TransactionInfo />} />
+            <Route path="/transaction-info/:type/:id" element={<TransactionInfo />} />
 
 
             <Route path="/annonces" element={<AllAnnoncesPage />} />

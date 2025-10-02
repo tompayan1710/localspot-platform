@@ -75,7 +75,7 @@ export default function FormInfoPayement(){
             offer_provider_id == null
         )
         {
-            console.warn("❌ PayementPage Aucun state recu ou champs manquants !");
+            console.error("❌ PayementPage Aucun state recu ou champs manquants !");
             navigate(`/offer-page/${slug}`)
         }
 

@@ -488,7 +488,7 @@ import ButtonLanguage from "../components/Buttons/ButtonLanguage/ButtonLanguage"
               homeOffersByCategory.all_remaining && homeOffersByCategory.all_remaining.length > 2 &&
               <>
               <div className="row">
-                <p className="t32">À voir aussi</p>
+                <p className="t32">{t("See_also")}</p>
                 <button>
                   <img src={arrowRight} alt="arrow right icon"/>
                 </button>

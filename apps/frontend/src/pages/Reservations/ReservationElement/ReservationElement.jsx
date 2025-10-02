@@ -182,7 +182,7 @@ export default function ReservationsElement(){
 
     return (
         <div className="ReservationsElement">
-            <button className="CloseButton" onClick={() => navigate(-1)}>
+            <button className="CloseButton" onClick={() => navigate("/reservations")}>
                 <img src={crossiconBlack} alt="close image"/>
             </button>
             <div className="FactureContainer">

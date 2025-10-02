@@ -175,7 +175,7 @@
   position: relative;
 }
 .AvailabilityContainer .rdp-today::before {
-  content: "Aujourd'hui";
+  content:  var(--today-label);;
   position: absolute;
   top: 1.8rem;
   left: calc(50% - 0px);

@@ -1,6 +1,6 @@
 import "./TransactionInfo.css"
 
-import { useLocation, useNavigate } from "react-router-dom";
+import { useLocation, useNavigate, useParams } from "react-router-dom";
 import GoBack from "../../../components/GoBack/GoBack";
 import { useSSR, useTranslation } from "react-i18next";
 import { useContext, useEffect, useState } from "react";
@@ -20,11 +20,11 @@ import { plural } from "../../../services/translation";
 
 export default function TransactionInfo(){
     const location = useLocation(); 
-    const { type, id } = location.state;
+    const { type, id } = useParams();
     const { authState } = useContext(AuthContext);
 
     const { t, i18n } = useTranslation();
-      const lang = (i18n.resolvedLanguage || i18n.language || "fr").split("-")[0];
+    const lang = (i18n.resolvedLanguage || i18n.language || "fr").split("-")[0];
       
     const navigate = useNavigate();
 
@@ -271,7 +271,7 @@ export default function TransactionInfo(){
                 {
                     individuals.length>0 && individuals.map((individual, index) => {
                         return (
-                            <div className="ParticipantItem">
+                            <div className="ParticipantItem" key={individual.id || index}>
                                 <div className="row Separation">
                                     <p className="t5 bold">RES-{individual?.id}</p>
 
@@ -577,7 +577,7 @@ export default function TransactionInfo(){
                 </div>
                 <div className="row secured">
                     <img className="" src={privacy} alt="privacy"/>
-                    <p className="t6">{t("Secured_by")}<strong>Viarte</strong></p>
+                    <p className="t6">{t("Secured_by")} <strong>Viarte</strong></p>
                 </div>
             </div>      
         </div>
