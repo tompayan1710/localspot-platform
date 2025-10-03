@@ -10,7 +10,7 @@ const authMiddleware = async (req, res, next) => {
 
   if (!token) {
     return res.status(401).json({ 
-      isAuth: false, 
+      isAuth: false,
       error: "No token provided to go to this route" 
     });
   }

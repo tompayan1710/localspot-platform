@@ -59,7 +59,7 @@ export const getProfile = async () => {
     method: "GET"
   });
 
-  if (response.success) {
+  if (response.success) { 
     return {
       isAuth: true,
       user: response.data.user,

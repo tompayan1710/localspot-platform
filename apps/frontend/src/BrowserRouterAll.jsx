@@ -1,5 +1,8 @@
 import { BrowserRouter, Routes, Route, Navigate, useLocation } from "react-router-dom";
-import { useEffect, useRef } from "react";
+import { useContext, useEffect, useRef } from "react";
+import { AuthContext } from "./components/Auth/authContext/authContext";
+
+import RequireAuth from "./RequireAuth";
 import Home from "./pages/Home";
 
 import NotFound from "./pages/NotFound";
@@ -61,6 +64,8 @@ import TransactionInfo from "./pages/MyEarnings/TransactionInfo/TransactionInfo"
 import PaymentPolicy from "./pages/DocumentOfficiel/PaymentPolicy/PaymentPolicy";
 import ValidateReservation from "./pages/Today/ValidateReservation/ValidateReservation";
 
+
+
 export default function BrowserRouterAll(){
     const location = useLocation();
     const navBarRef = useRef();
@@ -68,8 +73,31 @@ export default function BrowserRouterAll(){
     const pathname = location.pathname;
 
     useEffect(() => {
-        window.scrollTo(0, 0);
+        window.scrollTo(0, 0); 
     }, [pathname]);
+
+    function useHandleOauthTokenOnce() {
+        const location = useLocation();
+        const { checkAuth } = useContext(AuthContext);
+
+        useEffect(() => {
+            const queryParams = new URLSearchParams(location.search);
+            const token = queryParams.get("token");
+            if (!token) return;
+
+            (async () => {
+            localStorage.setItem("jwtToken", token); // persiste
+            await checkAuth();                       // met à jour le contexte
+
+            // Nettoie l’URL (enlève ?token, garde le même chemin)
+            // const url = new URL(window.location.href);
+            // url.searchParams.delete("token");
+            // window.history.replaceState({}, "", url.toString());
+            })();
+        }, [location.search, checkAuth]);
+    }
+
+    useHandleOauthTokenOnce()
 
     const hideNavBarOnRoutes = [
         // "/",
@@ -189,7 +217,7 @@ export default function BrowserRouterAll(){
 
             <Route path="/signup" element={<Signup />} />
             <Route path="/login" element={<Login />} />
-            <Route path="/profile" element={<Profile />} />
+            <Route path="/profile" element={<RequireAuth><Profile /></RequireAuth>} />
             <Route path="/edit-profile" element={<EditProfile />} />
             <Route path="/edit-language" element={<EditLanguage />} />
             <Route path="/payment-methode" element={<PaymentMethode />} />

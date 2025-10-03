@@ -1,12 +1,14 @@
 import { useParams } from "react-router-dom";
 import googleicon from "../../assets/images/googleicon.png";
 import FadeInImage from "../Utils/FadeInImage";
+import { useTranslation } from "react-i18next";
 
 const backend_url = process.env.REACT_APP_API_URL
 
 export const GoogleAuthButton = ({state, redirectRoute='/'}) => {
+    const {t, i18n} = useTranslation();
      const { slug } = useParams();
-    const handleGoogleLogin = () => {
+    const handleGoogleLogin = () => { 
         if(state){
             sessionStorage.setItem("paymentParams", JSON.stringify(state));
         }
@@ -21,7 +23,7 @@ export const GoogleAuthButton = ({state, redirectRoute='/'}) => {
             <div className="ImageWrapper">
                 <FadeInImage src={googleicon} alt="google logo"/>
             </div>
-            <p className="t5">Continuer avec Google</p>
+            <p className="t5">{t("Google_login")}</p>
         </button>
     )
 }

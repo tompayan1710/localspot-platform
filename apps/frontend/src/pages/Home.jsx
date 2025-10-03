@@ -227,8 +227,8 @@ import ButtonLanguage from "../components/Buttons/ButtonLanguage/ButtonLanguage"
       <div className={`HomeContainerPrincipal ${isOccultView && "noScroll"}`} ref={offerContainerRef}>
   
         <div className="ViarteIntro">
-          <img src={ViarteV} alt="Viarte Logo"  onClick={() => window.location.reload()} />
-          <div className="row">
+          <img src={ViarteV} alt="Viarte Logo" onClick={() => window.location.reload()} />
+          <div className="row ViarteFont" onClick={() => window.location.reload()}>
             <div className="vline"></div>
             <img src={ViarteFont} alt="Viarte font"/>
           </div>

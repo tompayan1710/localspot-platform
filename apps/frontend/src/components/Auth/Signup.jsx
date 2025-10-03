@@ -9,6 +9,7 @@ import { GoogleAuthButton } from "./GoogleAuthButton"
 import Spinner from "../Spinner/Spinner"
 import GoBack from "../GoBack/GoBack";
 import FadeInImage from "../Utils/FadeInImage";
+import { useTranslation } from "react-i18next";
 
 
 export default function Signup() {
@@ -18,6 +19,7 @@ export default function Signup() {
   const [loading, setLoading] = useState(false);
   const [isSuccess, setIsSuccess] = useState(false);
 
+  const {t, i18n} = useTranslation();
   const navigate = useNavigate();
 
   const { checkAuth } = useContext(AuthContext);
@@ -28,7 +30,7 @@ export default function Signup() {
     setMessage("");
 
     if (password.length < 6) {
-      setMessage("Veuillez rentrer un mot de passe de plus de 6 caractères");
+      setMessage(t("Signup_error_six"));
       setLoading(false);
       setIsSuccess(false);
       return;
@@ -56,37 +58,37 @@ export default function Signup() {
             // checkAuth();
           }, 300);
       } else {
-        setMessage("Erreur lors de la connexion automatique.");
+        setMessage(t("Signup_error"));
       }
     }
   };
 
   return (
     <div className="AuthPage">
-      <GoBack nagigation={`/`} scrollTo={""} text={"revenir"}/>
+      <GoBack nagigation={`/`} scrollTo={""} text={"back"}/>
       <div className="authcomponentcontainer">
         <div className="form-container">
           <div className="ImageWrapper">
             <FadeInImage className="LogoImage" src={ViarteLogo} alt="localspot logo"/>
           </div>
-          <p className="t32">Créer votre compte</p>
-          <p className="t6">Bienvenue ! Veuillez compléter les informations pour continuer.</p>
+          <p className="t32">{t("Signup_button")}</p>
+          <p className="t6">{t("Signup_Subtitle")}</p>
           <GoogleAuthButton />
           <div className="orcontainer">
-            <div className="orhline"></div><p className="t6">ou</p><div className="orhline"></div>
+            <div className="orhline"></div><p className="t6">{t("or")}</p><div className="orhline"></div>
           </div>
           
           <form className="emailPasswordForm" onSubmit={handleSignup}>
             <input 
               type="email" 
-              placeholder="Adresse e-mail" 
+              placeholder={t("Email_address")} 
               value={email} 
               onChange={(e) => setEmail(e.target.value)} 
               required 
             />
             <input 
               type="password" 
-              placeholder="Mot de passe" 
+              placeholder={t("Password")} 
               value={password} 
               onChange={(e) => setPassword(e.target.value)} 
               required 
@@ -97,15 +99,15 @@ export default function Signup() {
             <p className={`t6 errorMessage ${isSuccess ? "succesColor" : "errorColor"} ${message ? "visible" : ""}`}>    
               {message}
             </p>
-            <button type="submit">
-              {loading ? "Création en cours..." : "Créer mon compte"}
+            <button type="submit" className="submitbutton">
+              <p className="t5">{loading ? t("Signup_in_progress") : t("Signup_button")}</p>
               {loading && <Spinner />}
-              </button>
+            </button>
           </form>
         </div>
         <div className="row">
-          <p className="t5">Vous avez déjà un compte ?</p>
-          <a className="t4" href="/login">Se connecter</a>
+          <p className="t5">{t("Have_account")}</p>
+          <a className="t4" href="/login">{t("Login_link")}</a>
         </div>
       </div>
     </div>

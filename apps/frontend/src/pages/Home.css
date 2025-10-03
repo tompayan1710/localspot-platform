@@ -356,6 +356,9 @@ animation: slideUpHome 0.8s ease forwards;
 .ViarteIntro>img{
   cursor: pointer;
 }
+.ViarteIntro>.ViarteFont{
+  cursor: pointer;
+}
 
 
 .freeConcelation{

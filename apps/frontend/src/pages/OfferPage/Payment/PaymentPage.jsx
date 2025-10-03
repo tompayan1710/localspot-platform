@@ -61,8 +61,13 @@ export default function PaymentPage() {
     const [ selectedMethode, setSelectedMethode ] = useState(0);
 
     useEffect(() =>{
-
+        console.warn(authState);
+        if (authState.loading) return;
+        if (!authState.isAuth || !authState.user?.id) return;
         
+        setTimeout(() => {
+
+        }, 100000)
         if(
             // name == null ||
             // email == null ||
@@ -98,7 +103,7 @@ export default function PaymentPage() {
                 setStripePromise(loadStripe(publishableKey));
 
 
-                const amount = Math.round(total * 100);
+                const amount = Math.round(total * 100); 
 
 
                 // const amount = Math.round(Number(price) * 100); // "55.00" -> 5500
@@ -163,24 +168,27 @@ export default function PaymentPage() {
         }
 
         getPublishableKey();
-    }, [])
+    }, [authState.loading, authState.user?.id])
 
     useEffect(() => {
         const queryParams = new URLSearchParams(window.location.search);
         const token = queryParams.get("token");
 
+        const init = async () => {
+            if (token) {
+                // ✅ Stocke le JWT dans localStorage
+                console.warn("Il y a un token de : ", token);
+                localStorage.setItem("jwtToken", token);
 
-        if (token) {
-        // ✅ Stocke le JWT dans localStorage
-        console.warn("Il y a un token de : ", token);
-        localStorage.setItem("jwtToken", token);
+                // ✅ Met à jour le contexte d'authentification
+                await checkAuth();
 
-        // ✅ Met à jour le contexte d'authentification
-        checkAuth();
-
-        // ✅ Redirige l'utilisateur là où il était
-        // navigate(`/profile`);
+                // ✅ Redirige l'utilisateur là où il était
+                // navigate(`/profile`);
+            }
         }
+
+        init();
     }, []);//Just to no have the warning, not necessari
 
     const getEvents = async () => {

@@ -807,6 +807,8 @@
                 OfferIsCancellable: OfferIsCancellable,
                 participantAdult: participantAdult,
                 participantChild: participantChild,
+                participantInfant: participantInfant,
+                pricing: pricing,
                 start_hour: selectedCreneau.slot?.from || "",
                 end_hour: selectedCreneau.slot?.to || "",
                 date: selectedDate,
@@ -824,6 +826,8 @@
                 OfferIsCancellable,
                 participantAdult,
                 participantChild,
+                participantInfant: participantInfant,
+                pricing: pricing,
                 start_hour: selectedCreneau.slot?.from || "",
                 end_hour: selectedCreneau.slot?.to || "",
                 date: selectedDate,
@@ -831,60 +835,7 @@
                 selectedCreneau: selectedCreneau
               }}
               ref={LoginBottomRef}/>
-          {/* <PopUpBottom
-            onClose={() => {
-              LoginBottomRef.current.classList.remove("open");
-              setIsOccultView(false);
-            }}
-            title={<p className="t5">Connectez-vous ou inscrivez-vous pour continuer</p>}
-            ref={LoginBottomRef}
-          >
-            <div className="LoginContainer">
-              <GoogleAuthButton state={{
-                title: title,
-                adresse: adresse,
-                price: price,
-                OfferIsCancellable: OfferIsCancellable,
-                participantAdult: participantAdult,
-                participantChild: participantChild,
-                start_hour: selectedCreneau.slot?.from || "",
-                end_hour: selectedCreneau.slot?.to || "",
-                date: selectedDate,
-                total_capacity: total_capacity,
-              }}
-              redirectRoute={`/offer-page/${slug}/payment`}
-              />
-              <div className="orcontainer">
-                <div className="orhline"></div>
-                <p className="t6">ou</p>
-                <div className="orhline"></div>
-              </div>
-
-              <form className="emailPasswordForm" onSubmit={handleSignup}>
-                <input
-                  type="email"
-                  placeholder="Adresse e-mail"
-                  value={email}
-                  onChange={(e) => setEmail(e.target.value)}
-                  required
-                />
-                <input
-                  type="password"
-                  placeholder="Mot de passe"
-                  value={password}
-                  onChange={(e) => setPassword(e.target.value)}
-                  required
-                />
-                <p className={`t6 errorMessage ${isSuccess ? "succesColor" : "errorColor"} ${message ? "visible" : ""}`}>
-                  {message}
-                </p>
-                <button type="submit">
-                  {loading ? "..." : "Continuer"}
-                  {loading && <Spinner />}
-                </button>
-              </form>
-            </div>
-          </PopUpBottom> */}
+  
 
           <PopUpBottom
             onClose={() => {

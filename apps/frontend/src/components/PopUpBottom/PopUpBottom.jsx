@@ -3,7 +3,7 @@ import { forwardRef } from "react";
 import crossiconBlack from "../../assets/images/crossiconBlack.png"
 
 const PopUpBottom = forwardRef(({ children, title, onClose , isHeader, duration=0.3, fullHeight, zIndex}, ref) => {
-
+ 
   return (
     <div className={`PopUpBottom ${fullHeight && "fullHeight"} ${isHeader === false ? "NoHeader" : ""}`} style={{transitionDuration: `${duration}s`, ...(fullHeight ? { height: "calc(100% - 40px)" } : {}), ...(zIndex ? { zIndex: `${zIndex}` } : {})}} ref={ref}>
         {

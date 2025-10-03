@@ -174,7 +174,33 @@ i18n
           Download_receipt: "Download receipt",
 
 
+          //Login
+          Login_Title: "Log in",
+          Login_Subtitle: "Welcome! Please complete the information to continue.",
+          Email_address: "Email address",
+          Password: "Password",
+          Password_too_short: "Please enter a password with more than 6 characters.",
+          Login_success: "Login successful ✅",
+          Login_error: "Login error.",
+          Login_button: "Log in",
+          Login_in_progress: "Logging in...",
+          No_account: "Don't have an account?",
+          Signup_link: "Sign up",
+          Google_login: "Log in with Google",
+          Back_text: "Go back",
+          //Signup
+          Signup_Title: "Create your account",
+          Signup_Subtitle: "Welcome! Please fill in the information to continue.",
+          Signup_button: "Create my account",
+          Signup_in_progress: "Creating account...",
+          Signup_error_six: "Please enter a password with more than 6 characters.",
+          Signup_success: "Account created successfully",
+          Signup_error: "Error while creating account.",
+          Have_account: "Already have an account?",
+          Login_link: "Log in",
+
           //Profile
+          Provider_Dashboard: "Provider Dashboard",
           Personal_account: "Personal account",
           View_profile: "View profile",
           Easily_manage_your_activities: "Easily manage your activities, track your reservations, and update your offers in real time.",
@@ -193,6 +219,7 @@ i18n
           Currency: "Currency",
           Booking_system: "Booking system",
           Payment_methods: "Payment methods",
+          Payout_methods: "Payout methods",
           Log_out: "Log out",
 
           Switch_to_traveler_mode: "Switch to traveler mode",
@@ -390,6 +417,8 @@ i18n
           and_up: "and-up",
           to: "to",
           at: "at",
+          or: "or",
+
 
           Apply: "Apply",
           Add: "Add",
@@ -580,6 +609,7 @@ i18n
 
 
           //Profile
+          Provider_Dashboard: "Espace Prestataire",
           Personal_account: "Compte personnel",
           View_profile: "Voir le profile",
           Easily_manage_your_activities: "Gérez facilement vos activités, suivez vos réservations et mettez à jour vos offres en temps réel.",
@@ -597,6 +627,7 @@ i18n
           Currency: "Monnaie",
           Booking_system: "Système de réservation",
           Payment_methods: "Modes de paiement",
+          Payout_methods: "Modes de versement",
           Log_out: "Déconnexion",
           Switch_to_traveler_mode: "Basculer en mode voyageur",
           Switch_to_provider_mode: "Basculer en mode prestataire",
@@ -612,6 +643,32 @@ i18n
           Payout_method: "Methode de versements",
           Add_a_payout_method: "Ajouter un mode de versement",
           Add_a_payout_method_description: "Ajouter mode de versement vous permet de recevoir vos gains.",
+
+          //Login
+          Login_Title: "Connectez-vous",
+          Login_Subtitle: "Bienvenue ! Veuillez compléter les informations pour continuer.",
+          Email_address: "Adresse e-mail",
+          Password: "Mot de passe",
+          Password_too_short: "Veuillez rentrer un mot de passe de plus de 6 caractères.",
+          Login_success: "Connexion réussie",
+          Login_error: "Erreur de connexion.",
+          Login_button: "Se connecter",
+          Login_in_progress: "Connexion en cours...",
+          No_account: "Vous n'avez pas de compte ?",
+          Signup_link: "S'inscrire",
+          Google_login: "Continuer avec Google",
+          Back_text: "Revenir",
+          //Signup
+          Signup_Title: "Créer votre compte",
+          Signup_Subtitle: "Bienvenue ! Veuillez compléter les informations pour continuer.",
+          Signup_button: "Créer mon compte",
+          Signup_in_progress: "Création en cours...",
+          Signup_success: "Compte créé avec succès",
+          Signup_error: "Erreur lors de la création du compte.",
+          Have_account: "Vous avez déjà un compte ?",
+          Login_link: "Se connecter",
+
+
 
           //Payout
           Account_holder: "Titulaire du compte",
@@ -787,6 +844,7 @@ i18n
           and_up: "et plus",
           to: "à",
           at: "à",
+          or: "ou",
 
           Apply: "Appliquer",
           Add: "Ajouter",

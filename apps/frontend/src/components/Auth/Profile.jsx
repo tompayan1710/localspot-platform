@@ -54,7 +54,7 @@ export default function Profile() {
     const newMode = selectedMode === "provider" ? "voyageur" : "provider";
     setSelectedMode(newMode);
     localStorage.setItem(MODE_KEY, newMode);
-
+    
     // ✅ Forcer la propagation comme si c'était un autre onglet
     window.dispatchEvent(new Event("storage"));
   };
@@ -85,44 +85,27 @@ export default function Profile() {
   //   console.error(providerInfo);
   // }, [providerInfo])
   
-  useEffect(() => {
-        const queryParams = new URLSearchParams(window.location.search);
-        const token = queryParams.get("token");
+  // useEffect(() => {
+  //   const queryParams = new URLSearchParams(location.search);
+  //   const token = queryParams.get("token");
+  //   if (!token) return;
 
+  //   (async () => {
+  //     localStorage.setItem("jwtToken", token); // persiste
+  //     await checkAuth();                       // met à jour le contexte
 
-        if (token) {
-        // ✅ Stocke le JWT dans localStorage
-        console.warn("Il y a un token de : ", token);
-        localStorage.setItem("jwtToken", token);
+  //     // Nettoie l’URL (enlève ?token, garde le même chemin)
+  //     // const url = new URL(window.location.href);
+  //     // url.searchParams.delete("token");
+  //     // window.history.replaceState({}, "", url.toString());
+  //   })();
+  // }, [location.search]);
 
-        // ✅ Met à jour le contexte d'authentification
-        checkAuth();
-
-        // ✅ Redirige l'utilisateur là où il était
-        // navigate(`/profile`);
-        }
-    }, []);//Just to no have the warning, not necessari
     
   useEffect(() => {
-    // ✅ Redirection uniquement lorsque loading est terminé
-    console.warn("ACTUELLEMENT mon loading est :", authState.loading, " IsAuth :", authState.isAuth)
-    if (!authState.loading && !authState.isAuth) {
-      console.log("🔄 Redirection car non authentifié");
-      navigate("/login", {
-        replace: true,
-        state: {
-          origin: "/", 
-          scrollTo: ""
-        }
-      });
-    }
-
-    if (authState.user?.provider_id && authState.user?.provider?.is_validated) {
-      getOfferOfProvider(authState.user.provider_id);
-      getProviderInfo(authState.user?.provider_id);
-    }  
-  }, [authState.loading, authState.isAuth, navigate, location.search]); // ✅ Suivre loading et isAuth
-
+    getOfferOfProvider(authState.user.provider_id);
+    getProviderInfo(authState.user.provider_id);
+  }, [authState.user]);
 
 
 
@@ -148,23 +131,6 @@ export default function Profile() {
     <>
       {authState.loading ? <Spinner centerPage={true}/> : 
       <>
-      {/* {
-        authState.user && (
-          authState.user.provider_id && (
-            <>
-              <div className="row ModeButtonContainer">
-                <button className={`ButtonMode ${selectedMode === 1 ? "selected" : ""}`}
-                onClick={() => setSelectedMode(1)}>
-                  <p className="t5">Prestataire</p>
-                </button>
-                <button className={`ButtonMode ${selectedMode === 2 ? "selected" : ""}`}
-                onClick={() => setSelectedMode(2)}>
-                  <p className="t5">Voyageur</p>
-                </button>
-              </div>
-            </>
-          )
-        )} */}
       {
         authState.user?.provider_id && authState.user?.provider?.is_validated &&(
           <button className="ModeButton" onClick={toggleMode}>
@@ -183,29 +149,17 @@ export default function Profile() {
                 authState.user?.provider?.is_validated ? "increase" : ""}`}
       >
         
-        {/* <BottomNavBarNotAnimate key="annonces" activeTab={"profile"}/> */}
         <div className="principalcolumn">  
         {
         authState.user && (
           authState.user.provider_id && authState.user?.provider?.is_validated ? (
             <>
-            {/* <div className="row ModeButtonContainer">
-              <button className="ButtonMode">
-                <p className="t5">Prestataire</p>
-              </button>
-              <button className="ButtonMode">
-                <p className="t5">Voyageur</p>
-              </button>
-            </div> */}
             <div className="ProviderOrNormalContainer">
               {selectedMode === "provider" ? 
-                <p className="t2">{t('Espace Prestataire')}</p>
+                <p className="t2">{t('Provider_Dashboard')}</p>
                 :
                 <p className="t1">{t('Profile')}</p>
               }
-              {/* <p className="t3">
-                {selectedMode === "provider" ? t('prestataire') : t('voyageur')}
-              </p> */}
             </div>
 
             </>
@@ -293,7 +247,7 @@ export default function Profile() {
         </>
       ) : (
       <p className="t32 IsValidateMessage">
-        {t("Profil_validation_description")}Votre profil prestataire est en cours de validation. Vous serez notifié dès son activation
+        {t("Profil_validation_description")}
       </p>
       ))
       :
@@ -350,24 +304,23 @@ export default function Profile() {
             {
               authState.user?.provider_id && (
                 authState.user?.provider?.is_validated && (
-                  <>
-                    {selectedMode === "provider" &&
+                  selectedMode === "provider" &&
+                    <>
                       <div className="SettingsListItem" onClick={() => navigate("/booking-system")}>
                         <div className="SettingsRow">
-                          <div className="RowFirst"><img src={CalendarBorder} alt="currenncy icon"/><p className="t4">{t("Booking_system")}</p></div>
+                          <div className="RowFirst"><img src={CalendarBorder} alt="booking icon"/><p className="t4">{t("Booking_system")}</p></div>
                           <img src={arrowRight} alt="arrow right"/>
                         </div>
                         <div className="hline"></div>
                       </div>
-                    }
-                    <div className="SettingsListItem" onClick={() => navigate("/payment-methode")}>
-                      <div className="SettingsRow">
-                        <div className="RowFirst"><img src={CreditCard} alt="credit card icon"/><p className="t4">{t("Payment_methods")}</p></div>
-                        <img src={arrowRight} alt="arrow right"/>
-                      </div>
-                      <div className="hline"></div>
-                    </div> 
-                  </>
+                      <div className="SettingsListItem" onClick={() => navigate("/payment-methode")}>
+                        <div className="SettingsRow">
+                          <div className="RowFirst"><img src={CreditCard} alt="credit card icon"/><p className="t4">{t("Payout_methods")}</p></div>
+                          <img src={arrowRight} alt="arrow right"/>
+                        </div>
+                        <div className="hline"></div>
+                      </div> 
+                    </>
                 )
               )
             }

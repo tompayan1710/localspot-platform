@@ -4,8 +4,6 @@ import BrowserRouterAll from "./BrowserRouterAll";
 import AuthProvider from "./components/Auth/authContext/authProvider";
 import { LoadScript } from "@react-google-maps/api";
 
-
-
 //Pour sauvegarder : pg_dump "postgresql://postgres:TomPayan-1710@localhost:5432/localspot" -f viarte_backup.sql
 //Pour restaurer : psql "postgresql://postgres:TomPayan-1710@localhost:5432/localspot" < viarte_backup.sql
 
@@ -38,8 +36,9 @@ END $$;
 const LIBRARIES = ["places"];
 
 
-export default function App() {
 
+
+export default function App() {
 
   return (
     <div id="AppWrapper">

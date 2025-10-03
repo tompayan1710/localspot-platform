@@ -26,32 +26,76 @@ const AuthProvider = ({ children }) => {
     }, []);
 
 
-    const checkAuth = async () => {
-        // console.error("JE CHECKAuth")
-        setAuthState(prevState => ({ ...prevState, loading: true }));
-        console.log("Je met le loading à TRUE");
-        try {
-            const response = await getProfile();
-            console.log("Auth Contexte response :", response);
+    // const checkAuth = async () => {
+    //     // console.error("JE CHECKAuth")
+    //     setAuthState(prevState => ({ ...prevState, loading: true }));
+    //     console.log("Je met le loading à TRUE");
+    //     try {
+    //         const response = await getProfile();
+    //         console.log("Auth Contexte response :", response);
 
-            setAuthState({
-                user: response.isAuth ? response.user : null,
-                isAuth: response.isAuth,
-                message: response.isAuth ? "Authentifié avec succès" : response.message || "Vous n'êtes pas connecté",
-                loading: false
-            });
-        } catch (error) {
-            console.error("Erreur lors de la vérification de l'authentification:", error);
+    //         setAuthState({
+    //             user: response.isAuth ? response.user : null,
+    //             isAuth: response.isAuth,
+    //             message: response.isAuth ? "Authentifié avec succès" : response.message || "Vous n'êtes pas connecté",
+    //             loading: false
+    //         });
+    //     } catch (error) {
+    //         console.error("Erreur lors de la vérification de l'authentification:", error);
+    //         setAuthState({
+    //             user: null,
+    //             isAuth: false,
+    //             message: "Erreur réseau. Serveur inaccessible.",
+    //             loading: false
+    //         });
+    //     } finally {
+    //         console.log("Je met le loading à FALSE ");
+    //     }      
+    // };
+
+    const checkAuth = async () => {
+        setAuthState(prev => ({ ...prev, loading: true }));
+        console.log("🔄 Début checkAuth -> loading TRUE");
+
+        try {
+            const token = localStorage.getItem("jwtToken");
+
+            if (!token) {
+            console.warn("❌ Aucun token trouvé dans localStorage");
             setAuthState({
                 user: null,
                 isAuth: false,
-                message: "Erreur réseau. Serveur inaccessible.",
-                loading: false
+                message: "Pas de token enregistré",
+                loading: false,
+            });
+            return;
+            }
+
+            // Appel API protégé avec le token
+            const response = await getProfile(token); // ⚠️ vérifie que getProfile ajoute bien `Authorization: Bearer <token>`
+            console.log("✅ Auth Contexte response :", response);
+
+            setAuthState({
+            user: response.isAuth ? response.user : null,
+            isAuth: response.isAuth,
+            message: response.isAuth
+                ? "Authentifié avec succès"
+                : response.message || "Vous n'êtes pas connecté",
+            loading: false,
+            });
+        } catch (error) {
+            console.error("🚨 Erreur lors de checkAuth :", error);
+            setAuthState({
+            user: null,
+            isAuth: false,
+            message: "Erreur réseau ou serveur inaccessible",
+            loading: false,
             });
         } finally {
-            console.log("Je met le loading à FALSE ");
-        }      
+            console.log("🏁 Fin checkAuth -> loading FALSE");
+        }
     };
+
 
 
     const logout = async () => {

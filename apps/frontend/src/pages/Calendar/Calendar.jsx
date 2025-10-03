@@ -125,7 +125,8 @@ export default function Calendar(){
             setCreneauOfSelectedDate(() => {
                 const temp = {};
                 // console.log(allCreneaux[next30Days[selectedDay].toLocaleDateString('fr-CA')])
-                allCreneaux[selectedDate.toLocaleDateString(lang)] && allCreneaux[selectedDate.toLocaleDateString(lang)].forEach((slot) => {
+                const dateKey = selectedDate.toLocaleDateString("fr-CA");
+                allCreneaux[dateKey] && allCreneaux[dateKey].forEach((slot) => {
                     // console.log(slot);
                     const key = `${slot.start_hour}-${slot.end_hour}`
                     if(!temp[key]) temp[key]= [];

@@ -1,10 +1,11 @@
 import { Route, useLocation, useNavigate, useParams } from "react-router-dom"
 import GoBack from "../../../../components/GoBack/GoBack"
 import "./FormInfoPayement.css"
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import ProgressBar from "../../../../components/ProgressBar/ProgressBar";
 import PhoneInput from "react-phone-number-input";
 import 'react-phone-number-input/style.css';
+import { AuthContext } from "../../../../components/Auth/authContext/authContext";
 
 import LockGreen from "../../../../assets/images/LockGreen.png"
 import { useTranslation } from "react-i18next";
@@ -14,6 +15,8 @@ export default function FormInfoPayement(){
     const {t} = useTranslation();
     const location = useLocation();
     const navigate = useNavigate();
+
+    const { checkAuth } = useContext(AuthContext);
 
     const locationParams = location.state;
     const fallbackParams = JSON.parse(sessionStorage.getItem("paymentParams") || "{}");
@@ -121,11 +124,26 @@ export default function FormInfoPayement(){
         }
     };
 
-    // const slot = { from: start_hour, to: end_hour };
-    // const selectedCreneau = {
-    //     index: `${slot.from}-${slot.to}`,
-    //     slot
-    // };
+    useEffect(() => {
+        const queryParams = new URLSearchParams(window.location.search);
+        const token = queryParams.get("token");
+
+        const init = async () => {
+            if (token) {
+                // ✅ Stocke le JWT dans localStorage
+                console.warn("Il y a un token de : ", token);
+                localStorage.setItem("jwtToken", token);
+
+                // ✅ Met à jour le contexte d'authentification
+                await checkAuth();
+
+                // ✅ Redirige l'utilisateur là où il était
+                // navigate(`/profile`);
+            }
+        }
+
+        init();
+    }, []);
 
     const stateAvailibility = {
         date,

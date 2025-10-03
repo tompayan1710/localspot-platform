@@ -3,14 +3,14 @@ import PopUpBottom from "../../PopUpBottom/PopUpBottom";
 import { GoogleAuthButton } from "../GoogleAuthButton";
 import Spinner from "../../Spinner/Spinner";
 import { useLocation, useNavigate } from "react-router-dom";
-import { AuthContext } from "../authContext/authContext";
+import { AuthContext } from "../authContext/authContext"; 
 import { login, signup } from "../../../services/auth";
 import "./PopUpLogin.css"
 
 const PopUpLogin = forwardRef(({ setIsOccultView, state={}, googleRedirectRoute="/", navigateAfterTo, navigateStateToPass = {}}, ref) => {
     const [email, setEmail] = useState(""); 
     const [password, setPassword] = useState("");
-    const [message, setMessage] = useState("");
+    const [message, setMessage] = useState(""); 
     const [loading, setLoading] = useState(false);
     const [isSuccess, setIsSuccess] = useState(false);
     

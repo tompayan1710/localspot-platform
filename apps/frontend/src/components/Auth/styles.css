@@ -16,7 +16,22 @@
 }
 
 
-  
+.submitbutton{
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+} 
+.submitbutton>p{
+  padding: 10px 0;
+}  
+
+.submitbutton>div:has(.spinner){
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+}
 
 .BackButton>img{
   width: 20px;
@@ -582,7 +597,7 @@
   top: 0;
   border: 3px solid white;
   border-radius: 10px;
-  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.17);
   object-fit: cover;
 }
 .profile-container .BecomProviderBig>.t4{

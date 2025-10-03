@@ -9,6 +9,7 @@ import { GoogleAuthButton } from "./GoogleAuthButton"
 import Spinner from "../Spinner/Spinner"
 import GoBack from "../GoBack/GoBack";
 import FadeInImage from "../Utils/FadeInImage";
+import { useTranslation } from "react-i18next";
 
 export default function Login() {
   const [email, setEmail] = useState(""); 
@@ -17,6 +18,7 @@ export default function Login() {
   const [loading, setLoading] = useState(false);
   const [isSuccess, setIsSuccess] = useState(false);
 
+  const {t, i18n} = useTranslation();
   const location = useLocation();
   const scrollTo = location.state?.scrollTo || undefined;
   const origin = location.state?.origin || "/"; 
@@ -45,7 +47,7 @@ export default function Login() {
 
     if (response.success) {
         setIsSuccess(true);
-        setMessage("Connexion réussie ✅");
+        setMessage("Connexion réussie ✅"); 
         localStorage.setItem("jwtToken", response.token);
         setTimeout(() => {
           checkAuth();
@@ -58,35 +60,38 @@ export default function Login() {
 
             // checkAuth();
           }, 300);
+        // setTimeout(() => {
+        //   navigate(`/profile?token=${response.token}`);
+        // }, 300);
     } else {
       setIsSuccess(false);
       setMessage(response.message || "Erreur de connexion.");
     }
   };
 
-  useEffect(() => {
-    console.warn("Je suis dans LOGIN")
-    const queryParams = new URLSearchParams(window.location.search);
-    const token = queryParams.get("token");
+  // useEffect(() => {
+  //   console.warn("Je suis dans LOGIN")
+  //   const queryParams = new URLSearchParams(window.location.search);
+  //   const token = queryParams.get("token");
 
-    if (token) {
-      // ✅ Stocke le JWT dans localStorage
-      localStorage.setItem("jwtToken", token);
+  //   if (token) {
+  //     // ✅ Stocke le JWT dans localStorage
+  //     localStorage.setItem("jwtToken", token);
 
-      // ✅ Met à jour le contexte d'authentification
-      checkAuth();
+  //     // ✅ Met à jour le contexte d'authentification
+  //     checkAuth();
 
-      // ✅ Redirige l'utilisateur là où il était
-      navigate(`/profile`);
-    }
-  }, [navigate, checkAuth]);//Just to no have the warning, not necessari
+  //     // ✅ Redirige l'utilisateur là où il était
+  //     navigate(`/profile`);
+  //   }
+  // }, [navigate, checkAuth]);//Just to no have the warning, not necessari
 
 
 
 
   return (
     <div className="AuthPage">
-      <GoBack nagigation={`${origin}`} scrollTo={`${options}`} text={"revenir"}/>
+      <GoBack nagigation={`${origin}`} scrollTo={`${options}`} text={t("back")}/>
       <div className="authcomponentcontainer">
         <div className="form-container">
           <div className="ImageWrapper">
@@ -95,25 +100,25 @@ export default function Login() {
 
           {/* {myauthContext.isAuth ? "Connectééééé Contexte" : "Déconnecter Je suis une merde en code"}
           <p>{myauthContext.message}</p> */}
-          <p className="t32">Connectez-vous</p>
-          <p className="t6">Bienvenue ! Veuillez compléter les informations pour continuer.</p>
+          <p className="t32">{t("Login_Title")}</p>
+          <p className="t6">{t("Login_Subtitle")}</p>
           <GoogleAuthButton redirectRoute={`/profile`}/>
           <div className="orcontainer">
-            <div className="orhline"></div><p className="t6">ou</p><div className="orhline"></div>
+            <div className="orhline"></div><p className="t6">{t("or")}</p><div className="orhline"></div>
           </div>
           
           {/* <form className="emailPasswordForm" onSubmit={handleSignup}> */}
           <form className="emailPasswordForm"  onSubmit={handleLogin}>
             <input 
               type="email" 
-              placeholder="Adresse e-mail" 
+              placeholder={t("Email_address")}
               value={email} 
               onChange={(e) => setEmail(e.target.value)} 
               required 
             />
             <input 
               type="password" 
-              placeholder="Mot de passe" 
+              placeholder={t("Password")}
               value={password} 
               onChange={(e) => setPassword(e.target.value)} 
               required 
@@ -124,15 +129,15 @@ export default function Login() {
               {message}
             </p>
             
-            <button type="submit">
-              {loading ? "Connexion en cours..." : "Se connecter"}
+            <button type="submit" className="submitbutton">
+              <p className="t5">{loading ? t("Login_in_progress") : t("Login_button")}</p>
               {loading && <Spinner />}
             </button>
           </form>
         </div>
         <div className="row">
-          <p className="t5">Vous n'avez pas de compte ?</p>
-          <a className="t4" href="/signup">S'inscrire</a>
+          <p className="t5">{t("No_account")}</p>
+          <a className="t4" href="/signup">{t("Signup_link")}</a>
         </div>
       </div>
     </div>
