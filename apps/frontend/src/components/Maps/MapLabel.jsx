@@ -1,8 +1,10 @@
 // src/components/Map2D/MapLabel.jsx
 import { useEffect, useRef } from "react";
+import ReactDOM from "react-dom";
 
 export default function MapLabel({ map, position, index, children }) {
-  const divRef = useRef();
+  // const divRef = useRef();
+  const divRef = useRef(document.createElement("div"));
 
   useEffect(() => {
     if (!map || !position) return;
@@ -41,12 +43,13 @@ export default function MapLabel({ map, position, index, children }) {
     return () => overlay.setMap(null);
   }, [map, position, index]);
 
-  return (
-    <div
-      ref={divRef}
-      // className={`${index > 10 ? "indexElever" : ""} TESTIBIG`}
-    >
-      {children}
-    </div>
-  );
+  // return (
+  //   <div
+  //     ref={divRef}
+  //     // className={`${index > 10 ? "indexElever" : ""} TESTIBIG`}
+  //   >
+  //     {children}
+  //   </div>
+  // );
+  return ReactDOM.createPortal(children, divRef.current);
 }

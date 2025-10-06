@@ -87,9 +87,10 @@
     transform: translate(100px);
     left: 50%;
     transform: translateX(-50%);
-    width: calc(100% - 200px);
+    /* width: calc(100% - 200px); */
     opacity: 0;
     z-index: 2;
+    min-width: 150px;
     max-width: calc(var(--maxsize) - 200px);
   }
 .CreateOfferContainerAll .NavigateButton>p{
@@ -382,7 +383,8 @@
 
 .CreateOfferMapContainer{
   width: 100%;
-  height: 200px;
+  height: 50%;
+  min-height: 300px;
 }
 
   .CreateOfferPage2 input {
@@ -912,14 +914,16 @@ input[type=number] {
   gap: 7px;
 }
 .CreateOfferPage5 .PriceContainer>input{
-  width: 80px;
+  width: 100px;
   margin-top: 0%;
+  flex: none;
+  margin-bottom: 0;
 }
 .CreateOfferPage5 .PriceContainer>p{
-  position: absolute;
-  top: 50%;
+  position: absolute; 
+  top: 50%; 
   transform: translateY(-50%);
-  left: 60px;
+  left: 80px;
   color: var(--greymiddledark);
   font-weight: 100;
 }
@@ -951,8 +955,14 @@ input[type=number] {
   margin-bottom: 25px;
 }
 .CreateOfferPage5 .CapaciteContainer>.InputText {
+  width: 100px;
   margin-top: 0;
+  flex: none;
+  margin-bottom: 0;
 }
+
+
+
 
 .CreateOfferPage5 .duration-slider{
   margin-bottom: 0px;
@@ -979,6 +989,7 @@ input[type=number] {
   top: 0;
   left: 50%;
   transform: translateX(-50%);
+  min-width: 150px;
   align-self: auto;
   opacity: 1;
 }
@@ -1268,3 +1279,189 @@ input[type=number] {
   height: 1.5rem;
   margin-right: 4px;
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+.TarifItem{
+  display: flex;
+  flex-direction: column;
+  border: 1px solid var(--greysemidark);
+  border-radius: 15px;
+  padding:  20px 15px;
+  gap: 5px;
+  margin-bottom: 10px;
+  cursor: pointer;
+}
+
+.ErrorDiv{
+  display: flex;
+  flex-direction: row;
+  gap: 5px;
+  justify-content: center;
+  align-items: start;
+}
+.WaringRound{
+  background-color: var(--rednormal);
+  border-radius: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  width: 16px;
+  max-width: 16px;
+  height: 14px;
+  max-height: 14px;
+}
+.WaringRound>p{
+  color: white;
+  padding-bottom: 1px;
+}
+.errorTarif{
+  color: var(--rednormal);
+}
+
+
+
+
+
+
+
+
+
+
+
+
+.sectionContainer{
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  gap: 8px;
+  border: 1px solid var(--greysemidark);
+  border-radius: 14px;
+  padding: 15px 15px;
+}
+.sectionContainer>div{
+  gap: 5px;
+}
+.sectionContainer>img{
+  height: 12px;
+  width: 12px;
+}
+
+
+.EnterValueContainer{
+  display: flex;
+  flex-direction: column;
+  border: 1px solid var(--greysemidark);
+  border-radius: 15px;
+  padding:  20px 15px;
+  gap: 5px;
+  margin-bottom: 10px;
+  cursor: pointer;
+}
+
+
+
+.CapacityContainer{
+
+}
+.CapacityContainer>p:first-of-type{
+  text-align: start;
+}
+.CapacityContainer>p:nth-of-type(2){
+  opacity: 0.6;
+  margin-top: 6px;
+  margin-bottom: 20px;
+}
+
+
+
+
+
+
+
+
+.IsCountCapacity {
+  display: flex;
+  flex-direction: row;
+  gap: 5px;
+  margin-bottom: 15px;
+}
+
+.CustomCheckboxImage {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  cursor: pointer;
+  user-select: none;
+  --size: 18px;
+  width: var(--size);
+  height: var(--size);
+  min-width: var(--size);
+  min-height: var(--size);
+  background: white;
+  border: 1px solid var(--greymiddledark);
+  border-radius: 4px;
+  
+}
+.CustomCheckboxImage:has(input:checked) {
+  background: var(--lineargradientblack);  
+  border: 1px solid var(--greydark);
+  background-color: red;
+}
+/* le vrai input est transparent et prend tout le label */
+.CustomCheckboxImage input {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  opacity: 0;       /* invisible */
+  cursor: pointer;  /* toujours cliquable */
+  z-index: 2;       /* au-dessus du contenu */
+}
+
+/* ton image de check */
+.CheckboxIcon {
+  width: 10px;
+  height: 10px;
+  /* background-color: red; */
+  /* z-index: 1;
+  transition: transform 0.2s ease, opacity 0.2s ease; */
+}
+
+.CustomCheckboxImage p {
+  margin: 0;
+  font-size: 15px;
+  line-height: 1.3;
+}
+
+
+
+

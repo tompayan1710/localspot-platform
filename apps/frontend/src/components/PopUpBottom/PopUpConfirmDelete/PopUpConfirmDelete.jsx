@@ -4,7 +4,7 @@ import "./PopUpConfirmDelete.css"
 import PopUpBottom from "../PopUpBottom";
 import { useTranslation } from "react-i18next";
 
-const PopUpConfirmDelete = forwardRef(({deleteVersement, setIsOccultView, loading}, ref) => {    
+const PopUpConfirmDelete = forwardRef(({deletefunction, setIsOccultView, loading}, ref) => {    
     const {t} = useTranslation();
     
     return (
@@ -19,10 +19,10 @@ const PopUpConfirmDelete = forwardRef(({deleteVersement, setIsOccultView, loadin
             <div className="PopUpConfirmDelete">
                 <p className="t3">{t("Confirm_deletion_payout")}</p>
                 <p className="t5">{t("Confirm_deletion_payout_text")}</p>
-                <CancelConfirmButton cancelText={t("Cancel")} confirmText={"Delete"} loading={loading} theme={"red"} onCancel={() => {
+                <CancelConfirmButton cancelText={t("Cancel")} confirmText={"Supprimer"} loading={loading} theme={"red"} onCancel={() => {
                     ref.current.classList.remove("open");
                     setIsOccultView(false);
-                }} onConfirm={deleteVersement} isValid={true}/>
+                }} onConfirm={deletefunction} isValid={true}/>
             </div>
         </PopUpBottom>
     )}

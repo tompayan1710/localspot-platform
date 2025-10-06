@@ -1,7 +1,7 @@
 import "./AnnoncePage.css"
-import React, { useState, useContext, useEffect } from "react";
+import React, { useState, useContext, useEffect, useRef } from "react";
 import { AuthContext } from "../../../components/Auth/authContext/authContext";
-import { getOfferBySlug } from "../../../services/offers";
+import { deleteOffersProvider, getOfferBySlug } from "../../../services/offers";
 import { useNavigate, useParams } from "react-router-dom";
 import GoBack from "../../../components/GoBack/GoBack";
 import Map2D from "../../../components/Maps/Map2D";
@@ -9,11 +9,16 @@ import { getAllHoteBySlug } from "../../../services/hotes";
 import Footer from "../../../components/Footer/Footer";
 import { useLocation } from "react-router-dom";
 import LineGraphe from "../../Statistique/LineGraphe";
+import PopUpConfirmDelete from "../../../components/PopUpBottom/PopUpConfirmDelete/PopUpConfirmDelete";
 
 export default function AnnoncePage(){
     const navigate = useNavigate();
     const { slug } = useParams();
     const location = useLocation();
+
+    const popUpDeleteRef = useRef(null);
+    const [loadingDelete, setLoadingDelete] = useState(false);
+    const [isOccultView, setIsOccultView] = useState(false);
 
     const { authState, logout } = useContext(AuthContext);
     const [offer, setOffer] = useState({});
@@ -107,6 +112,19 @@ export default function AnnoncePage(){
     }, [authState.loading, authState.isAuth, navigate]); // ✅ Suivre loading et isAuth
 
 
+
+    const deletefunction = async () => {
+        setLoadingDelete(true);
+        console.log("Je suis en trains de delete");
+        console.log(offer);
+        console.log(offer.id);
+        if(offer?.id){
+            await deleteOffersProvider(offer.id);
+            setLoadingDelete(false);
+            console.log("J'ai fini de delete");
+            navigate("/annonces");
+        }
+    }
 
     return (
         <div id="AnnoncePage">
@@ -241,6 +259,24 @@ export default function AnnoncePage(){
                 </React.Fragment>
             ))}
             </div>
+
+            <div className="DeleteOffer">
+                <button onClick={() => {
+                    popUpDeleteRef.current.classList.add("open");
+                    setIsOccultView(true);
+                }}>
+                    <p className="t5">Supprimer l'annonces</p>
+                </button>
+            </div>
+
+            <PopUpConfirmDelete ref={popUpDeleteRef} deletefunction={deletefunction} setIsOccultView={setIsOccultView} loading={loadingDelete}/>
+            
+            <div className={`occultView ${isOccultView ? "open" : ""}`}  
+            onClick={(e) => {
+                popUpDeleteRef.current.classList.remove("open");
+                setIsOccultView(false);
+
+            }}></div>
 
             <Footer />
         </div>

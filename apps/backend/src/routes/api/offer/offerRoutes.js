@@ -1,7 +1,7 @@
 const express = require("express");
 const router = express.Router();
 
-const { createOffer, getAllOffers, getOfferBySlug, getOffersProvider, createSlugOfferNotExist } = require("../../../db/Models/offerModel");
+const { createOffer, getAllOffers, getOfferBySlug, getOffersProvider, createSlugOfferNotExist, deleteOffer } = require("../../../db/Models/offerModel");
 const { findOrCreateCityByName } = require("../../../db/Models/AdresseModel");
 const { toggleFavorite, isFavorite } = require("../../../db/Models/FavoritesModel");
 const { translateToAll } = require("../../../utils/translate");
@@ -21,7 +21,13 @@ router.post("/create", async (req, res) => {
     ville,
     categories,
     type,
+    priceAdult,
+    priceChild,
+    priceBaby,
     price,
+    counts_toward_capacity_adult,
+    counts_toward_capacity_child,
+    counts_toward_capacity_infant,
     duration,
     image_urls,
     provider_id,
@@ -43,7 +49,13 @@ router.post("/create", async (req, res) => {
     "ville", ville,
     "categories", categories,
     "type",type,
-    "price",price,
+    "priceAdult",priceAdult,
+    "priceChild", priceChild,
+    "priceBaby", priceBaby,
+    "price", price,
+    "counts_toward_capacity_adult", counts_toward_capacity_adult,
+    "counts_toward_capacity_child", counts_toward_capacity_child,
+    "counts_toward_capacity_infant", counts_toward_capacity_infant,
     "duration",duration,
     "image_urls",image_urls,
     "provider_id",provider_id,
@@ -85,7 +97,13 @@ router.post("/create", async (req, res) => {
     categories,
     type,
     city_id,
+    priceAdult,
+    priceChild,
+    priceBaby,
     price,
+    counts_toward_capacity_adult,
+    counts_toward_capacity_child,
+    counts_toward_capacity_infant,
     duration,
     image_urls,
     provider_id,
@@ -108,13 +126,18 @@ router.post("/create", async (req, res) => {
       categories,
       type,
       city_id,
+      priceAdult,
+      priceChild,
+      priceBaby,
       price,
+      counts_toward_capacity_adult,
+      counts_toward_capacity_child,
+      counts_toward_capacity_infant,
       duration,
       image_urls,
       provider_id,
       pricePer,
       total_capacity,
-      // qrcode_url,
       slug,
       cancellable,
       title_i18n,
@@ -123,7 +146,7 @@ router.post("/create", async (req, res) => {
 
     res.status(201).json({ success: true, offer: newOffer });
   } catch (err) {
-    console.error("❌ Erreur lors de la création de l'offre :", err.message);
+    console.error("❌  Erreur lors de la création de l'offre :", err.message);
     res.status(500).json({ success: false, error: "Erreur serveur" });
   }
 });
@@ -190,7 +213,23 @@ router.get("/create-slug", async (req, res) => {
   }
 });
 
+router.delete("/delete", async (req, res) => {
+  const { id } = req.query; // ✅ pas de parenthèses
 
+  if (!id) {
+    return res.status(400).json({ success: false, error: "Id manquant" });
+  }
+  try {
+    const deleted = await deleteOffer(id);
+    if (!deleted) {
+      return res.status(404).json({ success: false, error: "Offre introuvable" });
+    }
+    res.json({ success: true, deleted });
+  } catch (err) {
+    console.error("Erreur /delete :", err);
+    res.status(500).json({ success: false, error: "Erreur serveur" });
+  }
+});
 
 
 const multer = require("multer");

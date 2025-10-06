@@ -303,3 +303,25 @@
   width: 88%;
   margin: 0 auto;
 }
+
+
+
+#AnnoncePage .DeleteOffer{
+  /* background: var(--lineargradientred); */
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  margin-bottom: 20px;
+}
+#AnnoncePage .DeleteOffer>button{
+  background: var(--lineargradientred);
+  border-radius: 10px;
+  border: none;
+  width: fit-content;
+  padding: 10px 14px;
+  cursor: pointer;
+}
+#AnnoncePage .DeleteOffer>button>p{
+  color: white;
+}

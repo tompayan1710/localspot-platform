@@ -750,6 +750,15 @@ function Map2D({
   // Clé pour forcer un remount propre si center/destination changent (évite des panes “fantômes”)
   const mapKey = `${center?.lat ?? "x"},${center?.lng ?? "x"}-${destination ? "withdst" : "nodst"}`;
 
+  useEffect(() => {
+    return () => {
+      if (mapRef.current) {
+        window.google.maps.event.clearInstanceListeners(mapRef.current);
+        mapRef.current = null;
+      }
+    };
+  }, []);
+
   return (
     <div
       style={{

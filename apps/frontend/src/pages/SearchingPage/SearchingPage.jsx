@@ -44,6 +44,30 @@ export default function SearchingPage(){
     //         console.log("NO STATE passed")
     //     }
     // })
+    const [id_hote_data, setId_hote_data] = useState(() => {
+      const stored = localStorage.getItem("id_hote");
+      return stored ? JSON.parse(stored) : null;
+    });
+
+    useEffect(() => {
+      const EXPIRATION = 7 * 24 * 60 * 60 * 1000; // 7 jours en ms
+
+      if (id_hote_data && Date.now() - id_hote_data.ts > EXPIRATION) {
+        localStorage.removeItem("id_hote");
+        console.log("id_hote expiré");
+        setId_hote_data(null);
+      }
+    }, [id_hote_data]);
+
+    const goToOffer = (slug, navOptions = {}) => {
+      console.warn("Je goToOffer");
+      if (id_hote_data?.id_hote) {
+        navigate(`/offer-page/${slug}?host_id=${id_hote_data.id_hote}`, navOptions);
+      } else {
+        navigate(`/offer-page/${slug}`, navOptions);
+      }
+    };
+
 const fetchFilteredOffers = async (filteredOption) => {
             setLoadingFiltered(true);
             setFilteredOffers([]);
@@ -159,7 +183,7 @@ const fetchFilteredOffers = async (filteredOption) => {
                             <p className="t5">
                                 {filteredOffers.length} résultat{filteredOffers.length !== 1 ? "s" : ""} trouvé{filteredOffers.length !== 1 ? "s" : ""}
                             </p>
-                            <OffersCard offers={filteredOffers} loading={loadingFiltered} vertical={true}/>
+                            <OffersCard offers={filteredOffers} loading={loadingFiltered} vertical={true} goToOffer={goToOffer} />
                         </div>
                         :
                         <>
@@ -177,7 +201,7 @@ const fetchFilteredOffers = async (filteredOption) => {
                         <div id={"Suggestions"}>
                             <p className="t32 bold">Quelques suggestions :</p>
                         </div>
-                        <OffersCard offers={suggestions} loading={loadingAll} vertical={true}/>
+                        <OffersCard offers={suggestions} loading={loadingAll} vertical={true} goToOffer={goToOffer} />
                     </div>
                 )}
             </div>

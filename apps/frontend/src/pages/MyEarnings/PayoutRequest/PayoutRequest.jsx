@@ -49,8 +49,8 @@ export default function PayoutRequest(){
 
     const [isOccultView, setIsOccultView] = useState(false);
 
-    const maxAmount = 3000.00.toFixed(2).replace('.', ',');
-    const minAmount = 1.00.toFixed(2).replace('.', ',');
+    const maxAmount = 3000.00;
+    const minAmount = 1.00;
 
 
     useEffect(() => {
@@ -281,14 +281,14 @@ export default function PayoutRequest(){
 
             <PopUpNumber 
                 ref={numberPickerRef} 
-                title={"Montant personnalisé"}
+                title={t("Custom_amount")}
                 // smalltext={`Montant maximum disponible : ${formatEuro(solde)} €`}
                 // max={solde}
-                smalltext={`${t("Available_max", {max: maxAmount})}`}
+                smalltext={`${t("Available_max", {max: maxAmount.toFixed(2).replace('.', ',')})}`}
                 min={minAmount}
-                errorMin={`${t("Error_min", {min: minAmount})}`}
+                errorMin={`${t("Error_min", {min: minAmount.toFixed(2).replace('.', ',')})}`}
                 max={maxAmount}
-                errorMax={`${t("Error_max"), {max: maxAmount}}`}
+                errorMax={`${t("Error_max", {max: maxAmount.toFixed(2).replace('.', ',')})}`}
                 onClose={closeNumberPicker} 
                 setReturnValue={setAmount}
             />

@@ -8,21 +8,28 @@ async function createOffer({
   adresse,
   latitude,
   longitude,
+  departement_id,
   categories,
   type,
   city_id,
+  priceAdult,
+  priceChild,
+  priceBaby,
   price,
+  counts_toward_capacity_adult,
+  counts_toward_capacity_child,
+  counts_toward_capacity_infant,
   duration,
   image_urls,
   provider_id,
   pricePer,
   total_capacity,
-  // qrcode_url,
   slug,
   cancellable,
   title_i18n,
   description_i18n
 }) {
+
   const query = `
     INSERT INTO offers (
       title,
@@ -30,10 +37,10 @@ async function createOffer({
       adresse,
       latitude,
       longitude,
+      departement_id,
       categories,
       type,
       city_id,
-      price,
       duration,
       image_urls,
       provider_id,
@@ -42,20 +49,60 @@ async function createOffer({
       slug,
       cancellable,
       title_i18n, 
-      description_i18n   
+      description_i18n,
+      price  
     )
-    VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, $14, $15, $16, $17, $18)
+    VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, $14, $15, $16, $17, $18, $19)
     RETURNING *;
   `;
 
   const values = [
-    title, description, adresse, latitude, longitude, categories,
-    type, city_id, price, duration, image_urls, provider_id,
+    title, description, adresse, latitude, longitude, departement_id,
+    categories, type, city_id, duration, image_urls, provider_id,
     pricePer, total_capacity,
     // qrcode_url,
     slug, cancellable,
-    JSON.stringify(title_i18n),         // <-- JSONB { fr, en }
-    JSON.stringify(description_i18n)    // <-- JSONB { fr, en }
+    JSON.stringify(title_i18n),          // <-- JSONB { fr, en }
+    JSON.stringify(description_i18n),    // <-- JSONB { fr, en }
+    price
+  ];
+
+  const result = await db.query(query, values);
+
+  const band_types = [
+    { type: "adult",  price: priceAdult, age_min: 18, age_max: null },
+    { type: "child",  price: priceChild, age_min: 5,  age_max: 17 },
+    { type: "infant", price: priceBaby,  age_min: 0,  age_max: 4 },
+  ];
+
+  const adultId = (await createOfferPricing(slug, "adult", 18, 99, priceAdult, "EUR", counts_toward_capacity_adult)).id;
+  const childId = (await createOfferPricing(slug, "child", 5, 17, priceChild, "EUR", counts_toward_capacity_child)).id;
+  const infantId = (await createOfferPricing(slug, "infant", 0, 4, priceBaby, "EUR", counts_toward_capacity_infant)).id;
+  
+  const updating_result = await db.query(`
+    UPDATE offers
+    SET offer_pricing_adult = $1,
+        offer_pricing_child = $2,
+        offer_pricing_infant = $3
+    WHERE slug = $4
+    RETURNING *;
+  `, [adultId, childId, infantId, slug]);
+
+  
+  return updating_result.rows[0];
+}
+
+async function createOfferPricing(offer_slug, band_type, age_min, age_max, price, currency, counts_toward_capacity) {
+  const query = `
+    INSERT INTO offer_pricing (
+      offer_slug, band_type, age_min, age_max, price, currency, counts_toward_capacity  
+    )
+    VALUES ($1, $2, $3, $4, $5, $6, $7)
+    RETURNING *;
+  `;
+
+  const values = [
+    offer_slug, band_type, age_min, age_max, price, currency, counts_toward_capacity
   ];
 
   const result = await db.query(query, values);
@@ -337,6 +384,28 @@ async function createSlugOfferNotExist() {
 }
 
 
+async function deleteOffer(id) {
+  console.log("Deleting Offer ", id);
+
+  const result = await db.query(
+    `DELETE FROM offers WHERE id = $1 RETURNING *;`,
+    [id]
+  );
+
+  const result_pricing = await db.query(
+    `DELETE FROM offer_pricing WHERE offer_slug = $1 RETURNING *;`,
+    [id]
+  );
+
+  const result_recurring_slots = await db.query(
+    `DELETE FROM offer_recurring_slots WHERE slug_offer = $1 RETURNING *;`,
+    [id]
+  );
+
+
+  return result.rows[0] || null;
+}
+
 
 
 module.exports = {
@@ -344,5 +413,6 @@ module.exports = {
   getOfferBySlug,
   getAllOffers,
   getOffersProvider,
-  createSlugOfferNotExist
+  createSlugOfferNotExist,
+  deleteOffer
 };

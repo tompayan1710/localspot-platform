@@ -96,3 +96,29 @@ export const getFilteredOffers = async (filters, lang) => {
     return { success: false };
   }
 };
+
+
+export const deleteOffersProvider = async (offer_id) => {
+  if (!offer_id) {
+    console.error("❌ offer_id manquant");
+    return { success: false, error: "Missing offer_id" };
+  }
+
+  try {
+
+    const response = await fetch(
+      `${process.env.REACT_APP_API_URL}/api/offer/delete?id=${offer_id}`,
+      { method: "DELETE" }
+    );
+
+    if (!response.ok) {
+      console.error("❌ Échec suppression de l'offre");
+      return { success: false };
+    }
+
+    return await response.json();
+  } catch (err) {
+    console.error("❌ Erreur suppression de l'offre :", err);
+    return { success: false };
+  }
+};

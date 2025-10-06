@@ -364,6 +364,16 @@ i18n
           Error_max: "The amount cannot exceed {{max}} €",
           Security_limit: "For security reasons, the maximum amount allowed per transfer is €3000.",
 
+          //Create Offer
+
+          //create-offer-informations
+          Price: "Price",
+          Minimum_price: "Mimimum price:",
+          Error_min_price: "The price cannot be less than {{min}} €",
+          Error_max_price: "The price cannot exceed {{max}} €",
+          Error_min_participant: "Enter a number of participants greater than or equal to {{min}}",
+          Error_max_participant: "Enter a number of participants less than or equal to {{max}}",
+
 
           //Calendar
           Choose_a_date: "Choose a date",
@@ -784,11 +794,21 @@ i18n
           Already_withdrawn: "Déjà retiré",
           Payout_method: "Mode de versement",
           Amount: "Montant",
-          Custom_amount: "Personnalisé",
+          Custom_amount: "Montant personnalisé",
           Available_max: "Montant maximum disponible : {{max}}",
           Error_min: "Le montant ne peut pas être inférieur à {{min}} €",
           Error_max: "Le montant ne peut pas dépasser {{max}} €",
           Security_limit: "Pour des raisons de sécurité, le montant maximum autorisé par virement est de {{max}} €.",
+
+          //Create Offer
+
+          //create-offer-informations
+          Price: "Prix",
+          Minimum_price: "Prix minimum : {{min}} €",
+          Error_min_price: "Le prix ne peut pas être inférieur à {{min}} €",
+          Error_max_price: "Le prix ne peut pas dépasser {{max}} €",
+          Error_min_participant: "Indiquez un nombre de participants supérieur ou égal à {{min}}",
+          Error_max_participant: "Indiquez un nombre de participants inférieur ou égal à {{max}}",
 
 
           //Calendar
