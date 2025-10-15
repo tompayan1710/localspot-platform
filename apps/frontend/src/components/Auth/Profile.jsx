@@ -32,13 +32,13 @@ import { getProviderById } from "../../services/provider";
 
 export default function Profile() {
   const navigate = useNavigate();
-  const { t, i18n } = useTranslation();
+  const { t, i18n } = useTranslation(); 
   const lang = (i18n.resolvedLanguage || i18n.language || "fr").split("-")[0];
 
   const location = useLocation();
 
  
-  const { authState, logout, checkAuth } = useContext(AuthContext);
+  const { authState, logout } = useContext(AuthContext);
    
   const [providerOffers, setProviderOffers] = useState([]);
   const [providerInfo, setProviderInfo] = useState({});
@@ -103,8 +103,10 @@ export default function Profile() {
 
     
   useEffect(() => {
-    getOfferOfProvider(authState.user.provider_id);
-    getProviderInfo(authState.user.provider_id);
+    if(authState.user.provider_id){
+      getOfferOfProvider(authState.user.provider_id);
+      getProviderInfo(authState.user.provider_id);
+    }
   }, [authState.user]);
 
 

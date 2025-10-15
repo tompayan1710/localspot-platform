@@ -428,6 +428,10 @@
         infant: participantInfant,
       });
 
+      const isFree = (price) => {
+        return price == 0 ? t('free') : price;
+      }
+
       return (
         <div className="AvailabilityContainer">
           <div className="TopDivOpacity"></div>
@@ -695,7 +699,10 @@
                 {adult && (
                     <div className="rowAddParticipant">
                       <div className="column">
-                        <p className="t5">{t('Adult')}</p>
+                        <div className="row"> 
+                          <p className="t5">{t('Adult')}</p>
+                          <p className="t5">&nbsp;{isFree(pricing?.adult?.price)}€</p>
+                        </div>
                         <p className="t6">{formatAgeRange(adult)}</p>
                       </div>
 
@@ -727,7 +734,10 @@
                   {child && (
                     <div className="rowAddParticipant">
                       <div className="column">
-                        <p className="t5">{t('Child')}</p>
+                        <div className="row"> 
+                          <p className="t5">{t('Child')}</p>
+                          <p className="t5">&nbsp;{isFree(pricing?.child?.price)}</p>
+                        </div>
                         <p className="t6">{formatAgeRange(child)}</p>
                       </div>
 
@@ -759,7 +769,10 @@
                   {infant && (
                     <div className="rowAddParticipant">
                       <div className="column">
-                        <p className="t5">{t('Infant')}</p>
+                        <div className="row"> 
+                          <p className="t5">{t('Infant')}</p>
+                          <p className="t5">&nbsp;({isFree(pricing?.infant?.price)}€)</p>
+                        </div>
                         <p className="t6">{formatAgeRange(infant)}</p>
                       </div>
 

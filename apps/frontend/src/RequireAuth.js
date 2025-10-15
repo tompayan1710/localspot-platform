@@ -7,7 +7,7 @@ export default function RequireAuth({ children }) {
   const { authState } = useContext(AuthContext);
   const location = useLocation();
 
-  if (authState.loading) return null; // ou <Spinner />
+  if (authState.loading) return null; // ou <Spinner /> 
 
   if (!authState.isAuth) {
     

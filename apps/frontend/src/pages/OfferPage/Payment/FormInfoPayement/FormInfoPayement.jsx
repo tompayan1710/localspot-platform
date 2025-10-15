@@ -1,7 +1,7 @@
 import { Route, useLocation, useNavigate, useParams } from "react-router-dom"
 import GoBack from "../../../../components/GoBack/GoBack"
 import "./FormInfoPayement.css"
-import { useContext, useEffect, useState } from "react";
+import { useContext, useEffect, useRef, useState } from "react";
 import ProgressBar from "../../../../components/ProgressBar/ProgressBar";
 import PhoneInput from "react-phone-number-input";
 import 'react-phone-number-input/style.css';
@@ -15,8 +15,8 @@ export default function FormInfoPayement(){
     const {t} = useTranslation();
     const location = useLocation();
     const navigate = useNavigate();
-
-    const { checkAuth } = useContext(AuthContext);
+ 
+    const { checkAuth, authState } = useContext(AuthContext);
 
     const locationParams = location.state;
     const fallbackParams = JSON.parse(sessionStorage.getItem("paymentParams") || "{}");
@@ -124,13 +124,15 @@ export default function FormInfoPayement(){
         }
     };
 
+
     useEffect(() => {
         const queryParams = new URLSearchParams(window.location.search);
         const token = queryParams.get("token");
 
         const init = async () => {
             if (token) {
-                // ✅ Stocke le JWT dans localStorage
+                // ✅ Stocke le JWT dans localStora
+
                 console.warn("Il y a un token de : ", token);
                 localStorage.setItem("jwtToken", token);
 

@@ -94,7 +94,7 @@ export default function BrowserRouterAll(){
             // url.searchParams.delete("token");
             // window.history.replaceState({}, "", url.toString());
             })();
-        }, [location.search, checkAuth]);
+        }, [location.search]);
     }
 
     useHandleOauthTokenOnce()

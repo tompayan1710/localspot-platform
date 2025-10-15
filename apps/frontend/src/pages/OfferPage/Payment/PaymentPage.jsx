@@ -20,10 +20,9 @@ export default function PaymentPage() {
     const { slug } = useParams();
     const {t, i18n} = useTranslation();
     const lang = (i18n.resolvedLanguage || i18n.language || "fr").split("-")[0];
-    const { authState } = useContext(AuthContext);
     const location = useLocation();
     const navigate = useNavigate();
-    const { checkAuth } = useContext(AuthContext);
+    const { checkAuth, authState } = useContext(AuthContext);
 
     const [ stripePromise, setStripePromise ]= useState(null);
     const [clientSecret, setClientSecret] = useState("");
