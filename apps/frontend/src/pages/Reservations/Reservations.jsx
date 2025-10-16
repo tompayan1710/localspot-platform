@@ -46,50 +46,63 @@ export default function Reservations(){
 
     useEffect(() => {
         if (authState.loading) return;
-        if (!authState.user?.id) return;
+
+        if (!authState.user?.id) {
+            setLoading(false);
+            return;
+        }
 
         const fetchData = async () => {
+            try {
             const reservations = await getAllReservations();
             console.warn("Réservations : ", reservations);
-            if (reservations) {
+
+            if (reservations && reservations.length > 0) {
+                // --- Regrouper par date ---
                 const objectReservation = {};
-                reservations.map((reservation) => {
-                    const dateObj = new Date(reservation.reservation_created_at); // Crée un objet Date
+                for (const reservation of reservations) {
+                const dateObj = new Date(reservation.reservation_created_at);
+                const formattedDate = dateObj.toLocaleDateString("en-US", {
+                    year: "numeric",
+                    month: "long",
+                    day: "numeric",
+                });
 
-                    const formattedDate = dateObj.toLocaleDateString("en-US", {
-                        year: "numeric",
-                        month: "long",
-                        day: "numeric",
-                    });
+                if (!objectReservation[formattedDate]) {
+                    objectReservation[formattedDate] = [];
+                }
+                objectReservation[formattedDate].push(reservation);
+                }
 
-                    console.log(formattedDate); // "July 10, 2025"
-                    if(!objectReservation[formattedDate]){
-                        objectReservation[formattedDate] = []
-                    }
-                    objectReservation[formattedDate].push(reservation)
-                })
                 setAllReservations(objectReservation);
 
-                const objectOffers = { ...offers };
+                // --- Charger les offres liées ---
+                const objectOffers = {};
                 for (const reservation of reservations) {
-                    const slug = reservation.offer_slug;
-                    if (!objectOffers[slug]) {
-                        const response = await getOfferBySlug(slug, lang);
-                        objectOffers[slug] = response.offer;
-                    }
+                const slug = reservation.offer_slug;
+                if (!objectOffers[slug]) {
+                    const response = await getOfferBySlug(slug, lang);
+                    objectOffers[slug] = response.offer;
                 }
-                setOffers(objectOffers);
+                }
 
-                setTimeout((
-                )=>{
-                    setLoading(false);
-                }, [800])
+                setOffers(objectOffers);
+            } else {
+                // ⚠️ Aucune réservation
+                console.warn("Aucune réservation trouvée");
+                setAllReservations({});
+            }
+            } catch (error) {
+            console.error("Erreur lors du chargement :", error);
+            setAllReservations({});
+            } finally {
+            // ✅ Toujours arrêter le chargement
+            setLoading(false);
             }
         };
 
         fetchData();
     }, [authState.loading, authState.user?.id]);
-
 
 
     useEffect(() => {

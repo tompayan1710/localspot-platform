@@ -429,7 +429,7 @@
       });
 
       const isFree = (price) => {
-        return price == 0 ? t('free') : price;
+        return "(" + (price == 0 ? t('free') : price + "€") + ")" ;
       }
 
       return (
@@ -701,7 +701,7 @@
                       <div className="column">
                         <div className="row"> 
                           <p className="t5">{t('Adult')}</p>
-                          <p className="t5">&nbsp;{isFree(pricing?.adult?.price)}€</p>
+                          <p className="t5">&nbsp;{isFree(pricing?.adult?.price)}</p>
                         </div>
                         <p className="t6">{formatAgeRange(adult)}</p>
                       </div>
@@ -771,7 +771,7 @@
                       <div className="column">
                         <div className="row"> 
                           <p className="t5">{t('Infant')}</p>
-                          <p className="t5">&nbsp;({isFree(pricing?.infant?.price)}€)</p>
+                          <p className="t5">&nbsp;{isFree(pricing?.infant?.price)}</p>
                         </div>
                         <p className="t6">{formatAgeRange(infant)}</p>
                       </div>

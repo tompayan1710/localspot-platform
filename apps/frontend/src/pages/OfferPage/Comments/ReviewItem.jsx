@@ -1,12 +1,14 @@
 import { useEffect, useRef, useState } from "react";
 import starIcon from "../../../assets/images/starIcon2.png";
 import StartIconMiddle from "../../../assets/images/StartIconMiddle.png";
+import { useTranslation } from "react-i18next";
 
 
 export default function ReviewItem({ index, comment, rating, date, readMoreIsEnable, setReadMoreIsEnable }) {
   const pRef = useRef(null);
   const [isTruncated, setIsTruncated] = useState(false);
-
+  const {t, i18n} = useTranslation();
+  
   useEffect(() => { 
     const timer = setTimeout(() => {
       if (pRef.current) {
@@ -81,7 +83,7 @@ export default function ReviewItem({ index, comment, rating, date, readMoreIsEna
             }
           >
             <p className="t6">
-              {readMoreIsEnable[index] ? "read less" : "read more"}
+              {readMoreIsEnable[index] ? t("read_less") : t("read_more")}
             </p>
           </button>
         )}

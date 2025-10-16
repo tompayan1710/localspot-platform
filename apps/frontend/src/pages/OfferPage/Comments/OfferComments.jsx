@@ -184,9 +184,9 @@ export default function OfferComments({ offerSlug, children }) {
         </div>
             
 
-        <button className="seeMore row" onClick={() => {}}>
+        {/* <button className="seeMore row" onClick={() => {}}>
           <p className="t32">{t("See")}&nbsp;<strong>+</strong></p>
-        </button>
+        </button> */}
 
         {/* <p className="seeMore t5">Voir <strong>+</strong></p> */}
     </div>

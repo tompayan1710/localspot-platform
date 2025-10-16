@@ -90,7 +90,8 @@ i18n
           participants_opinions_para: "The comments reflect the feelings of participants who have actually had the experience.",
           "based_on_review": "Based on {{count}} review",
           "based_on_review_plural": "Based on {{count}} reviews",
-
+          read_less: "read less",
+          read_more: "read more",
 
           //FOOTER
           footer_message: "The offers displayed have undergone rigorous selection and strict quality control, with the aim of providing you with high-quality services.",
@@ -268,6 +269,7 @@ i18n
           too_far_date: "You can only book up to one month in advance",
           no_slot_available: "No slots are available for this day.",
           free_cancellation_deadline: "Free cancellation deadline:",
+          free: "free",
           participants: "Participants",
           modify: "Edit",
           TOTAL: "TOTAL",
@@ -535,7 +537,8 @@ i18n
           participants_opinions: "les avis des participants",
           participants_opinions_para: "Les commentaires reflètent les ressentis de participants ayant réellement vécu l’expérience.",
           "based_on_review": "Basé sur {{count}} avis",
-
+          read_less: "lire moins",
+          read_more: "lire plus",
 
           //FOOTER
           footer_message: "Les offres affichées ont fait l'objet d'une sélection rigoureuse et d’un contrôle qualité strict, dans le but de vous proposer des prestations de grande qualité.",
@@ -705,6 +708,7 @@ i18n
           too_far_date: "Vous ne pouvez réserver qu'un mois à l'avance",
           no_slot_available: "Aucun créneau n'est disponible pour ce jour.",
           free_cancellation_deadline: "Date limite d’annulation gratuite :",
+          free: "gratuit",
           participants: "Participants",
           modify: "Modifier",
           total: "TOTAL",
@@ -727,7 +731,7 @@ i18n
 
           //My-Earning
           Earnings_: "Revenus :",
-          Available_earnings: "Available_earnings:",
+          Available_earnings: "Revenues disponibles:",
           Withdraw_my_earnings: "Retirer mes gains",
           Withdrawal_notice: "À l’issue du virement, une attestation de virement vous sera envoyée par e-mail.",
           Receive_my_payments: "Recevoir mes paiements",

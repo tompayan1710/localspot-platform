@@ -23,7 +23,7 @@ export default function AddComment() {
     const [searchParams] = useSearchParams();
     const res_id = searchParams.get("res_id"); 
 
-    const [loadingCanComment, setLoadingCanComment] = useState(authState.loading);
+    const [loadingCanComment, setLoadingCanComment] = useState(true);
     const [haveReservation, setHaveReservation] = useState(false);
     const [canComment, setCanComment] = useState(false);
 
@@ -90,12 +90,18 @@ export default function AddComment() {
     }, [authState]);
 
     useEffect(() => {
-        if (authState.user && res_id) {
+        if (!authState.loading) {
+            if (authState.user && res_id) {
             haveRightToComment();
+            } else {
+                setLoadingCanComment(false); // pas d'utilisateur ou de réservation → pas de spinner infini
+            }
         }
-    }, [authState, res_id]);
+    }, [authState.loading, authState.user, res_id]);
 
 
+
+    console.log("loadingCanComment", loadingCanComment);
     if(loadingCanComment || authState.loading){
         return <Spinner centerPage={true}></Spinner>
     }

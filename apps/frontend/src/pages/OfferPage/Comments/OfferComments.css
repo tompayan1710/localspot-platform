@@ -269,6 +269,8 @@
   /* height: 10px; */
   top: -5px;
   font-weight: bold;
+  width: fit-content;
+  margin-top: 5px;
 }
 
 .offerContainer .ReviewItem>p {

@@ -5,7 +5,7 @@ async function createQRCode() {
     method: "POST",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify({
-      slug: "9630f266-e89f-4ebf-b5f6-88801cb1f07b",
+      slug: "5576bba5-c3d4-4ea7-b84f-d375e1d1e74f",
       user_id: 64,
       id_hote: 4,
       base_url: "viarte.eu"
