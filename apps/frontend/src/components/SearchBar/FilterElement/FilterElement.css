@@ -272,6 +272,7 @@
     display: none;
 }
 
+
 .FilterElement .rdp-disabled{
     opacity: 0.3;
 }
@@ -322,3 +323,4 @@
   justify-content: center;
   align-items: center; */
 }
+

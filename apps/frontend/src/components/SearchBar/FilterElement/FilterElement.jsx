@@ -8,7 +8,8 @@ import CalendarNotFill from "../../../assets/images/CalendarNotFill.png"
 import arrowRight from "../../../assets/images/arrowRight.png"
 import arrowLeft from "../../../assets/images/arrowLeft.png"
 import { DayPicker } from "react-day-picker";
-
+import "react-day-picker/dist/style.css";
+import "../../../pages/OfferPage/Availibility/Availability.css"
 import PopUpBottom from "../../PopUpBottom/PopUpBottom"
 import { useNavigate } from "react-router-dom"
 import { useTranslation } from "react-i18next"
@@ -45,12 +46,13 @@ export default function FilterElement({
     const {t, i18n} = useTranslation();
     const lang = (i18n.language || "fr").split("-")[0]; 
     // const today = new Date().toLocaleDateString('fr-CA');
-    const today = new Date().toLocaleDateString(lang, {
-        weekday: "long", // ex: Monday, Lundi
-        day: "numeric",
-        month: "long",
-        year: "numeric",
-    });
+    // const today = new Date().toLocaleDateString(lang, {
+    //     weekday: "long", // ex: Monday, Lundi
+    //     day: "numeric",
+    //     month: "long",
+    //     year: "numeric",
+    // });
+    const today = new Date().toLocaleDateString('fr-CA'); // "YYYY-MM-DD"
 
     const dateLocales = {
         fr,
@@ -132,7 +134,16 @@ export default function FilterElement({
                         dayPickerRef.current.classList.add("open");
                         setSeccondOccultView(true)
                     }}>
-                        <p className="t5">{selectedDate || t("No_date_specified")}</p>
+                        <p className="t5">
+                        {selectedDate
+                            ? new Date(selectedDate).toLocaleDateString(lang, {
+                                day: "2-digit",
+                                month: "long",
+                                year: "numeric"
+                            })
+                            : t("No_date_specified")}
+                        </p>
+
                         <img src={CalendarNotFill} alt="Calendar icon"/>
                     </button>
                     <PopUpBottom 
@@ -152,12 +163,14 @@ export default function FilterElement({
                         <> 
                             <DayPicker
                                 mode="single"
-                                selected={new Date(selectedDate)}
+                                selected={selectedDate ? new Date(selectedDate) : undefined}
                                 onSelect={(date) => { 
-                                // setSelectedDate(date ? date.toLocaleDateString('fr-CA') : today)
-                                setSelectedDate(date ? date.toLocaleDateString(lang) : today)
-                                }}
-                                disabled={[{ before: today }]}
+                                setSelectedDate(date ? date.toLocaleDateString('fr-CA') : today)
+                                // setSelectedDate(date ? date.toLocaleDateString(lang) : today)
+                                }} 
+                                // disabled={[{ before: today }]}
+                                disabled={[{ before: new Date() }]}
+
                                 weekStartsOn={1}
                                 required
                                 captionLayout="buttons" // <-- OBLIGATOIRE pour voir les boutons flèches
