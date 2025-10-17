@@ -260,14 +260,14 @@ export default function AnnoncePage(){
             ))}
             </div>
 
-            <div className="DeleteOffer">
+            {/* <div className="DeleteOffer">
                 <button onClick={() => {
                     popUpDeleteRef.current.classList.add("open");
                     setIsOccultView(true);
                 }}>
                     <p className="t5">Supprimer l'annonces</p>
                 </button>
-            </div>
+            </div> */}
 
             <PopUpConfirmDelete ref={popUpDeleteRef} deletefunction={deletefunction} setIsOccultView={setIsOccultView} loading={loadingDelete}/>
             
