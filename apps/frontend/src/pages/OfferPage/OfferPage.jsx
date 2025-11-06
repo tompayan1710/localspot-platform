@@ -16,6 +16,11 @@
   import allImageIcon from "../../assets/images/allImageIcon.png" 
   import France from "../../assets/images/France.png" 
   import warningRed from "../../assets/images/warningRed.png" 
+  import ViarteLogo from "../../assets/images/ViarteLogoBig.png" 
+  import LogoHotel from "../../assets/images/LogoHotel.png" 
+  import LockGreen from "../../assets/images/LockGreen.png" 
+  import validateGreen from "../../assets/images/validateGreen.png" 
+  import crossRed from "../../assets/images/crossRed.png" 
 
   import Map2D from "../../components/Maps/Map2D"; 
 
@@ -42,6 +47,7 @@
   import PopUpLogin from "../../components/Auth/PopUpLogin/PopUpLogin.jsx";
   import ButtonLanguage from "../../components/Buttons/ButtonLanguage/ButtonLanguage.jsx";
   import { useTranslation } from "react-i18next";
+import FadeInImage from "../../components/Utils/FadeInImage.jsx";
 
 
   // import "./EditLanguage.css"
@@ -240,6 +246,9 @@
     }, [lang]);
 
 
+    useEffect(() => {
+      console.error(hote);
+    }, [hote])
 
 
     function formatDuration(durationText) {
@@ -674,7 +683,85 @@
                 <img src={arrowRight} alt="arrow right icon"/>
               </button>
               <div className={"cancelline"}></div> */}
+           <div className="WhatIncluded column">
+            <p className="t32">Ce qui est inclus</p>
 
+            <div className="IncludedList column">
+              <div className="row">
+                <img src={validateGreen} alt="validate green" />
+                <p className="t6">Accompagnement par un guide local certifié</p>
+              </div>
+              <div className="row">
+                <img src={validateGreen} alt="validate green" />
+                <p className="t6">Dégustation de produits régionaux</p>
+              </div>
+              <div className="row">
+                <img src={validateGreen} alt="validate green" />
+                <p className="t6">Assurance responsabilité incluseAssurance responsabilité incluseAssurance responsabilité </p>
+              </div>
+              <div className="row">
+                <img src={validateGreen} alt="validate green" />
+                <p className="t6">Équipement de sécurité fourni</p>
+                </div>
+              <div className="row">
+                <img src={crossRed} alt="not included" />
+                <p className="t6">Transport jusqu’au lieu de l’activité</p>
+              </div>
+              <div className="row">
+                <img src={crossRed} alt="not included" />
+                <p className="t6">Repas et boissons supplémentaires</p>
+              </div>
+              <div className="row">
+                <img src={crossRed} alt="not included" />
+                <p className="t6">Dépenses personnelles et souvenirs</p>
+              </div>
+            </div>
+            </div>
+            <div className="hline88"></div>
+
+            <div className="ReserveOnlyOnViarte row">
+              <img src={LockGreen} alt="Lock green"/>
+              <p className="t6">Afin de protéger votre paiement, utilisez toujours Viarte pour effectuer vos transactions et réserver vos activités.</p>
+            </div>
+            <div className="hline88"></div>
+            <div className="AnnulationCondition row">
+              <div className="column">
+                <p className="t32">Conditions d'annulation</p>
+                <p className="t6">
+                  Vous pouvez annuler votre réservation sans frais jusqu’à 24 heures avant le début de l’activité. 
+                  Passé ce délai, le montant total sera retenu. En cas de conditions météorologiques exceptionnelles 
+                  ou d’annulation du prestataire, un remboursement complet vous sera automatiquement proposé.
+                </p>
+              </div>
+              <img src={arrowRight} alt="arro wright icon"/>
+            </div>
+
+            {
+              id_hote &&
+              <>
+              <div className="hline88"></div>
+              <div className="PartnershipWithHotel">
+                <div className="row">
+                  <img src={ViarteLogo} alt="Viarte Logo" />
+                  <p className="t1">&</p>
+                  <img src={LogoHotel} alt="Hotel Logo" />
+                </div>
+                <p className="t4">En partenariat avec votre Hotel</p>
+                <p className="hotelPartnershipText t6">
+                  Ensemble, nous vous invitons à découvrir les trésors cachés de la région.  
+                  Entre raffinement, authenticité et passion du voyage.
+                </p>
+                <div className="row HotelImages">
+                    {hote.image_urls && hote.image_urls.slice(0, 3).map((img, index) => (
+                      <div className={`ImageWrapper ${isLoading && "loading shimmer"}`}>
+                        <FadeInImage src={img}  alt={`Image de l'hôtel ${hote.nom || ""}`} />
+                      </div>
+                  ))}
+                </div>
+                </div>
+                </>
+            }
+            <div className="hline88"></div>
               <div className="ParticipantSelectContainer" onClick={() => {
                 // ParticipantBottomRef.current.style.bottom = "0px";
                 ParticipantBottomRef.current.classList.add("open")

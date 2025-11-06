@@ -1435,7 +1435,7 @@ COPY public.refresh_tokens (id, user_id, refresh_token, expires_at, created_at) 
 352	67	eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6NjcsImVtYWlsIjoidG9tcGF5YW4xNzEwQGdtYWlsLmNvbSIsImlhdCI6MTc1OTQyOTM0NiwiZXhwIjoxNzc0OTgxMzQ2fQ.Ho8eOXnydx8AT1kF3YwXfmgkQtSVY_ZJSMatNRCpkgk	2026-03-31 20:22:26.489	2025-10-02 20:22:26.492812
 353	67	eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6NjcsImVtYWlsIjoidG9tcGF5YW4xNzEwQGdtYWlsLmNvbSIsImlhdCI6MTc1OTQyOTQxNSwiZXhwIjoxNzc0OTgxNDE1fQ.3EtRu3pr79lVNsSKBOdcfczsucN53YwEfLSS7yF8t4I	2026-03-31 20:23:35.012	2025-10-02 20:23:35.014063
 379	67	eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6NjcsImVtYWlsIjoidG9tcGF5YW4xNzEwQGdtYWlsLmNvbSIsImlhdCI6MTc2MDUxNjY4NCwiZXhwIjoxNzc2MDY4Njg0fQ.7abZevDMzHlerJyIKxIb8R0wEsNFqotIbp-Q8CFTkZ4	2026-04-13 10:24:44.373	2025-10-15 10:09:41.641123
-385	67	eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6NjcsImVtYWlsIjoidG9tcGF5YW4xNzEwQGdtYWlsLmNvbSIsImlhdCI6MTc2MDY0NDIxNSwiZXhwIjoxNzc2MTk2MjE1fQ.cEsOJ2mBkcj1rDjLwe7zkHHmw6u8fa0HMsr6YH4JNRk	2026-04-14 21:50:15.746	2025-10-16 21:32:42.819196
+387	67	eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6NjcsImVtYWlsIjoidG9tcGF5YW4xNzEwQGdtYWlsLmNvbSIsImlhdCI6MTc2MDY4MDQxNCwiZXhwIjoxNzc2MjMyNDE0fQ.QWXbwA7tYuKF3_NhsyYhu68I7VF1D5ED-4y20Bkg4AY	2026-04-15 07:53:34.722	2025-10-17 07:53:34.727958
 \.
 
 
@@ -1447,6 +1447,9 @@ COPY public.reservation_slots (id, provider_id, offer_slug, date, start_hour, en
 124	11	49eda54a-a544-4fd6-91ce-9bcddcfaa20a	2025-10-21	14:00	16:00	6	full	2025-10-02 19:41:27.565139	2025-10-03 10:30:02.807486	46.20	85.80	528.00	660.00
 129	11	5576bba5-c3d4-4ea7-b84f-d375e1d1e74f	2025-10-27	09:00	11:00	3	full	2025-10-16 21:17:10.250508	2025-10-16 21:17:10.250508	63.00	117.00	720.00	900.00
 130	11	5576bba5-c3d4-4ea7-b84f-d375e1d1e74f	2025-10-29	08:00	10:00	3	full	2025-10-16 21:38:01.357852	2025-10-16 21:38:01.357852	63.00	117.00	720.00	900.00
+131	11	5576bba5-c3d4-4ea7-b84f-d375e1d1e74f	2025-10-27	12:00	14:00	3	full	2025-10-17 07:51:29.717439	2025-10-17 07:51:29.717439	57.75	107.25	660.00	825.00
+132	11	49eda54a-a544-4fd6-91ce-9bcddcfaa20a	2025-10-28	14:00	16:00	6	full	2025-10-17 07:52:32.974727	2025-10-17 07:52:32.974727	42.00	78.00	480.00	600.00
+133	11	5576bba5-c3d4-4ea7-b84f-d375e1d1e74f	2025-10-27	14:00	16:00	3	full	2025-10-17 07:54:14.085198	2025-10-17 07:54:14.085198	57.75	107.25	660.00	825.00
 125	11	9630f266-e89f-4ebf-b5f6-88801cb1f07b	2025-10-20	10:00	12:00	4	full	2025-10-02 19:54:11.629961	2025-10-02 19:54:11.629961	5.32	9.88	60.80	76.00
 126	11	996d438f-9637-4533-bae9-c4e84b5e8ef8	2025-10-20	10:00	12:00	5	full	2025-10-02 19:55:56.253468	2025-10-02 19:55:56.253468	16.36	30.39	187.00	233.75
 127	11	49eda54a-a544-4fd6-91ce-9bcddcfaa20a	2025-10-27	12:00	14:00	2	available	2025-10-02 20:16:55.955332	2025-10-02 20:16:55.955332	15.40	28.60	176.00	220.00
@@ -1472,6 +1475,9 @@ COPY public.reservations_individuals (id, user_id, slot_id, total_places_used, p
 162	67	124	2	paid	confirmed	2025-10-03 10:30:02.812828	2025-10-03 10:30:02.812828	tompayan1710@gmail.com	Tom Payan	+33765594097	pi_3SE4N02f0HHvMFDt1KhD1x90	15.40	28.60	176.00	220.00	\N	0	0	110.00	80.00	0.00	2	b03451d0-395d-4aea-aac3-37177bd5cfc9	\N
 164	67	130	3	paid	confirmed	2025-10-16 21:38:01.362911	2025-10-16 21:38:01.362911	tompayan1710@gmail.com	Tom Payan	+33765594097	pi_3SIwzO2f0HHvMFDt1vS129OI	63.00	117.00	720.00	900.00	4	0	0	300.00	225.00	0.00	3	d7e64b2c-3f84-4dff-9ef8-41e4bdfd63ef	14
 163	67	129	3	paid	confirmed	2025-10-16 21:17:10.262428	2025-10-16 21:17:10.262428	tompayan1710@gmail.com	Tom Payan	+33765594097	pi_3SIwfV2f0HHvMFDt1xW3MzYq	63.00	117.00	720.00	900.00	4	0	0	300.00	225.00	0.00	3	a4f214a2-fbea-4b9d-95a2-3e8716df5497	15
+165	64	131	3	paid	confirmed	2025-10-17 07:51:29.728571	2025-10-17 07:51:29.728571	tompayan1710@gmail.com	Tom Payan	+33765594097	pi_3SJ6L72f0HHvMFDt1DNQ4VC4	57.75	107.25	660.00	825.00	\N	1	0	300.00	225.00	0.00	2	3bedfc6f-b7b9-48b1-a522-bdc319758e89	\N
+166	64	132	6	paid	confirmed	2025-10-17 07:52:32.981188	2025-10-17 07:52:32.981188	tompayan1710@gmail.com	Tom Payan	+33765594097	pi_3SJ6aQ2f0HHvMFDt19ZI2uPI	42.00	78.00	480.00	600.00	4	2	1	110.00	80.00	0.00	4	90cbc1af-17fd-47a2-9012-911cbb84e8c1	\N
+167	67	133	3	paid	confirmed	2025-10-17 07:54:14.093676	2025-10-17 07:54:14.093676	tompayan1710@gmail.com	Tom Payan	+33765594097	pi_3SJ6c42f0HHvMFDt1oDgBmnG	57.75	107.25	660.00	825.00	4	1	0	300.00	225.00	0.00	2	801ab593-f368-41e6-81c2-8a1f21c9921e	\N
 \.
 
 
@@ -1628,14 +1634,14 @@ SELECT pg_catalog.setval('public.qr_codes_id_seq', 84, true);
 -- Name: refresh_tokens_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
 
-SELECT pg_catalog.setval('public.refresh_tokens_id_seq', 385, true);
+SELECT pg_catalog.setval('public.refresh_tokens_id_seq', 387, true);
 
 
 --
 -- Name: reservation_slots_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
 
-SELECT pg_catalog.setval('public.reservation_slots_id_seq', 130, true);
+SELECT pg_catalog.setval('public.reservation_slots_id_seq', 133, true);
 
 
 --
@@ -1649,7 +1655,7 @@ SELECT pg_catalog.setval('public.reservations_creneaux_google_calendar_id_seq', 
 -- Name: reservations_individuals_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
 
-SELECT pg_catalog.setval('public.reservations_individuals_id_seq', 164, true);
+SELECT pg_catalog.setval('public.reservations_individuals_id_seq', 167, true);
 
 
 --

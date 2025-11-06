@@ -719,12 +719,149 @@ justify-content: center;
 
 
 
+.ReserveOnlyOnViarte{
+  padding: 20px 6%;
+  gap: 10px;
+}
+.ReserveOnlyOnViarte img{
+  width: 24px;
+}
+
+.WhatIncluded{
+  padding: 20px 6%;
+  gap: 8px;
+}
+.WhatIncluded>.IncludedList{
+  gap: 5px;
+  margin-left: 10px;
+}
+.WhatIncluded>.IncludedList>.row{
+ gap: 5px;
+ align-items: start;
+}
+.WhatIncluded>.IncludedList>.row>img{
+  width: 16px;
+}
+.WhatIncluded>.IncludedList>.row>p{
+  margin-top: 1px;
+}
+
+
+
+.AnnulationCondition{
+  padding: 20px 6%;
+  gap: 10px;
+  cursor: pointer;
+}
+.AnnulationCondition>.column{
+  gap: 3px;
+}
+.AnnulationCondition img{
+  width: 13px;
+}
 
 
 
 
 
 
+
+.PartnershipWithHotel {
+    margin: 0 6%;
+    margin-top: 30px;
+    /* padding: 14px 15px; */
+    /* padding-right: 12px; */
+    /* padding-top: 20px; */
+    border-radius: 10px;
+    /* box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05); */
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+.PartnershipWithHotel>.row {
+  gap: 15px;
+}
+.PartnershipWithHotel>.row>p {
+  font-family: 'Cookie', serif;
+}
+.PartnershipWithHotel>.row:first-of-type>img {
+    width: 80px;
+    border-radius: 10px;
+    border: 4px solid white;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+.PartnershipWithHotel+.hline88{
+  margin-top: 20px;
+}
+
+.PartnershipWithHotel>p{
+  margin-top: 12px;
+}
+.PartnershipWithHotel .hotelPartnershipText{
+  text-align: center;
+  padding: 0 10px;
+  margin-top: 5px;
+}
+
+
+.PartnershipWithHotel >.HotelImages {
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  position: relative;
+  height: auto;
+  aspect-ratio: 1.7;
+  margin-top: 10px;
+}
+.PartnershipWithHotel > .HotelImages > .ImageWrapper {
+  --radiusClamp: clamp(10px, 8vw, 25px);
+
+  position: absolute;
+  width: 60%;
+  border-radius: var(--radiusClamp);
+  border: 3px solid white;
+  box-shadow: 0 4px 25px rgba(0, 0, 0, 0.14);
+  height: 100px;
+  object-fit: cover;
+  background-color: var(--greylight);
+  aspect-ratio: 0.75;
+  display: flex;
+  flex-direction: column;
+  transition: box-shadow 0.6s ease-in-out;
+}
+
+.PartnershipWithHotel >.HotelImages>.ImageWrapper:nth-of-type(1) {
+  left: 0px;
+  z-index: 0;
+  width: 60%;
+  height: auto;
+  aspect-ratio: 1.4;
+  transform: rotate(-5deg);
+}
+.PartnershipWithHotel >.HotelImages>.ImageWrapper:nth-of-type(2) {
+  right: 0px;
+  z-index: 0;
+  width: 60%;
+  height: auto;
+  aspect-ratio: 1.4;
+  transform: rotate(5deg);
+}
+.PartnershipWithHotel >.HotelImages>.ImageWrapper:nth-of-type(3) {
+  z-index: 1;
+  height: auto;
+  width: 60%;
+  aspect-ratio: 1.2;
+}
+
+.PartnershipWithHotel >.HotelImages>.ImageWrapper>img {
+  width: 100%;
+  height: 100%;
+  border-radius: calc(var(--radiusClamp) * 0.9);
+  object-fit: cover;
+}
 
 
 
@@ -877,3 +1014,10 @@ justify-content: center;
 .bodyPopUpBottom .EditLanguageContianer {
   margin-top: 20px;
 }
+
+
+
+
+
+
+
