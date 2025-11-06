@@ -21,6 +21,11 @@
   import LockGreen from "../../assets/images/LockGreen.png" 
   import validateGreen from "../../assets/images/validateGreen.png" 
   import crossRed from "../../assets/images/crossRed.png" 
+  import translateGoogle from "../../assets/images/translateGoogle.png" 
+  import disabledIcon from "../../assets/images/disabledIcon.png" 
+  import cancelIcon from "../../assets/images/cancelIcon.png" 
+  import Calendar from "../../assets/images/Calendar.png" 
+
 
   import Map2D from "../../components/Maps/Map2D"; 
 
@@ -684,36 +689,64 @@ import FadeInImage from "../../components/Utils/FadeInImage.jsx";
               </button>
               <div className={"cancelline"}></div> */}
            <div className="WhatIncluded column">
-            <p className="t32">Ce qui est inclus</p>
+            <p className="t32 bold">Ce qui est inclus</p>
 
             <div className="IncludedList column">
               <div className="row">
                 <img src={validateGreen} alt="validate green" />
-                <p className="t6">Accompagnement par un guide local certifié</p>
+                <p className="t5">Accompagnement par un guide local certifié</p>
               </div>
               <div className="row">
                 <img src={validateGreen} alt="validate green" />
-                <p className="t6">Dégustation de produits régionaux</p>
+                <p className="t5">Dégustation de produits régionaux</p>
               </div>
               <div className="row">
                 <img src={validateGreen} alt="validate green" />
-                <p className="t6">Assurance responsabilité incluseAssurance responsabilité incluseAssurance responsabilité </p>
+                <p className="t5">Assurance responsabilité incluseAssurance responsabilité incluseAssurance responsabilité </p>
               </div>
               <div className="row">
                 <img src={validateGreen} alt="validate green" />
-                <p className="t6">Équipement de sécurité fourni</p>
+                <p className="t5">Équipement de sécurité fourni</p>
                 </div>
               <div className="row">
                 <img src={crossRed} alt="not included" />
-                <p className="t6">Transport jusqu’au lieu de l’activité</p>
+                <p className="t5">Transport jusqu’au lieu de l’activité</p>
               </div>
               <div className="row">
                 <img src={crossRed} alt="not included" />
-                <p className="t6">Repas et boissons supplémentaires</p>
+                <p className="t5">Repas et boissons supplémentaires</p>
               </div>
               <div className="row">
                 <img src={crossRed} alt="not included" />
-                <p className="t6">Dépenses personnelles et souvenirs</p>
+                <p className="t5">Dépenses personnelles et souvenirs</p>
+              </div>
+            </div>
+            </div>
+            <div className="hline88"></div>
+
+            <div className="AboutSection column">
+            <p className="t32 bold">À propos de cette activité</p>
+
+            <div className="AboutList column">
+              <div className="row">
+                <img src={cancelIcon} alt="translate Google" />
+                <div className="column">
+                  <p className="t4">Annulation gratuite</p>
+                  <p className="t5 text">Annulation gratuite possible jusqu’à 24 heures avant l’expérience, avec remboursement total garanti.</p>
+                </div>
+              </div>
+              <div className="row">
+                <img src={translateGoogle} alt="translate Google" />
+                <div className="column">
+                  <p className="t4">Audioguide inclus</p>
+                  <p className="t5 text">Francais, Anglai5</p>
+                </div>
+              </div>
+                <div className="row">
+                <img src={disabledIcon} alt="translate Google" />
+                <div className="column">
+                  <p className="t4">Accessible aux personnes en fauteuil roulant</p>
+                </div>
               </div>
             </div>
             </div>
@@ -721,13 +754,13 @@ import FadeInImage from "../../components/Utils/FadeInImage.jsx";
 
             <div className="ReserveOnlyOnViarte row">
               <img src={LockGreen} alt="Lock green"/>
-              <p className="t6">Afin de protéger votre paiement, utilisez toujours Viarte pour effectuer vos transactions et réserver vos activités.</p>
+              <p className="t5">Afin de protéger votre paiement, utilisez toujours Viarte pour effectuer vos transactions et réserver vos activités.</p>
             </div>
             <div className="hline88"></div>
             <div className="AnnulationCondition row">
               <div className="column">
-                <p className="t32">Conditions d'annulation</p>
-                <p className="t6">
+                <p className="t32 bold">Conditions d'annulation</p>
+                <p className="t5">
                   Vous pouvez annuler votre réservation sans frais jusqu’à 24 heures avant le début de l’activité. 
                   Passé ce délai, le montant total sera retenu. En cas de conditions météorologiques exceptionnelles 
                   ou d’annulation du prestataire, un remboursement complet vous sera automatiquement proposé.
@@ -746,7 +779,7 @@ import FadeInImage from "../../components/Utils/FadeInImage.jsx";
                   <p className="t1">&</p>
                   <img src={LogoHotel} alt="Hotel Logo" />
                 </div>
-                <p className="t4">En partenariat avec votre Hotel</p>
+                <p className="t4 bold">En partenariat avec votre Hotel</p>
                 <p className="hotelPartnershipText t6">
                   Ensemble, nous vous invitons à découvrir les trésors cachés de la région.  
                   Entre raffinement, authenticité et passion du voyage.
@@ -762,12 +795,71 @@ import FadeInImage from "../../components/Utils/FadeInImage.jsx";
                 </>
             }
             <div className="hline88"></div>
+            
               <div className="ParticipantSelectContainer" onClick={() => {
                 // ParticipantBottomRef.current.style.bottom = "0px";
                 ParticipantBottomRef.current.classList.add("open")
                 setIsOccultView(true);
+            }}>
+              <p className="t32 bold">{t("Select_participants")}</p>
+              <div className="row selectedParticipantRow">
+                <div className="column">
+                  <p className="t4 bold">{participantAdult} {t(plural(participantAdult, 'adult', 'adults'))}</p>
+                  <p className="t5 text">{formatAgeRange(adult)}</p>
+                </div>
+                <div className="row">
+                  <button className="ButtonParticipant" disabled={participantAdult <= ADULT_MIN}>
+                    <p className="t3">-</p>
+                  </button>
+                  <p className="t4 numberParticipant">{participantAdult}</p>
+                  <button className="ButtonParticipant" disabled={participantAdult >= ADULT_MAX}>
+                    <p className="t3">+</p>
+                  </button>
+                </div>
+              </div>
+              <div className="row selectedParticipantRow">
+                <div className="column">
+                  <p className="t4 bold">{participantChild}  {t(plural(participantChild, 'child', 'children'))}</p>
+                  <p className="t5 text">{formatAgeRange(child)}</p>
+                </div>
+                <div className="row">
+                  <button className="ButtonParticipant" disabled={participantChild <= CHILD_MIN}>
+                    <p className="t3">-</p>
+                  </button>
+                  <p className="t4 numberParticipant">{participantChild}</p>
+                  <button className="ButtonParticipant" disabled={participantChild >= CHILD_MAX}>
+                    <p className="t3">+</p>
+                  </button>
+                </div>
+              </div>
+              <div className="row selectedParticipantRow">
+                <div className="column">
+                  <p className="t4 bold">{participantInfant} {t(plural(participantInfant, 'infant', 'infants'))}</p>
+                  <p className="t5 text">{formatAgeRange(infant)}</p>
+                </div>
+                <div className="row">
+                  <button className="ButtonParticipant" disabled={participantInfant <= INFANT_MIN}>
+                    <p className="t3">-</p>
+                  </button>
+                  <p className="t4 numberParticipant">{participantInfant}</p>
+                  <button className="ButtonParticipant" disabled={participantInfant >= INFANT_MAX}>
+                    <p className="t3">+</p>
+                  </button>
+                </div>
+              </div>
+              <div className="hline"></div>
+              <div className="row dateSelect">
+                <p className="t4 bold">Novembre</p>
+                <img src={Calendar} alt="Calendar"/>
+              </div>
+              </div>
+              {/* <div className="ParticipantSelectContainer" onClick={() => {
+                // ParticipantBottomRef.current.style.bottom = "0px";
+                ParticipantBottomRef.current.classList.add("open")
+                setIsOccultView(true);
               }}>
-                <div>
+              <div>
+                <p className="t32 bold">{t("Select_participants")}</p>
                   <p className="t4">{t("Select_participants")}</p>
                   <div className="row">
                     <p className="t5">{t("Participants")} :</p> 
@@ -779,11 +871,13 @@ import FadeInImage from "../../components/Utils/FadeInImage.jsx";
                       `\u00A0\u00A0×${participantChild}  ${t(plural(participantChild, 'child', 'children'))}`}
                     {participantInfant > 0 &&
                       `\u00A0\u00A0×${participantInfant} ${t(plural(participantInfant, 'infant', 'infants'))}`}
-                  </p>
+                </p>
+                
+                <div className="hline"></div>
                 </div>
                 
-                <img src={arrowRight} alt="arrow right icon"/>
-              </div>
+                <img src={arrowRight} alt="arrow right icon"/> 
+              </div>*/}
               <OfferComments offerSlug={slug} children={
                 <div className="ContainerIButton row">
                     <p className="t4 ReviewTitle">{t("Customer_Riviews")}</p>

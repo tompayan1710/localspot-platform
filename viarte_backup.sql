@@ -248,7 +248,7 @@ CREATE TABLE public.hotes (
     latitude double precision,
     longitude double precision,
     city_id integer,
-    img text
+    image_urls text[]
 );
 
 
@@ -1202,8 +1202,8 @@ COPY public.favorites (id, user_id, offer_slug, created_at) FROM stdin;
 -- Data for Name: hotes; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
-COPY public.hotes (id, name, location, type, created_at, updated_at, latitude, longitude, city_id, img) FROM stdin;
-4	Hôtel Juana	19 Av. Georges Gallice, 06160 Antibes	Hôtel	2025-08-10 16:19:31.942611	2025-08-10 16:19:31.942611	43.567945	7.11491	20	https://cf.bstatic.com/xdata/images/hotel/max1024x768/27032480.jpg?k=b4c35a05b5abef066ba3d5064004b228a47b54b90ca3df4441fbfa820dc5f546&o=
+COPY public.hotes (id, name, location, type, created_at, updated_at, latitude, longitude, city_id, image_urls) FROM stdin;
+4	Hôtel Juana	19 Av. Georges Gallice, 06160 Antibes	Hôtel	2025-08-10 16:19:31.942611	2025-08-10 16:19:31.942611	43.567945	7.11491	20	{https://www.byblos.com/wp-content/uploads/Byblos-Beach-Ramatuelle-ramatuelle-1-1800x1333.jpg,https://www.byblos.com/wp-content/uploads/Sac_COLETTE_Byblos_x_Pinel_et_Pinel_1.webp,https://www.byblos.com/wp-content/uploads/Restaurant-IL-Giardino-restaurant-Hotel-Byblos-Saint-Tropez-800x995.jpg}
 \.
 
 
@@ -1407,7 +1407,9 @@ COPY public.qr_codes (id, slug, id_hote, image_url, user_id) FROM stdin;
 COPY public.refresh_tokens (id, user_id, refresh_token, expires_at, created_at) FROM stdin;
 309	67	eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6NjcsImVtYWlsIjoidG9tcGF5YW4xNzEwQGdtYWlsLmNvbSIsImlhdCI6MTc1NTAyMjAyOCwiZXhwIjoxNzcwNTc0MDI4fQ.V97nI-W75npNv_TrhRA7SXoB9ShqQKWCz1kZfoSXKzo	2026-02-08 19:07:08.953	2025-08-12 20:07:08.957078
 310	67	eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6NjcsImVtYWlsIjoidG9tcGF5YW4xNzEwQGdtYWlsLmNvbSIsImlhdCI6MTc1NTAyMjE2MywiZXhwIjoxNzcwNTc0MTYzfQ.tVh-a1r2Y3hqdadzRdZQ_W6A3Bkgd5xqLE22FpQ1VN8	2026-02-08 19:09:23.772	2025-08-12 20:09:23.77611
+388	64	eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6NjQsImVtYWlsIjoidGVzdEB0ZXN0LmNvbSIsImlhdCI6MTc2MjQxNDUyNiwiZXhwIjoxNzc3OTY2NTI2fQ.AjFRnPL1gm7UeB27zk8crAosxywweirGNezqAsIogbU	2026-05-05 09:35:26.419	2025-11-05 20:51:04.322156
 301	64	eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6NjQsImVtYWlsIjoidGVzdEB0ZXN0LmNvbSIsImlhdCI6MTc1NDgyOTc4NywiZXhwIjoxNzcwMzgxNzg3fQ.LArqLNa4j_HdbX4Ik7nC7-xiQ8hAx6cglTXfCFFP8VA	2026-02-06 13:43:07.041	2025-08-10 07:15:59.433322
+391	67	eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6NjcsImVtYWlsIjoidG9tcGF5YW4xNzEwQGdtYWlsLmNvbSIsImlhdCI6MTc2MjQxODUwNywiZXhwIjoxNzc3OTcwNTA3fQ.JL-R04WC-m61fQqcNEXJaiSpDzqWXDw0ybUP14GKUD4	2026-05-05 10:41:47.452	2025-11-06 08:51:46.226428
 314	67	eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6NjcsImVtYWlsIjoidG9tcGF5YW4xNzEwQGdtYWlsLmNvbSIsImlhdCI6MTc1NTAyNDY0OSwiZXhwIjoxNzcwNTc2NjQ5fQ.9pfhnXdIMSGFdrdOzjPJCg81NxUnLmJux0YDdUCcIMg	2026-02-08 19:50:49.551	2025-08-12 20:50:49.55277
 302	64	eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6NjQsImVtYWlsIjoidGVzdEB0ZXN0LmNvbSIsImlhdCI6MTc1NDg0MDAyOSwiZXhwIjoxNzcwMzkyMDI5fQ.VEMRYZvYBPPBgeJ_PFp8uabkDrJazf6XoN3XYyjvG3o	2026-02-06 16:33:49.858	2025-08-10 15:06:17.366032
 318	64	eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6NjQsImVtYWlsIjoidGVzdEB0ZXN0LmNvbSIsImlhdCI6MTc1NjI3NzI2NiwiZXhwIjoxNzcxODI5MjY2fQ.JMykhF31OZpvqemYUeqjevB5XSNx7UZ-e8m2Tbbveqs	2026-02-23 07:47:46.377	2025-08-26 21:40:00.402232
@@ -1435,7 +1437,8 @@ COPY public.refresh_tokens (id, user_id, refresh_token, expires_at, created_at) 
 352	67	eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6NjcsImVtYWlsIjoidG9tcGF5YW4xNzEwQGdtYWlsLmNvbSIsImlhdCI6MTc1OTQyOTM0NiwiZXhwIjoxNzc0OTgxMzQ2fQ.Ho8eOXnydx8AT1kF3YwXfmgkQtSVY_ZJSMatNRCpkgk	2026-03-31 20:22:26.489	2025-10-02 20:22:26.492812
 353	67	eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6NjcsImVtYWlsIjoidG9tcGF5YW4xNzEwQGdtYWlsLmNvbSIsImlhdCI6MTc1OTQyOTQxNSwiZXhwIjoxNzc0OTgxNDE1fQ.3EtRu3pr79lVNsSKBOdcfczsucN53YwEfLSS7yF8t4I	2026-03-31 20:23:35.012	2025-10-02 20:23:35.014063
 379	67	eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6NjcsImVtYWlsIjoidG9tcGF5YW4xNzEwQGdtYWlsLmNvbSIsImlhdCI6MTc2MDUxNjY4NCwiZXhwIjoxNzc2MDY4Njg0fQ.7abZevDMzHlerJyIKxIb8R0wEsNFqotIbp-Q8CFTkZ4	2026-04-13 10:24:44.373	2025-10-15 10:09:41.641123
-387	67	eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6NjcsImVtYWlsIjoidG9tcGF5YW4xNzEwQGdtYWlsLmNvbSIsImlhdCI6MTc2MDY4MDQxNCwiZXhwIjoxNzc2MjMyNDE0fQ.QWXbwA7tYuKF3_NhsyYhu68I7VF1D5ED-4y20Bkg4AY	2026-04-15 07:53:34.722	2025-10-17 07:53:34.727958
+389	64	eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6NjQsImVtYWlsIjoidGVzdEB0ZXN0LmNvbSIsImlhdCI6MTc2MjQxNDUyNiwiZXhwIjoxNzc3OTY2NTI2fQ.AjFRnPL1gm7UeB27zk8crAosxywweirGNezqAsIogbU	2026-05-05 09:35:26.419	2025-11-06 07:54:02.44676
+390	64	eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6NjQsImVtYWlsIjoidGVzdEB0ZXN0LmNvbSIsImlhdCI6MTc2MjQxNDUyNiwiZXhwIjoxNzc3OTY2NTI2fQ.AjFRnPL1gm7UeB27zk8crAosxywweirGNezqAsIogbU	2026-05-05 09:35:26.419	2025-11-06 08:09:38.472786
 \.
 
 
@@ -1634,7 +1637,7 @@ SELECT pg_catalog.setval('public.qr_codes_id_seq', 84, true);
 -- Name: refresh_tokens_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
 
-SELECT pg_catalog.setval('public.refresh_tokens_id_seq', 387, true);
+SELECT pg_catalog.setval('public.refresh_tokens_id_seq', 391, true);
 
 
 --
