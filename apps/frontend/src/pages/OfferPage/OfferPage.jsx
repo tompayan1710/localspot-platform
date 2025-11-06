@@ -431,6 +431,19 @@ import FadeInImage from "../../components/Utils/FadeInImage.jsx";
         child: participantChild,
         infant: participantInfant,
       });
+    
+    const locales = {
+      fr: "fr-FR",
+      en: "en-US",
+      it: "it-IT",
+      de: "de-DE",
+      es: "es-ES",
+    };
+
+    const currentLocale = locales[lang] || "fr-FR";
+    const currentMonth = new Date().toLocaleString(currentLocale, { month: "long" });
+    const displayMonth = currentMonth.charAt(0).toUpperCase() + currentMonth.slice(1);
+
 
       return (
         <div className="offerContainer" ref={offerContainerRef}>
@@ -798,58 +811,98 @@ import FadeInImage from "../../components/Utils/FadeInImage.jsx";
             
               <div className="ParticipantSelectContainer" onClick={() => {
                 // ParticipantBottomRef.current.style.bottom = "0px";
-                ParticipantBottomRef.current.classList.add("open")
-                setIsOccultView(true);
+                // ParticipantBottomRef.current.classList.add("open")
+                // setIsOccultView(true);
             }}>
               <p className="t32 bold">{t("Select_participants")}</p>
-              <div className="row selectedParticipantRow">
-                <div className="column">
-                  <p className="t4 bold">{participantAdult} {t(plural(participantAdult, 'adult', 'adults'))}</p>
-                  <p className="t5 text">{formatAgeRange(adult)}</p>
+              {adult &&
+                <div className="row selectedParticipantRow">
+                  <div className="column">
+                    <p className="t4 bold">{t(plural(participantAdult, 'adult', 'adults'))}</p>
+                    <p className="t5 text">{formatAgeRange(adult)}</p>
+                  </div>
+                  <div className="row">
+                    <button className="ButtonParticipant"
+                      disabled={participantAdult <= ADULT_MIN}
+                      onClick={() => setParticipantAdult(prev => Math.max(ADULT_MIN, prev - 1))}
+                    >
+                      <p className="t3">-</p>
+                    </button>
+                    <p className="t4 numberParticipant">{participantAdult}</p>
+                    <button className="ButtonParticipant"
+                      disabled={participantAdult >= ADULT_MAX}
+                      onClick={() => setParticipantAdult(prev => Math.min(ADULT_MAX, prev + 1))}
+                    >
+                      <p className="t3">+</p>
+                    </button>
+                  </div>
                 </div>
-                <div className="row">
-                  <button className="ButtonParticipant" disabled={participantAdult <= ADULT_MIN}>
-                    <p className="t3">-</p>
-                  </button>
-                  <p className="t4 numberParticipant">{participantAdult}</p>
-                  <button className="ButtonParticipant" disabled={participantAdult >= ADULT_MAX}>
-                    <p className="t3">+</p>
-                  </button>
+              }
+              {child &&
+                <div className="row selectedParticipantRow">
+                  <div className="column">
+                    <p className="t4 bold">{t(plural(participantChild, 'child', 'children'))}</p>
+                    <p className="t5 text">{formatAgeRange(child)}</p>
+                  </div>
+                  <div className="row">
+                    <button className="ButtonParticipant"
+                      disabled={participantChild <= CHILD_MIN}
+                      onClick={() => setParticipantChild(prev => Math.max(CHILD_MIN, prev - 1))}
+                    >
+                      <p className="t3">-</p>
+                    </button>
+                    <p className="t4 numberParticipant">{participantChild}</p>
+                    <button className="ButtonParticipant"
+                      disabled={participantChild >= CHILD_MAX}
+                      onClick={() => setParticipantChild(prev => Math.min(CHILD_MAX, prev + 1))}
+                    >
+                      <p className="t3">+</p>
+                    </button>
+                  </div>
                 </div>
-              </div>
-              <div className="row selectedParticipantRow">
-                <div className="column">
-                  <p className="t4 bold">{participantChild}  {t(plural(participantChild, 'child', 'children'))}</p>
-                  <p className="t5 text">{formatAgeRange(child)}</p>
+              }
+              {infant &&
+                <div className="row selectedParticipantRow">
+                  <div className="column">
+                    <p className="t4 bold">{t(plural(participantInfant, 'infant', 'infants'))}</p>
+                    <p className="t5 text">{formatAgeRange(infant)}</p>
+                  </div>
+                  <div className="row">
+                    <button className="ButtonParticipant"
+                      disabled={participantInfant <= INFANT_MIN}
+                      onClick={() => setParticipantInfant(prev => Math.max(INFANT_MIN, prev - 1))}
+                    >
+                      <p className="t3">-</p>
+                    </button>
+                    <p className="t4 numberParticipant">{participantInfant}</p>
+                    <button className="ButtonParticipant"
+                      disabled={participantInfant >= INFANT_MAX}
+                      onClick={() => setParticipantInfant(prev => Math.min(INFANT_MAX, prev + 1))}
+                    >
+                      <p className="t3">+</p>
+                    </button>
+                  </div>
                 </div>
-                <div className="row">
-                  <button className="ButtonParticipant" disabled={participantChild <= CHILD_MIN}>
-                    <p className="t3">-</p>
-                  </button>
-                  <p className="t4 numberParticipant">{participantChild}</p>
-                  <button className="ButtonParticipant" disabled={participantChild >= CHILD_MAX}>
-                    <p className="t3">+</p>
-                  </button>
-                </div>
-              </div>
-              <div className="row selectedParticipantRow">
-                <div className="column">
-                  <p className="t4 bold">{participantInfant} {t(plural(participantInfant, 'infant', 'infants'))}</p>
-                  <p className="t5 text">{formatAgeRange(infant)}</p>
-                </div>
-                <div className="row">
-                  <button className="ButtonParticipant" disabled={participantInfant <= INFANT_MIN}>
-                    <p className="t3">-</p>
-                  </button>
-                  <p className="t4 numberParticipant">{participantInfant}</p>
-                  <button className="ButtonParticipant" disabled={participantInfant >= INFANT_MAX}>
-                    <p className="t3">+</p>
-                  </button>
-                </div>
-              </div>
+              }
               <div className="hline"></div>
-              <div className="row dateSelect">
-                <p className="t4 bold">Novembre</p>
+              <div className="row dateSelect" onClick={() => {
+                navigate(`/offer-page/${slug}/availibility`, {
+                  state: {
+                    title: offer.title,
+                    adresse: offer.adresse,
+                    // price: offer.price,
+                    participantAdult: participantAdult,
+                    participantChild: participantChild,
+                    participantInfant: participantInfant,
+                    pricing: pricing,
+                    OfferIsCancellable: offer.cancellable,
+                    total_capacity: offer.total_capacity,
+                    offer_provider_id: offer.provider_id,
+                    id_hote: id_hote,
+                  }
+                })
+              }}>
+                <p className="t4 bold">{displayMonth}</p>
                 <img src={Calendar} alt="Calendar"/>
               </div>
               </div>

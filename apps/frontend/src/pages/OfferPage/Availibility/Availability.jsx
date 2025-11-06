@@ -432,6 +432,19 @@
         return "(" + (price == 0 ? t('free') : price + "€") + ")" ;
       }
 
+
+    const locales = {
+      fr: "fr-FR",
+      en: "en-US",
+      it: "it-IT",
+      de: "de-DE",
+      es: "es-ES",
+    };
+
+    const currentLocale = locales[lang] || "fr-FR";
+    const currentMonth = new Date().toLocaleString(currentLocale, { month: "long" });
+    const displayMonth = currentMonth.charAt(0).toUpperCase() + currentMonth.slice(1);
+      
       return (
         <div className="AvailabilityContainer">
           <div className="TopDivOpacity"></div>
@@ -577,7 +590,93 @@
             </p>
           )} */}
           {/* <p className="t6">Largeur mesurée : {creneauWidth}px</p> */}
-          <div className="ParticipantContainer" onClick={() => {
+
+            <div className="ParticipantSelectContainer Availability" onClick={() => {
+                // ParticipantBottomRef.current.style.bottom = "0px";
+                // ParticipantBottomRef.current.classList.add("open")
+                // setIsOccultView(true);
+            }}>
+              <p className="t32 bold">{t("Select_participants")}</p>
+              {adult &&
+                <div className="row selectedParticipantRow">
+                <div className="column">
+                  <div className="row">
+                    <p className="t4 bold">{t(plural(participantAdult, 'adult', 'adults'))}</p>
+                    <p className="t4">&nbsp;{isFree(pricing?.adult?.price)}</p>
+                  </div>
+                    <p className="t5 text">{formatAgeRange(adult)}</p>
+                  </div>
+                  <div className="row">
+                    <button className="ButtonParticipant"
+                      disabled={participantAdult <= ADULT_MIN}
+                      onClick={() => setParticipantAdult(prev => Math.max(ADULT_MIN, prev - 1))}
+                    >
+                      <p className="t3">-</p>
+                    </button>
+                    <p className="t4 numberParticipant">{participantAdult}</p>
+                    <button className="ButtonParticipant"
+                      disabled={participantAdult >= ADULT_MAX}
+                      onClick={() => setParticipantAdult(prev => Math.min(ADULT_MAX, prev + 1))}
+                    >
+                      <p className="t3">+</p>
+                    </button>
+                  </div>
+                </div>
+              }
+              {child &&
+                <div className="row selectedParticipantRow">
+                <div className="column">
+                  <div className="row">
+                    <p className="t4 bold">{t(plural(participantChild, 'child', 'children'))}</p>
+                    <p className="t4">&nbsp;{isFree(pricing?.child?.price)}</p>
+                  </div>  
+                    <p className="t5 text">{formatAgeRange(child)}</p>
+                  </div>
+                  <div className="row">
+                    <button className="ButtonParticipant"
+                      disabled={participantChild <= CHILD_MIN}
+                      onClick={() => setParticipantChild(prev => Math.max(CHILD_MIN, prev - 1))}
+                    >
+                      <p className="t3">-</p>
+                    </button>
+                    <p className="t4 numberParticipant">{participantChild}</p>
+                    <button className="ButtonParticipant"
+                      disabled={participantChild >= CHILD_MAX}
+                      onClick={() => setParticipantChild(prev => Math.min(CHILD_MAX, prev + 1))}
+                    >
+                      <p className="t3">+</p>
+                    </button>
+                  </div>
+                </div>
+              }
+              {infant &&
+                <div className="row selectedParticipantRow">
+                <div className="column">
+                  <div className="row">
+                    <p className="t4 bold">{t(plural(participantInfant, 'infant', 'infants'))}</p>
+                    <p className="t4">&nbsp;{isFree(pricing?.infant?.price)}</p>
+                  </div>
+                    <p className="t5 text">{formatAgeRange(infant)}</p>
+                  </div>
+                  <div className="row">
+                    <button className="ButtonParticipant"
+                      disabled={participantInfant <= INFANT_MIN}
+                      onClick={() => setParticipantInfant(prev => Math.max(INFANT_MIN, prev - 1))}
+                    >
+                      <p className="t3">-</p>
+                    </button>
+                    <p className="t4 numberParticipant">{participantInfant}</p>
+                    <button className="ButtonParticipant"
+                      disabled={participantInfant >= INFANT_MAX}
+                      onClick={() => setParticipantInfant(prev => Math.min(INFANT_MAX, prev + 1))}
+                    >
+                      <p className="t3">+</p>
+                    </button>
+                  </div>
+                </div>
+              }
+            </div>
+          {/* <div className="ParticipantContainer" onClick={() => {
               ParticipantBottomRef.current.classList.add("open")
               setIsOccultView(true);
             }}>
@@ -591,14 +690,12 @@
                 {child  && participantChild  > 0 && `\u00A0\u00A0×${participantChild} ${t(plural(participantChild, 'child','children'))}`}
                 {infant && participantInfant > 0 && `\u00A0\u00A0×${participantInfant} ${t(plural(participantInfant,'infant','infants'))}`}
               </p>
-
             </div>
+            
             <button>
               <p className="t6">{t("Edit")}</p>
-              {/* <img src={arrowRight} alt="arrow right"/> */}
             </button>
-            {/* <img src={arrowRight} alt="arrow right"/> */}
-          </div>
+          </div> */}
           <div className="Availline"></div>
           {/* <div className="row">
             <img src={dureeIcon} alt="duree icon"/>
