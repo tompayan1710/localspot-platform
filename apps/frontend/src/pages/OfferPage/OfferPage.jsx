@@ -25,6 +25,8 @@
   import disabledIcon from "../../assets/images/disabledIcon.png" 
   import cancelIcon from "../../assets/images/cancelIcon.png" 
   import Calendar from "../../assets/images/Calendar.png" 
+  import parkingIcon from "../../assets/images/parkingIcon.png" 
+  import toiletIcon from "../../assets/images/toilet.png" 
 
 
   import Map2D from "../../components/Maps/Map2D"; 
@@ -521,7 +523,7 @@ import FadeInImage from "../../components/Utils/FadeInImage.jsx";
               <p className={`OfferDescription t5 ${isLoading ? "loading shimmer" : ""}`}>{isLoading ? "" : offer.description}</p>
 
               <p className={`t5 OfferType ${isLoading ? "loading shimmer" : ""}`}>{isLoading ? "" : `*${t(offer.type)}`}</p>
-              <div className="Offerhline"></div>     
+              <div className="hline88"></div>     
 
                 <div className="OfferInfoContainer">
                   {
@@ -539,7 +541,7 @@ import FadeInImage from "../../components/Utils/FadeInImage.jsx";
                     //   :
                     //   <></>
                   }
-                  <div className={`row ${isLoading ? "loading shimmer" : ""}`}>
+                  {/* <div className={`row ${isLoading ? "loading shimmer" : ""}`}>
                     {isLoading ?
                       <></>
                       : 
@@ -548,11 +550,58 @@ import FadeInImage from "../../components/Utils/FadeInImage.jsx";
                         <p className="t6">{t('Duration')} {offer.duration}</p>
                       </>
                     }
-                  </div>
+                  </div> */}
                   
                 </div>
+              <div className="AboutSection column">
+            <p className="t32 bold">À propos de cette activité</p>
 
-              <div className="Offerhline"></div>     
+              <div className="AboutList column">
+                <div className="row">
+                  <img src={cancelIcon} alt="translate Google" />
+                  <div className="column">
+                    <p className="t4">Annulation gratuite</p>
+                    <p className="t5 text">Annulation gratuite possible jusqu’à 24 heures avant l’expérience, avec remboursement total garanti.</p>
+                  </div>
+                </div>
+                <div className="row">
+                    <img src={dureeIcon} alt="duree Icon" />
+                    <div className="column">
+                      <p className="t4">Durée moyenne : 2h 30</p>
+                      <p className="t5 text">Une durée idéale pour profiter de l’expérience sans contrainte de temps.</p>
+                    </div>
+                </div>
+                <div className="row">
+                  <img src={translateGoogle} alt="translate Google" />
+                  <div className="column">
+                    <p className="t4">Langues parlées</p>
+                    <p className="t5 text">Francais, Anglai5</p>
+                  </div>
+                </div>
+                  <div className="row">
+                    <img src={disabledIcon} alt="translate Google" />
+                    <div className="column">
+                      <p className="t4">Accessible aux personnes en fauteuil roulant</p>
+                      <p className="t5 text">L’ensemble de l'experience est adapté pour garantir un accès facile et confortable à tous.</p>
+                    </div>
+                  </div>
+                  <div className="row">
+                    <img src={parkingIcon} alt="parking Icon" />
+                    <div className="column">
+                      <p className="t4">Parking gratuit à proximité</p>
+                      <p className="t5 text">Un stationnement est disponible gratuitement à quelques pas du point de départ.</p>
+                    </div>
+                  </div>
+                  <div className="row">
+                    <img src={toiletIcon} alt="toiletIcon" />
+                    <div className="column">
+                      <p className="t4">Toilettes accessibles sur place.</p>
+                      <p className="t5 text">Des toilettes sont disponibles sur place pour votre confort.</p>
+                    </div>
+                  </div>
+              </div>
+            </div>
+            <div className="hline88"></div>
 
               {
                 id_hote ?
@@ -592,7 +641,7 @@ import FadeInImage from "../../components/Utils/FadeInImage.jsx";
                 <></>
               }
               
-
+              <p className="t32 bold" id="titleMap">Lieu de rendez-vous</p>
               <div className={`OfferMapContainer ${isExtendMap ? "extendMap" : ""}`} ref={refOfferMapContainer}>
                 <button onClick={() => {
                   setIsExtendMap(!isExtendMap)
@@ -687,7 +736,7 @@ import FadeInImage from "../../components/Utils/FadeInImage.jsx";
         
               {/* <div className="MargeBottom"></div> */}
               
-              <div className={"cancelline"}></div>
+              <div className="hline88"></div>
               {/*
               <button id="CancellationPolicy" onClick={() => {
                 // CancelBottomRef.current.style.bottom = "0px";
@@ -737,55 +786,9 @@ import FadeInImage from "../../components/Utils/FadeInImage.jsx";
             </div>
             <div className="hline88"></div>
 
-            <div className="AboutSection column">
-            <p className="t32 bold">À propos de cette activité</p>
-
-            <div className="AboutList column">
-              <div className="row">
-                <img src={cancelIcon} alt="translate Google" />
-                <div className="column">
-                  <p className="t4">Annulation gratuite</p>
-                  <p className="t5 text">Annulation gratuite possible jusqu’à 24 heures avant l’expérience, avec remboursement total garanti.</p>
-                </div>
-              </div>
-              <div className="row">
-                <img src={translateGoogle} alt="translate Google" />
-                <div className="column">
-                  <p className="t4">Audioguide inclus</p>
-                  <p className="t5 text">Francais, Anglai5</p>
-                </div>
-              </div>
-                <div className="row">
-                <img src={disabledIcon} alt="translate Google" />
-                <div className="column">
-                  <p className="t4">Accessible aux personnes en fauteuil roulant</p>
-                </div>
-              </div>
-            </div>
-            </div>
-            <div className="hline88"></div>
-
-            <div className="ReserveOnlyOnViarte row">
-              <img src={LockGreen} alt="Lock green"/>
-              <p className="t5">Afin de protéger votre paiement, utilisez toujours Viarte pour effectuer vos transactions et réserver vos activités.</p>
-            </div>
-            <div className="hline88"></div>
-            <div className="AnnulationCondition row">
-              <div className="column">
-                <p className="t32 bold">Conditions d'annulation</p>
-                <p className="t5">
-                  Vous pouvez annuler votre réservation sans frais jusqu’à 24 heures avant le début de l’activité. 
-                  Passé ce délai, le montant total sera retenu. En cas de conditions météorologiques exceptionnelles 
-                  ou d’annulation du prestataire, un remboursement complet vous sera automatiquement proposé.
-                </p>
-              </div>
-              <img src={arrowRight} alt="arro wright icon"/>
-            </div>
-
             {
               id_hote &&
               <>
-              <div className="hline88"></div>
               <div className="PartnershipWithHotel">
                 <div className="row">
                   <img src={ViarteLogo} alt="Viarte Logo" />
@@ -807,7 +810,7 @@ import FadeInImage from "../../components/Utils/FadeInImage.jsx";
                 </div>
                 </>
             }
-            <div className="hline88"></div>
+            {/* <div className="hline88"></div> */}
             
               <div className="ParticipantSelectContainer" onClick={() => {
                 // ParticipantBottomRef.current.style.bottom = "0px";
@@ -905,7 +908,27 @@ import FadeInImage from "../../components/Utils/FadeInImage.jsx";
                 <p className="t4 bold">{displayMonth}</p>
                 <img src={Calendar} alt="Calendar"/>
               </div>
+              </div>            
+            <div className="hline88"></div>
+            <div className="ReserveOnlyOnViarte row">
+              <img src={LockGreen} alt="Lock green"/>
+              <p className="t5">Afin de protéger votre paiement, utilisez toujours Viarte pour effectuer vos transactions et réserver vos activités.</p>
+            </div>
+            <div className="hline88"></div>
+            <div className="AnnulationCondition row">
+              <div className="column">
+                <p className="t32 bold">Conditions d'annulation</p>
+                <p className="t5">
+                  Vous pouvez annuler votre réservation sans frais jusqu’à 24 heures avant le début de l’activité. 
+                  Passé ce délai, le montant total sera retenu. En cas de conditions météorologiques exceptionnelles 
+                  ou d’annulation du prestataire, un remboursement complet vous sera automatiquement proposé.
+                </p>
               </div>
+              <img src={arrowRight} alt="arro wright icon"/>
+            </div>
+            <div className="hline88"></div>
+
+            
               {/* <div className="ParticipantSelectContainer" onClick={() => {
                 // ParticipantBottomRef.current.style.bottom = "0px";
                 ParticipantBottomRef.current.classList.add("open")
