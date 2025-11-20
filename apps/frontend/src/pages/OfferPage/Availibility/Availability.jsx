@@ -450,8 +450,8 @@
           <div className="TopDivOpacity"></div>
           <GoBack nagigation={`/offer-page/${slug}`} scrollTo={""} text={t("back")}/>
           <div className="TitleContainer">
-            <p className="t32">{t("select_date_and_slot")}</p>
-            <p className="t6">{t("select_date_and_slot_subtitle")}</p>
+            <p className="t32 bold">{t("select_date_and_slot")}</p>
+            <p className="t5">{t("select_date_and_slot_subtitle")}</p>
           </div>
           
           <div className="DayPickerContainer">
@@ -704,19 +704,19 @@
           <div className="Availline"></div> */}
           <div className="addresseContainer">
             <img src={Map2DPin} alt="adresse icon"/>
-            <p className="t6">{adresse}</p>
+            <p className="t5">{adresse}</p>
           </div>
           <div className="payementInfoContainer">
             <div className="row">
-              <p className="t6">{selectedDate}</p>
+              <p className="t5">{selectedDate}</p>
               {/* <p className="t6">{selectedCreneau.slot.from} - {selectedCreneau.slot.to}</p> */}
             </div>
             <div className="payementSeparation"></div>
             {
               pricing.adult && participantAdult>0 && 
             <div className="row">
-              <p className="t6">×{participantAdult}&nbsp;&nbsp;&nbsp;&nbsp;{t(plural(participantAdult, 'adult', 'adults'))}</p>
-              <p className="t6">
+              <p className="t5">×{participantAdult}&nbsp;&nbsp;&nbsp;&nbsp;{t(plural(participantAdult, 'adult', 'adults'))}</p>
+              <p className="t5">
                 {new Intl.NumberFormat('fr-FR', {
                   style: 'currency',
                   currency: 'EUR',
@@ -729,8 +729,8 @@
             {
               pricing.child && participantChild>0 ?
               <div className="row">
-                <p className="t6">×{participantChild}&nbsp;&nbsp;&nbsp;&nbsp;{t(plural(participantChild, 'child', 'children'))}</p>
-              <p className="t6">
+                <p className="t5">×{participantChild}&nbsp;&nbsp;&nbsp;&nbsp;{t(plural(participantChild, 'child', 'children'))}</p>
+              <p className="t5">
                 {new Intl.NumberFormat('fr-FR', {
                   style: 'currency',
                   currency: 'EUR',
@@ -744,8 +744,8 @@
             {
               pricing.infant && participantInfant>0 ?
               <div className="row">
-                <p className="t6">×{participantInfant}&nbsp;&nbsp;&nbsp;&nbsp;{t(plural(participantInfant, 'infant', 'infants'))}</p>
-              <p className="t6">
+                <p className="t5">×{participantInfant}&nbsp;&nbsp;&nbsp;&nbsp;{t(plural(participantInfant, 'infant', 'infants'))}</p>
+              <p className="t5">
                 {new Intl.NumberFormat('fr-FR', {
                   style: 'currency',
                   currency: 'EUR',
@@ -768,7 +768,7 @@
               </p>
             </div>  
             <div className="payementSeparation"></div>
-            <p className="t6">{t("all_taxes_included")}</p>
+            <p className="t5">{t("all_taxes_included")}</p>
           </div>
           <button className="SuivantButton" onClick={() => TestAuth()}>
             {t("Next")}
@@ -800,7 +800,7 @@
                           <p className="t5">{t('Adult')}</p>
                           <p className="t5">&nbsp;{isFree(pricing?.adult?.price)}</p>
                         </div>
-                        <p className="t6">{formatAgeRange(adult)}</p>
+                        <p className="t5">{formatAgeRange(adult)}</p>
                       </div>
 
                       <div className="row">
@@ -835,7 +835,7 @@
                           <p className="t5">{t('Child')}</p>
                           <p className="t5">&nbsp;{isFree(pricing?.child?.price)}</p>
                         </div>
-                        <p className="t6">{formatAgeRange(child)}</p>
+                        <p className="t5">{formatAgeRange(child)}</p>
                       </div>
 
                       <div className="row">
@@ -870,7 +870,7 @@
                           <p className="t5">{t('Infant')}</p>
                           <p className="t5">&nbsp;{isFree(pricing?.infant?.price)}</p>
                         </div>
-                        <p className="t6">{formatAgeRange(infant)}</p>
+                        <p className="t5">{formatAgeRange(infant)}</p>
                       </div>
 
                       <div className="row">
@@ -900,7 +900,7 @@
               {ruleMessage && (
                 <div className="NotCountCapacity row">
                   <img src={warningRed} alt="info" />
-                  <p className="t6">{ruleMessage}</p>
+                  <p className="t5">{ruleMessage}</p>
                 </div>
               )}
 
@@ -952,14 +952,14 @@
               // LoginBottomRef.current.classList.remove("open");
               setIsOccultView(false);
             }}
-            title={<p className="t5">Veuillez accepter les conditions générales pour continuer</p>}
+            title={<p className="t4">Veuillez accepter les conditions générales pour continuer</p>}
             // ref={LoginBottomRef}
           >
             <div className="LoginContainer">
-              <p className="t6" style={{ margin: "16px 0" }}>
+              <p className="t5" style={{ margin: "16px 0" }}>
                 Pour finaliser votre réservation, vous devez accepter nos conditions générales d’utilisation et de vente.
               </p>
-              <p className="t6">
+              <p className="t5">
                 En poursuivant, vous acceptez nos{" "}
                 <a href="/terms-of-service" className="t6" target="_blank" rel="noopener noreferrer">
                   Conditions Générales d’Utilisation

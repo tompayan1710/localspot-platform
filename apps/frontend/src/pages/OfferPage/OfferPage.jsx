@@ -2,22 +2,15 @@
   import walkIcon from "../../assets/images/walkIcon.png"
   import bycicleIcon from "../../assets/images/bycicleIcon.png"
   import carRedIcon from "../../assets/images/carRedIcon.png"
-  import validateIcon from "../../assets/images/validateIcon.png"
   import dureeIcon from "../../assets/images/dureeIcon.png"
-  import Map2DPin from "../../assets/images/Map2DPin.png"
-  import starIcon from "../../assets/images/starIcon.png"
-  import Lorier from "../../assets/images/Lorier.png" 
   import customerKing from "../../assets/images/customerKing.png" 
   import arrowRight from "../../assets/images/arrowRight.png" 
   import extendMap from "../../assets/images/extendMap.png" 
   import crossiconBlack from "../../assets/images/crossiconBlack.png" 
   import favoris from "../../assets/images/favoris.png" 
   import favoris_selected from "../../assets/images/favoris_selected.png" 
-  import allImageIcon from "../../assets/images/allImageIcon.png" 
-  import France from "../../assets/images/France.png" 
   import warningRed from "../../assets/images/warningRed.png" 
   import ViarteLogo from "../../assets/images/ViarteLogoBig.png" 
-  import LogoHotel from "../../assets/images/LogoHotel.png" 
   import LockGreen from "../../assets/images/LockGreen.png" 
   import validateGreen from "../../assets/images/validateGreen.png" 
   import crossRed from "../../assets/images/crossRed.png" 
@@ -60,6 +53,7 @@ import FadeInImage from "../../components/Utils/FadeInImage.jsx";
   // import "./EditLanguage.css"
 
 
+
   export default function OfferPage() {
     const { slug } = useParams();
     const location = useLocation(); 
@@ -71,7 +65,9 @@ import FadeInImage from "../../components/Utils/FadeInImage.jsx";
     const { checkAuth, authState } = useContext(AuthContext);
 
     const queryParams = new URLSearchParams(location.search);
-    const id_hote = queryParams.get('host_id');
+    const presentoir_offer_id = queryParams.get('presentoir_offer_id');
+    const [id_hote, setId_hote] = useState(null);
+
 
 
     const navigate = useNavigate();
@@ -191,6 +187,39 @@ import FadeInImage from "../../components/Utils/FadeInImage.jsx";
       checkAuth();
     }, [])
 
+
+  async function getPresentoirOffer(presentoir_offer_id) {
+    try {
+        const url = `${process.env.REACT_APP_API_URL}/api/presentoirs/getpresentoirofferandhoteinfo?presentoir_offer_id=${presentoir_offer_id}`;
+
+        const res = await fetch(url);
+        const data = await res.json();
+
+        if (!data.success) return;
+
+        setHote({
+          id: data.data.hote_id,
+          name: data.data.hote_name,
+          location: data.data.hote_location,
+          type: data.data.hote_type,
+          created_at: data.data.hote_created_at,
+          updated_at: data.data.hote_updated_at,
+          latitude: data.data.hote_latitude,
+          longitude: data.data.hote_longitude,
+          city_id: data.data.hote_city_id,
+          image_urls: data.data.hote_images,
+          logo_img: data.data.logo_img
+        });
+
+
+        setId_hote(data.data.hote_id);
+
+    } catch (error) {
+        console.error("Erreur getPresentoirOffer :", error);
+    }
+  }
+
+
     useEffect(() => {
 
       //Pour les likes, pour réinitialisé l'état après que l'utilisateur se soit connecter
@@ -204,7 +233,8 @@ import FadeInImage from "../../components/Utils/FadeInImage.jsx";
 
           
 
-          if(id_hote){
+          if (presentoir_offer_id) {
+            await getPresentoirOffer(presentoir_offer_id);
             // console.log("Mon id est :", id_hote);
             // const qrcodeData = await getQRCodeById(id_hote);
             // if (!qrcodeData.success) return;
@@ -212,10 +242,10 @@ import FadeInImage from "../../components/Utils/FadeInImage.jsx";
 
 
             // const hoteData = await getHoteById(qrcodeData.qrcode.id_hote);
-            const hoteData = await getHoteById(id_hote);
-            if (!hoteData.success) return;
-            setHote(hoteData.hote);
-
+            // const hoteData = await getHoteById(id_hote);
+            // if (!hoteData.success) return;
+            // setHote(hoteData.hote);
+            
             // await fetchDurations(offerData.offer, hoteData.hote); ////////////////////////////////////A remetre
 
             setTimeout(() => {
@@ -334,10 +364,10 @@ import FadeInImage from "../../components/Utils/FadeInImage.jsx";
 
 
       useEffect(() => {
-        if (id_hote) {
-          localStorage.setItem("id_hote", JSON.stringify({ id_hote: id_hote, ts: Date.now() }));
+        if (presentoir_offer_id) {
+          localStorage.setItem("presentoir_offer_id", JSON.stringify({ presentoir_offer_id: presentoir_offer_id, ts: Date.now() }));
         }
-      }, [id_hote]);
+      }, [presentoir_offer_id]);
 
 
 
@@ -352,6 +382,22 @@ import FadeInImage from "../../components/Utils/FadeInImage.jsx";
       
     const plural = (n, sing, plur) => (n === 1 ? sing : plur);
 
+    async function addScan(presentoir_offer_id, presentoir_id, offer_slug) {
+      try {
+          const url = `${process.env.REACT_APP_API_URL}/api/presentoirs/addscan` +
+              `?presentoir_offer_id=${presentoir_offer_id}` +
+              `&presentoir_id=${presentoir_id}` +
+              `&offer_slug=${offer_slug}`;
+
+          const res = await fetch(url);
+          const data = await res.json();
+
+          return data;
+      } catch (err) {
+          console.error("Erreur addScan :", err);
+          return { success: false };
+      }
+  }
 
 
       // Helpers (dans ton composant ou dans un util)
@@ -487,9 +533,9 @@ import FadeInImage from "../../components/Utils/FadeInImage.jsx";
                   <img className={`${isFavorite ? "appear" : "disappear"}`} src={favoris_selected} alt="favoris selected Icon"/>
                 </button>
               </div>
-              <button className="AllImages" onClick={() => {console.log("Appuie")}}>
+              {/* <button className="AllImages" onClick={() => {console.log("Appuie")}}>
                 <img src={allImageIcon} alt="copie Icon"/>
-              </button>
+              </button> */}
             </div>
             {/* <Carrousel isLoading={isLoading}  photos={offer.image_urls}  setNavigationSelected={setNavigationSelected} ref={CarrouselRef} scrollSyncEnabled={scrollSyncEnabled}/> */}
             <Carrousel
@@ -606,7 +652,7 @@ import FadeInImage from "../../components/Utils/FadeInImage.jsx";
               {
                 id_hote ?
                 <>
-                  <p className="t32 DistanceText">Distance depuis votre Hotel :</p>
+                  <p className="t32 bold DistanceText">Distance depuis votre Hotel :</p>
                   <div className="OfferDistanceContainer">
                     <div className="OfferDistanceColumn">
                       {
@@ -793,7 +839,7 @@ import FadeInImage from "../../components/Utils/FadeInImage.jsx";
                 <div className="row">
                   <img src={ViarteLogo} alt="Viarte Logo" />
                   <p className="t1">&</p>
-                  <img src={LogoHotel} alt="Hotel Logo" />
+                  <img src={hote.logo_img} alt="Hotel Logo" />
                 </div>
                 <p className="t4 bold">En partenariat avec votre Hotel</p>
                 <p className="hotelPartnershipText t6">
@@ -802,7 +848,7 @@ import FadeInImage from "../../components/Utils/FadeInImage.jsx";
                 </p>
                 <div className="row HotelImages">
                     {hote.image_urls && hote.image_urls.slice(0, 3).map((img, index) => (
-                      <div className={`ImageWrapper ${isLoading && "loading shimmer"}`}>
+                      <div key={index} className={`ImageWrapper ${isLoading && "loading shimmer"}`}>
                         <FadeInImage src={img}  alt={`Image de l'hôtel ${hote.nom || ""}`} />
                       </div>
                   ))}

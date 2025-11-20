@@ -31,7 +31,7 @@ import TermsOfService from "./pages/DocumentOfficiel/TermsOfService/TermsOfServi
 import AvailabilityEditor from "./pages/AnnoncePage/AvailabilityEditor/AvailabilityEditor";
 import AllAnnoncesPage from "./pages/AnnoncePage/AllAnnoncesPage";
 import AnnoncePage from "./pages/AnnoncePage/AnnoncePage/AnnoncePage";
-import NavBarTest from "./components/BottomNavBar/NavBarTest";
+import NavBar from "./components/BottomNavBar/NavBar";
 import PaymentMethode from "./components/Auth/ProfilPage/PaymentMethode/PaymentMethode";
 import Today from "./pages/Today/Today";
 import Calendar from "./pages/Calendar/Calendar";
@@ -63,6 +63,8 @@ import AddVersementHome from "./pages/AddVersementMethode/AddVersementHome";
 import TransactionInfo from "./pages/MyEarnings/TransactionInfo/TransactionInfo";
 import PaymentPolicy from "./pages/DocumentOfficiel/PaymentPolicy/PaymentPolicy";
 import ValidateReservation from "./pages/Today/ValidateReservation/ValidateReservation";
+import Presentoirs from "./pages/Presentoirs/Presentoirs";
+import PresentoirsOffersPage from "./pages/Presentoirs/PresentoirsOffersPage";
 
 
 
@@ -146,13 +148,14 @@ export default function BrowserRouterAll(){
     /^\/reservations\/[^\/]+$/,
     /^\/versement\/.*/,
     /^\/transaction-info\/[^\/]+\/[^\/]+$/,
+    /^\/presentoirs\/[^\/]+$/,
     ];
 
     return(
         <>
         {
             !(hideNavBarOnRoutes.includes(location.pathname) ||
-            hideNavBarPatterns.some(pattern => pattern.test(location.pathname))) && <NavBarTest ref={navBarRef}/>
+            hideNavBarPatterns.some(pattern => pattern.test(location.pathname))) && <NavBar ref={navBarRef}/>
         }
         {/* <TestHeight num={3}/>
         <TestHeight num={4}/> */}
@@ -184,13 +187,10 @@ export default function BrowserRouterAll(){
             <Route path="/reservations/validate" element={<ValidateReservation/>} />
 
 
-
+            {/* Prestataire */}
             <Route path="/today" element={<Today />} />
-            
-
             <Route path="/calendar" element={<Calendar />} />
- 
-            <Route path="/my-earnings" element={<MyEarnings />} />
+             <Route path="/my-earnings" element={<MyEarnings />} />
             <Route path="/all-history-transactions" element={<AllHistoryTransaction />} />
             <Route path="/payout-request" element={<PayoutRequest />} />
             <Route path="/versement/new" element={<AddVersementHome />} />
@@ -198,7 +198,11 @@ export default function BrowserRouterAll(){
             <Route path="/versement/new/iban" element={<AddIBANForm />} />
             <Route path="/transaction-info/:type/:id" element={<TransactionInfo />} />
 
+            {/* Hote */}
+            <Route path="/presentoirs" element={<Presentoirs />} />
+            <Route path="/presentoirs/:slug" element={<PresentoirsOffersPage />} />
 
+                
             <Route path="/annonces" element={<AllAnnoncesPage />} />
             <Route path="/annonces/:slug" element={<AnnoncePage />} />
             <Route path="/annonces/:slug/availability-editor" element={<AvailabilityEditor />} />

@@ -1,0 +1,263 @@
+.Presentoirs{
+    padding-top: 30px;
+    padding-bottom: 160px;
+    width: 100%;
+}
+.Presentoirs>p:first-of-type {
+    padding-bottom: 20px;
+}
+.Presentoirs>p{
+    margin-left: 15px;
+    margin-right: 15px;
+}
+.Presentoirs>.ImageWrapper{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    width: calc(100% - 30px);
+    position: relative;
+    /* border: 3px solid white; */
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.17);
+    border-radius: 25px;
+    margin-left: 15px;
+    margin-bottom: 10px;
+}
+.Presentoirs>.ImageWrapper>img{
+    width: 100%;
+    border-radius: 24px;
+}
+.Presentoirs>.ImageWrapper>div{
+    width: 100%;
+    height: 100%;
+    /* background-color: red; */
+    position: absolute;
+    left: 0;
+    background: linear-gradient( 180deg, rgba(0,0,0,0) 0%, rgba(0,0,0,0) 6.67%, rgba(0,0,0,0.045) 13.33%, rgba(0,0,0,0.09) 20%, rgba(0,0,0,0.135) 26.67%, rgba(0,0,0,0.18) 33.33%, rgba(0,0,0,0.225) 40%, rgba(0,0,0,0.27) 46.67%, rgba(0,0,0,0.315) 53.33%, rgba(0,0,0,0.36) 60%, rgba(0,0,0,0.405) 66.67%, rgba(0,0,0,0.45) 73.33%, rgba(0,0,0,0.495) 80%, rgba(0,0,0,0.55) 86.67%, rgba(0,0,0,0.595) 93.33%, rgba(0,0,0,0.63) 100% );
+    border-radius: 24px;
+}
+.Presentoirs .AllPresentoirs>p{
+  margin-left: 15px;
+}
+.Presentoirs .PresentoireCard{
+  padding: 15px;
+  margin: 0 15px;
+  border-radius: 20px;
+  margin-top: 15px;
+  box-shadow: var(--boxshadow);
+  position: relative;
+  padding-bottom: 10px;
+}
+.Presentoirs .PresentoireCard>p{
+    margin-bottom: 7px;
+}
+.PresentoireCard .addStock{
+  background-color: white;
+  border-radius: 50%;
+  border: 1px solid var(--greysemidark);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  padding: 5px;
+  position: absolute;
+  top: -15px;
+  right: -8px;
+}
+.PresentoireCard .addStock>img{
+  width: 35px;
+}
+
+.PresentoireCard .NameContainer{
+  gap: 10px;
+}
+.PresentoireCard .NameContainer>.row{
+  gap: 3px;
+}
+.PresentoireCard .NameContainer .pointStatus{
+  width: 7px;
+  height: 7px;
+  border-radius: 100px;
+  background-color: var(--greennormal);
+}
+
+.PresentoireCard .statRow{
+  margin-top: 14px;
+  margin-bottom: 15px;
+  align-items: stretch;
+  justify-content: space-between;
+  gap: 4px;
+}
+
+.PresentoireCard .statRow+.hline{
+  margin-bottom: 12px;
+}
+.PresentoireCard .statRow .statContainer{
+  box-shadow: var(--boxshadow);
+  padding: 8px;
+  border-radius: 10px;
+  gap: 4px;
+  width: 100%;
+}
+
+.Presentoirs .PresentoireCard .AnnonceItem{
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  border: none;
+  border-radius: 20px;
+  background-color: transparent;
+  cursor: pointer;
+}
+
+
+
+.Presentoirs .ImagesAnnonces {
+    position: relative;
+    height: 100px;
+    width: 120px;
+    min-width: 120px;
+}
+.Presentoirs .ImagesAnnonces>.ImageWrapper {
+    position: absolute;
+    height: 80px;
+    width: 80px;
+    border-radius: 10px;
+    border: 3px solid white;
+    box-shadow: 0px 2px 10px rgba(0, 0, 0, 0.08);
+    box-shadow: 0px 2px 10px rgba(0, 0, 0, 0.08);
+    background-color: var(--greylight);
+}
+.Presentoirs .ImagesAnnonces>.ImageWrapper:first-of-type {
+  transform: rotate(4deg) translateX(20px) translateY(5px);
+}
+.Presentoirs .ImagesAnnonces>.ImageWrapper:last-of-type {
+  transform: rotate(-4deg);
+}
+.Presentoirs .ImagesAnnonces>.ImageWrapper>img {
+    object-fit: cover;
+    height: 100%;
+    width: 100%;
+    border-radius: 7px;
+    background-color: var(--greylight);
+}
+
+
+
+
+
+.Presentoirs .columnAnnonceOffer{
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+.Presentoirs .columnAnnonceOffer p{
+  text-align: start;
+}
+.Presentoirs .columnAnnonceOffer p:first-of-type{
+  margin-bottom: 4px;
+}
+.Presentoirs .columnAnnonceOffer>.row{
+  align-items: start;
+  gap: 3px;
+}
+.Presentoirs .columnAnnonceOffer img{
+  height: 15px;
+  width: 15px;
+}
+
+
+
+.Presentoirs>.AddPresentoir{
+    --taillemin: min(250px, 50vw);
+    position: fixed;
+    bottom: 90px;
+    box-shadow: 0 2px 15px rgba(0, 0, 0, 0.3);
+    border: none;
+    padding: 18px 25px;
+    border-radius: 100px;
+    background: var(--lineargradientblack);
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 10px;
+    white-space: nowrap;
+    cursor: pointer;
+    z-index: 2;
+    right: 50%;
+    transform: translate(calc(var(--taillemin) * 1 - 10px))
+}
+.Presentoirs>.AddPresentoir>img{
+    height: 15px;
+}
+.Presentoirs>.AddPresentoir>p{
+    color: white;
+}
+
+
+
+
+
+
+.Presentoirs .allAnnonces{
+  position: relative;
+}
+.Presentoirs .allAnnonces .AnnonceImage{
+  width: 30%;
+  max-width: 22%; 
+  aspect-ratio: 1;
+  border-radius: 20%;
+  border: 3px solid white;
+  box-shadow: 0px 2px 10px rgba(0, 0, 0, 0.08);
+  box-shadow: 0px 2px 10px rgba(0, 0, 0, 0.08);
+  background-color: var(--greylight);
+  position: absolute;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+.Presentoirs .allAnnonces .AnnonceImage>img{
+  object-fit: cover;
+  height: 100%;
+  width: 100%;
+  border-radius: 17%;
+  background-color: var(--greylight);
+}
+.Presentoirs .allAnnonces .AnnonceImage:nth-of-type(1){
+  left: 0%;
+  transform: rotate(6deg);
+}
+
+.Presentoirs .allAnnonces .AnnonceImage:nth-of-type(2){
+  left: 18%;
+  transform: rotate(-2deg);
+}
+
+.Presentoirs .allAnnonces .AnnonceImage:nth-of-type(3){
+  left: 38%;
+  transform: rotate(4deg);
+}
+
+.Presentoirs .allAnnonces .AnnonceImage:nth-of-type(4){
+  left: 58%;
+  transform: rotate(-3deg);
+}
+
+.Presentoirs .allAnnonces .AnnonceImage:nth-of-type(5){
+  left: 78%;
+  transform: rotate(5deg);
+}
+
+
+
+/* .Presentoirs .TopActivity{
+  margin-top: 100px;
+} */
+
+
+
+.Presentoirs .centerText{
+  text-align: left;
+  margin-top: clamp(20px, calc(22vw + 1px), 110px);
+}

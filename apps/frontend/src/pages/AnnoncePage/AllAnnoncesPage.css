@@ -48,34 +48,48 @@
   align-items: center;
   border: none;
   border-radius: 20px;
-  gap: 10px;
   background-color: transparent;
   cursor: pointer;
 }
-#AnnoncesPage>.allAnnonces .AnnonceItem>.ImageWrapper{
-  --dim: 70px;
-  width: var(--dim);
-  height: var(--dim); 
-  border-radius: 15px;
-  background-color: var(--greylight);
-  /* box-shadow: 0 0px 20px rgba(0, 0, 0, 0.1); */
-  /* border: 3px solid white; */
 
+#AnnoncesPage>.allAnnonces .AnnonceItem .ImagesAnnonces {
+    position: relative;
+    height: 100px;
+    width: 120px;
+    min-width: 120px;
 }
-#AnnoncesPage>.allAnnonces .AnnonceItem>.ImageWrapper>img{
-  width: var(--dim);
-  height: var(--dim); 
-  min-width: var(--dim);
-  border-radius: 8px;
-  object-fit: cover;
-  /* border: 3px solid white;  */
+#AnnoncesPage>.allAnnonces .AnnonceItem .ImagesAnnonces>.ImageWrapper {
+    position: absolute;
+    height: 80px;
+    width: 80px;
+    border-radius: 10px;
+    border: 3px solid white;
+    box-shadow: 0px 2px 10px rgba(0, 0, 0, 0.08);
+    box-shadow: 0px 2px 10px rgba(0, 0, 0, 0.08);
+    background-color: var(--greylight);
 }
+#AnnoncesPage>.allAnnonces .AnnonceItem .ImagesAnnonces>.ImageWrapper:first-of-type {
+  transform: rotate(4deg) translateX(20px) translateY(5px);
+}
+#AnnoncesPage>.allAnnonces .AnnonceItem .ImagesAnnonces>.ImageWrapper:last-of-type {
+  transform: rotate(-4deg);
+}
+#AnnoncesPage>.allAnnonces .AnnonceItem .ImagesAnnonces>.ImageWrapper>img {
+    object-fit: cover;
+    height: 100%;
+    width: 100%;
+    border-radius: 7px;
+    background-color: var(--greylight);
+}
+
+
+
+
+
 #AnnoncesPage .AnnonceItem .columnAnnonceOffer{
   display: flex;
   flex-direction: column;
   justify-content: center;
-  margin-left: 10px;
-  gap: px;
 }
 #AnnoncesPage .AnnonceItem .columnAnnonceOffer p{
   text-align: start;

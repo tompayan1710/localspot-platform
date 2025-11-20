@@ -1,0 +1,17 @@
+.MonthlyChartScan{
+    max-width: 100%;
+    width: 100%;
+    padding: 0 15px;
+    padding-bottom: 40px;
+}
+.MonthlyChartScan .AllScans{
+    opacity: 0.7;
+    margin-top: 3px;
+}
+.MonthlyChartScan .AllScansSquellette{
+    margin-top: 3px;
+    height: 1.85rem;
+    background-color: var(--greylight);
+    width: 150px;
+    border-radius: 6px;
+}

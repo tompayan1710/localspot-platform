@@ -4,7 +4,7 @@ import { AuthContext } from "../../components/Auth/authContext/authContext";
 import { getOffersProvider } from "../../services/offers";
 import { useNavigate } from "react-router-dom";
 import plus from "../../assets/images/plus.png"
-import Pin from "../../assets/images/Pin (3).png"
+import Pin from "../../assets/images/Pin.png"
 import CahierTexte from "../../components/CahierTexte/CahierTexte";
 import FadeInImage from "../../components/Utils/FadeInImage";
 import { useTranslation } from "react-i18next";
@@ -65,8 +65,13 @@ export default function AllAnnoncesPage(){
                     <button key={offer.id} className="AnnonceItem" onClick={() => {
                         navigate(`${offer.slug}`);
                     }}>
-                        <div className="ImageWrapper">
-                            <FadeInImage src={offer.image_urls[0]} alt={"image annonce"}/>
+                        <div className="ImagesAnnonces">
+                            <div className="ImageWrapper">
+                                <FadeInImage src={offer.image_urls[1]} alt={"image annonce"}/>
+                            </div>
+                            <div className="ImageWrapper">
+                                <FadeInImage src={offer.image_urls[0]} alt={"image annonce"}/>
+                            </div>
                         </div>
                         <div className="columnAnnonceOffer">
                             <p className="t5 maxLine bold">{offer.title}</p>

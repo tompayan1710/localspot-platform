@@ -225,6 +225,8 @@ i18n
 
           Switch_to_traveler_mode: "Switch to traveler mode",
           Switch_to_provider_mode: "Switch to provider mode",
+          Switch_to_hote_mode: "Switch to hote mode",
+          presentoirs: "Display stand",
 
           General: "General",
           Notifications: "Notifications",
@@ -644,6 +646,9 @@ i18n
           Log_out: "Déconnexion",
           Switch_to_traveler_mode: "Basculer en mode voyageur",
           Switch_to_provider_mode: "Basculer en mode prestataire",
+          Switch_to_hote_mode: "Basculer en mode hote",
+          presentoirs: "présentoirs",
+
           General: "Général",
           Notifications: "Notifications",
           Documents: "Documents",

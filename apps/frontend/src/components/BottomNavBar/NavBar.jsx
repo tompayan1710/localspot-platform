@@ -1,4 +1,4 @@
-import "./NavBarTest.css";
+import "./NavBar.css";
 import { useNavigate, useLocation } from "react-router-dom"; // 👈 pour naviguer
 import { forwardRef, useContext, useEffect, useState, useTransition } from "react"
 import jetSkieIcon from "../../assets/images/jetSkieIcon.png"
@@ -13,12 +13,14 @@ import ReservationsIcon from "../../assets/images/ReservationsIcon.png"
 import ExploreIcon from "../../assets/images/ExploreIcon.png"
 import favoris from "../../assets/images/favoris.png"
 import Today from "../../assets/images/Today.png"
+import invoice from "../../assets/images/invoice.png"
+import Presentoire from "../../assets/images/Presentoire.png"
 import { AuthContext } from "../Auth/authContext/authContext"
 import { useTranslation } from "react-i18next";
 
-const NavBarTest = forwardRef(({ isMap }, ref) => {
-  const navigate = useNavigate(); // 👈 hook de navigation
-  const location = useLocation();  // 👈
+const NavBar = forwardRef(({ isMap }, ref) => {
+  const navigate = useNavigate(); // hook de navigation
+  const location = useLocation();  //
 
   const { t, i18n } = useTranslation();
 
@@ -43,6 +45,8 @@ const NavBarTest = forwardRef(({ isMap }, ref) => {
     if (currentPath.startsWith("/my-earnings")) return "my-earnings";
     if (currentPath.startsWith("/reservation")) return "reservations";
     if (currentPath.startsWith("/favoris")) return "favoris";
+    if (currentPath.startsWith("/presentoirs")) return "presentoirs";
+    if (currentPath.startsWith("/invoice")) return "invoice";
     return "explorer";
   };
 
@@ -86,7 +90,7 @@ const NavBarTest = forwardRef(({ isMap }, ref) => {
 
         {/* CLIENT */}
         {/* {!authState.user?.provider_id && !authState.user?.provider?.is_validated && ( */}
-        {(!authState.user?.provider?.is_validated || userMode === "voyageur") && (
+        {(!authState.user?.provider?.is_validated && userMode != "hote" && userMode != "prestataire" || userMode === "voyageur") && (
 
           <>
           {/* <button className="NavBarButton" onClick={() => setActiveTab("explorer")}> */}
@@ -217,7 +221,44 @@ const NavBarTest = forwardRef(({ isMap }, ref) => {
               </div>
             </button>       
           </>
-        )}
+      )}
+
+      
+      {userMode === "hote" && authState.user?.hote_id && (
+
+        <>  
+          <button className="NavBarButton" onClick={() => {
+              // setActiveTab("annonces");
+              navigate("/invoice");
+            }}>
+              <div className={`IconWrapper ${activeTab === "invoice" ? "active" : ""}`}>
+                <img src={invoice} alt="My invoice icon"/>
+                <p className="t6">{t("Invoice")}</p>
+              </div>
+          </button>
+          <button className="NavBarButton" onClick={() => {
+              // setActiveTab("annonces");
+              navigate("/presentoirs");
+            }}>
+              <div className={`IconWrapper ${activeTab === "presentoirs" ? "active" : ""}`}>
+                <img src={Presentoire} alt="Presentoire icon"/>
+                <p className="t6">{t("Presentoirs")}</p>
+              </div>
+          </button>
+          <button className="NavBarButton" onClick={() => {
+              // setActiveTab("annonces");
+              navigate("/my-earnings");
+            }}>
+              <div className={`IconWrapper ${activeTab === "my-earnings" ? "active" : ""}`}>
+                <img src={EuroNav} alt="My Earnings icon"/>
+                {/* My Earnings */}
+                {/* <p className="t6">Mes&nbsp;Revenus</p> */}
+                <p className="t6">{t("Payments")}</p>
+              </div>
+            </button>   
+          </>
+      )}
+      
         {/* <button className="NavBarButton" onClick={() => setActiveTab("profile")}>  */}
         <button className="NavBarButton" onClick={() => {
               // setActiveTab("profile");
@@ -233,5 +274,4 @@ const NavBarTest = forwardRef(({ isMap }, ref) => {
 }
 )
 
-export default NavBarTest
-
+export default NavBar

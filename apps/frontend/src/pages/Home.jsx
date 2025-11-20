@@ -195,25 +195,27 @@ import ButtonLanguage from "../components/Buttons/ButtonLanguage/ButtonLanguage"
 
 
     // ⚡ Récupération de l'objet complet { id_hote, ts }
-    const [id_hote_data, setId_hote_data] = useState(() => {
-      const stored = localStorage.getItem("id_hote");
+    const [presentoirMeta, setPresentoirMeta] = useState(() => {
+      const stored = localStorage.getItem("presentoir_offer_id");
       return stored ? JSON.parse(stored) : null;
     });
 
-    useEffect(() => {
-      const EXPIRATION = 7 * 24 * 60 * 60 * 1000; // 7 jours en ms
 
-      if (id_hote_data && Date.now() - id_hote_data.ts > EXPIRATION) {
-        localStorage.removeItem("id_hote");
-        console.log("id_hote expiré");
-        setId_hote_data(null);
-      }
-    }, [id_hote_data]);
+  useEffect(() => {
+    const EXPIRATION = 7 * 24 * 60 * 60 * 1000; // 7 jours
+
+    if (presentoirMeta && Date.now() - presentoirMeta.ts > EXPIRATION) {
+      localStorage.removeItem("presentoir_offer_id");
+      console.log("presentoir_offer_id expiré");
+      setPresentoirMeta(null);
+    }
+  }, [presentoirMeta]);
+
 
     const goToOffer = (slug, navOptions = {}) => {
       console.warn("Je goToOffer");
-      if (id_hote_data?.id_hote) {
-        navigate(`/offer-page/${slug}?host_id=${id_hote_data.id_hote}`, navOptions);
+      if (presentoirMeta?.presentoir_offer_id) {
+        navigate(`/offer-page/${slug}?presentoir_offer_id=${presentoirMeta.presentoir_offer_id}`, navOptions);
       } else {
         navigate(`/offer-page/${slug}`, navOptions);
       }

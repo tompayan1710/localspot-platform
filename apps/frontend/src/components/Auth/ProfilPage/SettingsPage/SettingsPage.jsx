@@ -5,7 +5,6 @@ import { useState } from "react";
 import arrowRight from "../../../../assets/images/arrowRight.png"
 import NotificationLine from "../../../../assets/images/NotificationLine.png"
 import trashBlack from "../../../../assets/images/trashBlack.png"
-import Pin from "../../../../assets/images/Pin (3).png"
 import Document from "../../../../assets/images/Document.png"
 import { deleteAccount } from "../../../../services/auth";
 import { motion, AnimatePresence } from "framer-motion";

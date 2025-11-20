@@ -1,0 +1,190 @@
+.PresentoirOffer{
+    flex: 1 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+.CardPresentoir{
+    border-radius: 15px;
+    /* border: 1px solid var(--greysemidark); */
+    padding: 15px 0;
+    padding-bottom: 17px;
+    /* box-shadow: 0 2px 15px rgba(0, 0, 0, 0.07); */
+    box-shadow: var(--boxshadow);
+    position: relative;
+    background-color: white;
+    display: flex;
+    flex-direction: column;
+    max-width: 380px;
+    width: 88%;
+}
+.CardPresentoir .addresse>img{
+    height: 13px;
+    margin-top: 1px;
+}
+.CardPresentoir .hline{
+    margin: 15px 15px;
+    width: calc(100% - 30px)!important;
+    min-width: calc(100% - 30px)!important;
+}
+.CardPresentoir>.row{
+    align-items: start;
+    gap: 15px;
+    margin: 0 15px;
+}
+.CardPresentoir .addresse{
+    align-items: start;
+    justify-content: start;
+    align-items: start;
+    margin: 0 15px;
+    gap: 2px;
+    margin-top: 4px;
+    margin-bottom: 8px;
+}
+
+.CardPresentoir .ImagesOffers{
+    display: grid;
+    grid-template-columns: repeat(2, 1fr); /* 2 colonnes */
+    grid-template-rows: repeat(2, 115px);  /* 2 lignes fixes */
+    gap: 3px;
+    margin: 0 15px;
+    box-shadow: var(--boxshadow);
+    border-radius: 15px;
+    --anglevar: 15px
+}
+.CardPresentoir .ImagesOffers img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+/* Coin haut gauche */
+.CardPresentoir .ImagesOffers img:nth-child(1) {
+    border-top-left-radius: var(--anglevar);
+}
+
+/* Coin haut droite */
+.CardPresentoir .ImagesOffers img:nth-child(2) {
+    border-top-right-radius: var(--anglevar);
+}
+
+/* Coin bas gauche */
+.CardPresentoir .ImagesOffers img:nth-child(3) {
+    border-bottom-left-radius: var(--anglevar);
+}
+
+/* Coin bas droite */
+.CardPresentoir .ImagesOffers img:nth-child(4) {
+    border-bottom-right-radius: var(--anglevar);
+}
+
+.CardPresentoir .whiteBoxContainer{
+    position: relative;
+    margin: 0 15px;
+    margin-left: 15px;
+    margin-right: 15px;
+    display: none;
+}
+.CardPresentoir .whiteBoxContainer > .whiteBox {
+    position: absolute;
+    top: 0;
+    width: 15px;
+    height: 100%;
+    pointer-events: none; /* pour ne pas bloquer le scroll */
+}
+.CardPresentoir .whiteBoxContainer > .whiteBox.whiteBoxLeft {
+    left: 0px;
+    background: linear-gradient(to right, rgba(255, 255, 255, 1), rgba(255, 255, 255, 0));
+}
+.CardPresentoir .whiteBoxContainer > .whiteBox.whiteBoxRight {
+    right: 0px;
+    background: linear-gradient(to left, rgba(255, 255, 255, 1), rgba(255, 255, 255, 0));
+}
+
+.CardPresentoir .rowImagesOffers{
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    gap: 10px;
+    overflow: scroll;
+    max-width: 100%;
+    -webkit-overflow-scrolling: touch; /* scroll fluide mobile */
+    margin-top: 15px;
+    /* background-color: var(--greylight); */
+    /* background-color: red; */
+}
+.CardPresentoir .rowImagesOffers>img:first-of-type{
+    margin-left: 10px;
+}
+.CardPresentoir .rowImagesOffers>img:last-of-type{
+    margin-right: 10px;
+}
+.CardPresentoir .rowImagesOffers::-webkit-scrollbar {
+    display: none;
+}
+/* Firefox */
+.CardPresentoir .rowImagesOffers {
+    scrollbar-width: none;
+}
+.CardPresentoir .rowImagesOffers > img {
+    width: 130px;              /* taille plus adaptée */
+    height: 90px;              /* pour un ratio constant */
+    object-fit: cover;         /* crop clean */
+    border-radius: 12px;
+    flex-shrink: 0;            /* <-- empêche les images de se réduire */
+}
+
+.CardPresentoir .seeAnnonce{
+    background-color: transparent;
+    border: none;
+    gap: 2px;
+}
+.CardPresentoir .seeAnnonce img{
+    height: 15px;
+}
+.CardPresentoir .row:has(.cardInfo){
+    justify-content: space-between;
+}
+.CardPresentoir .cardInfo{
+    justify-content: center;
+}
+.CardPresentoir .qrcodeButton{
+    border-radius: 10px;
+    border: 1px solid var(--greysemidark);
+    box-shadow: var(--boxshadow);
+    width: 100px;
+    background-color: transparent;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 2px;
+    margin-bottom: 3px;
+    cursor: pointer;
+    background-color: white;
+}
+.CardPresentoir .qrcodeButton>img{
+    border-radius: 30px;
+    width: 100%;
+    height: 100%;
+}
+
+.CardPresentoir .qrbuttonContainer:has(.full){
+    position: fixed;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    background-color: white;
+    height: 100%;
+    width: min(100%, var(--maxsize));
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+.CardPresentoir .qrcodeButton.full{
+    width: min(calc(100% - 0px), calc(var(--maxsize) - 30px));
+    border-radius: 30px;
+}
+.CardPresentoir .qrcodeButton.full+p{
+    margin-top: 10px;
+}

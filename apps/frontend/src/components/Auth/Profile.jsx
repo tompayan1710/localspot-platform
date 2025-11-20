@@ -50,8 +50,8 @@ export default function Profile() {
     return stored === "provider" ? "provider" : "voyageur"; // fallback = voyageur
   });
 
-  const toggleMode = () => {
-    const newMode = selectedMode === "provider" ? "voyageur" : "provider";
+  const toggleMode = (mode1, mode2) => {
+    const newMode = selectedMode === mode1 ? mode2 : mode1;
     setSelectedMode(newMode);
     localStorage.setItem(MODE_KEY, newMode);
     
@@ -135,7 +135,7 @@ export default function Profile() {
       <>
       {
         authState.user?.provider_id && authState.user?.provider?.is_validated &&(
-          <button className="ModeButton" onClick={toggleMode}>
+          <button className="ModeButton" onClick={() => toggleMode("provider", "voyageur")}>
             <img src={Switch} alt="Switch" />
             <p className="t5">
               {selectedMode === "provider"
@@ -144,11 +144,23 @@ export default function Profile() {
             </p>
           </button>
         )
+          }
+      {
+        authState.user?.hote_id &&(
+          <button className="ModeButton" onClick={() => toggleMode("hote", "voyageur")}>
+            <img src={Switch} alt="Switch" />
+            <p className="t5">
+              {selectedMode === "hote"
+                ? t("Switch_to_traveler_mode")
+                : t("Switch_to_hote_mode")}
+            </p>
+          </button>
+        )
       }
       <div
             className={`
-              profile-container ${authState.user?.provider_id && 
-                authState.user?.provider?.is_validated ? "increase" : ""}`}
+              profile-container ${(authState.user?.provider_id && 
+                authState.user?.provider?.is_validated) || (authState.user?.hote_id) ? "increase" : ""}`}
       >
         
         <div className="principalcolumn">  
