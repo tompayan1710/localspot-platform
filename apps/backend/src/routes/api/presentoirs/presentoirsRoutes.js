@@ -2,6 +2,7 @@
 const express = require("express");
 const router = express.Router();
 const { getAllPresentoirs, getStatsPresentoirs, getAllStatsPresentoirs, addScanPresentoir, getPresentoirOfferAndHoteInfo } = require("../../../db/Models/PresentoirsModel");
+const pool = require("../../../db/index");
 
 // -------------------------
 // GET ALL PRESENTOIRS
@@ -90,32 +91,58 @@ router.get("/stats", async (req, res) => {
 // -------------------------
 // GET PRESENTOIR STATS
 // -------------------------
+// 📌 Stats globales des présentoirs d’un hôtel
 router.get("/allstats", async (req, res) => {
     const { hote_id } = req.query;
 
     if (!hote_id) {
-        return res.status(400).json({
-            success: false,
-            message: "hote_id requis"
-        });
+        return res.status(400).json({ success: false, error: "hote_id manquant" });
     }
 
     try {
-        const stats = await getAllStatsPresentoirs(hote_id);
+        const result = await pool.query(
+            `
+            WITH last_months AS (
+                SELECT 
+                    to_char(date_trunc('month', CURRENT_DATE) - (interval '1 month' * i), 'YYYY-MM') AS year_month
+                FROM generate_series(5, 0, -1) AS i
+            ),
+            monthly_scans AS (
+                SELECT 
+                    to_char(date_trunc('month', sl.scanned_at), 'YYYY-MM') AS year_month,
+                    COUNT(*) AS scan_count
+                FROM presentoir_scans_log sl
+                JOIN presentoir_offers po ON po.id = sl.presentoir_offer_id
+                JOIN presentoirs p ON p.presentoir_id = po.presentoir_id
+                WHERE p.hote_id = $1
+                GROUP BY 1
+            )
+            SELECT 
+                lm.year_month,
+                COALESCE(ms.scan_count, 0) AS scan_count
+            FROM last_months lm
+            LEFT JOIN monthly_scans ms ON lm.year_month = ms.year_month
+            ORDER BY lm.year_month;
+            `,
+            [hote_id]
+        );
 
-        return res.json({
+        const total = result.rows.reduce((sum, r) => sum + Number(r.scan_count), 0);
+
+        res.json({
             success: true,
-            stats
+            stats: {
+                total_scans: total,
+                monthly: result.rows
+            }
         });
 
     } catch (error) {
-        console.error("Erreur dans /presentoirs/allstats :", error);
-        return res.status(500).json({
-            success: false,
-            message: "Erreur serveur."
-        });
+        console.error("❌ Erreur /allstats :", error);
+        res.status(500).json({ success: false, error: "Erreur serveur" });
     }
 });
+
 
 
 

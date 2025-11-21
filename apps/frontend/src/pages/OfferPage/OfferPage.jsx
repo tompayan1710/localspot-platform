@@ -66,6 +66,7 @@ import FadeInImage from "../../components/Utils/FadeInImage.jsx";
 
     const queryParams = new URLSearchParams(location.search);
     const presentoir_offer_id = queryParams.get('presentoir_offer_id');
+    const from_qr = queryParams.get('from_qr');
     const [id_hote, setId_hote] = useState(null);
 
 
@@ -86,6 +87,7 @@ import FadeInImage from "../../components/Utils/FadeInImage.jsx";
     const [offer, setOffer] = useState({});
     const [qrcode, setQRCode] = useState({});
     const [hote, setHote] = useState({});
+    const [presentoir, setPresentoir] = useState({});
     const [durations, setDurations] = useState({});
     const [navigationSelected, setNavigationSelected] = useState(0);
     const [scrollSyncEnabled, setScrollSyncEnabled] = useState(true);
@@ -211,6 +213,11 @@ import FadeInImage from "../../components/Utils/FadeInImage.jsx";
           logo_img: data.data.logo_img
         });
 
+        setPresentoir({
+          presentoir_offer_id: data.data.presentoir_offer_id,
+          presentoir_id: data.data.presentoir_id,
+          offer_slug: data.data.offer_slug,
+        })
 
         setId_hote(data.data.hote_id);
 
@@ -232,7 +239,6 @@ import FadeInImage from "../../components/Utils/FadeInImage.jsx";
           console.log(offerData.offer);
 
           
-
           if (presentoir_offer_id) {
             await getPresentoirOffer(presentoir_offer_id);
             // console.log("Mon id est :", id_hote);
@@ -286,6 +292,33 @@ import FadeInImage from "../../components/Utils/FadeInImage.jsx";
     useEffect(() => {
       console.error(hote);
     }, [hote])
+
+    useEffect(() => {
+      if (from_qr !== "1") return;                           // QR explicitement
+      if (!presentoir.presentoir_offer_id) return;           // Pas d’ID → on annule
+      if (!presentoir.offer_slug) return;                    // slug pas encore chargé
+
+      
+      const key = `scan_done_${presentoir.presentoir_offer_id}`;
+      console.log("SCAN KEY USED =", key);
+
+      if (sessionStorage.getItem(key)) {
+        console.log("Scan déjà fait → skip.");
+        return;
+      }
+
+      addScan(
+        presentoir.presentoir_offer_id,
+        presentoir.presentoir_id,
+        presentoir.offer_slug
+      );
+
+      sessionStorage.setItem(key, "1");
+      console.log("Scan enregistré ✔");
+
+    }, [from_qr, presentoir]);
+
+
 
 
     function formatDuration(durationText) {
@@ -360,6 +393,8 @@ import FadeInImage from "../../components/Utils/FadeInImage.jsx";
           localStorage.setItem("jwtToken", token);
           checkAuth(); // ✅ ici tu réinitialises authState
         }
+
+        
       }, []);
 
 
@@ -368,6 +403,7 @@ import FadeInImage from "../../components/Utils/FadeInImage.jsx";
           localStorage.setItem("presentoir_offer_id", JSON.stringify({ presentoir_offer_id: presentoir_offer_id, ts: Date.now() }));
         }
       }, [presentoir_offer_id]);
+    
 
 
 

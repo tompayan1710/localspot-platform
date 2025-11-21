@@ -24,9 +24,8 @@ export default function Presentoirs() {
     const [loading, setLoading] = useState(true);
 
     const [statsLoading, setStatsLoading] = useState(true);
-    const [globalStats, setGlobalStats] = useState(null);
-    const [globalLabels, setGlobalLabels] = useState([]);
-    const [globalData, setGlobalData] = useState([]);
+    const [monthlyChartData, setMonthlyChartData] = useState(null);
+
 
     // ------------------------------
     // Récupère les stats globales des présentoirs
@@ -40,29 +39,26 @@ export default function Presentoirs() {
             const data = await res.json();
             if (!data.success) return;
 
-            setGlobalStats(data.stats);
+            const monthly = data.stats.monthly;
 
-            const now = new Date();
             const formatter = new Intl.DateTimeFormat(lang, { month: "short" });
 
             const labels = [];
             const values = [];
 
-            for (let i = 5; i >= 0; i--) {
-                const month = new Date(now.getFullYear(), now.getMonth() - i, 1);
-                const key = formatter.format(month);
+            for (const m of monthly) {
+                const [year, month] = m.year_month.split("-");
+                const date = new Date(year, month - 1, 1);
 
-                labels.push(key);
-
-                const yyyyMM = month.toISOString().slice(0, 7);
-
-                const found = data.stats.monthly.find(m => m.year_month === yyyyMM);
-
-                values.push(found ? Number(found.scan_count) : 0);
+                labels.push(formatter.format(date)); // ex "juil."
+                values.push(Number(m.scan_count));  // ex 2
             }
 
-            setGlobalLabels(labels);
-            setGlobalData(values);
+            setMonthlyChartData({
+                labels,
+                values,
+                total_scans: data.stats.total_scans,
+            });
 
         } catch (error) {
             console.error("Erreur globalStats :", error);
@@ -70,6 +66,7 @@ export default function Presentoirs() {
 
         setStatsLoading(false);
     };
+
 
 
     // ------------------------------
@@ -164,6 +161,15 @@ export default function Presentoirs() {
         return `Il y a ${months} mois`;
     }
 
+    const placeholderChartData = {
+        labels: ["", "", "", "", "", ""],
+        values: [0, 0, 0, 0, 0, 0],
+        total_scans: 0
+    };
+
+    const chartData = monthlyChartData || placeholderChartData;
+
+
     return (
         <div className="Presentoirs">
             <button className="AddPresentoir">
@@ -174,10 +180,16 @@ export default function Presentoirs() {
             <p className="t32">{t("Presentoirs")}</p>
 
             <div>
-                <MonthlyScanBarChart 
-                    data={globalData}
+                {/* <MonthlyScanBarChart 
+                    data={monthlyChartData.monthly}
                     labels={globalLabels}
                     solde={globalStats ? globalStats.total_scans : 0}
+                    loading={statsLoading}
+                /> */}
+                <MonthlyScanBarChart
+                    data={chartData.values}
+                    labels={chartData.labels}
+                    solde={chartData.total_scans}
                     loading={statsLoading}
                 />
             </div>
@@ -240,7 +252,7 @@ export default function Presentoirs() {
                                     if (!offer) {
                                         return (
                                             <div key={slug} className="AnnonceItem">
-                                                <p>{slug}</p>
+                                                {/* <p>{slug}</p> */}
                                             </div>
                                         );
                                     }
