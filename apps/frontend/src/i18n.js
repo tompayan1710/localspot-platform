@@ -363,7 +363,7 @@ i18n
           Payout_method: "Payout method",
           Amount: "Amount",
           Custom_amount: "Custom amount",
-          Available_max: "Maximum available amount: {{max}}",
+          Available_max: "Maximum available amount: {{max}} €",
           Error_min: "The amount cannot be less than {{min}} €",
           Error_max: "The amount cannot exceed {{max}} €",
           Security_limit: "For security reasons, the maximum amount allowed per transfer is €3000.",
@@ -408,6 +408,21 @@ i18n
           Profile_updated_successfully: "Profile updated successfully!",
           Error_updating_profile: "Error updating profile.",
           Server_error: "Server error.",
+
+
+          //Presentoir
+          Install_request: "Installation request",
+          Presentoirs_list: "Display stands list",
+          Loading: "Loading...",
+          No_presentoirs_yet: "No display stands yet",
+          Total_scans: "Total scans",
+          Last_scan: "Last scan",
+          Linked_offers: "Linked offers",
+          Displayed_offers: "Displayed offers:",
+          No_offers_linked: "No offers linked",
+          Top_activity: "Top activity:",
+          Presentoir_limit_info: "A display stand shows 5 activities in total.",
+          Install_request_button: "Installation request",
 
           //ALL
           adult: "adult",
@@ -804,7 +819,7 @@ i18n
           Payout_method: "Mode de versement",
           Amount: "Montant",
           Custom_amount: "Montant personnalisé",
-          Available_max: "Montant maximum disponible : {{max}}",
+          Available_max: "Montant maximum disponible : {{max}} €",
           Error_min: "Le montant ne peut pas être inférieur à {{min}} €",
           Error_max: "Le montant ne peut pas dépasser {{max}} €",
           Security_limit: "Pour des raisons de sécurité, le montant maximum autorisé par virement est de {{max}} €.",
@@ -850,6 +865,21 @@ i18n
           Profile_updated_successfully: "Profil mis à jour !",
           Error_updating_profile: "Erreur lors de la mise à jour.",
           Server_error: "Erreur serveur.",
+
+          //Presentoir
+          Install_request: "Demande d’installation",
+          Presentoirs_list: "Listes des présentoirs",
+          Loading: "Chargement...",
+          No_presentoirs_yet: "Aucun présentoir pour le moment",
+          Total_scans: "Total scans",
+          Last_scan: "Dernier scan",
+          Linked_offers: "Offres associées",
+          Displayed_offers: "Offres affichées :",
+          No_offers_linked: "Aucune offre associée",
+          Top_activity: "Top activité :",
+          Presentoir_limit_info: "Un présentoir affiche 5 activités au total.",
+          Install_request_button: "Demande d’installation",
+
 
           //ALL
           adult: "adulte",

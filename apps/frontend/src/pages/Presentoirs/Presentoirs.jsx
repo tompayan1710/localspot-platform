@@ -4,14 +4,17 @@ import PresentoirePhoto from "../../assets/images/PresentoirePhoto.png";
 import Pin from "../../assets/images/Pin.png";
 import plus from "../../assets/images/crossWhite.png";
 import addStock from "../../assets/images/addStock.png";
+import arrowrighticon from "../../assets/images/arrowrighticon.png";
 
 import { useNavigate } from "react-router-dom";
-import { useContext, useEffect, useState } from "react";
+import { useContext, useEffect, useRef, useState } from "react";
 import { AuthContext } from "../../components/Auth/authContext/authContext";
 import { useTranslation } from "react-i18next";
 import { getOfferBySlug } from "../../services/offers";
 import FadeInImage from "../../components/Utils/FadeInImage";
 import MonthlyScanBarChart from "./MonthlyScanBarChart/MonthlyScanBarChart";
+import PopUpBottom from "../../components/PopUpBottom/PopUpBottom";
+import Spinner from "../../components/Spinner/Spinner";
 
 export default function Presentoirs() {
     const navigate = useNavigate();
@@ -19,13 +22,21 @@ export default function Presentoirs() {
     const { t, i18n } = useTranslation();
     const lang = (i18n.resolvedLanguage || i18n.language || "fr").split("-")[0];
 
+    const [isOccultView, setIsOccultView] = useState(false);
     const [presentoirs, setPresentoirs] = useState([]);
     const [offers, setOffers] = useState({});
     const [loading, setLoading] = useState(true);
 
     const [statsLoading, setStatsLoading] = useState(true);
     const [monthlyChartData, setMonthlyChartData] = useState(null);
-
+    
+    const PopUpBottomRef = useRef(null);
+    const PopUpAddStockref = useRef(null);
+    const [address, setAddress] = useState("");
+    const [offerType, setOfferType] = useState("");
+    const [isSending, setIsSending] = useState(false);
+    const [restocking, setRestocking] = useState(0);
+    const [presentoirSelected, setPresentoirSelected] = useState(0);
 
     // ------------------------------
     // Récupère les stats globales des présentoirs
@@ -170,11 +181,30 @@ export default function Presentoirs() {
     const chartData = monthlyChartData || placeholderChartData;
 
 
+   function getStatus(status) {
+        switch (status) {
+            case "actif":
+                return "actif";
+
+            case "en_installation":
+                return "en_installation";
+
+            case "desactive":
+                return "desactive";
+
+            default:
+                return "desactive"; // valeur par défaut
+        }
+    }
+
     return (
         <div className="Presentoirs">
-            <button className="AddPresentoir">
+            <button className="AddPresentoir"  onClick={() => {
+                PopUpBottomRef.current.classList.add("open")
+                setIsOccultView(true);
+            }}>
                 <img src={plus} alt="plus icon" />
-                <p className="t5">Demande d’installation</p>
+                <p className="t5">{t("Install_request")}</p>
             </button>
 
             <p className="t32">{t("Presentoirs")}</p>
@@ -200,48 +230,52 @@ export default function Presentoirs() {
             </div> */}
 
             <div className="AllPresentoirs">
-                {loading && <p>Loading...</p>}
+                {loading && <p>{t("Loading")}</p>}
 
                 {!loading && presentoirs.length === 0 ? (
                     <div className="NoPresentoirs">
                         <p className="t4">{t("No_presentoirs_yet")}</p>
                     </div>
                 ) : (
-                    <p className="t4 bold">Listes des présentoires</p>
+                    <p className="t4 bold">{t("Presentoirs_list")}</p>
                 )}
 
                 {presentoirs.map((p) => (
                     <div className="PresentoireCard" key={p.presentoir_id}>
-                        <button className="addStock">
+                        <button className="addStock" onClick={() => {
+                            PopUpAddStockref.current.classList.add("open")
+                            setIsOccultView(true);
+                            setPresentoirSelected(p);
+                        }}>
                             <img src={addStock} alt="add stock" />
                         </button>
 
                         <div className="row NameContainer">
                             <p className="t32 bold">{p.name}</p>
                             <div className="row">
-                                <div className={`pointStatus ${p.status == ""}`}></div>
-                                <p className="t5">Online</p>
+                                <div className={`pointStatus ${p.status || 'desactive'}`}></div>
+                                <p className="t5">{getStatus(p.status)}</p>
                             </div>
                         </div>
 
                         <div className="statRow row">
                             <div className="statContainer column">
-                                <p className="t5 bold">Total scans</p>
+                                <p className="t5 bold">{t("Total_scans")}</p>
                                 <p className="t4">{p.total_scans || "0"}</p>
                             </div>
                             <div className="statContainer column">
-                                <p className="t5 bold">Dernier scan</p>
+                                <p className="t5 bold">{t("Last_scan")}</p>
                                 <p className="t5">{timeAgo(p.last_scan)}</p>
                             </div>
                             <div className="statContainer column">
-                                <p className="t5 bold">Offres associées</p>
+                                <p className="t5 bold">{t("Linked_offers")}</p>
                                 <p className="t4">{p.offers.length}</p>
                             </div>
                         </div>
 
                         <div className="hline"></div>
 
-                        <p className="t5 bold">Offres affichées :</p>
+                        <p className="t5 bold">{t("Displayed_offers")}</p>
 
                         <div className="allAnnonces">
                             {p.offers.length > 0 ? (
@@ -260,7 +294,7 @@ export default function Presentoirs() {
                                     return (
                                         <button
                                             key={slug}
-                                            className="AnnonceImage"
+                                            className="AnnonceImage shimmer"
                                             onClick={() =>
                                                 navigate(`/presentoirs/${slug}`, {
                                                     hote_id: authState.user.hote_id,
@@ -282,9 +316,9 @@ export default function Presentoirs() {
                             )}
                         </div>
 
-                        <p className="t6 centerText">Un présentoir affiche 5 activités au total.</p>
+                        <p className="t6 centerText">{t("Presentoir_limit_info")}</p>
 
-                        <p className="t5 bold TopActivity">Top activité :</p>
+                        <p className="t5 bold TopActivity">{t("Top_activity")}</p>
 
                         {p.offers.length > 0 && (
                             p.offers.slice(0, 1).map(o => {
@@ -339,6 +373,163 @@ export default function Presentoirs() {
                     </div>
                 ))}
             </div>
+
+            
+
+            <PopUpBottom
+                onClose={() => {
+                    PopUpBottomRef.current.classList.remove("open");
+                    setIsOccultView(false);
+                }}
+                ref={PopUpBottomRef}
+                fullHeight={true}
+            >
+                <div className="InstallationRequestContainer">
+                    <p className="t3 bold">Identifiez l’adresse de votre établissement</p>
+                    <p className="t5">Renseignez l’adresse où vous souhaitez que votre présentoir soit installé.</p>
+                    <input value={address}
+                        onChange={(e) => {
+                                setAddress(e.target.value)
+                        }}
+                        placeholder="Adresse de l'établissement"
+                        className="InputText"
+                    />
+                    <p className="t3 bold">Quel type d’offres souhaitez-vous afficher ?</p>
+                    <p className="t5">
+                        Indiquez le style d’activités que vous aimeriez proposer à vos clients 
+                        (ex&nbsp;:&nbsp;excursions, bien-être, restauration, activités familiales…).
+                    </p>
+
+                   <textarea
+                        value={offerType}
+                        onChange={(e) => setOfferType(e.target.value)}
+                        placeholder="Décrivez le type d’offres souhaitées"
+                        className="InputText"
+                        rows={4}
+                    />
+
+
+                    <div className="ButtonSendContainer">
+                        <div className="hline"></div>
+                        <button
+                            className="SendButton"
+                            onClick={async () => {
+                                setIsSending(true);
+                                const payload = {
+                                    to: "tompayan1710@gmail.com",   // ou ton mail admin
+                                    subject: "Nouvelle demande d'installation de présentoir",
+                                    message: `Nouvelle demande d'installation de présentoir\nHote ID: ${authState.user?.hote_id || "Nom d'hôtel inconnu"}\n\nAdresse de l’établissement :\n${address}\n\nType d’offres souhaitées :\n${offerType}`
+                                };
+
+                                const res = await fetch(
+                                    `${process.env.REACT_APP_API_URL}/api/mail/sendmail`,
+                                    {
+                                        method: "POST",
+                                        headers: { "Content-Type": "application/json" },
+                                        body: JSON.stringify(payload)
+                                    }
+                                );
+
+                                const data = await res.json();
+
+                                if (data.success) {
+                                    alert("Demande envoyée !");
+                                } else {
+                                    alert("Erreur lors de l’envoi");
+                                }
+                                setIsSending(false);
+                                setTimeout(() => {
+                                    PopUpBottomRef.current.classList.remove("open");
+                                    setIsOccultView(false);
+                                }, [350]);
+                            }}
+                        >
+                            {
+                                isSending ? <Spinner /> :
+                                <>
+                                    <p className="t4">Envoyer</p>
+                                    <img src={arrowrighticon} alt="" />
+                                </>
+                            }
+                        </button>
+                    </div>
+                </div>
+            </PopUpBottom>
+            
+            <PopUpBottom
+                onClose={() => {
+                    PopUpAddStockref.current.classList.remove("open");
+                    setIsOccultView(false);
+                }}
+                ref={PopUpAddStockref}
+                fullHeight={true}
+            >
+                <div className="InstallationRequestContainer">
+                    <p className="t3 bold">Demande de réapprovisionnement</p>
+                    <p className="t5">Indiquez la quantité de présentoirs que vous souhaitez recevoir pour réapprovisionner votre stock.</p>
+                    <input
+                        type="number"
+                        value={restocking}
+                        onChange={(e) => {
+                                setRestocking(e.target.value)
+                        }}
+                        placeholder="Nombre de présentoirs à ajouter"
+                        className="InputText" 
+                    />
+                  
+
+
+                    <div className="ButtonSendContainer">
+                        <div className="hline"></div>
+                        <button
+                            className="SendButton"
+                            onClick={async () => {
+                                setIsSending(true);
+                                const payload = {
+                                    to: "tompayan1710@gmail.com",   // ou ton mail admin
+                                    subject: "Nouvelle demande de réaprovisionnement de présentoir",
+                                    message: `Nouvelle demande de réapprovisionnement de présentoir\nHote ID : ${authState.user?.hote_id || "ID d'hôtel inconnu"}\n\nPrésentoir concerné :\n${presentoirSelected.name} (ID : ${presentoirSelected.presentoir_id})\n\nQuantité demandée :\n${restocking}`
+                                };
+
+                                const res = await fetch(
+                                    `${process.env.REACT_APP_API_URL}/api/mail/sendmail`,
+                                    {
+                                        method: "POST",
+                                        headers: { "Content-Type": "application/json" },
+                                        body: JSON.stringify(payload)
+                                    }
+                                );
+
+                                const data = await res.json();
+
+                                if (data.success) {
+                                    alert("Demande envoyée !");
+                                } else {
+                                    alert("Erreur lors de l’envoi");
+                                }
+                                setIsSending(false);
+                                setTimeout(() => {
+                                    PopUpAddStockref.current.classList.remove("open");
+                                    setIsOccultView(false);
+                                }, [350]);
+                            }}
+                        >
+                            {
+                                isSending ? <Spinner /> :
+                                <>
+                                    <p className="t4">Envoyer</p>
+                                    <img src={arrowrighticon} alt="" />
+                                </>
+                            }
+                        </button>
+                    </div>
+                </div>
+            </PopUpBottom>
+            <div className={`occultView ${isOccultView ? "open" : ""}`} onClick={() => {
+                PopUpBottomRef.current.classList.remove("open");
+                PopUpAddStockref.current.classList.remove("open");
+                setIsOccultView(false);
+            }}></div>
         </div>
     );
 }

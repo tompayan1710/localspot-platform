@@ -21,18 +21,30 @@ export default function AddIBANForm() {
 
     const [ swift, setSwift ] = useState("");
     const [ iban, setIban ] = useState("");
-    const [ loading, setLoading ] = useState("");
+    const [ loading, setLoading ] = useState(false);
     const [ isValidRepeat, setIsValidRepeat ] = useState(true);
     useEffect(() => {
         console.log(first_name, last_name);
     }, [])
 
 
+    function getActorId(authState) {
+        if (authState.user?.provider_id) {
+          return { key: "provider_id", value: authState.user.provider_id };
+        }
+        if (authState.user?.hote_id) {
+          return { key: "hote_id", value: authState.user.hote_id };
+        }
+        return null;
+    }
+
     const AddingVersementPayment = async () => {
         try {
-            const provider_id = authState.user?.provider_id;
+            const actor = getActorId(authState);
+            if (!actor) return { success: false };
+
             const body = {
-                provider_id,
+                [actor.key]: actor.value,
                 first_name,
                 last_name,
                 method: "iban",

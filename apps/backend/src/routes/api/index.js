@@ -19,6 +19,7 @@ const commentsRoutes = require('./comments/commentsRoutes');
 const userRoutes = require('./user/userRoutes');
 const invitationRoutes = require('./invitation/invitationRoutes');
 const presentoirsRoutes = require('./presentoirs/presentoirsRoutes');
+const mailsRoutes = require('./mail/mailsRoutes');
 
 
 router.use('/auth', authRoutes);
@@ -38,6 +39,7 @@ router.use('/comments', commentsRoutes);
 router.use('/user', userRoutes);
 router.use('/invitation', invitationRoutes);
 router.use('/presentoirs', presentoirsRoutes);
+router.use('/mail', mailsRoutes);
 
 
 module.exports = router;

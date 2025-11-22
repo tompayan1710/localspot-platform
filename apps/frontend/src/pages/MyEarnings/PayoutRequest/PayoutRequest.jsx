@@ -52,6 +52,16 @@ export default function PayoutRequest(){
     const maxAmount = 3000.00;
     const minAmount = 1.00;
 
+    function getActorId(authState) {
+        if (authState.user?.provider_id) {
+            return { key: "provider_id", value: authState.user.provider_id };
+        }
+        if (authState.user?.hote_id) {
+            return { key: "hote_id", value: authState.user.hote_id };
+        }
+        return null;
+    }
+
 
     useEffect(() => {
       if (isOccultView) {
@@ -69,17 +79,18 @@ export default function PayoutRequest(){
     }
 
     const getTransactionHistory = async () => {
-        const provider_id = authState.user?.provider_id;
-         
-        if(!provider_id){
-            return
-        }
+        const actor = getActorId(authState);
+        if (!actor) return;
+
+        const route =
+            actor.key === "provider_id"
+            ? "getall-by-provider"
+            : "getall-by-hote";
         
-        console.log("Récupération de l'historique du provider : ", authState.user?.provider_id);
 
         try {
             // ✅ Requête pour obtenir un nouveau token (Refresh Token doit être dans les cookies)
-            const response = await fetch(`${process.env.REACT_APP_API_URL}/api/payment/transactions/getall-by-provider?provider_id=${authState.user?.provider_id}`, {
+            const response = await fetch(`${process.env.REACT_APP_API_URL}/api/payment/transactions/${route}?${actor.key}=${actor.value}`, {
                 method: "GET",
             });
 
@@ -139,16 +150,25 @@ export default function PayoutRequest(){
     const submitRequestWithdrawals = async () => {
         setLoadingRequest(true)
         try {
-            // ✅ Requête pour obtenir un nouveau token (Refresh Token doit être dans les cookies)
+            const actor = getActorId(authState);
+            if (!actor) {
+                alert("Impossible d'identifier l'utilisateur.");
+                return;
+            }
+
+            const selected = versements[selectedVersement];
+            if (!selected) return;
+
+            
             const body = {
-                provider_id: authState.user?.provider_id,
+                [actor.key]: actor.value,
                 amount,
                 method: "IBAN",
                 details: "Demande de versement par IBAN ",
-                iban: versements[selectedVersement].iban,
-                swift: versements[selectedVersement].swift,
-                first_name: versements[selectedVersement].first_name,
-                last_name: versements[selectedVersement].last_name
+                iban: selected.iban,
+                swift: selected.swift,
+                first_name: selected.first_name,
+                last_name: selected.last_name
             }
 
             const response = await fetch(`${process.env.REACT_APP_API_URL}/api/payment/payouts/request`, {
@@ -284,11 +304,11 @@ export default function PayoutRequest(){
                 title={t("Custom_amount")}
                 // smalltext={`Montant maximum disponible : ${formatEuro(solde)} €`}
                 // max={solde}
-                smalltext={`${t("Available_max", {max: maxAmount.toFixed(2).replace('.', ',')})}`}
+                smalltext={`${t("Available_max", {max: Math.min(maxAmount, solde).toFixed(2).replace('.', ',')})}`}
                 min={minAmount}
                 errorMin={`${t("Error_min", {min: minAmount.toFixed(2).replace('.', ',')})}`}
-                max={maxAmount}
-                errorMax={`${t("Error_max", {max: maxAmount.toFixed(2).replace('.', ',')})}`}
+                max={Math.min(maxAmount, solde)}
+                errorMax={`${t("Error_max", {max: Math.min(maxAmount, solde).toFixed(2).replace('.', ',')})}`}
                 onClose={closeNumberPicker} 
                 setReturnValue={setAmount}
             />

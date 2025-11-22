@@ -8,7 +8,7 @@ import bankicon from "../../../../assets/images/bankicon.png"
 
 import { useNavigate } from "react-router-dom"
 import FadeInImage from "../../../Utils/FadeInImage"
-import { useContext, useEffect, useRef, useState } from "react"
+import { act, useContext, useEffect, useRef, useState } from "react"
 
 import { AuthContext } from "../../../Auth/authContext/authContext"
 import EditVersement from "../EditVersement"
@@ -52,12 +52,12 @@ export default function VersementList({setIsOccultView, editPopUp, deletePopUp, 
 
 
     useEffect(() => {
-        if (authState.user?.provider_id) {
-        fetchVersements();
+        if (authState.user?.provider_id || authState.user?.hote_id) {
+          fetchVersements();
 
-        setTimeout(() => {
-            setLoading(false);
-        }, 500)
+          setTimeout(() => {
+              setLoading(false);
+          }, 500)
         }
     },[ authState])
 
@@ -66,11 +66,21 @@ export default function VersementList({setIsOccultView, editPopUp, deletePopUp, 
   //   getTransactionHistory();
   // }, [authState]);
 
+  function getActorId(authState) {
+    if (authState.user?.provider_id) {
+      return { key: "provider_id", value: authState.user.provider_id };
+    }
+    if (authState.user?.hote_id) {
+      return { key: "hote_id", value: authState.user.hote_id };
+    }
+    return null;
+  }
+
     const handleUpdateVersement = async () => {
         setLoadingModifie(true);
-        const provider_id = authState.user?.provider_id;
+        const actor = getActorId(authState);
         const current = versements[selectedModifie];
-        if (!provider_id || !current) return;
+        if (!actor || !current) return;
 
         const updates = {};
 
@@ -96,9 +106,9 @@ export default function VersementList({setIsOccultView, editPopUp, deletePopUp, 
             method: "PATCH",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify({
-                provider_id,
-                old_iban: current.iban,
-                updates
+              [actor.key]: actor.value,
+              old_iban: current.iban,
+              updates
             })
             });
 
@@ -111,11 +121,11 @@ export default function VersementList({setIsOccultView, editPopUp, deletePopUp, 
                 setIsOccultView(false);
 
                 setTimeout(() => {
-                    setModifieIban("");
-                    setModifieSwift("");
-                    setModifieLastName("");
-                    setModifieFirstName("");
-                    fetchVersements();
+                  setModifieIban("");
+                  setModifieSwift("");
+                  setModifieLastName("");
+                  setModifieFirstName("");
+                  fetchVersements();
                 }, 1000)
             }, 500)
             } else {
@@ -130,17 +140,17 @@ export default function VersementList({setIsOccultView, editPopUp, deletePopUp, 
 
     const deleteVersement = async () => {
         setLoadingDelete(true);
-
-        const provider_id = authState.user?.provider_id;
+ 
+        const actor = getActorId(authState);
         const iban = versements[selectedDelete]?.iban;
 
-        if (!provider_id || !iban) return;
+        if (!actor || !iban) return;
 
         try {
             const response = await fetch(`${process.env.REACT_APP_API_URL}/api/payment/payouts/delete-versement`, {
             method: "DELETE",
             headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({ provider_id, iban }),
+            body: JSON.stringify({ [actor.key]: actor.value, iban }),
             });
 
             const data = await response.json();
@@ -169,14 +179,14 @@ export default function VersementList({setIsOccultView, editPopUp, deletePopUp, 
 
     const fetchVersements = async () => {
         try {
-        const provider_id = authState.user?.provider_id;
+        const actor = getActorId(authState);
          
-        if(!provider_id){
+        if(!actor){
             return
         }
          
         const response = await fetch(
-            `${process.env.REACT_APP_API_URL}/api/payment/payouts/getall-withdrawal_methods?provider_id=${provider_id}`, {
+            `${process.env.REACT_APP_API_URL}/api/payment/payouts/getall-withdrawal_methods?${actor.key}=${actor.value}`, {
                 method: "GET"
             }
         );
@@ -323,7 +333,7 @@ export default function VersementList({setIsOccultView, editPopUp, deletePopUp, 
             />
             
             {/* <TestLoading setLoading={setLoadingDelete}/> */}
-            <PopUpConfirmDelete ref={deletePopUp} deleteVersement={deleteVersement} setIsOccultView={setIsOccultView} loading={loadingDelete}/>
+            <PopUpConfirmDelete ref={deletePopUp} deletefunction={deleteVersement} setIsOccultView={setIsOccultView} loading={loadingDelete}/>
         </>
     )
 }

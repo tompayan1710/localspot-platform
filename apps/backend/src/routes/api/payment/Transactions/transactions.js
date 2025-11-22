@@ -70,23 +70,122 @@ router.get("/getall-by-provider", async (req, res) => {
 
 
 
-router.get("/get", async (req, res) => {
-  const { id, provider_id, lang } = req.query;
 
-  if (!id || !provider_id) {
-    return res.status(400).json({ error: "/transaction/get : id ou provider_id manquant" });
+router.get("/getall-by-hote", async (req, res) => {
+  const { hote_id } = req.query;
+
+  console.log("Route : /getall-by-hote")
+  if (!hote_id) {
+    return res.status(400).json({ error: "hote_id manquant" });
   }
 
   try {
+    let total_revenue = 0;
+    let solde = 0;
+    let waiting = 0;
+    let already_paid = 0;
+
+
+    const earnings = await pool.query(
+      `SELECT 
+          rs.created_at,
+          'earning' AS type,
+
+          SUM(ri.hotel_commission)::numeric AS amount,
+          SUM(ri.total_places_used)::int AS total_reserved,
+
+          rs.start_hour,
+          rs.end_hour,
+          rs.id
+
+      FROM reservations_individuals ri
+      JOIN reservation_slots rs ON ri.slot_id = rs.id
+
+      WHERE ri.id_hote = $1
+
+      GROUP BY rs.id, rs.created_at, rs.start_hour, rs.end_hour
+      ORDER BY rs.created_at DESC`,
+      [hote_id]
+    );
+
+
+    earnings.rows.forEach((transaction) => {
+      transaction.amount = parseFloat(transaction.amount);
+      total_revenue += transaction.amount;
+    })
+
+    const payouts = await pool.query(
+      `SELECT created_at, 'payout' as type, 
+              amount,
+              method,
+              status,
+              id
+       FROM withdrawals 
+       WHERE hote_id = $1`,
+      [hote_id]
+    );
+
+    payouts.rows.forEach((transaction) => {
+      transaction.amount = parseFloat(transaction.amount);
+      if(transaction.status === "completed"){
+        already_paid+=transaction.amount;
+      } else if(transaction.status === "waiting"){
+        waiting+=transaction.amount;
+      }
+    })
+
+    const fullHistory = [...earnings.rows, ...payouts.rows];
+    fullHistory.sort((a, b) => new Date(b.created_at) - new Date(a.created_at));
+
+    solde = total_revenue - waiting - already_paid;
+
+    res.json({ success: true, history: fullHistory, total_revenue, solde, waiting, already_paid });
+  } catch (err) {
+    console.error("❌ Erreur getall-earnings :", err.message);
+    res.status(500).json({ error: "Erreur serveur" });
+  }
+});
+
+
+
+
+
+router.get("/get", async (req, res) => {
+  const { id, provider_id, hote_id, lang } = req.query;
+
+  if (!id || (!provider_id && !hote_id)) {
+    return res.status(400).json({ 
+      error: "/transaction/get : id ou provider_id ou hote_id manquant" 
+    });
+  }
+
+
+  try {
+    let query;
+    let value;
+
+    if (provider_id) {
+      query = `SELECT r.*,     
+          COALESCE(o.title_i18n->>$3,       o.title_i18n->>'fr')       AS title,    
+          o.duration                   AS offer_duration,
+          o.adresse                    AS offer_address
+        FROM reservation_slots r
+        JOIN offers o ON o.slug = r.offer_slug
+        WHERE r.id = $1 AND r.provider_id = $2`
+      value = provider_id;
+    } else if (hote_id) {
+      query = `SELECT r.*,     
+          COALESCE(o.title_i18n->>$3,       o.title_i18n->>'fr')       AS title,    
+          o.duration                   AS offer_duration,
+          o.adresse                    AS offer_address
+        FROM reservation_slots r
+        JOIN offers o ON o.slug = r.offer_slug
+        WHERE r.id = $1 AND r.hote_id = $2`
+      value = hote_id;
+    }
     const earning = await pool.query(
-      `SELECT r.*,     
-        COALESCE(o.title_i18n->>$3,       o.title_i18n->>'fr')       AS title,    
-        o.duration                   AS offer_duration,
-        o.adresse                    AS offer_address
-       FROM reservation_slots r
-       JOIN offers o ON o.slug = r.offer_slug
-       WHERE r.id = $1 AND r.provider_id = $2`,
-      [id, provider_id, lang]
+      query,
+      [id, value, lang]
     );
 
     if(earning.rowCount <= 0 ){

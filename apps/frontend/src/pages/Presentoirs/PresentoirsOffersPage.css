@@ -40,7 +40,7 @@
     margin: 0 15px;
     gap: 2px;
     margin-top: 4px;
-    margin-bottom: 8px;
+    margin-bottom: 10px;
 }
 
 .CardPresentoir .ImagesOffers{
@@ -182,7 +182,7 @@
     align-items: center;
 }
 .CardPresentoir .qrcodeButton.full{
-    width: min(calc(100% - 0px), calc(var(--maxsize) - 30px));
+    width: min(calc(100% - 30px), calc(var(--maxsize) - 30px));
     border-radius: 30px;
 }
 .CardPresentoir .qrcodeButton.full+p{

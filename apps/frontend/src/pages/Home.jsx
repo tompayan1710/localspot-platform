@@ -202,7 +202,7 @@ import ButtonLanguage from "../components/Buttons/ButtonLanguage/ButtonLanguage"
 
 
   useEffect(() => {
-    const EXPIRATION = 7 * 24 * 60 * 60 * 1000; // 7 jours
+    const EXPIRATION = 2 * 24 * 60 * 60 * 1000; // 2 jours
 
     if (presentoirMeta && Date.now() - presentoirMeta.ts > EXPIRATION) {
       localStorage.removeItem("presentoir_offer_id");

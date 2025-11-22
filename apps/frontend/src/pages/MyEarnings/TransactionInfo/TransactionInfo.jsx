@@ -34,16 +34,27 @@ export default function TransactionInfo(){
     const [ payout, setPayout ] = useState({});
     const [ loading, setLoading ] = useState(true);
     
+    function getActorId(authState) {
+        if (authState.user?.provider_id) {
+            return { key: "provider_id", value: authState.user.provider_id };
+        }
+        if (authState.user?.hote_id) {
+            return { key: "hote_id", value: authState.user.hote_id };
+        }
+        return null;
+    }
+
     const fetchInfoEarning = async () => {
         try {
-        const provider_id = authState.user?.provider_id;
+
+        const actor = getActorId(authState);
          
-        if(!provider_id){
+        if(!actor){
             return
         }
          
         const response = await fetch(
-            `${process.env.REACT_APP_API_URL}/api/payment/transactions/get?id=${id}&provider_id=${provider_id}&lang=${lang}`, {
+            `${process.env.REACT_APP_API_URL}/api/payment/transactions/get?id=${id}&${actor.key}=${actor.value}&lang=${lang}`, {
                 method: "GET"
             }
         );
@@ -68,32 +79,30 @@ export default function TransactionInfo(){
 
     const fetchInfoPayout = async () => {
         try {
-        const provider_id = authState.user?.provider_id;
-         
-        if(!provider_id){
-            return
-        }
-         
-        const response = await fetch(
-            `${process.env.REACT_APP_API_URL}/api/payment/payouts/get?id=${id}&provider_id=${provider_id}`, {
-                method: "GET"
+            const actor = getActorId(authState);
+            if (!actor) return;
+
+            
+            const response = await fetch(
+                `${process.env.REACT_APP_API_URL}/api/payment/payouts/get?id=${id}&${actor.key}=${actor.value}`, {
+                    method: "GET"
+                }
+            );
+
+            if (!response.ok) throw new Error("Erreur serveur");
+
+            const data = await response.json();
+            if (data.success) {
+                setPayout(data.withdrawal[0]);
+            } else {
+                alert("Erreur lors de la récupération de la transaction.");
             }
-        );
-
-        if (!response.ok) throw new Error("Erreur serveur");
-
-        const data = await response.json();
-        if (data.success) {
-          setPayout(data.withdrawal[0]);
-        } else {
-          alert("Erreur lors de la récupération de la transaction.");
-        }
         } catch (err) {
-        console.error("❌ Erreur fetchVersements:", err);
+            console.error("❌ Erreur fetchVersements:", err);
         } finally {
-        setTimeout(() => {
-            setLoading(false);
-        }, 1000)
+            setTimeout(() => {
+                setLoading(false);
+            }, 1000)
         }
     };
     
@@ -103,14 +112,16 @@ export default function TransactionInfo(){
     const fetchIndividuals = async (slotId) => {
     try {
         setLoadingIndividuals(true);
-        const provider_id = authState.user?.provider_id;
+        const actor = getActorId(authState);
+        if (!actor) return;
+        
         const res = await fetch(
-        `${process.env.REACT_APP_API_URL}/api/reservation_individual/slot/${slotId}/individuals?provider_id=${provider_id}`
+            `${process.env.REACT_APP_API_URL}/api/reservation_individual/slot/${slotId}/individuals?${actor.key}=${actor.value}`
         );
         const data = await res.json();
         if (data.success) {
-        setIndividuals(data.individuals || []);
-        console.warn(data.individuals);
+            setIndividuals(data.individuals || []);
+            console.warn(data.individuals);
         }
     } catch (e) {
         console.error("❌ fetchIndividuals:", e);
@@ -129,7 +140,7 @@ export default function TransactionInfo(){
 
 
     useEffect(() => {
-        if (authState.user?.provider_id) {
+        if (authState.user?.provider_id || authState.user?.hote_id) {
             if(type === "earning"){
                 fetchInfoEarning();
             }else if(type === "payout"){
@@ -197,7 +208,7 @@ export default function TransactionInfo(){
                 !loading ?
             
             
-                Object.keys(earning).length > 0 ?
+                earning && earning.id && Object.keys(earning).length > 0 ?
                 <>
             <p className="t4 bold">{t("Earning")}</p>
             <div className="IconCarte">
@@ -405,7 +416,7 @@ export default function TransactionInfo(){
                 </div>
                 <div className="hline"></div>
                 {
-                    !payout.send_at == null &&
+                    payout.send_at != null &&
                     <>
                     <div className="row">
                         <p className="t5 firstP">{t("Sent_on")}</p>

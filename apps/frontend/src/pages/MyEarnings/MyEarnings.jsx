@@ -49,6 +49,17 @@ export default function MyEarnings() {
 
   const editPopUp = useRef(null);
 
+  function getActorId(authState) {
+    if (authState.user?.provider_id) {
+      return { key: "provider_id", value: authState.user.provider_id };
+    }
+    if (authState.user?.hote_id) {
+      return { key: "hote_id", value: authState.user.hote_id };
+    }
+    return null;
+  }
+
+  
   useEffect(() => {
     if (location.state?.scrollTo) {
       const el = document.getElementById(location.state.scrollTo);
@@ -62,17 +73,20 @@ export default function MyEarnings() {
 
 
     const getTransactionHistory = async () => {
-        const provider_id = authState.user?.provider_id;
+        const actor = getActorId(authState);
          
-        if(!provider_id){
+        if(!actor){
             return
         }
         
-        console.log("Récupération de l'historique du provider : ", authState.user?.provider_id);
+        console.log("Récupération de l'historique du ", actor.key, " : ", actor.value);
+        const route = actor.key === "provider_id" 
+          ? "getall-by-provider" 
+          : "getall-by-hote";
 
         try {
             // ✅ Requête pour obtenir un nouveau token (Refresh Token doit être dans les cookies)
-            const response = await fetch(`${process.env.REACT_APP_API_URL}/api/payment/transactions/getall-by-provider?provider_id=${authState.user?.provider_id}`, {
+            const response = await fetch(`${process.env.REACT_APP_API_URL}/api/payment/transactions/${route}?${actor.key}=${actor.value}`, {
                 method: "GET",
             });
 
@@ -142,7 +156,7 @@ export default function MyEarnings() {
   }
 
   useEffect(() => {
-    if (authState.user?.provider_id) {
+    if (authState.user?.provider_id || authState.user?.hote_id) {
       getTransactionHistory().then(data => {
         if (data.success) {
           const history = data.history || [];
@@ -165,34 +179,34 @@ export default function MyEarnings() {
 
     const fetchIsWithdrawalMethod = async () => {
         try {
-        const provider_id = authState.user?.provider_id;
-         
-        if(!provider_id){
-            return
-        }
-         
-        const response = await fetch(
-            `${process.env.REACT_APP_API_URL}/api/payment/payouts/is-withdrawal_method?provider_id=${provider_id}`, {
-                method: "GET"
-            }
-        );
+          const actor = getActorId(authState);
+          
+          if(!actor){
+              return
+          }
+          
+          const response = await fetch(
+              `${process.env.REACT_APP_API_URL}/api/payment/payouts/is-withdrawal_method?${actor.key}=${actor.value}`, {
+                  method: "GET"
+              }
+          );
 
-        if (!response.ok) throw new Error("Erreur serveur");
+          if (!response.ok) throw new Error("Erreur serveur");
 
-        const data = await response.json();
-        console.error(data);
+          const data = await response.json();
+          console.error(data);
 
-        if (data.success) {
-          setIsWithdrawalMethod(data.is_withdrawal_method);
-        } else {
-          alert("Erreur lors de la récupération des méthodes.");
-        }
+          if (data.success) {
+            setIsWithdrawalMethod(data.is_withdrawal_method);
+          } else {
+            alert("Erreur lors de la récupération des méthodes.");
+          }
         } catch (err) {
-        console.error("❌ Erreur fetchVersements:", err);
+          console.error("❌ Erreur fetchVersements:", err);
         } finally {
-        setTimeout(() => {
-            setLoading(false);
-        }, 500)
+          setTimeout(() => {
+              setLoading(false);
+          }, 500)
         }
     };
 

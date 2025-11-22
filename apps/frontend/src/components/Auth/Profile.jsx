@@ -47,8 +47,11 @@ export default function Profile() {
   const MODE_KEY = "userMode"; // Valeur : "voyageur" ou "provider"
   const [selectedMode, setSelectedMode] = useState(() => {
     const stored = localStorage.getItem(MODE_KEY);
-    return stored === "provider" ? "provider" : "voyageur"; // fallback = voyageur
+    if (stored === "provider") return "provider";
+    if (stored === "hote") return "hote";
+    return "voyageur"; // fallback
   });
+
 
   const toggleMode = (mode1, mode2) => {
     const newMode = selectedMode === mode1 ? mode2 : mode1;
@@ -336,6 +339,20 @@ export default function Profile() {
                       </div> 
                     </>
                 )
+              )
+            }
+            {
+              authState.user?.hote_id && (
+                selectedMode === "hote" &&
+                <>
+                  <div className="SettingsListItem" onClick={() => navigate("/payment-methode")}>
+                    <div className="SettingsRow">
+                      <div className="RowFirst"><img src={CreditCard} alt="credit card icon" /><p className="t4">{t("Payout_methods")}</p></div>
+                      <img src={arrowRight} alt="arrow right" />
+                    </div>
+                    <div className="hline"></div>
+                  </div>
+                </>
               )
             }
             <div className="SettingsListItem" onClick={handleLogout}>

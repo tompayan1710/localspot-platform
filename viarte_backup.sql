@@ -248,7 +248,8 @@ CREATE TABLE public.hotes (
     latitude double precision,
     longitude double precision,
     city_id integer,
-    image_urls text[]
+    image_urls text[],
+    logo_img text
 );
 
 
@@ -544,6 +545,120 @@ ALTER SEQUENCE public.offers_id_seq OWNER TO postgres;
 --
 
 ALTER SEQUENCE public.offers_id_seq OWNED BY public.offers.id;
+
+
+--
+-- Name: presentoir_offers; Type: TABLE; Schema: public; Owner: postgres
+--
+
+CREATE TABLE public.presentoir_offers (
+    id integer NOT NULL,
+    presentoir_id integer NOT NULL,
+    offer_slug character varying(255) NOT NULL,
+    qr_base_url text,
+    scan_count integer DEFAULT 0,
+    last_scan_at timestamp without time zone,
+    hote_id integer
+);
+
+
+ALTER TABLE public.presentoir_offers OWNER TO postgres;
+
+--
+-- Name: presentoir_offers_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
+--
+
+CREATE SEQUENCE public.presentoir_offers_id_seq
+    AS integer
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER SEQUENCE public.presentoir_offers_id_seq OWNER TO postgres;
+
+--
+-- Name: presentoir_offers_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
+--
+
+ALTER SEQUENCE public.presentoir_offers_id_seq OWNED BY public.presentoir_offers.id;
+
+
+--
+-- Name: presentoir_scans_log; Type: TABLE; Schema: public; Owner: postgres
+--
+
+CREATE TABLE public.presentoir_scans_log (
+    id integer NOT NULL,
+    presentoir_offer_id integer,
+    presentoir_id integer,
+    offer_slug character varying(255),
+    scanned_at timestamp without time zone DEFAULT now()
+);
+
+
+ALTER TABLE public.presentoir_scans_log OWNER TO postgres;
+
+--
+-- Name: presentoir_scans_log_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
+--
+
+CREATE SEQUENCE public.presentoir_scans_log_id_seq
+    AS integer
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER SEQUENCE public.presentoir_scans_log_id_seq OWNER TO postgres;
+
+--
+-- Name: presentoir_scans_log_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
+--
+
+ALTER SEQUENCE public.presentoir_scans_log_id_seq OWNED BY public.presentoir_scans_log.id;
+
+
+--
+-- Name: presentoirs; Type: TABLE; Schema: public; Owner: postgres
+--
+
+CREATE TABLE public.presentoirs (
+    presentoir_id integer NOT NULL,
+    hote_id integer NOT NULL,
+    name character varying(100),
+    installed_count integer DEFAULT 0,
+    installation_status character varying(50) DEFAULT 'pending'::character varying,
+    status character varying(30)
+);
+
+
+ALTER TABLE public.presentoirs OWNER TO postgres;
+
+--
+-- Name: presentoirs_presentoir_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
+--
+
+CREATE SEQUENCE public.presentoirs_presentoir_id_seq
+    AS integer
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER SEQUENCE public.presentoirs_presentoir_id_seq OWNER TO postgres;
+
+--
+-- Name: presentoirs_presentoir_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
+--
+
+ALTER SEQUENCE public.presentoirs_presentoir_id_seq OWNED BY public.presentoirs.presentoir_id;
 
 
 --
@@ -860,7 +975,8 @@ CREATE TABLE public.users (
     phone character varying(20),
     profil_picture text,
     receive_booking_emails boolean DEFAULT true,
-    receive_activity_suggestions boolean DEFAULT true
+    receive_activity_suggestions boolean DEFAULT true,
+    hote_id integer
 );
 
 
@@ -1066,6 +1182,27 @@ ALTER TABLE ONLY public.offers ALTER COLUMN id SET DEFAULT nextval('public.offer
 
 
 --
+-- Name: presentoir_offers id; Type: DEFAULT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.presentoir_offers ALTER COLUMN id SET DEFAULT nextval('public.presentoir_offers_id_seq'::regclass);
+
+
+--
+-- Name: presentoir_scans_log id; Type: DEFAULT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.presentoir_scans_log ALTER COLUMN id SET DEFAULT nextval('public.presentoir_scans_log_id_seq'::regclass);
+
+
+--
+-- Name: presentoirs presentoir_id; Type: DEFAULT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.presentoirs ALTER COLUMN presentoir_id SET DEFAULT nextval('public.presentoirs_presentoir_id_seq'::regclass);
+
+
+--
 -- Name: provider_booking_integrations id; Type: DEFAULT; Schema: public; Owner: postgres
 --
 
@@ -1202,8 +1339,8 @@ COPY public.favorites (id, user_id, offer_slug, created_at) FROM stdin;
 -- Data for Name: hotes; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
-COPY public.hotes (id, name, location, type, created_at, updated_at, latitude, longitude, city_id, image_urls) FROM stdin;
-4	Hôtel Juana	19 Av. Georges Gallice, 06160 Antibes	Hôtel	2025-08-10 16:19:31.942611	2025-08-10 16:19:31.942611	43.567945	7.11491	20	{https://www.byblos.com/wp-content/uploads/Byblos-Beach-Ramatuelle-ramatuelle-1-1800x1333.jpg,https://www.byblos.com/wp-content/uploads/Sac_COLETTE_Byblos_x_Pinel_et_Pinel_1.webp,https://www.byblos.com/wp-content/uploads/Restaurant-IL-Giardino-restaurant-Hotel-Byblos-Saint-Tropez-800x995.jpg}
+COPY public.hotes (id, name, location, type, created_at, updated_at, latitude, longitude, city_id, image_urls, logo_img) FROM stdin;
+4	Hôtel Juana	19 Av. Georges Gallice, 06160 Antibes	Hôtel	2025-08-10 16:19:31.942611	2025-08-10 16:19:31.942611	43.567945	7.11491	20	{https://www.byblos.com/wp-content/uploads/Byblos-Beach-Ramatuelle-ramatuelle-1-1800x1333.jpg,https://www.byblos.com/wp-content/uploads/Sac_COLETTE_Byblos_x_Pinel_et_Pinel_1.webp,https://www.byblos.com/wp-content/uploads/Restaurant-IL-Giardino-restaurant-Hotel-Byblos-Saint-Tropez-800x995.jpg}	https://knswskkdaimyrcstijsm.supabase.co/storage/v1/object/public/hote-images/HotelImg4.png
 \.
 
 
@@ -1374,6 +1511,38 @@ COPY public.offers (id, title, description, type, image_urls, created_at, update
 
 
 --
+-- Data for Name: presentoir_offers; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+COPY public.presentoir_offers (id, presentoir_id, offer_slug, qr_base_url, scan_count, last_scan_at, hote_id) FROM stdin;
+5	1	9630f266-e89f-4ebf-b5f6-88801cb1f07b	1756389258792_9630f266-e89f-4ebf-b5f6-88801cb1f07b_4.png	1	2025-11-15 19:54:31.830257	4
+1	1	7a9a4e06-f6e9-4f3b-ba91-662f7cb41221	1756389258792_9630f266-e89f-4ebf-b5f6-88801cb1f07b_4.png	1	2025-11-15 19:55:14.998496	4
+2	1	863fbf94-7e75-4c8e-8d74-654e7d6a7394	1756389258792_9630f266-e89f-4ebf-b5f6-88801cb1f07b_4.png	1	2025-11-15 19:55:14.998496	4
+3	1	74f6b045-22cd-4461-bdab-78cef2b0edf9	1756389258792_9630f266-e89f-4ebf-b5f6-88801cb1f07b_4.png	1	2025-11-15 19:55:14.998496	4
+4	1	df967527-d527-4569-ad3c-29c3fee4d776	1756389258792_9630f266-e89f-4ebf-b5f6-88801cb1f07b_4.png	1	2025-11-15 19:55:14.998496	4
+\.
+
+
+--
+-- Data for Name: presentoir_scans_log; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+COPY public.presentoir_scans_log (id, presentoir_offer_id, presentoir_id, offer_slug, scanned_at) FROM stdin;
+1	2	1	863fbf94-7e75-4c8e-8d74-654e7d6a7394	2025-11-20 20:23:55.151593
+2	2	1	863fbf94-7e75-4c8e-8d74-654e7d6a7394	2025-11-20 20:26:38.750829
+\.
+
+
+--
+-- Data for Name: presentoirs; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+COPY public.presentoirs (presentoir_id, hote_id, name, installed_count, installation_status, status) FROM stdin;
+1	4	Chambre	0	pending	Actif
+\.
+
+
+--
 -- Data for Name: provider_booking_integrations; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
@@ -1413,6 +1582,7 @@ COPY public.refresh_tokens (id, user_id, refresh_token, expires_at, created_at) 
 302	64	eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6NjQsImVtYWlsIjoidGVzdEB0ZXN0LmNvbSIsImlhdCI6MTc1NDg0MDAyOSwiZXhwIjoxNzcwMzkyMDI5fQ.VEMRYZvYBPPBgeJ_PFp8uabkDrJazf6XoN3XYyjvG3o	2026-02-06 16:33:49.858	2025-08-10 15:06:17.366032
 318	64	eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6NjQsImVtYWlsIjoidGVzdEB0ZXN0LmNvbSIsImlhdCI6MTc1NjI3NzI2NiwiZXhwIjoxNzcxODI5MjY2fQ.JMykhF31OZpvqemYUeqjevB5XSNx7UZ-e8m2Tbbveqs	2026-02-23 07:47:46.377	2025-08-26 21:40:00.402232
 303	64	eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6NjQsImVtYWlsIjoidGVzdEB0ZXN0LmNvbSIsImlhdCI6MTc1NDg1MjExOCwiZXhwIjoxNzcwNDA0MTE4fQ.itgkuLSBvZUxqLwZ2rrapMN8Pz0VXnS6TZpb5V1sHIQ	2026-02-06 19:55:18.384	2025-08-10 18:46:36.427368
+397	67	eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6NjcsImVtYWlsIjoidG9tcGF5YW4xNzEwQGdtYWlsLmNvbSIsImlhdCI6MTc2MzEyNDc3MywiZXhwIjoxNzc4Njc2NzczfQ.vNDe6lsK0VRjzShYI_3u4YShGieXDkSjcyIvAjZKUkI	2026-05-13 14:52:53.998	2025-11-14 11:36:26.309144
 332	64	eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6NjQsImVtYWlsIjoidGVzdEB0ZXN0LmNvbSIsImlhdCI6MTc1NzYxNTEyNCwiZXhwIjoxNzczMTY3MTI0fQ.PwYKmC9z63wfhGNAOD1MomsrhL22I-CnNQyC5d2710w	2026-03-10 19:25:24.237	2025-09-10 21:07:30.695821
 304	64	eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6NjQsImVtYWlsIjoidGVzdEB0ZXN0LmNvbSIsImlhdCI6MTc1NDg5NDE0NiwiZXhwIjoxNzcwNDQ2MTQ2fQ.-YB-cdyWi3J7RmydGWiPBHCpRnEBOdRbu6BB6_8wXe0	2026-02-07 07:35:46.104	2025-08-10 21:30:41.844863
 315	67	eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6NjcsImVtYWlsIjoidG9tcGF5YW4xNzEwQGdtYWlsLmNvbSIsImlhdCI6MTc1NjIzMzIxNywiZXhwIjoxNzcxNzg1MjE3fQ.90KcV5MtSCzPZEAFpq8VdoauY9qGP-8T7mjVIVqsWbs	2026-02-22 19:33:37.996	2025-08-26 16:55:11.628422
@@ -1438,7 +1608,10 @@ COPY public.refresh_tokens (id, user_id, refresh_token, expires_at, created_at) 
 379	67	eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6NjcsImVtYWlsIjoidG9tcGF5YW4xNzEwQGdtYWlsLmNvbSIsImlhdCI6MTc2MDUxNjY4NCwiZXhwIjoxNzc2MDY4Njg0fQ.7abZevDMzHlerJyIKxIb8R0wEsNFqotIbp-Q8CFTkZ4	2026-04-13 10:24:44.373	2025-10-15 10:09:41.641123
 389	64	eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6NjQsImVtYWlsIjoidGVzdEB0ZXN0LmNvbSIsImlhdCI6MTc2MjQxNDUyNiwiZXhwIjoxNzc3OTY2NTI2fQ.AjFRnPL1gm7UeB27zk8crAosxywweirGNezqAsIogbU	2026-05-05 09:35:26.419	2025-11-06 07:54:02.44676
 390	64	eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6NjQsImVtYWlsIjoidGVzdEB0ZXN0LmNvbSIsImlhdCI6MTc2MjQxNDUyNiwiZXhwIjoxNzc3OTY2NTI2fQ.AjFRnPL1gm7UeB27zk8crAosxywweirGNezqAsIogbU	2026-05-05 09:35:26.419	2025-11-06 08:09:38.472786
-392	64	eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6NjQsImVtYWlsIjoidGVzdEB0ZXN0LmNvbSIsImlhdCI6MTc2MjQ2MTEzMiwiZXhwIjoxNzc4MDEzMTMyfQ.xo8IwSvaPsC-dmKN9T085qxrySTDGti_0H561bWix1o	2026-05-05 22:32:12.12	2025-11-06 10:45:05.947176
+406	67	eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6NjcsImVtYWlsIjoidG9tcGF5YW4xNzEwQGdtYWlsLmNvbSIsImlhdCI6MTc2MzY2MzE3MCwiZXhwIjoxNzc5MjE1MTcwfQ.NfPh5031YeGufu-N2_g4icD5L2ZIUO22R6YEB-mfF2w	2026-05-19 20:26:10.787	2025-11-15 19:56:10.622044
+398	67	eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6NjcsImVtYWlsIjoidG9tcGF5YW4xNzEwQGdtYWlsLmNvbSIsImlhdCI6MTc2MzEyNDc3MywiZXhwIjoxNzc4Njc2NzczfQ.vNDe6lsK0VRjzShYI_3u4YShGieXDkSjcyIvAjZKUkI	2026-05-13 14:52:53.998	2025-11-14 13:51:34.026062
+399	67	eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6NjcsImVtYWlsIjoidG9tcGF5YW4xNzEwQGdtYWlsLmNvbSIsImlhdCI6MTc2MzEyNDc3NiwiZXhwIjoxNzc4Njc2Nzc2fQ.GRXAUX4McOc5503GwlPqNCoqolvNliBR07KrO5tJOSo	2026-05-13 14:52:56.939	2025-11-14 13:52:54.02171
+407	67	eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6NjcsImVtYWlsIjoidG9tcGF5YW4xNzEwQGdtYWlsLmNvbSIsImlhdCI6MTc2MzcxMTA3MSwiZXhwIjoxNzc5MjYzMDcxfQ.m2sNik68AX67hX21_K3MHthrSRh9kxU7NWVOBiPXV1c	2026-05-20 09:44:31.822	2025-11-20 19:26:45.171825
 \.
 
 
@@ -1488,11 +1661,11 @@ COPY public.reservations_individuals (id, user_id, slot_id, total_places_used, p
 -- Data for Name: users; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
-COPY public.users (id, email, password, role, created_at, provider_id, provider, name, phone, profil_picture, receive_booking_emails, receive_activity_suggestions) FROM stdin;
-64	test@test.com	$2b$10$3UvizEpeikdO.CLiWr9MhOZBnM.d/cFcKreM7F74pfsX3VksNH..K	member	2025-08-10 07:15:59.274613	11	password-email	\N	\N	\N	t	t
-67	tompayan1710@gmail.com	\N	member	2025-08-12 20:06:19.809507	\N	google	\N	\N	\N	t	t
-68	test2@test2.com	$2b$10$e3iACZgHNNPkQ2tHBIVnk.2luB6TmB/Xa5/QBza3yfkfF9DZulufO	member	2025-08-12 20:40:08.881656	\N	password-email	\N	\N	\N	t	t
-69	tomweek@tomweek.com	$2b$10$nz5sshRQjsV8EcyTJqQ6yOOVryc/9sRKZ8sRuEI05eVKGCxQW/ITe	member	2025-09-26 11:58:10.98073	\N	password-email	\N	\N	\N	t	t
+COPY public.users (id, email, password, role, created_at, provider_id, provider, name, phone, profil_picture, receive_booking_emails, receive_activity_suggestions, hote_id) FROM stdin;
+64	test@test.com	$2b$10$3UvizEpeikdO.CLiWr9MhOZBnM.d/cFcKreM7F74pfsX3VksNH..K	member	2025-08-10 07:15:59.274613	11	password-email	\N	\N	\N	t	t	\N
+68	test2@test2.com	$2b$10$e3iACZgHNNPkQ2tHBIVnk.2luB6TmB/Xa5/QBza3yfkfF9DZulufO	member	2025-08-12 20:40:08.881656	\N	password-email	\N	\N	\N	t	t	\N
+69	tomweek@tomweek.com	$2b$10$nz5sshRQjsV8EcyTJqQ6yOOVryc/9sRKZ8sRuEI05eVKGCxQW/ITe	member	2025-09-26 11:58:10.98073	\N	password-email	\N	\N	\N	t	t	\N
+67	tompayan1710@gmail.com	\N	member	2025-08-12 20:06:19.809507	\N	google	\N	\N	\N	t	t	4
 \.
 
 
@@ -1613,6 +1786,27 @@ SELECT pg_catalog.setval('public.offers_id_seq', 67, true);
 
 
 --
+-- Name: presentoir_offers_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('public.presentoir_offers_id_seq', 5, true);
+
+
+--
+-- Name: presentoir_scans_log_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('public.presentoir_scans_log_id_seq', 2, true);
+
+
+--
+-- Name: presentoirs_presentoir_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('public.presentoirs_presentoir_id_seq', 1, true);
+
+
+--
 -- Name: provider_booking_integrations_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
 
@@ -1637,7 +1831,7 @@ SELECT pg_catalog.setval('public.qr_codes_id_seq', 84, true);
 -- Name: refresh_tokens_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
 
-SELECT pg_catalog.setval('public.refresh_tokens_id_seq', 392, true);
+SELECT pg_catalog.setval('public.refresh_tokens_id_seq', 407, true);
 
 
 --
@@ -1808,6 +2002,30 @@ ALTER TABLE ONLY public.offer_recurring_slots
 
 ALTER TABLE ONLY public.offers
     ADD CONSTRAINT offers_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: presentoir_offers presentoir_offers_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.presentoir_offers
+    ADD CONSTRAINT presentoir_offers_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: presentoir_scans_log presentoir_scans_log_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.presentoir_scans_log
+    ADD CONSTRAINT presentoir_scans_log_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: presentoirs presentoirs_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.presentoirs
+    ADD CONSTRAINT presentoirs_pkey PRIMARY KEY (presentoir_id);
 
 
 --
@@ -2067,6 +2285,46 @@ ALTER TABLE ONLY public.offers
 
 
 --
+-- Name: presentoir_offers presentoir_offers_hote_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.presentoir_offers
+    ADD CONSTRAINT presentoir_offers_hote_id_fkey FOREIGN KEY (hote_id) REFERENCES public.hotes(id);
+
+
+--
+-- Name: presentoir_offers presentoir_offers_offer_slug_fkey; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.presentoir_offers
+    ADD CONSTRAINT presentoir_offers_offer_slug_fkey FOREIGN KEY (offer_slug) REFERENCES public.offers(slug) ON DELETE CASCADE;
+
+
+--
+-- Name: presentoir_offers presentoir_offers_presentoir_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.presentoir_offers
+    ADD CONSTRAINT presentoir_offers_presentoir_id_fkey FOREIGN KEY (presentoir_id) REFERENCES public.presentoirs(presentoir_id) ON DELETE CASCADE;
+
+
+--
+-- Name: presentoir_scans_log presentoir_scans_log_presentoir_offer_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.presentoir_scans_log
+    ADD CONSTRAINT presentoir_scans_log_presentoir_offer_id_fkey FOREIGN KEY (presentoir_offer_id) REFERENCES public.presentoir_offers(id) ON DELETE CASCADE;
+
+
+--
+-- Name: presentoirs presentoirs_hote_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.presentoirs
+    ADD CONSTRAINT presentoirs_hote_id_fkey FOREIGN KEY (hote_id) REFERENCES public.hotes(id) ON DELETE CASCADE;
+
+
+--
 -- Name: qr_codes qr_codes_id_hotesfkey; Type: FK CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -2120,6 +2378,14 @@ ALTER TABLE ONLY public.reservations_individuals
 
 ALTER TABLE ONLY public.reservations_individuals
     ADD CONSTRAINT reservations_individuals_slot_id_fkey FOREIGN KEY (slot_id) REFERENCES public.reservation_slots(id) ON DELETE CASCADE;
+
+
+--
+-- Name: users users_hote_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.users
+    ADD CONSTRAINT users_hote_id_fkey FOREIGN KEY (hote_id) REFERENCES public.hotes(id);
 
 
 --

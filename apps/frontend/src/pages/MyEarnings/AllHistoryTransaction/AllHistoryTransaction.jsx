@@ -20,12 +20,27 @@ export default function AllHistoryTransaction(){
   const [ transactions, setTransactions ] = useState([]);
   const [ loading, setLoading ] = useState(true);
 
+  function getActorId(authState) {
+    if (authState.user?.provider_id) {
+      return { key: "provider_id", value: authState.user.provider_id };
+    }
+    if (authState.user?.hote_id) {
+      return { key: "hote_id", value: authState.user.hote_id };
+    }
+    return null;
+  }
 
   const getTransactionHistory = async () => {
-    console.log("Récupération de l'historique du provider : ", authState.user?.provider_id);
+    const actor = getActorId(authState);
+    if (!actor) return;
+
     try {
+        const route =
+          actor.key === "provider_id"
+            ? "getall-by-provider"
+            : "getall-by-hote";
         // ✅ Requête pour obtenir un nouveau token (Refresh Token doit être dans les cookies)
-        const response = await fetch(`${process.env.REACT_APP_API_URL}/api/payment/transactions/getall-by-provider?provider_id=${authState.user?.provider_id}`, {
+        const response = await fetch(`${process.env.REACT_APP_API_URL}/api/payment/transactions/${route}?${actor.key}=${actor.value}`, {
             method: "GET",
         });
 
@@ -60,7 +75,7 @@ export default function AllHistoryTransaction(){
   }
 
   useEffect(() => {
-    if (authState.user?.provider_id) {
+    if (authState.user?.provider_id || authState.user?.hote_id) {
       getTransactionHistory().then(data => {
         if (data.success) {
           const history = data.history || [];

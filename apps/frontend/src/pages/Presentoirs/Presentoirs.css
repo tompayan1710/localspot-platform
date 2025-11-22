@@ -49,7 +49,7 @@
   padding-bottom: 10px;
 }
 .Presentoirs .PresentoireCard>p{
-    margin-bottom: 7px;
+    margin-bottom: 10px;
 }
 .PresentoireCard .addStock{
   background-color: white;
@@ -73,10 +73,12 @@
 }
 .PresentoireCard .NameContainer>.row{
   gap: 3px;
+  margin-top: 2px;
 }
 .PresentoireCard .NameContainer .pointStatus{
   width: 7px;
   height: 7px;
+  margin-top: 2px;
   border-radius: 100px;
   background-color: var(--greennormal);
 }
@@ -217,6 +219,49 @@
   justify-content: center;
   align-items: center;
 }
+
+.Presentoirs .allAnnonces .AnnonceImage.shimmer::after {
+  animation: shimmer2 2.5s infinite ease-in-out; /* durée totale */
+  z-index: 1;
+}
+
+@keyframes shimmer2 {
+  0% {
+    left: -200%;
+  }
+  30% {
+    left: 100%; /* pause */
+  }
+  100% {
+    left: 100%;
+  }
+}
+
+
+.pointStatus {
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+}
+
+/* Présentoir actif */
+.pointStatus.actif {
+    background-color: #4CAF50; /* vert */
+}
+
+/* En cours d'installation */
+.pointStatus.en_installation {
+    background-color: #2196F3; /* bleu */
+}
+
+/* Désactivé */
+.pointStatus.desactive {
+    background-color: var(--rednormal); /* rouge */
+}
+
+
+
+
 .Presentoirs .allAnnonces .AnnonceImage>img{
   object-fit: cover;
   height: 100%;
@@ -259,5 +304,68 @@
 
 .Presentoirs .centerText{
   text-align: left;
-  margin-top: clamp(20px, calc(22vw + 1px), 110px);
+  margin-top: clamp(20px, calc(22vw + 1px), 117px);
 }
+
+.Presentoirs .InstallationRequestContainer{
+  padding: 0 10px;
+  position: relative;
+}
+.Presentoirs .InstallationRequestContainer>p:first-of-type{
+  margin-bottom: 5px;
+}
+.Presentoirs .InstallationRequestContainer{
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+}
+.Presentoirs .InstallationRequestContainer .ButtonSendContainer{
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background-color: white;
+}
+.Presentoirs .InstallationRequestContainer .ButtonSendContainer>.hline{
+  margin-bottom: 15px;
+}
+.Presentoirs .InstallationRequestContainer .InputText{
+  flex-grow: 0;  /* n'occupe pas l'espace disponible */
+  flex-shrink: 0; /* ne rétrécit pas */
+  flex-basis: auto; /* largeur en fonction du contenu */
+  flex: 0 0 auto; 
+}
+.Presentoirs .InstallationRequestContainer textarea{
+  font-family: inherit;
+}
+.Presentoirs .InstallationRequestContainer input{
+  margin-bottom: 20px;
+}
+.Presentoirs .SendButton{
+  padding: 10px 10px;
+  background: var(--lineargradientblack);
+  border-radius: 10px;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  gap: 10px;
+  width: 100%;
+  cursor: pointer;
+}
+.Presentoirs .SendButton>p{
+  color: white;
+}
+.Presentoirs .SendButton>img{
+  height: 12px;
+}
+
+.Presentoirs .occultView{
+  pointer-events: none;
+}
+.Presentoirs .occultView.open {
+  opacity: 1;
+  pointer-events: auto;
+  visibility: visible;
+}
+

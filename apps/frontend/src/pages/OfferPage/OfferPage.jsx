@@ -1038,8 +1038,9 @@ import FadeInImage from "../../components/Utils/FadeInImage.jsx";
               </div>*/}
               <OfferComments offerSlug={slug} children={
                 <div className="ContainerIButton row">
-                    <p className="t4 ReviewTitle">{t("Customer_Riviews")}</p>
-                    <button className="iButton" onClick={() => {
+                  <p className="t4 ReviewTitle">{t("Customer_Riviews")}</p>
+                  <div className="ButtonContainer"></div>
+                    <button className="Button" onClick={() => {
                       // PopUpBottomRef.current.style.bottom = "0px";
                       PopUpBottomRef.current.classList.add("open")
                       setIsOccultView(true);

@@ -197,12 +197,11 @@ export default function BrowserRouterAll(){
             <Route path="/versement/new/titulaire" element={<AddTitulaireForm />} />
             <Route path="/versement/new/iban" element={<AddIBANForm />} />
             <Route path="/transaction-info/:type/:id" element={<TransactionInfo />} />
-
+    
             {/* Hote */}
             <Route path="/presentoirs" element={<Presentoirs />} />
             <Route path="/presentoirs/:slug" element={<PresentoirsOffersPage />} />
-
-                
+                 
             <Route path="/annonces" element={<AllAnnoncesPage />} />
             <Route path="/annonces/:slug" element={<AnnoncePage />} />
             <Route path="/annonces/:slug/availability-editor" element={<AvailabilityEditor />} />
