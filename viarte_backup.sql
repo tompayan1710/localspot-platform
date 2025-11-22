@@ -1017,7 +1017,8 @@ CREATE TABLE public.withdrawal_methods (
     first_name character varying(100),
     last_name character varying(100),
     paypal_email character varying(100),
-    created_at timestamp without time zone DEFAULT CURRENT_TIMESTAMP
+    created_at timestamp without time zone DEFAULT CURRENT_TIMESTAMP,
+    hote_id integer
 );
 
 
@@ -1051,7 +1052,7 @@ ALTER SEQUENCE public.withdrawal_methods_id_seq OWNED BY public.withdrawal_metho
 
 CREATE TABLE public.withdrawals (
     id integer NOT NULL,
-    provider_id integer NOT NULL,
+    provider_id integer,
     amount numeric(10,2) NOT NULL,
     method text NOT NULL,
     details text,
@@ -1062,7 +1063,8 @@ CREATE TABLE public.withdrawals (
     first_name text,
     last_name text,
     paypal_email text,
-    sent_at timestamp without time zone
+    sent_at timestamp without time zone,
+    hote_id integer
 );
 
 
@@ -1530,6 +1532,11 @@ COPY public.presentoir_offers (id, presentoir_id, offer_slug, qr_base_url, scan_
 COPY public.presentoir_scans_log (id, presentoir_offer_id, presentoir_id, offer_slug, scanned_at) FROM stdin;
 1	2	1	863fbf94-7e75-4c8e-8d74-654e7d6a7394	2025-11-20 20:23:55.151593
 2	2	1	863fbf94-7e75-4c8e-8d74-654e7d6a7394	2025-11-20 20:26:38.750829
+3	2	1	863fbf94-7e75-4c8e-8d74-654e7d6a7394	2025-11-21 11:06:08.603769
+4	2	1	863fbf94-7e75-4c8e-8d74-654e7d6a7394	2025-11-21 11:06:49.228308
+5	2	1	863fbf94-7e75-4c8e-8d74-654e7d6a7394	2025-11-21 11:07:58.195188
+6	2	1	863fbf94-7e75-4c8e-8d74-654e7d6a7394	2025-11-21 11:08:15.560319
+7	2	1	863fbf94-7e75-4c8e-8d74-654e7d6a7394	2025-11-21 11:08:22.960201
 \.
 
 
@@ -1538,7 +1545,7 @@ COPY public.presentoir_scans_log (id, presentoir_offer_id, presentoir_id, offer_
 --
 
 COPY public.presentoirs (presentoir_id, hote_id, name, installed_count, installation_status, status) FROM stdin;
-1	4	Chambre	0	pending	Actif
+1	4	Chambre	0	pending	actif
 \.
 
 
@@ -1611,7 +1618,7 @@ COPY public.refresh_tokens (id, user_id, refresh_token, expires_at, created_at) 
 406	67	eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6NjcsImVtYWlsIjoidG9tcGF5YW4xNzEwQGdtYWlsLmNvbSIsImlhdCI6MTc2MzY2MzE3MCwiZXhwIjoxNzc5MjE1MTcwfQ.NfPh5031YeGufu-N2_g4icD5L2ZIUO22R6YEB-mfF2w	2026-05-19 20:26:10.787	2025-11-15 19:56:10.622044
 398	67	eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6NjcsImVtYWlsIjoidG9tcGF5YW4xNzEwQGdtYWlsLmNvbSIsImlhdCI6MTc2MzEyNDc3MywiZXhwIjoxNzc4Njc2NzczfQ.vNDe6lsK0VRjzShYI_3u4YShGieXDkSjcyIvAjZKUkI	2026-05-13 14:52:53.998	2025-11-14 13:51:34.026062
 399	67	eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6NjcsImVtYWlsIjoidG9tcGF5YW4xNzEwQGdtYWlsLmNvbSIsImlhdCI6MTc2MzEyNDc3NiwiZXhwIjoxNzc4Njc2Nzc2fQ.GRXAUX4McOc5503GwlPqNCoqolvNliBR07KrO5tJOSo	2026-05-13 14:52:56.939	2025-11-14 13:52:54.02171
-407	67	eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6NjcsImVtYWlsIjoidG9tcGF5YW4xNzEwQGdtYWlsLmNvbSIsImlhdCI6MTc2MzcxMTA3MSwiZXhwIjoxNzc5MjYzMDcxfQ.m2sNik68AX67hX21_K3MHthrSRh9kxU7NWVOBiPXV1c	2026-05-20 09:44:31.822	2025-11-20 19:26:45.171825
+414	64	eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6NjQsImVtYWlsIjoidGVzdEB0ZXN0LmNvbSIsImlhdCI6MTc2MzgwNjI4OCwiZXhwIjoxNzc5MzU4Mjg4fQ.pp7wj-f4qBkutLSETxLHpsgxWImAWkyf05_OPitsCFQ	2026-05-21 12:11:28.922	2025-11-22 11:11:28.926465
 \.
 
 
@@ -1630,6 +1637,7 @@ COPY public.reservation_slots (id, provider_id, offer_slug, date, start_hour, en
 126	11	996d438f-9637-4533-bae9-c4e84b5e8ef8	2025-10-20	10:00	12:00	5	full	2025-10-02 19:55:56.253468	2025-10-02 19:55:56.253468	16.36	30.39	187.00	233.75
 127	11	49eda54a-a544-4fd6-91ce-9bcddcfaa20a	2025-10-27	12:00	14:00	2	available	2025-10-02 20:16:55.955332	2025-10-02 20:16:55.955332	15.40	28.60	176.00	220.00
 128	11	49eda54a-a544-4fd6-91ce-9bcddcfaa20a	2025-10-22	14:00	16:00	2	available	2025-10-02 20:41:18.328214	2025-10-02 20:41:18.328214	15.40	28.60	176.00	220.00
+134	11	9630f266-e89f-4ebf-b5f6-88801cb1f07b	2025-11-23	13:00	15:00	4	full	2025-11-22 09:47:46.870348	2025-11-22 09:47:46.870348	4.99	9.26	57.00	71.25
 \.
 
 
@@ -1654,6 +1662,7 @@ COPY public.reservations_individuals (id, user_id, slot_id, total_places_used, p
 165	64	131	3	paid	confirmed	2025-10-17 07:51:29.728571	2025-10-17 07:51:29.728571	tompayan1710@gmail.com	Tom Payan	+33765594097	pi_3SJ6L72f0HHvMFDt1DNQ4VC4	57.75	107.25	660.00	825.00	\N	1	0	300.00	225.00	0.00	2	3bedfc6f-b7b9-48b1-a522-bdc319758e89	\N
 166	64	132	6	paid	confirmed	2025-10-17 07:52:32.981188	2025-10-17 07:52:32.981188	tompayan1710@gmail.com	Tom Payan	+33765594097	pi_3SJ6aQ2f0HHvMFDt19ZI2uPI	42.00	78.00	480.00	600.00	4	2	1	110.00	80.00	0.00	4	90cbc1af-17fd-47a2-9012-911cbb84e8c1	\N
 167	67	133	3	paid	confirmed	2025-10-17 07:54:14.093676	2025-10-17 07:54:14.093676	tompayan1710@gmail.com	Tom Payan	+33765594097	pi_3SJ6c42f0HHvMFDt1oDgBmnG	57.75	107.25	660.00	825.00	4	1	0	300.00	225.00	0.00	2	801ab593-f368-41e6-81c2-8a1f21c9921e	\N
+168	67	134	4	paid	confirmed	2025-11-22 09:47:46.883482	2025-11-22 09:47:46.883482	tompayan1710@gmail.com	Jean Luc Payan	+33765594097	pi_3SWCTg2f0HHvMFDt1UG78V3z	4.99	9.26	57.00	71.25	4	1	0	19.00	14.25	0.00	3	bca2c06e-c4a0-418d-99e7-a9b1f2c924be	\N
 \.
 
 
@@ -1673,8 +1682,8 @@ COPY public.users (id, email, password, role, created_at, provider_id, provider,
 -- Data for Name: withdrawal_methods; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
-COPY public.withdrawal_methods (id, provider_id, method, iban, swift, first_name, last_name, paypal_email, created_at) FROM stdin;
-28	11	iban	CLARABELLE	FOSFS	Payan	TOM PAYAN	\N	2025-09-13 19:11:16.138595
+COPY public.withdrawal_methods (id, provider_id, method, iban, swift, first_name, last_name, paypal_email, created_at, hote_id) FROM stdin;
+28	11	iban	CLARABELLE	FOSFS	Payan	TOM PAYAN	\N	2025-09-13 19:11:16.138595	\N
 \.
 
 
@@ -1682,8 +1691,9 @@ COPY public.withdrawal_methods (id, provider_id, method, iban, swift, first_name
 -- Data for Name: withdrawals; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
-COPY public.withdrawals (id, provider_id, amount, method, details, status, created_at, iban, swift, first_name, last_name, paypal_email, sent_at) FROM stdin;
-15	11	100.00	IBAN	Demande de versement par IBAN 	waiting	2025-09-14 08:44:35.263075	CLARABELLE	FOSFS	Payan	TOM PAYAN		\N
+COPY public.withdrawals (id, provider_id, amount, method, details, status, created_at, iban, swift, first_name, last_name, paypal_email, sent_at, hote_id) FROM stdin;
+15	11	100.00	IBAN	Demande de versement par IBAN 	completed	2025-09-14 08:44:35.263075	CLARABELLE	FOSFS	Payan	TOM PAYAN		2025-11-22 10:56:09.579761	\N
+17	\N	158.00	IBAN	Demande de versement par IBAN 	completed	2025-11-22 10:48:38.209977	LECHARTECHART	SWITHCODE	PAYAN	LOCALSPOT		2025-11-22 10:56:41.194512	4
 \.
 
 
@@ -1796,7 +1806,7 @@ SELECT pg_catalog.setval('public.presentoir_offers_id_seq', 5, true);
 -- Name: presentoir_scans_log_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
 
-SELECT pg_catalog.setval('public.presentoir_scans_log_id_seq', 2, true);
+SELECT pg_catalog.setval('public.presentoir_scans_log_id_seq', 7, true);
 
 
 --
@@ -1831,14 +1841,14 @@ SELECT pg_catalog.setval('public.qr_codes_id_seq', 84, true);
 -- Name: refresh_tokens_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
 
-SELECT pg_catalog.setval('public.refresh_tokens_id_seq', 407, true);
+SELECT pg_catalog.setval('public.refresh_tokens_id_seq', 414, true);
 
 
 --
 -- Name: reservation_slots_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
 
-SELECT pg_catalog.setval('public.reservation_slots_id_seq', 133, true);
+SELECT pg_catalog.setval('public.reservation_slots_id_seq', 134, true);
 
 
 --
@@ -1852,7 +1862,7 @@ SELECT pg_catalog.setval('public.reservations_creneaux_google_calendar_id_seq', 
 -- Name: reservations_individuals_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
 
-SELECT pg_catalog.setval('public.reservations_individuals_id_seq', 167, true);
+SELECT pg_catalog.setval('public.reservations_individuals_id_seq', 168, true);
 
 
 --
@@ -1866,14 +1876,14 @@ SELECT pg_catalog.setval('public.users_id_seq', 69, true);
 -- Name: withdrawal_methods_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
 
-SELECT pg_catalog.setval('public.withdrawal_methods_id_seq', 28, true);
+SELECT pg_catalog.setval('public.withdrawal_methods_id_seq', 29, true);
 
 
 --
 -- Name: withdrawals_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
 
-SELECT pg_catalog.setval('public.withdrawals_id_seq', 15, true);
+SELECT pg_catalog.setval('public.withdrawals_id_seq', 17, true);
 
 
 --
@@ -2397,11 +2407,27 @@ ALTER TABLE ONLY public.users
 
 
 --
+-- Name: withdrawal_methods withdrawal_methods_hote_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.withdrawal_methods
+    ADD CONSTRAINT withdrawal_methods_hote_id_fkey FOREIGN KEY (hote_id) REFERENCES public.hotes(id);
+
+
+--
 -- Name: withdrawal_methods withdrawal_methods_provider_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: postgres
 --
 
 ALTER TABLE ONLY public.withdrawal_methods
     ADD CONSTRAINT withdrawal_methods_provider_id_fkey FOREIGN KEY (provider_id) REFERENCES public.providers(id) ON DELETE CASCADE;
+
+
+--
+-- Name: withdrawals withdrawals_hote_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.withdrawals
+    ADD CONSTRAINT withdrawals_hote_id_fkey FOREIGN KEY (hote_id) REFERENCES public.hotes(id);
 
 
 --

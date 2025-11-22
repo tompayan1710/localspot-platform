@@ -316,7 +316,7 @@ export default function Presentoirs() {
                             )}
                         </div>
 
-                        <p className="t6 centerText">{t("Presentoir_limit_info")}</p>
+                        <p className="t6 leftText">{t("Presentoir_limit_info")}</p>
 
                         <p className="t5 bold TopActivity">{t("Top_activity")}</p>
 

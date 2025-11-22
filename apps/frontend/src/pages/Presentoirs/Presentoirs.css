@@ -302,9 +302,9 @@
 
 
 
-.Presentoirs .centerText{
+.Presentoirs .leftText{
   text-align: left;
-  margin-top: clamp(20px, calc(22vw + 1px), 117px);
+  margin-top: clamp(20px, calc(22vw + 10px), 120px);
 }
 
 .Presentoirs .InstallationRequestContainer{
