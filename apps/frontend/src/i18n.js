@@ -202,6 +202,10 @@ i18n
 
           //Profile
           Provider_Dashboard: "Provider Dashboard",
+          Hote_Dashboard: "Hote Dashboard",
+          Host_To_Traveler_Title: "Ready to explore?",
+          Host_To_Traveler_Description: "Find an activity or stay you’ll love and book it instantly.",
+          Host_To_Traveler_Button: "Explore",
           Personal_account: "Personal account",
           View_profile: "View profile",
           Easily_manage_your_activities: "Easily manage your activities, track your reservations, and update your offers in real time.",
@@ -640,6 +644,10 @@ i18n
 
           //Profile
           Provider_Dashboard: "Espace Prestataire",
+          Hote_Dashboard: "Espace Hôte",
+          Host_To_Traveler_Title: "Envie de voyager ?",
+          Host_To_Traveler_Description: "Trouvez une activité ou un séjour qui vous plaît et réservez directement.",
+          Host_To_Traveler_Button: "Explorer",
           Personal_account: "Compte personnel",
           View_profile: "Voir le profile",
           Easily_manage_your_activities: "Gérez facilement vos activités, suivez vos réservations et mettez à jour vos offres en temps réel.",

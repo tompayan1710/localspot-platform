@@ -38,10 +38,10 @@ export default function AllHistoryTransaction(){
         const route =
           actor.key === "provider_id"
             ? "getall-by-provider"
+            // Requête pour obtenir un nouveau token (Refresh Token doit être dans les cookies)
             : "getall-by-hote";
-        // ✅ Requête pour obtenir un nouveau token (Refresh Token doit être dans les cookies)
-        const response = await fetch(`${process.env.REACT_APP_API_URL}/api/payment/transactions/${route}?${actor.key}=${actor.value}`, {
-            method: "GET",
+            const response = await fetch(`${process.env.REACT_APP_API_URL}/api/payment/transactions/${route}?${actor.key}=${actor.value}`, {
+              method: "GET",
         });
 
         if (response.ok) {
