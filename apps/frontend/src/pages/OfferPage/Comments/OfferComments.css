@@ -13,7 +13,7 @@
   margin-bottom: 5px;
   margin-top: 30px;
 }
-.ContainerIButton>.iButton{
+.ContainerIButton .iButton{
   background-color: transparent;
   border: 1px solid black;
   height: 17px;  
@@ -30,7 +30,7 @@
 }
 
 .ContainerIButton>.ReviewTitle{
-  font-family: "Playfaire Display";
+  /* font-family: "Playfaire Display"; */
   margin-left: 10px;
 }
 
@@ -51,10 +51,6 @@
 .ClientReviewContainer>.t1{
   margin-left: 5px;
 }
-.ClientReviewContainer>.row>p{
-    font-family: "Playfaire Display";
-    margin-left: 10px;
-} 
 
 .ClientReviewContainer .StarsList{
   display: flex;

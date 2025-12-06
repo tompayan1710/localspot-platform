@@ -59,8 +59,70 @@ i18n
           Activite: "Activity",
           Starting_at: "Starting at",
           per_person: "per person",
+
+          Participants: "Participants:",
+
           See_availability: "See availability",
           Select_participants: "Select participants",
+          About_activity_title: "About this activity",
+          Free_cancellation_title: "Free cancellation",
+          Free_cancellation_text: "Free cancellation available up to 24 hours before the experience, with full refund guaranteed.",
+
+          Average_duration_title: "Average duration:",
+          Average_duration_text: "An ideal duration to enjoy the experience without time pressure.",
+
+          Languages_spoken_title: "Languages spoken",
+          French: "French",
+          English: "English",
+
+          Wheelchair_accessible_title: "Wheelchair accessible",
+          Wheelchair_accessible_text: "The entire experience is adapted to ensure easy and comfortable access for everyone.",
+
+          Free_parking_title: "Free parking nearby",
+          Free_parking_text: "Free parking is available within walking distance.",
+
+          Toilets_accessible_title: "Accessible toilets available",
+          Toilets_accessible_text: "Toilets are available on-site for your convenience.",
+
+
+          Included_title: "What’s included",
+          Included_guide: "Guidance by a certified local guide",
+          Included_tasting: "Tasting of local products",
+          Included_insurance: "Liability insurance included",
+          Included_equipment: "Safety equipment provided",
+          included_transport: "Transportation to the activity location",
+          included_food: "Additional food and drinks",
+          included_personal: "Personal expenses and souvenirs",
+
+
+          Distance_from_hotel: "Distance from your hotel:",
+          Meeting_point: "Meeting point",
+          Open_in_google_maps: "Open in Google Maps",
+
+          Partnership_title: "In partnership with your hotel",
+          Partnership_text: "Together, we invite you to discover the hidden treasures of the region — refinement, authenticity and travel passion.",
+
+          Cancellation_policy_title: "Cancellation conditions",
+          Cancellation_policy_text: "You can cancel your booking free of charge up to 24 hours before the activity begins. After this delay, the full amount will be charged. In case of exceptional weather conditions or provider cancellation, a full refund will be automatically offered.",
+
+          Secure_payment_viarte: "To protect your payment, always use Viarte to complete your transactions and book your activities.",
+
+          Customer_info_title: "Customer reviews",
+          Customer_info_text: "After experiencing the activity, travelers are invited to share their feedback — authentic and verified reviews from real participants.",
+
+
+
+
+
+
+
+
+
+
+
+
+
+
           //Availibility
           Verify_your_personal_information: "Verify your personal information",
           Fast_and_secure_booking: "Fast and secure booking",
@@ -201,6 +263,9 @@ i18n
           Login_link: "Log in",
 
           //Profile
+          Host_Earnings_Title: "Track your earnings in real time",
+          Host_Earnings_Description: "View your earnings, withdrawals, and a complete history of your transactions.",
+          Host_Earnings_Button: "View my earnings",
           Provider_Dashboard: "Provider Dashboard",
           Hote_Dashboard: "Hote Dashboard",
           Host_To_Traveler_Title: "Ready to explore?",
@@ -519,12 +584,75 @@ i18n
 
 
           //Offer Page
-          Duration: "Duréé",
+          Duration: "Durée",
           Activite: "Activité",
           Starting_at: "À partir de",
           per_person: "par personne",
+
+          Participants: "Participants :",
+
           See_availability: "Voir les disponnibilités",
           Select_participants: "Sélectionner les participants",
+
+          About_activity_title: "À propos de cette activité",
+          Free_cancellation_title: "Annulation gratuite",
+          Free_cancellation_text: "Annulation gratuite possible jusqu’à 24 heures avant l’expérience, avec remboursement total garanti.",
+
+          Average_duration_title: "Durée moyenne :",
+          Average_duration_text: "Une durée idéale pour profiter de l’expérience sans contrainte de temps.",
+
+          Languages_spoken_title: "Langues parlées",
+          French: "Francais",
+          English: "Anglais",
+
+          Wheelchair_accessible_title: "Accessible aux personnes en fauteuil roulant",
+          Wheelchair_accessible_text: "L’ensemble de l'expérience est adapté pour garantir un accès facile et confortable à tous.",
+
+          Free_parking_title: "Parking gratuit à proximité",
+          Free_parking_text: "Un stationnement est disponible gratuitement à quelques pas du point de départ.",
+
+          Toilets_accessible_title: "Toilettes accessibles sur place",
+          Toilets_accessible_text: "Des toilettes sont disponibles sur place pour votre confort.",
+
+
+          Included_title: "Ce qui est inclus",
+          Included_guide: "Accompagnement par un guide local certifié",
+          Included_tasting: "Dégustation de produits régionaux",
+          Included_insurance: "Assurance responsabilité incluse",
+          Included_equipment: "Équipement de sécurité fourni",
+          Not_included_transport: "Transport jusqu’au lieu de l’activité",
+          Not_included_food: "Repas et boissons supplémentaires",
+          Not_included_personal: "Dépenses personnelles et souvenirs",
+
+
+          Distance_from_hotel: "Distance depuis votre hôtel :",
+          Meeting_point: "Lieu de rendez-vous",
+          Open_in_google_maps: "Ouvrir dans Google Maps",
+
+          Partnership_title: "En partenariat avec votre hôtel",
+          Partnership_text: "Ensemble, nous vous invitons à découvrir les trésors cachés de la région. Entre raffinement, authenticité et passion du voyage.",
+
+          Cancellation_policy_title: "Conditions d'annulation",
+          Cancellation_policy_text: "Vous pouvez annuler votre réservation sans frais jusqu’à 24 heures avant le début de l’activité. Passé ce délai, le montant total sera retenu. En cas de conditions météorologiques exceptionnelles ou d’annulation du prestataire, un remboursement complet vous sera automatiquement proposé.",
+
+          Secure_payment_viarte: "Afin de protéger votre paiement, utilisez toujours Viarte pour effectuer vos transactions et réserver vos activités.",
+
+          Customer_info_title: "Avis des clients",
+          Customer_info_text: "Après avoir vécu l’expérience, les voyageurs sont invités à partager leur ressenti : des avis fiables et authentiques, rédigés uniquement par de vrais participants.",
+
+
+
+
+
+
+
+
+
+
+
+
+
+
           //Availibility
           Verify_your_personal_information: "Vérifier vos informations personnels",
           Fast_and_secure_booking: "Réservation rapide et sécurisée",
@@ -643,6 +771,9 @@ i18n
 
 
           //Profile
+          Host_Earnings_Description: "Consultez vos revenus, vos retraits et l’historique complet de vos transactions.",
+          Host_Earnings_Title: "Suivez vos revenus en temps réel",
+          Host_Earnings_Button: "Voir mes revenus",
           Provider_Dashboard: "Espace Prestataire",
           Hote_Dashboard: "Espace Hôte",
           Host_To_Traveler_Title: "Envie de voyager ?",

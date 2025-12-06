@@ -636,49 +636,49 @@ import FadeInImage from "../../components/Utils/FadeInImage.jsx";
                   
                 </div>
               <div className="AboutSection column">
-            <p className="t32 bold">À propos de cette activité</p>
+              <p className="t32 bold">{t("About_activity_title")}</p>
 
               <div className="AboutList column">
                 <div className="row">
                   <img src={cancelIcon} alt="translate Google" />
                   <div className="column">
-                    <p className="t4">Annulation gratuite</p>
-                    <p className="t5 text">Annulation gratuite possible jusqu’à 24 heures avant l’expérience, avec remboursement total garanti.</p>
+                    <p className="t4">{t("Free_cancellation_title")}</p>
+                    <p className="t5 text">{t("Free_cancellation_text")}</p>
                   </div>
                 </div>
                 <div className="row">
                     <img src={dureeIcon} alt="duree Icon" />
                     <div className="column">
-                      <p className="t4">Durée moyenne : 2h 30</p>
-                      <p className="t5 text">Une durée idéale pour profiter de l’expérience sans contrainte de temps.</p>
+                    <p className="t4">{t("Average_duration_title")}&nbsp;{offer?.duration}</p>
+                    <p className="t5 text">{t("Average_duration_text")}</p>
                     </div>
                 </div>
                 <div className="row">
                   <img src={translateGoogle} alt="translate Google" />
                   <div className="column">
-                    <p className="t4">Langues parlées</p>
-                    <p className="t5 text">Francais, Anglai5</p>
+                    <p className="t4">{t("Languages_spoken_title")}</p>
+                    <p className="t5 text">{t("French")}, {t("English")}</p>
                   </div>
                 </div>
                   <div className="row">
                     <img src={disabledIcon} alt="translate Google" />
                     <div className="column">
-                      <p className="t4">Accessible aux personnes en fauteuil roulant</p>
-                      <p className="t5 text">L’ensemble de l'experience est adapté pour garantir un accès facile et confortable à tous.</p>
+                      <p className="t4">{t("Wheelchair_accessible_title")}</p>
+                      <p className="t5 text">{t("Wheelchair_accessible_text")}</p>
                     </div>
                   </div>
                   <div className="row">
                     <img src={parkingIcon} alt="parking Icon" />
                     <div className="column">
-                      <p className="t4">Parking gratuit à proximité</p>
-                      <p className="t5 text">Un stationnement est disponible gratuitement à quelques pas du point de départ.</p>
+                    <p className="t4">{t("Free_parking_title")}</p>
+                    <p className="t5 text">{t("Free_parking_text")}</p>
                     </div>
                   </div>
                   <div className="row">
                     <img src={toiletIcon} alt="toiletIcon" />
                     <div className="column">
-                      <p className="t4">Toilettes accessibles sur place.</p>
-                      <p className="t5 text">Des toilettes sont disponibles sur place pour votre confort.</p>
+                      <p className="t4">{t("Toilets_accessible_title")}</p>
+                      <p className="t5 text">{t("Toilets_accessible_text")}</p>
                     </div>
                   </div>
               </div>
@@ -688,7 +688,7 @@ import FadeInImage from "../../components/Utils/FadeInImage.jsx";
               {
                 id_hote ?
                 <>
-                  <p className="t32 bold DistanceText">Distance depuis votre Hotel :</p>
+                  <p className="t32 bold DistanceText">{t("Distance_from_hotel")}</p>
                   <div className="OfferDistanceContainer">
                     <div className="OfferDistanceColumn">
                       {
@@ -723,7 +723,7 @@ import FadeInImage from "../../components/Utils/FadeInImage.jsx";
                 <></>
               }
               
-              <p className="t32 bold" id="titleMap">Lieu de rendez-vous</p>
+            <p className="t32 bold" id="titleMap">{t("Meeting_point")}</p>
               <div className={`OfferMapContainer ${isExtendMap ? "extendMap" : ""}`} ref={refOfferMapContainer}>
                 <button onClick={() => {
                   setIsExtendMap(!isExtendMap)
@@ -769,7 +769,7 @@ import FadeInImage from "../../components/Utils/FadeInImage.jsx";
                         rel="noopener noreferrer"
                         className="OpenInMapsBtn t6"
                       >
-                        Ouvrir dans Google Maps
+                        {t("Open_in_google_maps")}
                       </a>
                       </>
                     ) : 
@@ -800,7 +800,7 @@ import FadeInImage from "../../components/Utils/FadeInImage.jsx";
                         rel="noopener noreferrer"
                         className="OpenInMapsBtn t6"
                       >
-                        Voir sur Google Maps
+                        {t("Open_in_google_maps")}
                       </a>
                       </>
                   }
@@ -833,36 +833,32 @@ import FadeInImage from "../../components/Utils/FadeInImage.jsx";
               </button>
               <div className={"cancelline"}></div> */}
            <div className="WhatIncluded column">
-            <p className="t32 bold">Ce qui est inclus</p>
+            <p className="t32 bold">{t("Included_title")}</p>
 
             <div className="IncludedList column">
               <div className="row">
                 <img src={validateGreen} alt="validate green" />
-                <p className="t5">Accompagnement par un guide local certifié</p>
+                  <p className="t5">{t("Included_guide")}</p>
               </div>
               <div className="row">
                 <img src={validateGreen} alt="validate green" />
-                <p className="t5">Dégustation de produits régionaux</p>
+                <p className="t5">{t("Included_insurance")}</p>
               </div>
               <div className="row">
                 <img src={validateGreen} alt="validate green" />
-                <p className="t5">Assurance responsabilité incluseAssurance responsabilité incluseAssurance responsabilité </p>
-              </div>
-              <div className="row">
-                <img src={validateGreen} alt="validate green" />
-                <p className="t5">Équipement de sécurité fourni</p>
+                <p className="t5">{t("Included_equipment")}</p>
                 </div>
               <div className="row">
                 <img src={crossRed} alt="not included" />
-                <p className="t5">Transport jusqu’au lieu de l’activité</p>
+                  <p className="t5">{t("included_transport")}</p>
               </div>
               <div className="row">
                 <img src={crossRed} alt="not included" />
-                <p className="t5">Repas et boissons supplémentaires</p>
+                  <p className="t5">{t("included_food")}</p>
               </div>
               <div className="row">
                 <img src={crossRed} alt="not included" />
-                <p className="t5">Dépenses personnelles et souvenirs</p>
+                <p className="t5">{t("included_personal")}</p>
               </div>
             </div>
             </div>
@@ -877,10 +873,9 @@ import FadeInImage from "../../components/Utils/FadeInImage.jsx";
                   <p className="t1">&</p>
                   <img src={hote.logo_img} alt="Hotel Logo" />
                 </div>
-                <p className="t4 bold">En partenariat avec votre Hotel</p>
+                <p className="t4 bold">{t("In partnership with your hotel")}</p>
                 <p className="hotelPartnershipText t6">
-                  Ensemble, nous vous invitons à découvrir les trésors cachés de la région.  
-                  Entre raffinement, authenticité et passion du voyage.
+                  {t("Partnership_text")}
                 </p>
                 <div className="row HotelImages">
                     {hote.image_urls && hote.image_urls.slice(0, 3).map((img, index) => (
@@ -994,16 +989,14 @@ import FadeInImage from "../../components/Utils/FadeInImage.jsx";
             <div className="hline88"></div>
             <div className="ReserveOnlyOnViarte row">
               <img src={LockGreen} alt="Lock green"/>
-              <p className="t5">Afin de protéger votre paiement, utilisez toujours Viarte pour effectuer vos transactions et réserver vos activités.</p>
+              <p className="t5">{t("Secure_payment_viarte")}</p>
             </div>
             <div className="hline88"></div>
             <div className="AnnulationCondition row">
               <div className="column">
-                <p className="t32 bold">Conditions d'annulation</p>
+                <p className="t32 bold">{t("Cancellation_policy_title")}</p>
                 <p className="t5">
-                  Vous pouvez annuler votre réservation sans frais jusqu’à 24 heures avant le début de l’activité. 
-                  Passé ce délai, le montant total sera retenu. En cas de conditions météorologiques exceptionnelles 
-                  ou d’annulation du prestataire, un remboursement complet vous sera automatiquement proposé.
+                  {t("Cancellation_policy_text")}
                 </p>
               </div>
               <img src={arrowRight} alt="arro wright icon"/>
@@ -1038,9 +1031,9 @@ import FadeInImage from "../../components/Utils/FadeInImage.jsx";
               </div>*/}
               <OfferComments offerSlug={slug} children={
                 <div className="ContainerIButton row">
-                  <p className="t4 ReviewTitle">{t("Customer_Riviews")}</p>
+                  <p className="t4 ReviewTitle bold">{t("Customer_Riviews")}</p>
                   <div className="ButtonContainer"></div>
-                    <button className="Button" onClick={() => {
+                    <button className="iButton" onClick={() => {
                       // PopUpBottomRef.current.style.bottom = "0px";
                       PopUpBottomRef.current.classList.add("open")
                       setIsOccultView(true);
@@ -1112,7 +1105,7 @@ import FadeInImage from "../../components/Utils/FadeInImage.jsx";
               ref={CancelBottomRef}
               fullHeight={true}
             >
-              <p className="t6">Vous pouvez annuler votre réservation jusqu’à 24 heures avant le début de l’activité pour obtenir un remboursement complet. Passé ce délai, aucune annulation ni remboursement ne sera possible.</p>
+              <p className="t6">{t("Cancellation_policy_text")}</p>
             </PopUpBottom>
 
             <PopUpBottom 
@@ -1121,9 +1114,6 @@ import FadeInImage from "../../components/Utils/FadeInImage.jsx";
                 // ParticipantBottomRef.current.style.bottom = "-100%";
                 setIsOccultView(false);
               }}
-              title={(
-                <p className="t5">Ajouter des participants</p>
-              )}
               ref={ParticipantBottomRef}
             >
               <>
@@ -1132,7 +1122,7 @@ import FadeInImage from "../../components/Utils/FadeInImage.jsx";
 
                 </div>
                 <div className="rowTotal">
-                  <p className="t4">Participants :</p> 
+                  <p className="t4">{t("Participants")}</p> 
                   <p className="t4">{participantAdult + participantChild + participantInfant}</p>
                 </div>
                 {/* Adult (si présent) */}
@@ -1243,12 +1233,6 @@ import FadeInImage from "../../components/Utils/FadeInImage.jsx";
                 PopUpBottomRef.current.classList.remove("open");
                 setIsOccultView(false);
               }}
-              title={(
-                <div className="row">
-                  <img src={customerKing} alt="customer is king"/>
-                  <p className="t5">ustomer Riviews</p>
-                </div>
-              )}
               ref={PopUpBottomRef}
             >
               <p className="t6">{t("Customer_Para")}</p>

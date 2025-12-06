@@ -214,13 +214,13 @@ export default function Profile() {
                         <FadeInImage src={hoteInfo?.image_urls?.[0] ?? templateOffer} alt="template photo"/>
                       </div>
                     </div>
-                    <div className="HoteCardText">
-                      <p className="t32 bold">Suivez vos revenus en temps réel</p>
-                      <p className="t5">Consultez vos revenus, vos retraits et l’historique complet de vos transactions.</p>
-                      <button onClick={() => navigate("/my-earnings")}>
-                        <p className="t5">Voir mes revenus</p>
-                      </button>
-                    </div>
+                   <div className="HoteCardText">
+                    <p className="t32 bold">{t("Host_Earnings_Title")}</p>
+                    <p className="t5">{t("Host_Earnings_Description")}</p>
+                    <button onClick={() => navigate("/my-earnings")}>
+                      <p className="t5">{t("Host_Earnings_Button")}</p>
+                    </button>
+                  </div>
                   </div>
                   : <>
                     {

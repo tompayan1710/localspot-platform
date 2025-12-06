@@ -1,0 +1,79 @@
+.InvoicesPage>p:first-of-type{
+    margin-top: 30px;
+    margin-left: 15px;
+    margin-bottom: 50px;
+}
+.InvoicesPage .docfisc{
+    padding-bottom: 5px;
+}
+.InvoicesPage .infofisc{
+    padding-bottom: 20px;
+}
+.InvoicesPage .virementColumn{
+    margin: 15px;
+}
+.InvoicesPage .virementColumn .hline{
+    margin-bottom: 40px;
+}
+.InvoicesPage .virementColumn .yearGroup{
+    margin-bottom: 40px;
+}
+.InvoicesPage .virementColumn .yearGroup>p:first-of-type{
+    margin-bottom: 5px;
+}
+.InvoicesPage .virementColumn .yearGroup .hline{
+    margin-top: 40px;
+}
+.InvoicesPage .virementElements{
+    /* padding: 15px;
+    border: 1px solid var(--greysemidark);
+    border-radius: 10px;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    box-shadow: var(--boxshadow); */
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 4px;
+}
+.InvoicesPage .virementElements>img{
+    height: 15px;
+    padding-top: 2px;
+}
+
+.InvoicesPage .InfoContainer{
+    margin: 0 15px;
+}
+.InvoicesPage .InfoContainer>p:first-of-type{
+    margin-bottom: 5px;
+}
+
+
+.InvoicesPage .MakeVirement {
+    --taillemin: min(250px, 50vw);
+    position: fixed;
+    bottom: 90px;
+    box-shadow: 0 2px 15px rgba(0, 0, 0, 0.3);
+    border: none;
+    padding: 18px 25px;
+    border-radius: 100px;
+    background: var(--lineargradientblack);
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 10px;
+    white-space: nowrap;
+    cursor: pointer;
+    z-index: 2;
+    right: 50%;
+    transform: translate(calc(var(--taillemin) * 1 - 10px));
+}
+
+.InvoicesPage .MakeVirement>p {
+    color: white;
+}
+.InvoicesPage .MakeVirement>img{
+    filter: invert(1);
+    height: 15px;
+}

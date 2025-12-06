@@ -170,6 +170,9 @@ a{
   font-weight: bold;
 }
 
+.underline {
+    text-decoration: underline;
+}
 
 .row{
   display: flex;

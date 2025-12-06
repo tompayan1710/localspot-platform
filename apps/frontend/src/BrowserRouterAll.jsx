@@ -65,6 +65,7 @@ import PaymentPolicy from "./pages/DocumentOfficiel/PaymentPolicy/PaymentPolicy"
 import ValidateReservation from "./pages/Today/ValidateReservation/ValidateReservation";
 import Presentoirs from "./pages/Presentoirs/Presentoirs";
 import PresentoirsOffersPage from "./pages/Presentoirs/PresentoirsOffersPage";
+import InvoicesPage from "./pages/InvoicesPage/InvoicesPage";
 
 
 
@@ -197,6 +198,7 @@ export default function BrowserRouterAll(){
             <Route path="/versement/new/titulaire" element={<AddTitulaireForm />} />
             <Route path="/versement/new/iban" element={<AddIBANForm />} />
             <Route path="/transaction-info/:type/:id" element={<TransactionInfo />} />
+            <Route path="/invoice" element={<InvoicesPage />} />
     
             {/* Hote */}
             <Route path="/presentoirs" element={<Presentoirs />} />
