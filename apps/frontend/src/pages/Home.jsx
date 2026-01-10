@@ -449,9 +449,9 @@ import ButtonLanguage from "../components/Buttons/ButtonLanguage/ButtonLanguage"
               homeOffersByCategory.evenning && homeOffersByCategory.evenning.length > 2 &&
               <div className="freeConcelation">
                   <div className="hline"></div>
-                    <p className="t3">Annonces vérifiés</p>
-                    <p className="t5">
-                      Chaque activité est proposée par un partenaire local sélectionné et validé par nos équipes.
+                  <p className="t3">{t("Verified_ads")}</p>
+                  <p className="t5">
+                    {t("Verified_ads_paragraphe")}
                     </p>
                   <div className="hline"></div>
               </div>
@@ -461,7 +461,7 @@ import ButtonLanguage from "../components/Buttons/ButtonLanguage/ButtonLanguage"
               homeOffersByCategory.evenning && homeOffersByCategory.evenning.length > 2 &&
               <>
               <div className="row">
-                <p className="t32">Sortir ce soir</p>
+                <p className="t32">{t("Going_out_tonight")}</p>
                 <button onClick={() => {
                   const now = new Date();
                   navigate("/searching-page", {

@@ -57,8 +57,9 @@ i18n
           Sign_up: "Sign up",
           Or: "or",
           Log_in: "Log in",
-
-
+          Verified_ads: "Verified ads",
+          Verified_ads_paragraphe: "Each activity is offered by a local partner selected and approved by our teams.",
+          Going_out_tonight: "Going out tonight",
 
           //Offer Page
           Duration: "Duration",
@@ -191,7 +192,7 @@ i18n
           not_found_title: "Page not found",
           not_found_description: "The page you are looking for does not exist or has been moved.",
           back_to_home: "Back to home page",
-
+          
 
           //Add Comment 
           Restricted_access: "Restricted access",
@@ -593,7 +594,9 @@ i18n
           Sign_up: "S'inscrire",
           Or: "ou",
           Log_in: "Se connecter",
-
+          Verified_ads: "Annonces vérifiées",
+          Verified_ads_paragraphe: "Chaque activité est proposée par un partenaire local sélectionné et validé par nos équipes.",
+          Going_out_tonight: "Sortir ce soir",
 
 
 
