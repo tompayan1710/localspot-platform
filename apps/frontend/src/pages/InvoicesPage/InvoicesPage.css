@@ -1,7 +1,10 @@
+.InvoicesPage{
+    margin-bottom: 150px;
+}
 .InvoicesPage>p:first-of-type{
     margin-top: 30px;
     margin-left: 15px;
-    margin-bottom: 50px;
+    margin-bottom: 30px;
 }
 .InvoicesPage .docfisc{
     padding-bottom: 5px;

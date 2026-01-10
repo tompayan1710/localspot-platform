@@ -6,25 +6,42 @@ const pool = require("../../../../db/index");
 require("dotenv").config();
 
 
+
 router.post("/download-avis-virement", async (req, res) => {
   try {
-    const {
-      payout,
-      reservations,
-      enterprise
-    } = req.body;
+    const { virementId } = req.body;
 
-    if (!payout || !reservations || !enterprise) {
-      return res.status(400).json({
-        success: false,
-        error: "Champs manquants : payout, reservations, enterprise"
-      });
+    if (!virementId) {
+      return res.status(400).json({ error: "virementId manquant" });
     }
 
-    // Génère le PDF
-    const pdfPath = await generateAvisDeVirementPDF({ payout, reservations, enterprise });
+    // 1️⃣ Récupération du virement
+    const withdrawalRes = await pool.query(
+      "SELECT * FROM withdrawals WHERE id = $1",
+      [virementId]
+    );
+    const payout = withdrawalRes.rows[0];
 
-    // Lit le PDF
+    if (!payout) {
+      return res.status(404).json({ error: "Virement introuvable" });
+    }
+
+    // 2️⃣ ENTREPRISE = TA PLATEFORME (UNE SEULE LIGNE)
+    const enterpriseRes = await pool.query(
+      "SELECT * FROM enterprise LIMIT 1"
+    );
+    const enterprise = enterpriseRes.rows[0];
+
+    if (!enterprise) {
+      return res.status(500).json({ error: "Entreprise non configurée" });
+    }
+
+    // 3️⃣ Génération du PDF (SANS réservations)
+    const pdfPath = await generateAvisDeVirementPDF({
+      payout,
+      enterprise,
+    });
+
     const fileBuffer = await fs.promises.readFile(pdfPath);
 
     res.setHeader("Content-Type", "application/pdf");
@@ -35,17 +52,13 @@ router.post("/download-avis-virement", async (req, res) => {
 
     res.send(fileBuffer);
 
-    // Suppression du fichier temporaire
     fs.promises.unlink(pdfPath).catch(() => {});
-
-  } catch (error) {
-    console.error("❌ Erreur PDF :", error);
-    res.status(500).json({
-      success: false,
-      error: "Impossible de générer l'avis de virement"
-    });
+  } catch (err) {
+    console.error("❌ Erreur PDF :", err);
+    res.status(500).json({ error: "Impossible de générer l'avis de virement" });
   }
 });
+
 
 
 // Récupération d'un type de virement (hôte OU provider)

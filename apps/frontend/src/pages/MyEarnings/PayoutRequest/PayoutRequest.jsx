@@ -200,7 +200,7 @@ export default function PayoutRequest(){
 
     return (
         <div className={`PayoutRequest ${isOccultView ? "noScroll" : ""}`}>
-            <GoBack nagigation={"/my-earnings"} text={t("return")}/>
+            <GoBack nagigation={-1} text={t("return")}/>
 
             <p className="t32">{t("Withdraw_my_earnings")}</p>
             <div className="MySolde column">

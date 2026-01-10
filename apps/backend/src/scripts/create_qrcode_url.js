@@ -12,4 +12,4 @@ function generateQRCode(url, filename = 'qrcode.png') {
   });
 }
 
-generateQRCode("https://codepen.io/tom-payan", "./src/scripts/codepen.png");
+generateQRCode("https://viarte.eu/offer-page/5576bba5-c3d4-4ea7-b84f-d375e1d1e74f?presentoir_offer_id=2&from_qr=1", "./src/scripts/QRcodeAvion.png");

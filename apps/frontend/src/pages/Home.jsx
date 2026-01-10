@@ -395,19 +395,19 @@ import ButtonLanguage from "../components/Buttons/ButtonLanguage/ButtonLanguage"
             
             
             <div className={`ConnectYourSelf ${authState.isAuth && "close"}`}>
-              <p className="t3">Rejoingnez-nous !</p>
-              <p className="t5">Accédez à toutes les fonctionnalités en vous connectant ou en créant un compte</p>
+              <p className="t3">{t("Join_us_title")}</p>
+              <p className="t5">{t("Join_us_description")}</p>
               <button 
                 className="Signup" 
                 onClick={() =>{
                 PopUpLoginRef.current.classList.add("open")
                 setIsOccultView(true);
               }}>
-                <p className="t5">S'inscrire</p>
+                <p className="t5">{t("Sign_up")}</p>
               </button>
               <div className="row">
                 <div className="line"></div>
-                <p className="t5">ou</p>
+                <p className="t5">{t("Or")}</p>
                 <div className="line"></div>
               </div>
               <button 
@@ -416,7 +416,7 @@ import ButtonLanguage from "../components/Buttons/ButtonLanguage/ButtonLanguage"
                 PopUpLoginRef.current.classList.add("open")
                 setIsOccultView(true);
               }}>
-                <p className="t5">Se connecter</p></button>
+                <p className="t5">{t("Log_in")}</p></button>
             </div>
 
             {

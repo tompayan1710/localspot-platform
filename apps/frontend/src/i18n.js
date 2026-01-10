@@ -51,6 +51,12 @@ i18n
           "Matin":"Morning",
           "Après-midi": "Afternoon",
           "Soir": "Evening",
+          // HOME – Auth CTA
+          Join_us_title: "Join us!",
+          Join_us_description: "Access all features by logging in or creating an account",
+          Sign_up: "Sign up",
+          Or: "or",
+          Log_in: "Log in",
 
 
 
@@ -581,6 +587,15 @@ i18n
           "Matin":"Matin",
           "Après-midi": "Après-midi",
           "Soir": "Soir",
+          // HOME – Auth CTA
+          Join_us_title: "Rejoignez-nous !",
+          Join_us_description: "Accédez à toutes les fonctionnalités en vous connectant ou en créant un compte",
+          Sign_up: "S'inscrire",
+          Or: "ou",
+          Log_in: "Se connecter",
+
+
+
 
 
           //Offer Page

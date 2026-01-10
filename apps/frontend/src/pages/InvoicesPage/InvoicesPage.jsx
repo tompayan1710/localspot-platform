@@ -78,6 +78,41 @@ export default function InvoicesPage() {
             return { success: false };
         }
     };
+
+    async function downloadVirement(virementId) {
+        try {
+            const response = await fetch(
+            `${process.env.REACT_APP_API_URL}/api/payment/invoice-documents/download-avis-virement`,
+            {
+                method: "POST",
+                headers: {
+                "Content-Type": "application/json",
+                },
+                body: JSON.stringify({ virementId }),
+            }
+            );
+
+            if (!response.ok) {
+            throw new Error("Erreur génération PDF");
+            }
+
+            const blob = await response.blob();
+            const url = window.URL.createObjectURL(blob);
+
+            const a = document.createElement("a");
+            a.href = url;
+            a.download = `avis_virement_${virementId}.pdf`;
+            document.body.appendChild(a);
+            a.click();
+
+            a.remove();
+            window.URL.revokeObjectURL(url);
+        } catch (err) {
+            console.error("Téléchargement impossible :", err);
+        }
+    }
+
+    
     
     useEffect(() => {
         if (authState.user?.hote_id || authState.user?.provider_id) {
@@ -116,13 +151,25 @@ export default function InvoicesPage() {
                                             <div className="t4">{virement.created_at}</div>
                                             <div className="t3 bold">{virement.amount}€</div>
                                         </div> */}
-                                        <img src={ArrowDownRetired} alt="Arrow Down Retired"/>
-                                        <a
+                                        {/* <a
                                             className="t5 bold underline"
                                             href={`/my-virement?id=${virement.id}`}
                                         >
                                             Virement du {new Date(virement.created_at).toLocaleDateString("fr-FR")}
-                                        </a>
+                                        </a> */}
+
+                                        <div
+                                            className="virementElements"
+                                            key={virement.id}
+                                            onClick={() => downloadVirement(virement.id)}
+                                            style={{ cursor: "pointer" }}
+                                        >
+                                        <img src={ArrowDownRetired} alt="Arrow Down Retired" />
+                                        <p className="t5 bold underline">
+                                            Virement du {new Date(virement.created_at).toLocaleDateString("fr-FR")}
+                                        </p>
+                                        </div>
+
 
                                     </div>
                                 ))
