@@ -79,6 +79,9 @@ export default function InvoicesPage() {
         }
     };
 
+
+    
+
     async function downloadVirement(virementId) {
         try {
             const response = await fetch(
@@ -166,7 +169,7 @@ export default function InvoicesPage() {
                                         >
                                         <img src={ArrowDownRetired} alt="Arrow Down Retired" />
                                         <p className="t5 bold underline">
-                                            Virement du {new Date(virement.created_at).toLocaleDateString("fr-FR")}
+                                            Avis de virement du {new Date(virement.created_at).toLocaleDateString("fr-FR")}
                                         </p>
                                         </div>
 

@@ -345,6 +345,10 @@ export default function MyEarnings() {
 
       }
 
+      <button className="MakeVirement" onClick={() => navigate("/payout-request")}>
+          <img src={ArrowDownRetired} alt="Arrow Down Retired icon"/>
+          <p className="t5">Faire un virement</p>
+      </button>
       {transactions.length > 8 && 
       <WhiteButton text={t("View_more")} onClick={() => {navigate("/all-history-transactions")}} />
       }

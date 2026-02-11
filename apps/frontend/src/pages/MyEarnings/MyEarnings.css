@@ -251,3 +251,35 @@
 .MyEarnings .no-transactions>.whiteButton{
     margin-top: 20px;
 }
+
+
+
+
+
+.MyEarnings .MakeVirement {
+    --taillemin: min(250px, 50vw);
+    position: fixed;
+    bottom: 90px;
+    box-shadow: 0 2px 15px rgba(0, 0, 0, 0.3);
+    border: none;
+    padding: 18px 25px;
+    border-radius: 100px;
+    background: var(--lineargradientblack);
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 10px;
+    white-space: nowrap;
+    cursor: pointer;
+    z-index: 2;
+    right: 50%;
+    transform: translate(calc(var(--taillemin) * 1 - 10px));
+}
+
+.MyEarnings .MakeVirement>p {
+    color: white;
+}
+.MyEarnings .MakeVirement>img{
+    filter: invert(1);
+    height: 15px;
+}

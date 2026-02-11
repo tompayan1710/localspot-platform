@@ -79,7 +79,7 @@ router.get("/get-all-virement", async (req, res) => {
     const query = `
       SELECT *
       FROM withdrawals
-      WHERE ${field} = $1;
+      WHERE ${field} = $1 AND status = 'completed';
     `;
 
     const result = await pool.query(query, [value]);
