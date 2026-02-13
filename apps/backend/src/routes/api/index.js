@@ -20,6 +20,7 @@ const userRoutes = require('./user/userRoutes');
 const invitationRoutes = require('./invitation/invitationRoutes');
 const presentoirsRoutes = require('./presentoirs/presentoirsRoutes');
 const mailsRoutes = require('./mail/mailsRoutes');
+const stripeRoutes = require('./stripe/stripeRoutes');
 
 
 router.use('/auth', authRoutes);
@@ -40,6 +41,7 @@ router.use('/user', userRoutes);
 router.use('/invitation', invitationRoutes);
 router.use('/presentoirs', presentoirsRoutes);
 router.use('/mail', mailsRoutes);
+router.use('/stripe', stripeRoutes);
 
 
 module.exports = router;

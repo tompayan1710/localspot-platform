@@ -142,11 +142,53 @@ export default function Profile() {
 
 
 
-  
+  const startStripeOnboarding = async () => {
+    try {
+      const token = localStorage.getItem("jwtToken"); // Récupère ton token
+      const response = await fetch(`${process.env.REACT_APP_API_URL}/api/stripe/authorize`, {
+        method: 'GET',
+        headers: {
+          'Authorization': `Bearer ${token}` // 🟢 Ici on passe le token !
+        }
+      });
 
-  if (authState.loading) {
-    return <div className="SinnerTester"></div>;
-  }
+      const data = await response.json();
+      if (data.url) {
+        window.location.href = data.url; // Redirection vers Stripe une fois l'URL reçue
+      }
+    } catch (error) {
+      console.error("Erreur lors de l'initialisation Stripe", error);
+    }
+  };
+
+
+  
+    // Remplace ta fonction startStripeOnboarding ou ajoute celle-ci :
+    const openStripeDashboard = async () => {
+        try {
+            const token = localStorage.getItem("jwtToken");
+            console.log("Tentative d'accès au Dashboard Stripe...");
+
+            const response = await fetch(`${process.env.REACT_APP_API_URL}/api/stripe/dashboard`, {
+                method: 'GET',
+                headers: {
+                    'Authorization': `Bearer ${token}`
+                }
+            });
+
+            const data = await response.json();
+            
+            if (data.url) {
+                console.log("URL Dashboard reçue :", data.url);
+                window.location.href = data.url; // Redirection vers le dashboard Stripe
+            } else {
+                console.error("Pas d'URL reçue pour le dashboard", data);
+                alert("Impossible d'accéder au dashboard. Vérifiez votre configuration.");
+            }
+        } catch (error) {
+            console.error("Erreur Dashboard Stripe:", error);
+        }
+    };
 
   return (
     <>
@@ -255,7 +297,20 @@ export default function Profile() {
                        </div>
                      <button className="whiteButton" onClick={() => {navigate("/annonces")}}>
                          <p className="t5">{t("View_my_listings")}</p>
-                     </button>
+                      </button>
+                                
+                      <div className="StripeTestContainer" style={{ marginTop: "20px", padding: "15px", border: "1px dashed #635bff", borderRadius: "8px" }}>
+                        <p className="t5" style={{ color: "#635bff", fontWeight: "bold" }}>
+                          {providerInfo?.onboarding_complete ? "✅ Paiements activés" : "❌ Paiements non configurés"}
+                        </p>
+                        
+                        {/* Bouton pour lancer l'onboarding ou aller sur le dashboard */}
+                        <button onClick={providerInfo?.onboarding_complete ? openStripeDashboard : startStripeOnboarding}>
+                          {providerInfo?.onboarding_complete ? "Accéder au Dashboard" : "Configurer mes paiements"}
+                        </button>
+
+
+                      </div>
                      </>
                      : 
                      <>

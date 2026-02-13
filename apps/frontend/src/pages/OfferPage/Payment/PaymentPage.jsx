@@ -90,7 +90,7 @@ export default function PaymentPage() {
             navigate(`/offer-page/${slug}/add-info`, {
                 state: stateAddInfo
             })
-        }
+        } 
 
         const getPublishableKey = async () => {
             try {

@@ -6,8 +6,13 @@ const pool = require('../db/index');
 // ✅ Middleware de vérification JWT
 const authMiddleware = async (req, res, next) => {
 
-  const token = req.header('Authorization');
+  let token = req.header('Authorization');
 
+  if (!token && req.query.token) { 
+    // 2. Si pas de badge, on regarde sur l'enveloppe (URL Query)
+    token = `Bearer ${req.query.token}`; 
+  }
+  
   if (!token) {
     return res.status(401).json({ 
       isAuth: false,

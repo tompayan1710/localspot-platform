@@ -1,7 +1,7 @@
 const express = require("express");
 const router = express.Router();
 const stripe = require("stripe")(process.env.STRIPE_SECRET_KEY);
-
+const db = require("../../../../db");
 
 router.get("/config", (req, res) => {
   res.send({
@@ -56,12 +56,28 @@ router.post("/create-payment-intent", async (req, res) => {
 
 
   try {
+    const result = await db.query("SELECT stripe_account_id FROM providers WHERE id = $1", [provider_id]);
+    const providerStripeAccountId = result.rows[0]?.stripe_account_id;
+
+    if (!providerStripeAccountId) {
+      return res.status(400).send({ error: { message: "Ce prestataire n'a pas configuré son compte de paiement." } });
+    }
+
+    // 3. CALCUL DE TA COMMISSION (Exemple: 10%)
+    // Si amount = 10000 (100€), applicationFee = 1000 (10€)
+    const applicationFee = Math.round(amount * process.env.PLATFORM_COMMISSION_RATE);
+
     const paymentIntent = await stripe.paymentIntents.create({
       currency: "eur",
       amount: amount,
       automatic_payment_methods: {
         enabled: true,
       },
+      application_fee_amount: applicationFee, // Ta part
+      transfer_data: {
+        destination: providerStripeAccountId, // La part du prestataire (acct_xxx)
+      },
+    
       metadata: {
         user_id: String(user_id ?? ""),
         offerSlug: String(offerSlug ?? ""),
@@ -88,13 +104,14 @@ router.post("/create-payment-intent", async (req, res) => {
         adresse: String(adresse ?? "CreatePayementNoAdresse"),
         total_capacity: String(total_capacity ?? ""),
         mode: String(process.env.NODE_ENV),
-        lang: String(lang ?? "fr")
+        lang: String(lang ?? "fr"),
+        application_fee: String(applicationFee)
       },
 
       // payment_method_types: ['card', 'bancontact'], 
     });
 
-    console.log("✅ PaymentIntent créé avec succès :", paymentIntent.id);
+    console.log("✅ PaymentIntent Marketplace créé :", paymentIntent.id);
     console.log(paymentIntent.metadata);
     res.send({ clientSecret: paymentIntent.client_secret });
   } catch (e) {
